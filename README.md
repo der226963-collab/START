@@ -128,9 +128,45 @@ Train it on your own text by replacing `data/corpus.txt` — the
 model can only learn patterns that are actually in its training
 text, so a tiny corpus gives toy output, not coherent stories.
 That limitation is the point: it makes the data -> model link
-visible. Real next upgrades, in order: more / better text
-(TinyStories is the usual first dataset), BPE tokenization
-instead of characters, then a larger model on a GPU.
+visible.
+
+## Ideal-model data — science, maths, climate, modelling, engineering
+
+New training data is kept only if it serves the intended goal:
+science, mathematics, climate change, predictive modelling, and
+engineering for planning within planetary limits. See
+`data/IDEAL_MODEL_DATA_NOTES.md`.
+
+- `data/science_math_climate_modelling.txt` (8,663 characters,
+  63 distinct characters, original text) — science method,
+  maths with worked examples, climate, and predictive modelling.
+- `data/engineering.txt` (original text) — energy systems,
+  materials, buildings, transport, water, and systems engineering.
+- `data/corpus.txt` — PCAC planning language, kept.
+- A Shakespeare drama sample was considered, then removed:
+  it does not serve this goal, so it is not training data here.
+
+## Real planning data and allocations — separate layer
+
+`mini_ai/planning.py` is a calculation layer, not MiniGPT:
+
+```bash
+python -m mini_ai.planning
+```
+
+It uses `data/real_planning_data.csv`, an aggregated global
+snapshot with sources in `data/real_planning_sources.md`:
+UN population 8.2 billion in 2024; FAO food supply 2,985
+kcal per capita per day in 2022, primary crops 9.9 billion
+tonnes and cereals 3.1 billion tonnes in 2023 (FAOSTAT,
+CC-BY-4.0); renewables just over 30% of world electricity in
+2023 (OWID/Ember) and 14.6% of primary energy (Energy
+Institute); 510 GW renewable capacity added in 2023 (IEA);
+steel 1,892 million tonnes in 2023. It computes a global food
+energy balance, an electricity allocation by CO2 intensity,
+and a steel/cement scale summary — with warnings that a
+global average does not allocate to a real community and
+does not decide anything. People decide; this checks.
 
 ## How to grow it — in order
 

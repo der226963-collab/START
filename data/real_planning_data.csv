@@ -1,0 +1,21 @@
+indicator,year,value,unit,source,licence_or_status,note
+world_population,2024,8.2,billion people,UN World Population Prospects 2024,UN publication,Peak about 10.3 billion in mid-2080s in same projection
+world_population_peak_projection,2080s,10.3,billion people,UN World Population Prospects 2024,UN publication,Projection not a fact
+global_food_supply_dietary_energy,2022,2985,kcal per capita per day,FAO Food Balance Sheets 2010-2022,FAO CC-BY-4.0 via FAOSTAT,Supply not intake; average hides distribution
+global_food_supply_dietary_energy,2023,3000,kcal per capita per day,FAO Food Balance Sheets 2010-2023,FAO CC-BY-4.0 via FAOSTAT,Historic milestone crossed in 2023; value is milestone not exact to 1 kcal
+global_primary_crops_production,2023,9900,million tonnes,FAO FAOSTAT Analytical Brief 96 2010-2023,CC-BY-4.0,Primary crops total
+global_cereals_production,2023,3100,million tonnes,FAO FAOSTAT Analytical Brief 96 2010-2023,CC-BY-4.0,Leading primary crop group
+global_sugar_crops_production,2023,2300,million tonnes,FAO FAOSTAT Analytical Brief 96 2010-2023,CC-BY-4.0,Rounded from brief figure
+global_vegetables_production,2023,1200,million tonnes,FAO FAOSTAT Analytical Brief 96 2010-2023,CC-BY-4.0,Rounded from brief figure
+global_oil_crops_production,2023,1200,million tonnes,FAO FAOSTAT Analytical Brief 96 2010-2023,CC-BY-4.0,Rounded from brief figure
+global_fruit_production,2023,1000,million tonnes,FAO FAOSTAT Analytical Brief 96 2010-2023,CC-BY-4.0,Rounded from brief figure
+global_roots_and_tubers_production,2023,900,million tonnes,FAO FAOSTAT Analytical Brief 96 2010-2023,CC-BY-4.0,Rounded from brief figure
+renewable_share_of_electricity,2023,30,percent,Our World in Data via Ember Global Electricity Review,OWID CC BY,Just over 30 percent in 2023
+renewable_share_of_primary_energy,2023,14.6,percent,Energy Institute Statistical Review of World Energy 2024,Secondary source reporting EI,Excludes some accounting differences; electricity share is higher than primary energy share
+renewable_capacity_added,2023,510,GW,IEA Renewables 2023,IEA report,Solar about three quarters of additions
+global_co2_per_capita,2023,4.7,tonnes per person,Our World in Data CO2 dataset via Global Carbon Project,OWID CC BY,Fossil CO2 per capita; just below 5 tonnes for over a decade in OWID summary
+global_steel_production,2023,1892,million tonnes,UN SDSN Iron and Steel brief citing IEA/World Steel,Secondary source,About 53.9 percent in China in same brief
+global_steel_co2,2023,2800,million tonnes CO2,UN SDSN Iron and Steel brief,Secondary source,About 8 percent of global GHG in same brief
+global_cement_co2,2023,2300,million tonnes CO2,Nature / IEA summary via secondary source,Secondary source,Use as order of magnitude not exact plant data
+cement_per_person_per_year,2023,530,kilograms per person per year,IEA via Nature summary,Secondary source,World average
+steel_per_person_per_year,2023,240,kilograms per person per year,IEA via Nature summary,Secondary source,World average

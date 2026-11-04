@@ -1,0 +1,43 @@
+Engineering.
+Engineering turns science into systems that work in the real world.
+A system has inputs, processes, outputs, and limits. Design starts with limits.
+Energy engineering.
+Electricity is generated, transmitted, stored, and used. Generation must meet demand at every moment.
+Solar power converts light to electricity. Wind power converts moving air to electricity.
+Hydropower converts falling water to electricity. Nuclear power converts heat from fission to electricity.
+Coal and gas burn fuel to make heat, then electricity. Burning fuel releases carbon dioxide.
+Renewables provided just over 30 percent of world electricity in 2023.
+Renewables provided 14.6 percent of primary energy in 2023. Electricity and primary energy are different totals.
+In 2023, about 510 gigawatts of renewable capacity were added worldwide. Solar was about three quarters of additions.
+Storage stores energy for later use. Batteries store electricity. Pumped water stores potential energy.
+A grid balances supply and demand. Storage, transmission, and flexible demand help balance a grid.
+Efficiency means more service from less energy. Insulation reduces heating need. Efficient motors reduce electricity use.
+Materials engineering.
+Steel is made from iron ore, coal, and scrap. World steel production was about 1892 million tonnes in 2023.
+Steel production released about 2800 million tonnes of carbon dioxide in 2023, about 8 percent of global greenhouse gases.
+Scrap-based electric arc steel releases less carbon dioxide than blast furnace steel, well under 1 tonne per tonne, against a global average near 1.5 to 1.9 tonnes per tonne.
+Cement is made from limestone and heat. Heating limestone releases carbon dioxide from the rock itself, not only from fuel.
+About 60 percent of cement emissions come from the rock. Changing fuel alone cannot remove those emissions.
+World averages are about 530 kilograms of cement and 240 kilograms of steel per person per year.
+Reducing demand, reusing materials, and using less clinker can reduce cement and steel emissions.
+Buildings engineering.
+A building uses energy for heating, cooling, lighting, and hot water. Insulation, airtightness, and heat pumps reduce use.
+A heat pump moves heat instead of making heat from fuel. It uses electricity more efficiently than resistance heating.
+Retrofit means improving an existing building. Insulation, windows, and heating systems are retrofit measures.
+Transport engineering.
+Transport moves people and goods. Cars, buses, trains, ships, and planes use different amounts of energy per person or per tonne.
+Electric trains and buses use electricity directly. Batteries store energy for electric vehicles.
+Walking and cycling use human energy and need safe space, not fuel.
+Water engineering.
+Water is collected, treated, distributed, and returned. Pumps use energy. Leaks waste water and energy.
+Rain, rivers, groundwater, and desalination are water sources. Each source has energy and environmental costs.
+Systems engineering.
+Design for maintenance. A system that cannot be maintained will fail.
+Design for repair. Parts that can be replaced last longer than parts that cannot.
+Design for safety. Test under failure, not only under normal conditions.
+Measure performance. Compare actual output with predicted output. Learn from the difference.
+A good engineering plan states assumptions, shows calculations, and can be checked by others.
+Engineering, planning, and decisions.
+Engineering calculates what is possible. Planning tests what meets needs within limits.
+People decide which plan to use. Engineers do not decide for a community. They provide evidence for a decision.
+Start with a simple system that works. Test it. Improve it. Scale what works.

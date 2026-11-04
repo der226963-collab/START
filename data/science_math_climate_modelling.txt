@@ -1,0 +1,113 @@
+Science.
+Science starts with observation. We watch what happens and we measure it.
+A question follows observation. What causes this change? What will happen next?
+A hypothesis is a testable idea. It must be possible to prove it wrong.
+We test a hypothesis with an experiment or with data. We record the result.
+Evidence is data that supports or weakens an idea. One result is not proof.
+We repeat a test to check the result. Repeatable results are stronger.
+Measurement has units. Length in metres, mass in kilograms, time in seconds.
+Energy in joules, power in watts, temperature in degrees Celsius.
+Uncertainty is part of measurement. No measurement is perfectly exact.
+We report a value and its uncertainty. A range is more honest than a single number.
+Peer review means other scientists check the work. Checking finds errors.
+Science changes when new evidence arrives. Old ideas are replaced by better ideas.
+Mathematics.
+Mathematics is the language of patterns and quantities.
+Addition combines numbers. 2 plus 3 equals 5. 10 plus 20 equals 30.
+Subtraction finds a difference. 10 minus 4 equals 6. 100 minus 25 equals 75.
+Multiplication is repeated addition. 4 times 3 equals 12. 7 times 8 equals 56.
+Division shares a number. 12 divided by 3 equals 4. 100 divided by 5 equals 20.
+A variable stands for an unknown number. Let x equal 5. Then x plus 2 equals 7.
+An equation states that two sides are equal. Solve for x in x plus 3 equals 10. Then x equals 7.
+A function maps an input to an output. If f of x equals 2 times x, then f of 3 equals 6.
+A graph shows how one quantity changes with another. Slope is rise divided by run.
+Percent means per hundred. 50 percent of 200 equals 100. 10 percent of 80 equals 8.
+An average summarises many numbers. Add the numbers and divide by how many there are.
+The average of 4, 6, and 8 is 6, because 4 plus 6 plus 8 equals 18, and 18 divided by 3 equals 6.
+Probability measures chance. A fair coin has probability 0.5 for heads and 0.5 for tails.
+Optimisation finds the best value under limits. Minimise cost subject to a limit.
+Maximise food subject to land less than 100 and water less than 50.
+A constraint is a hard limit. Land, water, energy, and carbon are constraints.
+A linear equation has the form a times x plus b equals y. A system of equations can be solved together.
+Statistics describes data. Mean, median, and range summarise a distribution.
+A correlation is not a cause. Two things can rise together for a third reason.
+Climate change.
+Climate is long-term weather. Weather is short-term. Climate change is a long-term shift.
+The greenhouse effect warms the Earth. Greenhouse gases trap heat in the atmosphere.
+Carbon dioxide is a greenhouse gas. Methane is a greenhouse gas. Nitrous oxide is a greenhouse gas.
+Burning fossil fuels releases carbon dioxide. Coal, oil, and gas are fossil fuels.
+Forests store carbon. Cutting forests releases carbon and reduces storage.
+Oceans absorb heat and carbon dioxide. Warm oceans expand and sea level rises.
+Melting ice on land adds water to oceans. Sea level rises when ice melts and water warms.
+A carbon budget is the total carbon that can be emitted within a temperature limit.
+If emissions exceed the budget, temperature rises further. A budget is a hard limit, not a target to exceed.
+Temperature rise changes rainfall. Some places become drier, some become wetter.
+Extreme weather becomes more likely. Heatwaves, floods, and droughts increase in frequency.
+Climate justice means those who emitted least often face the worst impacts first.
+Frontline communities need protection and resources first, not last.
+Mitigation reduces emissions. Renewable energy, efficiency, and forests are mitigation.
+Adaptation prepares for change. Flood defences, heat plans, and water storage are adaptation.
+We need both mitigation and adaptation. Reducing emissions does not remove past change.
+Planetary boundaries are limits for a safe Earth. Climate, land, water, and biodiversity are boundaries.
+Crossing a boundary increases risk. Staying within boundaries is safer for everyone.
+Predictive modelling.
+A model is a simplified representation of a real system. It is not the system itself.
+A model takes inputs and produces outputs. Inputs are data. Outputs are predictions.
+Parameters are numbers inside a model. They are set from data or from theory.
+A forecast predicts the future. A scenario explores what if a choice changes.
+Validation tests a model against past data. If it cannot explain the past, do not trust it for the future.
+A model has uncertainty. Inputs are uncertain, parameters are uncertain, and the future is uncertain.
+Report a range, not a single number. A range shows what is known and what is not known.
+A weather model uses temperature, pressure, wind, and humidity to forecast rain.
+An energy model uses demand, supply, and storage to forecast power needs.
+A crop model uses rain, temperature, and soil to forecast yield.
+A food model uses population, diet, land, and water to forecast food need.
+A planning model uses needs, resources, and limits to test a plan.
+Test a plan against limits. If demand exceeds supply, the plan must change.
+If a plan breaks a carbon limit, the plan must change. If a plan breaks a water limit, the plan must change.
+Models do not decide. People decide, using model outputs as evidence.
+A language model is not a predictive model. It predicts text, not tonnes, joules, or degrees.
+Keep layers separate. Language helps explain a plan. Calculation checks a plan. People decide a plan.
+A good model is transparent. Show inputs, show assumptions, show uncertainty, show limits.
+A good model can be checked by others. If no one can check it, do not trust it for important decisions.
+Science, mathematics, climate, and modelling together.
+Science provides evidence. Mathematics provides calculation. Climate provides limits.
+Modelling provides scenarios. Together they help people plan within planetary limits.
+Meet needs for everyone. Stay within land, water, energy, and carbon limits.
+Share labour fairly. Share care fairly. Leave time for rest and learning.
+Start small, test, learn, and scale what works. Stop what does not work.
+
+More science.
+Energy cannot be created or destroyed. It changes form. Heat, light, and motion are forms of energy.
+Power is energy per unit time. 100 watts for 10 seconds equals 1000 joules.
+Water cycles through evaporation, condensation, and precipitation.
+Photosynthesis uses light, water, and carbon dioxide to make plant matter and oxygen.
+Respiration releases energy from food and produces carbon dioxide and water.
+Soil holds water and nutrients. Healthy soil supports crops and stores carbon.
+More mathematics.
+If demand is 1170 tonnes and supply is 1049 tonnes, then shortage equals 121 tonnes.
+Shortage equals demand minus supply. Supply equals demand minus shortage.
+If 200 people each need 2 kilograms of food per day, then total need equals 400 kilograms per day.
+If land is 100 hectares and each hectare yields 5 tonnes, then total yield equals 500 tonnes.
+A rate is change divided by time. If temperature rises 1 degree in 50 years, the rate is 0.02 degrees per year.
+A ratio compares two numbers. A ratio of 2 to 1 means the first is twice the second.
+More climate.
+Renewable energy comes from sun, wind, water, and heat from the Earth.
+Solar power converts light to electricity. Wind power converts moving air to electricity.
+Storage stores energy for later use. Batteries and pumped water are forms of storage.
+Efficiency means getting more service from less energy. Insulation reduces heating need.
+Transport, buildings, food, and industry all use energy and produce emissions.
+Reducing demand and changing supply both reduce emissions.
+More predictive modelling.
+Choose a question first. What do we need to forecast, and for whom?
+Choose data next. Check source, date, quality, and permission.
+Build a simple model first. A simple model that can be checked beats a complex model that cannot.
+Test the model on data it has not seen. This is called validation.
+If the model fails validation, revise the model or collect better data.
+Compare scenarios. Scenario A: current trend. Scenario B: lower emissions. Scenario C: local supply.
+Report differences between scenarios. Report uncertainty for each scenario.
+Do not hide uncertainty. Do not present a forecast as a fact.
+A forecast is a range of possible futures, given assumptions.
+Change the assumption, and the forecast changes. Show that change.
+People set goals and limits. Models test whether a plan meets goals within limits.
+Assemblies decide. Models assist. Language models explain. Calculations check.

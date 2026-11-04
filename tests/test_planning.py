@@ -3,7 +3,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from mini_ai.planning import electricity_allocation, food_balance, load_snapshot, run_plan
+from mini_ai.planning import electricity_allocation, food_balance, load_snapshot, run_plan, weather_summary
 
 
 def test_snapshot_loads_and_has_key_rows():
@@ -32,3 +32,11 @@ def test_run_plan_is_calculation_not_language():
     result = run_plan("data/real_planning_data.csv")
     assert result["layer"].startswith("calculation")
     assert result["cereals_2023_million_tonnes"] == 3100
+
+
+def test_weather_summary_uses_real_anomaly_and_moisture_rule():
+    rows = load_snapshot("data/real_planning_data.csv")
+    result = weather_summary(rows, warming_degrees=1.0)
+    assert result["global_temperature_anomaly_2024_vs_1951_1980_celsius"] == 1.28
+    assert result["moisture_increase_percent_for_input_warming"] == 7.0
+    assert "warning" in result

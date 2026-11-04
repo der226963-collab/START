@@ -119,12 +119,34 @@ def energy_and_materials(rows):
     }
 
 
+def weather_summary(rows, warming_degrees=1.0):
+    """Weather vs climate, with a simple moisture calculation.
+
+    warming_degrees is an input to the 7-percent-per-degree rule,
+    not a forecast. It shows how a warmer atmosphere can hold
+    more moisture, which is why heavy rain can become more intense.
+    """
+    anomaly_1951 = get(rows, "global_temperature_anomaly_vs_1951_1980", 2024)
+    anomaly_preindustrial = get(rows, "global_temperature_anomaly_vs_1850_1900", 2024)
+    moisture_per_degree = get(rows, "atmospheric_moisture_increase_per_degree", 2023)
+    return {
+        "weather": "State of the atmosphere at a place and time: temperature, precipitation, wind, humidity, pressure, cloud cover.",
+        "climate": "Pattern of weather over a long time, usually 30 years (WMO normals, e.g. 1991-2020).",
+        "global_temperature_anomaly_2024_vs_1951_1980_celsius": anomaly_1951,
+        "global_temperature_anomaly_2024_vs_1850_1900_celsius": anomaly_preindustrial,
+        "record_monthly_streak_months_jun2023_aug2024": get(rows, "record_monthly_temperature_streak_months", 2024),
+        "moisture_increase_percent_for_input_warming": round(moisture_per_degree * warming_degrees, 1),
+        "warning": "A single hot day or cold week is weather, not climate. A forecast is a probability and a range, not a certainty. Weather data plans days and weeks; climate data plans seasons, years, and infrastructure.",
+    }
+
+
 def run_plan(path="data/real_planning_data.csv"):
     rows = load_snapshot(path)
     return {
         "source": "data/real_planning_data.csv, see data/real_planning_sources.md",
         "layer": "calculation only, not a language model output, not a decision",
         "food": food_balance(rows),
+        "weather": weather_summary(rows),
         "energy_and_materials": energy_and_materials(rows),
         "cereals_2023_million_tonnes": get(rows, "global_cereals_production", 2023),
         "primary_crops_2023_million_tonnes": get(rows, "global_primary_crops_production", 2023),

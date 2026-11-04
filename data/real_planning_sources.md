@@ -26,6 +26,15 @@ individual or community data, and no scraped private data is in it.
   2023, solar about three quarters of additions, forecast to
   7,300 GW by 2028 under existing policies. A report, not a
   dataset download.
+- **NASA GISTEMP, US government public data** — 2024 warmest
+  year on record: 1.28 degrees Celsius above 1951-1980, about
+  1.47 degrees above 1850-1900, after 15 consecutive months of
+  monthly records June 2023-August 2024.
+- **WMO / IPCC** — climate is weather over 30 years (normals
+  e.g. 1991-2020); air holds about 7 percent more moisture per
+  1 degree Celsius warming, making heavy rainfall more intense
+  in many places. These are rules and records, not a local
+  forecast.
 - **Energy Institute Statistical Review of World Energy 2024**
   (as reported) — renewables 14.6% of primary energy in 2023.
   Note: electricity share (30%) and primary energy share

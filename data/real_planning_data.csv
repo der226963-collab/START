@@ -19,3 +19,8 @@ global_steel_co2,2023,2800,million tonnes CO2,UN SDSN Iron and Steel brief,Secon
 global_cement_co2,2023,2300,million tonnes CO2,Nature / IEA summary via secondary source,Secondary source,Use as order of magnitude not exact plant data
 cement_per_person_per_year,2023,530,kilograms per person per year,IEA via Nature summary,Secondary source,World average
 steel_per_person_per_year,2023,240,kilograms per person per year,IEA via Nature summary,Secondary source,World average
+global_temperature_anomaly_vs_1951_1980,2024,1.28,degrees Celsius,NASA GISTEMP,US government public data,Warmest year on record in NASA analysis
+global_temperature_anomaly_vs_1850_1900,2024,1.47,degrees Celsius,NASA GISTEMP,US government public data,About 1.47C above pre-industrial average in NASA estimate
+record_monthly_temperature_streak_months,2024,15,months,NASA,US government public data,June 2023 through August 2024 monthly records
+atmospheric_moisture_increase_per_degree,2023,7,percent per degree Celsius,IPCC via secondary summary,IPCC assessment,Approximate rule: air holds about 7 percent more moisture per 1C warming
+climate_normal_period_years,2020,30,years,WMO,WMO standard,Climatological standard normals use 30-year periods including 1991-2020

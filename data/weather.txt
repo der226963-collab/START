@@ -1,0 +1,52 @@
+Weather.
+Weather is the state of the atmosphere at a place and time.
+Climate is the pattern of weather over a long time, usually 30 years.
+Weather is what you get. Climate is what you expect.
+Weather variables.
+Temperature measures how hot or cold air is, in degrees Celsius.
+Precipitation is water falling from clouds. Rain, snow, and hail are precipitation.
+Wind is moving air. Wind speed is measured in kilometres per hour or metres per second.
+Wind direction tells where wind comes from. A north wind comes from the north.
+Humidity is water vapour in air. Relative humidity is a percent of the maximum at that temperature.
+Atmospheric pressure is the weight of air above a place, in hectopascals.
+Cloud cover is how much sky is covered by cloud. Clear, partly cloudy, and overcast are cloud cover terms.
+Visibility is how far you can see. Fog reduces visibility.
+Instruments.
+A thermometer measures temperature. A barometer measures pressure.
+An anemometer measures wind speed. A rain gauge measures rainfall.
+A hygrometer measures humidity. Satellites, radar, and weather stations collect data.
+How weather forms.
+The sun heats the Earth unevenly. Warm air rises. Cold air sinks and moves in to replace it.
+That movement is wind. Warm, moist air rises and cools. Water vapour condenses into clouds.
+Clouds grow and precipitation falls. High pressure often brings clear skies. Low pressure often brings cloud and rain.
+Fronts are boundaries between air masses. A cold front can bring sudden rain and wind.
+Seasons.
+Seasons follow the tilt of the Earth and its orbit around the sun.
+Summer is warmer with longer days. Winter is colder with shorter days.
+Spring and autumn are transitions. Seasons are opposite in the northern and southern hemispheres.
+Forecasting.
+A forecast predicts future weather. Forecasts use observations and numerical models.
+A numerical weather model divides the atmosphere into grid cells and calculates physics in each cell.
+Short forecasts are more accurate than long forecasts. A 7 day forecast is less certain than a 1 day forecast.
+Forecasts give probabilities. A 70 percent chance of rain means rain is likely, not certain.
+Report a range for temperature. A range shows uncertainty.
+Warnings protect people. Heat warnings, flood warnings, and storm warnings save lives when people act on them.
+Weather and planning.
+Weather affects food. Rain, frost, heat, and drought change crop growth and harvest.
+Weather affects energy. Wind and sun change renewable generation. Heat and cold change demand for heating and cooling.
+Weather affects buildings. Heat, flood, and wind damage buildings and harm health.
+Weather affects health. Heatwaves harm older people, children, and outdoor workers first.
+Weather affects transport. Snow, ice, fog, and storms delay travel and delivery.
+Plan for weather, not only for averages. Plan for heat, flood, drought, and storm.
+Extreme weather.
+A heatwave is a long period of hot weather. Heatwaves become hotter and longer as climate warms.
+Heavy rain becomes more likely as air warms. For every 1 degree Celsius of warming, air can hold about 7 percent more moisture.
+More moisture can mean heavier rainfall when storms form. Flood risk rises in many places.
+Drought is a long period with little rain. Drought reduces water, crops, and hydropower.
+Wildfire risk rises when heat, drought, and wind combine. Fire spreads faster in dry, windy conditions.
+A single cold week does not disprove warming. A single hot day does not prove a trend. Look at long records.
+Weather, climate, and decisions.
+Use weather data to plan a day or a week. Use climate data to plan a season or a year.
+Use both to plan infrastructure. A building must survive storms, not only average weather.
+Early warning systems need data, communication, and a plan to act. A warning without a plan does not protect people.
+People decide how to prepare. Models and forecasts provide evidence. Assemblies decide priorities and resources.

@@ -38,7 +38,12 @@ general language model.
      engineering, with real 2023 anchors: renewables over 30%
      of electricity, 510 GW added, steel 1,892 million tonnes.
 
-2. `data/corpus.txt` (3,302 characters, PCAC-aligned)
+2. `data/weather.txt` (original text)
+   - Weather vs climate, variables, instruments, forecasting,
+     extremes, and how weather affects food, energy, buildings,
+     health, and transport.
+
+3. `data/corpus.txt` (3,302 characters, PCAC-aligned)
    - Planning language: needs, limits, labour and care shared
      fairly, assemblies deciding. Kept, because it is the
      language the ideal model must speak.

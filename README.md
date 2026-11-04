@@ -142,6 +142,9 @@ engineering for planning within planetary limits. See
   maths with worked examples, climate, and predictive modelling.
 - `data/engineering.txt` (original text) — energy systems,
   materials, buildings, transport, water, and systems engineering.
+- `data/weather.txt` (original text) — weather vs climate,
+  variables, forecasting, extremes, and weather impacts on
+  food, energy, buildings, health, and transport.
 - `data/corpus.txt` — PCAC planning language, kept.
 - A Shakespeare drama sample was considered, then removed:
   it does not serve this goal, so it is not training data here.

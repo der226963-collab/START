@@ -43,10 +43,64 @@ next character, which is how a language model actually works:
 
 ```bash
 pip install -r requirements-gpt.txt   # PyTorch, CPU build is fine
-python train_gpt.py                   # tiny, 300 steps
+python train_gpt.py                   # tiny, 500 steps by default
 python train_gpt.py --size small --steps 2000
 python generate_gpt.py --prompt "The garden " --length 200
 ```
+
+Training now uses a 90/10 train / validation split, cosine
+learning-rate decay, gradient clipping, and saves the best
+validation checkpoint — not just the last step. The checkpoint
+JSON records the corpus file, its SHA-256, seed, config, and
+losses, so a model can be traced back to its exact training text.
+
+## How this fits PCAC
+
+This repo is the language-assistance layer only, in PCAC terms:
+
+- **People decide.** A human assembly sets goals and hard limits
+  (land, water, energy, carbon) and makes the final decision.
+- **A separate layer checks plans.** Allocation is checked by a
+  planning / simulation calculation, not by a language model.
+  PCAC v2's planning engine is that kind of layer; MiniGPT is not.
+- **The language model drafts and summarises.** It can help write
+  a plan draft, explain a tradeoff, or summarise a meeting. It
+  must not be treated as a plan, an allocation, or a decision.
+- **Narrow AI now.** No AGI is assumed. Small, local, auditable
+  models first, for food, energy, housing, and care pilots.
+
+The v1 classifier now has an `explain_ai` intent that says this
+in plain language, and a `planning` response that asks for needs,
+hard limits, labour and care shared fairly, a first step, and
+who decides.
+
+## Self-editing, with guardrails — not bypassed
+
+`mini_ai/self_edit.py` lets an AI write and replace code in this
+project, safely:
+
+1. `propose_edit()` returns a diff. Nothing is written.
+2. A human reads the diff and approves it.
+3. `apply_edit(approved=True)` writes it, keeps a backup, runs
+   tests, and rolls back automatically if tests fail.
+4. `revert()` restores the backup at any time.
+
+It cannot edit its own file, safety files, secrets, checkpoints,
+or anything outside the project root, and it cannot approve its
+own edit. There is no `approved=True` call left in `self_edit.py`
+itself — a human approves from outside the model.
+
+Protected, uneditable by the model, even with approval:
+- `mini_ai/self_edit.py` — the approval / guardrail code itself
+- `SAFETY.md` — the written safety rules
+- `.gitignore` — so changes cannot be hidden from review / pushes
+- `tests/test_self_edit.py` — so the model cannot weaken its own tests
+
+Removing those guardrails would break PCAC corrigibility
+— transparency, evaluability, and human oversight — so they are
+not removable from inside a model-generated edit. A human edits
+those files directly, in an editor, if the guardrails themselves
+ever need to change, with a commit message saying so.
 
 Train it on your own text by replacing `data/corpus.txt` — the
 model can only learn patterns that are actually in its training

@@ -14,6 +14,13 @@ Pre-norm (norm before attention / feed-forward, not after) is the
 choice those repos converge on: it trains more stably as you add
 layers, which is exactly what 'larger' needs.
 
+PCAC alignment, kept explicit: this is the language-assistance
+layer only. It predicts text. It does not allocate food, energy,
+housing, or care, and it does not decide anything. In PCAC terms,
+allocation is checked by a separate planning / simulation layer
+under hard limits, and decisions are made by a human assembly.
+A language model that blurs those layers is a bug, not a feature.
+
 This code is original, written for this repo. It needs PyTorch;
 see requirements-gpt.txt. The v1 classifier still needs only NumPy.
 """
@@ -48,6 +55,20 @@ class CharTokenizer:
         self.chars = sorted(set(text))
         self.stoi = {ch: i for i, ch in enumerate(self.chars)}
         self.itos = {i: ch for ch, i in self.stoi.items()}
+
+    @classmethod
+    def from_chars(cls, chars):
+        """Rebuild a tokenizer from a saved vocab, in saved order.
+
+        Use this when loading a checkpoint. Building from text sorts
+        the characters, which would scramble a saved mapping if the
+        saved order was not sorted.
+        """
+        tok = cls.__new__(cls)
+        tok.chars = list(chars)
+        tok.stoi = {ch: i for i, ch in enumerate(tok.chars)}
+        tok.itos = {i: ch for ch, i in tok.stoi.items()}
+        return tok
 
     def encode(self, text):
         return [self.stoi[ch] for ch in text if ch in self.stoi]
@@ -117,6 +138,17 @@ class MiniGPT(nn.Module):
         self.blocks = nn.ModuleList([Block(config) for _ in range(config.n_layer)])
         self.ln_f = nn.LayerNorm(config.n_embd)
         self.head = nn.Linear(config.n_embd, config.vocab_size, bias=False)
+        self.apply(self._init_weights)
+
+    @staticmethod
+    def _init_weights(module):
+        # GPT-style init: small normal weights, zero biases. The
+        # default PyTorch init also works, but this makes training
+        # behaviour reproducible across the small configs used here.
+        if isinstance(module, (nn.Linear, nn.Embedding)):
+            nn.init.normal_(module.weight, mean=0.0, std=0.02)
+            if isinstance(module, nn.Linear) and module.bias is not None:
+                nn.init.zeros_(module.bias)
 
     def forward(self, idx, targets=None):
         batch, seq = idx.shape

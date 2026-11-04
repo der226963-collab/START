@@ -30,6 +30,11 @@ class TestMiniGPT(unittest.TestCase):
         logits2, _ = model(x2)
         self.assertTrue(torch.allclose(logits[0, 0], logits2[0, 0], atol=1e-5))
 
+    def test_tokenizer_from_chars_preserves_order(self):
+        tok = CharTokenizer.from_chars(["b", "a", "c"])
+        self.assertEqual(tok.encode("cab"), [2, 1, 0])
+        self.assertEqual(tok.decode([2, 1, 0]), "cab")
+
     def test_training_reduces_loss(self):
         text = "abcabcabcabcabcabcabcabcabcabc"
         tok = CharTokenizer(text)

@@ -6,3 +6,37 @@ A good meeting ends with a decision. A decision names who does what and by when.
 The library lends books and tools. A tool shared is a tool used well.
 We plant in spring and water in summer. We save seeds in autumn for the next year.
 Care is work. Work shared fairly is lighter for everyone.
+Food comes first. Every person needs enough food every day.
+We grow food close to home when we can. Short journeys mean fresher food and less waste.
+A food hub collects food from farms and gardens. It shares food with homes and kitchens.
+We count how much food we need. We count how much land and water we have.
+A plan must fit inside what the land can give. A plan must fit inside what the water can give.
+We do not promise more than the soil can grow. We do not promise more than the rain can water.
+Energy comes from the sun and the wind. We use energy with care.
+Homes need heat in winter and light at night. We insulate homes so heat stays inside.
+A warm home uses less fuel. A shared building uses less fuel than many cold rooms.
+We repair what is broken before we buy new. Repair saves materials and saves money.
+Housing is a home, not a profit. People need a safe place to live.
+We build homes near work and near care. Short walks help people and help the air.
+Care is for children and for elders. Care is for people who are ill and people who are tired.
+We share care in turns. No one person carries all the care alone.
+A fair rota lists who works and who rests. Rest is part of the plan.
+Work time should fall when machines do more. People should gain time, not lose time.
+A meeting sets the goal. People in the meeting set the limits.
+The limits are land, water, energy, and carbon. The goal is needs met for everyone.
+An assembly decides. An assembly listens first and then decides.
+The assembly checks the plan against the limits. If the plan breaks a limit, the plan changes.
+Numbers must be shown in the open. People must be able to check the numbers.
+An AI can draft a plan. An AI can summarise a meeting. An AI does not decide.
+People decide. A separate calculation checks if a plan fits.
+If a calculation is wrong, people can see it and fix it. No black box decides for us.
+We start small. One street, one food hub, one energy cooperative.
+We learn from the small pilot. We scale what works and stop what does not work.
+Local groups share what they learn. A federation shares lessons, not orders.
+No group is forced to follow another group. Each group decides for itself.
+We protect the soil for the next generation. We protect rivers for the next generation.
+We plant trees and we keep forests. Trees clean the air and hold the soil.
+We waste less food. We waste less water. We waste less energy.
+A good plan meets needs within limits. A good plan shares care fairly.
+A good plan leaves time for rest and learning. A good plan leaves nature room to recover.
+The future is made by people together. The future is not made by a machine alone.

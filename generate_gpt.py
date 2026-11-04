@@ -3,6 +3,10 @@
 Usage:
   python generate_gpt.py --prompt "The garden " --length 200
   python generate_gpt.py --checkpoint checkpoints/mini-gpt --temperature 0.7
+
+This is a language assistant, not a planner or a decider. Treat
+its output as draft text to be checked by people, not as a plan
+or an allocation.
 """
 import argparse
 import json
@@ -27,12 +31,11 @@ def main():
                     block_size=meta["block_size"])
     model = MiniGPT(cfg)
     model.load_state_dict(torch.load(args.checkpoint + ".pt", map_location="cpu"))
-    tokenizer = CharTokenizer("".join(meta["chars"]))
-    # CharTokenizer sorts its chars, so rebuild the exact mapping from meta.
-    tokenizer.chars = meta["chars"]
-    tokenizer.stoi = {ch: i for i, ch in enumerate(meta["chars"])}
-    tokenizer.itos = {i: ch for ch, i in tokenizer.stoi.items()}
+    tokenizer = CharTokenizer.from_chars(meta["chars"])
 
+    unknown = sorted(set(args.prompt) - set(tokenizer.stoi))
+    if unknown:
+        print(f"Note: prompt characters not in the training vocab are skipped: {unknown}")
     idx = torch.tensor([tokenizer.encode(args.prompt)], dtype=torch.long)
     out = model.generate(idx, max_new_tokens=args.length, temperature=args.temperature)
     print(tokenizer.decode(out[0].tolist()))

@@ -1,0 +1,10 @@
+{
+  "title": "Climate change (Wikipedia, live fetcher trial)",
+  "url": "https://en.wikipedia.org/wiki/Climate_change",
+  "licence": "CC BY-SA 4.0",
+  "staged_file": "Climate_change.txt",
+  "chars": 477943,
+  "sha256": "6269cc8f666bbf1168dad35eef59d86eb21a8c85c2af381436fbbdbd16334efd",
+  "status": "approved",
+  "approved": true
+}

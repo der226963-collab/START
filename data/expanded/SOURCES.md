@@ -36,14 +36,43 @@ copyrighted textbooks with no open licence are still excluded.
    commit message and in this file.
 
 ## Status
-- Gutenberg plain-text downloads: browser task running, no
-  files landed yet at last check.
+- Gutenberg browser download task (2:53-3:10 PM EST, 2026-11-04):
+  FAILED for a tool reason, not a licence reason. Chrome
+  renders text/plain inline, so the browser download tool
+  cannot save .txt files, and Ctrl+S attempts produced
+  nothing verifiable (no pg*.txt found under /home/hatch).
+  All four titles were confirmed public domain in the US.
+  Per-book: Origin #1228 and Beagle #944 had verified
+  plain-text links but could not be browser-downloaded;
+  Euclid Heath translation is NOT on Gutenberg (no
+  substitute made); Lyell #33224 (2.5 MB) also hung the
+  browser tab.
+- Gutenberg via the new fetcher (same day, after the browser
+  failure): SUCCEEDED for two books, staged, NOT yet approved:
+  pg1228.txt — Origin, First Edition 1859, 949,182 chars,
+  sha256 dd09b437…; pg944.txt — Voyage of the Beagle,
+  1,207,533 chars, sha256 660edbaf…. Plus earlier fetcher
+  trial: 2009-0.txt — Origin, Sixth Edition, 1,257,091 chars.
+  Lyell #33224 was not fetched by the fetcher yet: at
+  2.5 MB it exceeds the fetcher's 2,000,000-char cap and
+  would be refused, not truncated.
 - OpenStax NC-SA PDF downloads: browser task started after
   Eric's NC approval, no files landed yet.
 - GitHub textbook candidates (Napkin, Discrete, OpenIntro,
   ODS, Physics): surveyed and licence-checked, not yet
   downloaded or extracted (LaTeX/PreTeXt source needs a
   text-extraction step).
-- No expanded file has been added to training, tested, or
-  pushed yet. Counts, hashes, and training results will be
-  added here when files actually land, not before.
+- APPROVED by Eric, 2026-11-04, and pushed (see commit in
+  push record): 2009-0.txt — Origin, Sixth Edition,
+  1,257,091 chars, public domain, sha256 7bd26f06…;
+  Climate_change.txt — Wikipedia Climate change, 477,943
+  chars, CC BY-SA 4.0, sha256 6269cc8f…. Assembled as
+  data/expanded_corpus.txt: 1,735,034 chars from 2 files.
+  Note, recorded honestly: the Wikipedia file still contains
+  navigation/menu text from HTML stripping; Eric approved
+  it knowing that.
+- Still staged, NOT approved or pushed in that batch:
+  pg1228.txt (Origin, First Edition, 949,182 chars) and
+  pg944.txt (Voyage of the Beagle, 1,207,533 chars), both
+  public domain, fetched via the fetcher after the browser
+  Gutenberg task failed.

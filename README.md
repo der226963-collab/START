@@ -64,6 +64,31 @@ is reported as unknown, not passed — and `backtest_climate()`,
 which fits a linear trend to 1999 and tests it on 2000-2025 as
 a baseline any fancier predictive model must beat.
 
+## General-agent foundations — not AGI
+
+This is the beginning of a more general model, not AGI, which
+has not been achieved. The foundations, all original code
+inspired by published patterns (ReAct, Yao et al. 2022;
+retrieval-augmented generation; Alpaca instruction format;
+RMSNorm, RoPE, SwiGLU modern transformer recipe):
+
+- `mini_ai/agent.py` — a ReAct loop: retrieve first, call a
+  planning tool, observe, self-critique, then answer with
+  `needs_human_decision=True`. It cannot decide, allocate,
+  edit files, or spend anything. Run it with:
+  `python -m mini_ai.agent "What is the phosphorus limit?"`
+- `mini_ai/gpt/model_modern.py` — a modern transformer variant
+  (RMSNorm, RoPE, SwiGLU) to compare with the classic model.
+  Train it with `train_gpt.py --modern --data-dir data`.
+- `data/instructions.txt` — Alpaca-style instruction/response
+  pairs, original text, for instruction-following training.
+- `tests/test_general.py` — the agent and modern model tests.
+  A scaffold that routes to the wrong tool, or claims AGI, fails.
+
+Guardrails are unchanged: planning stays separate from language,
+decisions stay with human assemblies, and self-edit protections
+still apply.
+
 ## How this fits PCAC
 
 This repo is the language-assistance layer only, in PCAC terms:

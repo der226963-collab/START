@@ -61,6 +61,13 @@ general language model.
   is still toy-level. The improvement here is in code,
   evaluation, and data breadth, not in claiming coherent
   output from a tiny model on a tiny corpus.
+- Modern-model training, 2026-11-04: `train_gpt.py --modern
+  --data-dir data --size tiny --steps 200 --dropout 0.1`
+  gave 40,275 train tokens, best val loss 1.9429, and
+  evaluate on weather.txt gave loss 1.9818, perplexity 7.3,
+  better than the classic model on the same short run, but
+  generation is still toy-level. This is a comparison, not
+  an AGI result.
 
 3. `data/weather.txt` (original text)
    - Weather vs climate, variables, instruments, forecasting,

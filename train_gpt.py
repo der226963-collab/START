@@ -38,6 +38,7 @@ from pathlib import Path
 import torch
 
 from mini_ai.gpt import MiniGPT, GPTConfig, CharTokenizer
+from mini_ai.gpt.model_modern import ModernGPT, ModernConfig
 
 SIZES = {
     "tiny": dict(n_layer=2, n_head=4, n_embd=64, block_size=64),
@@ -74,6 +75,8 @@ def main():
     parser.add_argument("--data-dir", default=None,
                         help="If set, train on all .txt files in this dir, sorted, instead of --data.")
     parser.add_argument("--dropout", type=float, default=0.0)
+    parser.add_argument("--modern", action="store_true",
+                        help="Use the modern transformer (RMSNorm, RoPE, SwiGLU) instead of the 2017-style model.")
     parser.add_argument("--out", default="checkpoints/mini-gpt")
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
@@ -102,8 +105,12 @@ def main():
     data = torch.tensor(tokenizer.encode(text), dtype=torch.long)
     split = int(0.9 * len(data))
     train_data, val_data = data[:split], data[split:]
-    cfg = GPTConfig(vocab_size=len(tokenizer), dropout=args.dropout, **SIZES[args.size])
-    model = MiniGPT(cfg)
+    if args.modern:
+        cfg = ModernConfig(vocab_size=len(tokenizer), dropout=args.dropout, **SIZES[args.size])
+        model = ModernGPT(cfg)
+    else:
+        cfg = GPTConfig(vocab_size=len(tokenizer), dropout=args.dropout, **SIZES[args.size])
+        model = MiniGPT(cfg)
     print(f"Parameters: {model.count_parameters():,}  vocab: {len(tokenizer)}  "
           f"layers: {cfg.n_layer}  embd: {cfg.n_embd}  context: {cfg.block_size}")
     print(f"Train tokens: {len(train_data):,}  val tokens: {len(val_data):,}")
@@ -141,6 +148,7 @@ def main():
         "chars": tokenizer.chars,
         "n_layer": cfg.n_layer, "n_head": cfg.n_head,
         "n_embd": cfg.n_embd, "block_size": cfg.block_size,
+        "architecture": "modern" if args.modern else "classic",
         "dropout": cfg.dropout,
         "data_file": str(data_path),
         "data_sha256": hashlib.sha256(text.encode()).hexdigest(),

@@ -1,0 +1,49 @@
+### Instruction:
+What is the phosphorus boundary for cropland?
+### Response:
+The regional boundary is 6.2 teragrams of phosphorus per year. Current application is about 18.2 teragrams per year, an excess of 12.0 teragrams per year. Check a plan against the boundary, do not guess it.
+
+### Instruction:
+How should a plan be checked?
+### Response:
+Use a calculation layer, not language alone. Check food supply against need, phosphorus against its boundary, and work hours against the 48 hour threshold. Report anything without a stored boundary as unknown, not passed. People decide the plan.
+
+### Instruction:
+What is the difference between weather and climate?
+### Response:
+Weather is the state of the atmosphere at a place and time. Climate is the pattern of weather over a long time, usually 30 years. A single hot day is weather, not climate.
+
+### Instruction:
+What does a language model do in this project?
+### Response:
+It drafts and summarises text. It does not allocate food, energy, housing, or care, and it does not decide anything. A separate planning layer checks allocations, and a human assembly decides.
+
+### Instruction:
+How do you test a predictive model?
+### Response:
+Backtest it. Train on earlier years, test on later years you did not train on, and report error and bias. A linear trend trained to 1999 under-predicts temperature and carbon dioxide in 2000 to 2025, so it is a baseline to beat, not a forecast.
+
+### Instruction:
+What is unpaid care work?
+### Response:
+Unpaid care work is cooking, cleaning, childcare, eldercare, and nursing family members without pay. About 16.4 billion hours per day are spent on it, and women do about 76.2 percent of it. A plan must count it, share it fairly, and not assume it is free.
+
+### Instruction:
+What is soil nutrient balance?
+### Response:
+Nutrient balance equals inputs minus outputs minus losses. If inputs exceed outputs and losses, nutrients build up in soil and water. If inputs are less, soil fertility falls. Test soil before adding fertiliser.
+
+### Instruction:
+How should an agent answer a question it cannot check?
+### Response:
+Say it does not have a tool result, and do not guess. Retrieve local data first, call a calculation tool if one fits, critique the answer, and flag that a human decision is required for any plan or allocation.
+
+### Instruction:
+What is a general agent, and what is it not?
+### Response:
+A general agent can retrieve information, use tools, reason in steps, and critique its own answer across many tasks. That is not AGI. AGI has not been achieved. This agent is narrow, auditable, and stops at a human decision.
+
+### Instruction:
+Why keep planning and language separate?
+### Response:
+Language can sound confident while being wrong. Arithmetic can be checked. Keeping them separate means a plan is checked by calculation under hard limits, explained by language, and decided by people, not by a model alone.

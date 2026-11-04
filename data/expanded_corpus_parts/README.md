@@ -9,6 +9,6 @@ Reassemble in order:
 cat data/expanded_corpus_parts/part-*.txt > data/expanded_corpus.txt
 ```
 
-Total: 17,518,241 bytes in 13 parts.
+Total: 19,641,351 bytes in 15 parts.
 Parts are split at line boundaries. See data/expanded/SOURCES.md for
 the source books, licences, and per-source character counts.

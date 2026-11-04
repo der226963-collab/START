@@ -148,3 +148,20 @@ copyrighted textbooks with no open licence are still excluded.
   the unsplit data/expanded_corpus.txt. The individual
   OpenStax .txt files over the limit are NOT pushed
   individually; their full text is in the corpus parts.
+
+- STAGED FILES PUSHED, 2026-11-04, by Eric's approval:
+  pg1228.txt (Origin First Edition 1859, staged 949,182
+  chars sha256 dd09b437…, assembled cleaned 932,991 chars
+  after Gutenberg markers stripped) and pg944.txt
+  (Voyage of the Beagle, staged 1,207,533 chars sha256
+  660edbaf…, assembled cleaned 1,188,563 chars), both
+  public domain (US), approved via the fetcher.
+  Assembled corpus with these files: 19,553,661 chars
+  from 15 files, 19,641,351 bytes, split into 15 parts
+  (max 1,400,000 bytes each) by tools/split_expanded.py.
+  The Health book was held out of this assembly/push
+  (not yet approved for push) and is local only.
+- CORPUS SPLIT UPDATE, 2026-11-04: parts are now
+  part-01..15.txt (previously 01..13), reflecting the
+  two Gutenberg books added above. Reassembly SHA for
+  this corpus: be0ac7aa5d89e1a73e1304d831ca17a53d4db5b69be5078828ba246210e9b950.

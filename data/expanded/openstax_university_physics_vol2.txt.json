@@ -1,0 +1,14 @@
+{
+  "title": "University Physics Volume 2",
+  "author": "OpenStax",
+  "source": "OpenStax official PDF downloaded 2026-11-04, file browser-download-20261104T200252.555236727Z-2-university-physics-volume-2_-_WEB.pdf",
+  "url": "https://openstax.org",
+  "licence": "CC BY-NC-SA 4.0",
+  "licence_snippet": "Creative Commons",
+  "licence_check": "CC BY-NC-SA 4.0",
+  "staged_file": "openstax_university_physics_vol2.txt",
+  "chars": 1694863,
+  "sha256": "d14b7ed08bbd6a860021213aca91f0b8e0f19d8ac4747f1c2bb20f7910623b6a",
+  "status": "manual-extracted-approved",
+  "approved": true
+}

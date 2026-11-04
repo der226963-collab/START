@@ -1,0 +1,70 @@
+{
+  "total_bytes": 17518241,
+  "parts": [
+    {
+      "file": "part-01.txt",
+      "bytes": 1326754,
+      "sha256": "fdc1b2f78f8287d40cab84337f3ca58873ad75f05744027ce34e3502b5f88c96"
+    },
+    {
+      "file": "part-02.txt",
+      "bytes": 1399920,
+      "sha256": "f694c6288d86f556c6551c6f61958435a44c5713b49cbbd2c127a9934db3fce0"
+    },
+    {
+      "file": "part-03.txt",
+      "bytes": 1399961,
+      "sha256": "0f31af82d5b5055cdb30a033bee5cc9b57ba4e7524d94109789096ec5d419771"
+    },
+    {
+      "file": "part-04.txt",
+      "bytes": 1399981,
+      "sha256": "600ad09b32e1f5ebb133206a942f1cb887a871985620fd0327aeec782d6ae6de"
+    },
+    {
+      "file": "part-05.txt",
+      "bytes": 1399965,
+      "sha256": "c912dde5e0487e87e6fbd59f8e099795aeb00ae6c7f70ebf1957ef7ad948b38d"
+    },
+    {
+      "file": "part-06.txt",
+      "bytes": 1399900,
+      "sha256": "29a1f3f3f2eaaafe4c1400f918a6ca3a8ef0213d7fa6bc8af4f0d34e0888d24b"
+    },
+    {
+      "file": "part-07.txt",
+      "bytes": 1400000,
+      "sha256": "3a27bc4af5a46cccfbcaa2b5ed6ad1adc1f93c2fe4a6eb08c4e114a692c74305"
+    },
+    {
+      "file": "part-08.txt",
+      "bytes": 1399954,
+      "sha256": "31dc72c31e32faf5aac32d6ec9c18ef92a6c3a305e853cc898dc7bf7718e43a3"
+    },
+    {
+      "file": "part-09.txt",
+      "bytes": 1399979,
+      "sha256": "de3358e8b69f4d12019164608fd59886812e2fbb070b67ac35954fa921d1cb99"
+    },
+    {
+      "file": "part-10.txt",
+      "bytes": 1399961,
+      "sha256": "b25ef161d550da0d2748f28417165b775661ee062b3a0728e1cd1928e71941fd"
+    },
+    {
+      "file": "part-11.txt",
+      "bytes": 1399961,
+      "sha256": "5d5c5885ffb969540211e1a8c19107f7f069611c09e5a9510c61395e576d8504"
+    },
+    {
+      "file": "part-12.txt",
+      "bytes": 1399997,
+      "sha256": "845f9d1d85ddd0a4594e96d82fab6ddb1c1dddda1f5f2bd785a2cb18fcfd73ca"
+    },
+    {
+      "file": "part-13.txt",
+      "bytes": 791908,
+      "sha256": "9ebfcb0ba2dd50902a505ca2ed1a76aea2cbd9082b3c76b610b6a5c4fa3060d6"
+    }
+  ]
+}

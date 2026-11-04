@@ -1,0 +1,14 @@
+{
+  "title": "Calculus Volume 3",
+  "author": "OpenStax",
+  "source": "OpenStax official PDF downloaded 2026-11-04, file browser-download-20261104T202610.967331815Z-8-calculus-volume-3_-_WEB.pdf",
+  "url": "https://openstax.org",
+  "licence": "CC BY-NC-SA 4.0",
+  "licence_snippet": "Creative Commons",
+  "licence_check": "CC BY-NC-SA 4.0",
+  "staged_file": "openstax_calculus_vol3.txt",
+  "chars": 1152439,
+  "sha256": "e41694ed64d7b1236b0b23a747a1c0a1490b10de0623ee2e6206c01aca59fb72",
+  "status": "manual-extracted-approved",
+  "approved": true
+}

@@ -1,0 +1,14 @@
+{
+  "title": "Calculus Volume 1",
+  "author": "OpenStax",
+  "source": "OpenStax official PDF downloaded 2026-11-04, file browser-download-20261104T202310.591471645Z-6-calculus-volume-1_-_WEB.pdf",
+  "url": "https://openstax.org",
+  "licence": "CC BY-NC-SA 4.0",
+  "licence_snippet": "Creative Commons",
+  "licence_check": "CC BY-NC-SA 4.0",
+  "staged_file": "openstax_calculus_vol1.txt",
+  "chars": 980199,
+  "sha256": "d689e1219a751e802a3c44683a1732506c0a89a952ca94dc528e8448f2380632",
+  "status": "manual-extracted-approved",
+  "approved": true
+}

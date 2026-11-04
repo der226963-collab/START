@@ -1,0 +1,14 @@
+{
+  "title": "Chemistry 2e",
+  "author": "OpenStax",
+  "source": "OpenStax official PDF downloaded 2026-11-04, file browser-download-20261104T200616.056551603Z-4-chemistry-2e_-_WEB.pdf",
+  "url": "https://openstax.org",
+  "licence": "CC BY-NC-SA 4.0",
+  "licence_snippet": "Creative Commons",
+  "licence_check": "CC BY-NC-SA 4.0",
+  "staged_file": "openstax_chemistry_2e.txt",
+  "chars": 2496355,
+  "sha256": "57aca968a2fac31513f83529c39731a7ac1fa15e6f92a2ca4dd734687ad5a4fb",
+  "status": "manual-extracted-approved",
+  "approved": true
+}

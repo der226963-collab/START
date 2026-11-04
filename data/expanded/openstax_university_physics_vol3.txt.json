@@ -1,0 +1,14 @@
+{
+  "title": "University Physics Volume 3",
+  "author": "OpenStax",
+  "source": "OpenStax official PDF downloaded 2026-11-04, file browser-download-20261104T200446.757658279Z-3-university-physics-volume-3_-_WEB.pdf",
+  "url": "https://openstax.org",
+  "licence": "CC BY-NC-SA 4.0",
+  "licence_snippet": "Creative Commons",
+  "licence_check": "CC BY-NC-SA 4.0",
+  "staged_file": "openstax_university_physics_vol3.txt",
+  "chars": 1346026,
+  "sha256": "5f5705cf0b184fd6da681bb4b1616f83a23b346846a92d4056392a414c6618f2",
+  "status": "manual-extracted-approved",
+  "approved": true
+}

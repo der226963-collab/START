@@ -1,0 +1,14 @@
+{
+  "title": "Biology 2e",
+  "author": "OpenStax",
+  "source": "OpenStax official PDF downloaded 2026-11-04, file browser-download-20261104T201218.673345971Z-5-Biology-2e_-_WEB.pdf",
+  "url": "https://openstax.org",
+  "licence": "CC BY-NC-SA 4.0",
+  "licence_snippet": "Creative Commons",
+  "licence_check": "CC BY-NC-SA 4.0",
+  "staged_file": "openstax_biology_2e.txt",
+  "chars": 4000319,
+  "sha256": "78f9629da3c3d578b0d080729967c53720971d9bc1bad75db4173b5a7f05de0c",
+  "status": "manual-extracted-approved",
+  "approved": true
+}

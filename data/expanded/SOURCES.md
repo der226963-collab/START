@@ -165,3 +165,13 @@ copyrighted textbooks with no open licence are still excluded.
   part-01..15.txt (previously 01..13), reflecting the
   two Gutenberg books added above. Reassembly SHA for
   this corpus: be0ac7aa5d89e1a73e1304d831ca17a53d4db5b69be5078828ba246210e9b950.
+
+- MANUAL, user-provided, 2026-11-04, pushed by Eric's
+  approval in the START chat (single word 'Approved'
+  after the Gutenberg push report, taken as approval
+  for the Health book, the only book then outstanding):
+  health_wellness_fitness_alsup.txt — Jessica Alsup,
+  The Basics of Health, Wellness, and Fitness [Revised
+  Edition], 213,588 chars, sha256 61791b6b0fb4…,
+  CC BY-NC-SA 4.0 International. Assembled corpus with
+  this file: see split manifest for the new total.

@@ -140,6 +140,37 @@ def weather_summary(rows, warming_degrees=1.0):
     }
 
 
+def soil_summary(rows):
+    """Soil and nutrient balance, from real anchors plus a teaching example.
+
+    The teaching example is labelled as such: 100 units of nitrogen
+    applied, 50 taken up by crops, 30 lost, 20 left in soil. It shows
+    the balance arithmetic, it is not a real field measurement.
+    """
+    degraded = get(rows, "global_soils_degraded_percent", 2025)
+    p_applied = get(rows, "phosphorus_application_to_cropland", 2025)
+    p_boundary = get(rows, "phosphorus_regional_boundary", 2025)
+    n_fixation = get(rows, "nitrogen_fixation", 2025)
+    return {
+        "food_grown_in_soil_percent": get(rows, "food_grown_in_soil_percent", 2025),
+        "global_soils_degraded_percent": degraded,
+        "phosphorus_application_tg_per_year": p_applied,
+        "phosphorus_regional_boundary_tg_per_year": p_boundary,
+        "phosphorus_excess_tg_per_year": round(p_applied - p_boundary, 1),
+        "phosphorus_ratio_to_boundary": round(p_applied / p_boundary, 2),
+        "nitrogen_fixation_tg_per_year": n_fixation,
+        "nitrogen_note": "More than twice its boundary in Planetary Health Check 2025, high-risk zone. Exact N boundary not in this snapshot, so no N surplus is calculated here.",
+        "teaching_nutrient_balance_example": {
+            "nitrogen_applied_units": 100,
+            "nitrogen_crop_uptake_units": 50,
+            "nitrogen_losses_units": 30,
+            "nitrogen_soil_change_units": 20,
+            "equation": "balance = inputs - outputs - losses; 100 - 50 - 30 = 20",
+        },
+        "warning": "Global nutrient excess and local nutrient deficit exist at the same time. A global balance does not tell a farmer what a specific field needs. Test soil, apply only what is needed, and recycle nutrients.",
+    }
+
+
 def run_plan(path="data/real_planning_data.csv"):
     rows = load_snapshot(path)
     return {
@@ -147,6 +178,7 @@ def run_plan(path="data/real_planning_data.csv"):
         "layer": "calculation only, not a language model output, not a decision",
         "food": food_balance(rows),
         "weather": weather_summary(rows),
+        "soil": soil_summary(rows),
         "energy_and_materials": energy_and_materials(rows),
         "cereals_2023_million_tonnes": get(rows, "global_cereals_production", 2023),
         "primary_crops_2023_million_tonnes": get(rows, "global_primary_crops_production", 2023),

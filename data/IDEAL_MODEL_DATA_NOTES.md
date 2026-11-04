@@ -38,7 +38,12 @@ general language model.
      engineering, with real 2023 anchors: renewables over 30%
      of electricity, 510 GW added, steel 1,892 million tonnes.
 
-2. `data/weather.txt` (original text)
+2. `data/soil.txt` (original text)
+   - Soil science, texture, structure, pH, NPK and
+     micronutrients, nutrient cycles, balance, degradation,
+     and planetary boundaries for nitrogen and phosphorus.
+
+3. `data/weather.txt` (original text)
    - Weather vs climate, variables, instruments, forecasting,
      extremes, and how weather affects food, energy, buildings,
      health, and transport.

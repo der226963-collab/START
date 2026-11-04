@@ -35,6 +35,16 @@ individual or community data, and no scraped private data is in it.
   1 degree Celsius warming, making heavy rainfall more intense
   in many places. These are rules and records, not a local
   forecast.
+- **FAO soil** — 95 percent of world food is grown in soil;
+  about 33 percent of global soils are moderately to highly
+  degraded, with a warning they could rise to 90 percent by
+  2050 if trends continue.
+- **Planetary Health Check 2025 (PIK)** — phosphorus
+  application to cropland about 18.2 Tg P per year, about 3
+  times the regional boundary of 6.2 Tg P per year; nitrogen
+  fixation about 165 Tg N per year, more than twice its
+  boundary, high-risk zone. These are global boundaries, not
+  a field-level fertiliser recommendation.
 - **Energy Institute Statistical Review of World Energy 2024**
   (as reported) — renewables 14.6% of primary energy in 2023.
   Note: electricity share (30%) and primary energy share

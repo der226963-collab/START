@@ -145,6 +145,9 @@ engineering for planning within planetary limits. See
 - `data/weather.txt` (original text) — weather vs climate,
   variables, forecasting, extremes, and weather impacts on
   food, energy, buildings, health, and transport.
+- `data/soil.txt` (original text) — soil science and nutrient
+  understanding: texture, pH, NPK, cycles, balance, degradation,
+  and nitrogen/phosphorus boundaries.
 - `data/corpus.txt` — PCAC planning language, kept.
 - A Shakespeare drama sample was considered, then removed:
   it does not serve this goal, so it is not training data here.

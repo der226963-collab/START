@@ -24,3 +24,10 @@ global_temperature_anomaly_vs_1850_1900,2024,1.47,degrees Celsius,NASA GISTEMP,U
 record_monthly_temperature_streak_months,2024,15,months,NASA,US government public data,June 2023 through August 2024 monthly records
 atmospheric_moisture_increase_per_degree,2023,7,percent per degree Celsius,IPCC via secondary summary,IPCC assessment,Approximate rule: air holds about 7 percent more moisture per 1C warming
 climate_normal_period_years,2020,30,years,WMO,WMO standard,Climatological standard normals use 30-year periods including 1991-2020
+global_soils_degraded_percent,2025,33,percent,FAO,FAO publication,Moderately to highly degraded global soils; FAO warns could rise to 90 percent by 2050 if trends continue
+food_grown_in_soil_percent,2025,95,percent,FAO,FAO publication,Share of world food grown in soil
+phosphorus_application_to_cropland,2025,18.2,teragrams P per year,Planetary Health Check 2025,PIK report,About 3 times regional boundary of 6.2 Tg P per year
+phosphorus_regional_boundary,2025,6.2,teragrams P per year,Planetary Health Check 2025,PIK report,Regional boundary for phosphorus application to cropland
+nitrogen_fixation,2025,165,teragrams N per year,Planetary Health Check 2025,PIK report,More than twice its boundary; high-risk zone in same report
+soil_typical_mineral_percent,2025,45,percent,General soil science,Textbook generalisation,Typical soil composition not exact for every soil
+soil_typical_organic_matter_percent,2025,5,percent,General soil science,Textbook generalisation,Typical soil composition not exact for every soil

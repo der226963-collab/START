@@ -1,0 +1,67 @@
+Soil science.
+Soil is not dirt. Soil is a living system. It grows 95 percent of world food.
+Soil has minerals, organic matter, water, and air. A typical soil is about 45 percent minerals, 5 percent organic matter, 25 percent water, and 25 percent air. These are general values, not exact for every soil.
+Soil texture is sand, silt, and clay. Sand is coarse. Silt is medium. Clay is fine.
+Loam is a mix of sand, silt, and clay. Loam holds water and nutrients well and drains well.
+Soil structure is how particles group together. Good structure lets roots, water, and air move through soil.
+Soil organic matter is dead plants, animals, and microbes, partly broken down.
+Organic matter holds water, holds nutrients, feeds microbes, and stores carbon.
+Healthy soil is dark, crumbles easily, and has earthworms and fungi. Degraded soil is pale, hard, and low in life.
+Soil pH measures acidity. A pH of 7 is neutral. Below 7 is acid. Above 7 is alkaline.
+Most crops grow well near pH 6 to 7. pH changes nutrient availability. Phosphorus is less available in very acid or very alkaline soil.
+Soil nutrients.
+Plants need macronutrients in large amounts. Nitrogen, phosphorus, and potassium are the main three, called NPK.
+Nitrogen, N, builds leaves and proteins. Nitrogen deficiency makes leaves pale yellow and growth slow.
+Phosphorus, P, builds roots, flowers, and energy transfer. Phosphorus deficiency makes growth slow and leaves dark or purple.
+Potassium, K, helps water control, disease resistance, and fruit quality. Potassium deficiency makes leaf edges yellow or brown.
+Calcium, magnesium, and sulfur are secondary nutrients. Plants need them in smaller amounts than NPK, but still need them.
+Micronutrients are needed in tiny amounts. Iron, zinc, copper, boron, manganese, molybdenum, and nickel are micronutrients.
+A lack of a micronutrient can limit growth even if NPK is high. Balance matters more than a single nutrient.
+A common target ratio for NPK fertiliser use is 4 to 2 to 1. That is 4 parts nitrogen, 2 parts phosphorus, 1 part potassium.
+When the ratio is distorted, for example too much nitrogen and too little potassium, crops and soil suffer.
+Nutrient cycles.
+Nitrogen cycle: nitrogen gas in air is fixed by bacteria and by industry into reactive nitrogen plants can use.
+Legumes host bacteria that fix nitrogen in roots. Clover, beans, and peas are legumes.
+Manure, compost, and crop residues return nutrients to soil. Recycling nutrients reduces waste.
+Phosphorus cycle: phosphorus comes from rock. It moves through soil, plants, animals, and water.
+Phosphorus is finite. Mined phosphorus does not regrow quickly. Waste phosphorus in water causes problems.
+Potassium cycle: potassium comes from minerals in soil and rock. It is lost by harvest, erosion, and leaching.
+Nutrient balance.
+Nutrient balance equals inputs minus outputs minus losses. Inputs are fertiliser, manure, compost, and fixation.
+Outputs are harvest and removal. Losses are leaching, runoff, erosion, and gas.
+If inputs exceed outputs and losses, nutrients build up in soil and water. If inputs are less, soil is mined and fertility falls.
+A surplus in one place and a deficit in another place is common. Some regions use too much fertiliser. Other regions use too little.
+Excess nitrogen and phosphorus in water cause algal blooms. Algae die, oxygen falls, and fish die. This is eutrophication.
+Nitrous oxide is a greenhouse gas from nitrogen in soil. Excess nitrogen increases emissions.
+Soil and climate.
+Soil stores carbon. Soil carbon sequestration moves carbon dioxide from air into soil organic matter.
+Healthy soil with more organic matter holds more water. That helps crops in drought and reduces flood runoff.
+Erosion removes topsoil. Wind and water carry soil away. Bare soil erodes faster than covered soil.
+Compaction squeezes soil. Heavy machines and animals compact soil. Compacted soil holds less water and air.
+Salinization adds salt to soil. Irrigation with salty water and poor drainage cause salinization.
+Acidification lowers soil pH. Acid soil reduces nutrient availability and root growth.
+Soil degradation.
+About 33 percent of global soils are moderately to highly degraded, according to FAO.
+Degradation causes include erosion, salinization, compaction, acidification, and chemical pollution.
+Degraded soil can lose about 20 to 25 percent of staple crop yield, according to FAO guidance.
+If current trends continue, FAO warns degraded soils could rise to 90 percent by 2050. That is a warning, not a forecast of fate.
+Degradation is reversible in many places. Cover crops, rotation, compost, and reduced tillage can rebuild soil.
+Planetary boundaries for nutrients.
+Nitrogen and phosphorus are planetary boundaries, called biogeochemical flows.
+Both boundaries have been substantially exceeded, according to the Planetary Health Check.
+Phosphorus application to cropland is about 18.2 teragrams of phosphorus per year, about 3 times the regional boundary of 6.2 teragrams per year.
+Nitrogen fixation is about 165 teragrams of nitrogen per year, more than twice its boundary, in the high-risk zone.
+Exceeding these boundaries does not mean farming must stop. It means nutrient use must be balanced, targeted, and recycled.
+Soil testing and planning.
+Test soil before adding fertiliser. A soil test measures pH, organic matter, nitrogen, phosphorus, potassium, and micronutrients.
+Apply only what the crop and soil need. Right nutrient, right amount, right place, right time.
+Rotate crops. Different crops use different nutrients and break pest cycles.
+Grow cover crops in off seasons. Cover crops protect soil, add organic matter, and fix nitrogen if they are legumes.
+Add compost and manure. They add nutrients and organic matter together.
+Keep soil covered. Mulch and living plants protect soil from erosion and heat.
+Soil, weather, and food together.
+Weather changes soil moisture. Rain, drought, and heat change nutrient availability and crop growth.
+Healthy soil buffers weather. It holds water in drought and drains in heavy rain.
+Plan food, soil, water, and climate together. A plan that ignores soil will fail, even if it has enough land and water on paper.
+People decide soil use. Farmers, communities, and assemblies decide what to grow, how to fertilise, and how to protect soil.
+Models can check a nutrient balance. They cannot replace soil testing, local knowledge, or a decision by people who live on the land.

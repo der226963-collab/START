@@ -1,14 +1,41 @@
-"""Safe self-editing: an AI can propose code changes, a human approves them.
+"""Safe self-editing, with tiered approval.
 
 This is deliberately NOT unrestricted self-modification.
 
-The workflow is:
-  1. propose_edit() — checks the change, returns a unified diff.
-     Nothing is written yet.
-  2. A human reads the diff and approves it.
-  3. apply_edit(approved=True) — writes the change, keeps a backup,
-     runs the test command, and rolls back automatically if tests fail.
-  4. revert() — restores the backup, by hand, at any time.
+Two approval paths, kept separate:
+
+  A. Human approval (the default, for everything):
+     propose_edit() -> human reads the diff -> apply_edit(approved=True)
+     -> tests -> rollback on failure -> revert() at any time.
+
+  B. Tiered self-approval (low and medium risk only):
+     propose_edit() -> classify_edit() recomputes the tier from the
+     diff itself, ignoring any tier the proposer claims ->
+     self_approve() applies it only if the tier is low or medium,
+     tests pass, and, for medium, a second independent verification
+     in this module also passes. Every self-approved edit is logged
+     to self_edit_audit.jsonl, medium edits are flagged
+     pending_human_review, and a human can revert any of them.
+
+  High-risk edits and guardrail edits are never self-approvable:
+  they go back to path A, and guardrail edits are not editable
+  through this module at all — a human edits those files directly.
+
+Tiers, in short (full policy in APPROVAL_POLICY.md, which is itself
+protected):
+  low    — <=20 changed lines, one non-protected file, no new
+           imports, no dangerous patterns, tests pass.
+  medium — <=100 changed lines, may add standard-library imports
+           only, may touch data / model / docs (not guardrails),
+           no dangerous patterns, tests pass, plus second verification.
+  high   — anything larger, any non-standard-library import, any
+           dangerous pattern, any test-file edit outside guardrail
+           tests, or any other case not in low/medium. Human only.
+  never  — protected files: self_edit.py, SAFETY.md,
+           APPROVAL_POLICY.md, .gitignore, guardrail tests, and the
+           audit log itself. Not editable through this module, even
+           with human approval through this module — a human edits
+           them directly, in an editor, with a commit message.
 
 Guardrails that cannot be bypassed from inside this module:
   - Edits stay inside one project root. No absolute paths outside
@@ -51,8 +78,11 @@ ALLOWED_SUFFIXES = {".py", ".md", ".txt"}
 PROTECTED = {
     "mini_ai/self_edit.py",
     "SAFETY.md",
+    "APPROVAL_POLICY.md",
     ".gitignore",
     "tests/test_self_edit.py",
+    "tests/test_tiered_approval.py",
+    "self_edit_audit.jsonl",
 }
 
 # Names that are never editable, at any depth.
@@ -96,6 +126,170 @@ def _check_editable(root, rel_path):
     return target, rel
 
 
+LOW_MAX_LINES = 20
+MEDIUM_MAX_LINES = 100
+AUDIT_FILE = "self_edit_audit.jsonl"
+
+# Patterns that are never low/medium, even in a small diff. The list
+# is about new occurrences: a file that already contains one of these
+# words in a comment is not automatically high-risk, a diff that adds
+# one is.
+DANGEROUS_PATTERNS = [
+    "subprocess", "os.system", "os.popen", "eval(", "exec(",
+    "socket", "urllib", "requests.", "httpx", "__import__",
+    "shutil.rmtree", "os.remove", "os.unlink",
+]
+
+# Data files change what a model learns, so they are at least medium,
+# even for a small diff. They are never low.
+DATA_FILES = {"data/corpus.txt", "mini_ai/data.py"}
+
+
+def _changed_lines(old_text, new_text):
+    """Number of added + removed lines in a unified diff, excluding headers."""
+    diff = difflib.unified_diff(
+        old_text.splitlines(), new_text.splitlines(), lineterm="",
+    )
+    return sum(1 for line in diff if (line.startswith("+") or line.startswith("-"))
+               and not line.startswith("+++") and not line.startswith("---"))
+
+
+def _new_imports(old_text, new_text):
+    import re
+    pattern = re.compile(r"^\s*(?:import|from)\s+([a-zA-Z0-9_\.]+)", re.MULTILINE)
+    return set(pattern.findall(new_text)) - set(pattern.findall(old_text))
+
+
+def _is_stdlib(module_name):
+    top = module_name.split(".")[0]
+    stdlib = getattr(sys, "stdlib_module_names", set())
+    return top in stdlib or top in {"__future__"}
+
+
+def classify_edit(root, proposal):
+    """Recompute a tier from the diff itself. Never trust a caller-supplied tier.
+
+    Returns (tier, reasons). Tiers: low, medium, high, never.
+    """
+    try:
+        target, rel = _check_editable(root, proposal.path)
+    except SelfEditError as exc:
+        return "never", [str(exc)]
+    if not target.exists():
+        return "never", ["File does not exist"]
+    current = target.read_text()
+    if current.count(proposal.old_text) != 1:
+        return "high", ["old_text does not match exactly once — ambiguous, human only"]
+    new_full = current.replace(proposal.old_text, proposal.new_text, 1)
+    changed = _changed_lines(proposal.old_text, proposal.new_text)
+    reasons = [f"{changed} changed lines in {rel}"]
+    new_dangerous = [p for p in DANGEROUS_PATTERNS
+                     if p in proposal.new_text and p not in proposal.old_text]
+    if new_dangerous:
+        return "high", reasons + [f"new dangerous pattern(s): {new_dangerous}"]
+    new_imports = _new_imports(proposal.old_text, proposal.new_text)
+    non_stdlib = [m for m in new_imports if not _is_stdlib(m)]
+    if non_stdlib:
+        return "high", reasons + [f"new non-standard-library import(s): {non_stdlib}"]
+    if changed > MEDIUM_MAX_LINES:
+        return "high", reasons + [f"over medium limit of {MEDIUM_MAX_LINES} lines"]
+    if rel in DATA_FILES:
+        return "medium", reasons + ["data file — at least medium"]
+    if changed <= LOW_MAX_LINES and not new_imports:
+        return "low", reasons + ["small, no new imports"]
+    return "medium", reasons + ["within medium limit, standard-library imports only or larger small diff"]
+
+
+def _verify_medium(root, proposal):
+    """Second, independent verification for medium edits.
+
+    This is not the proposer asserting a tier. It re-reads the file,
+    re-classifies from scratch, and must still get medium. If it
+    gets anything else, the edit escalates to a human.
+    """
+    tier, reasons = classify_edit(root, proposal)
+    if tier != "medium":
+        raise SelfEditError(
+            f"Medium verification failed: re-classified as {tier} ({'; '.join(reasons)}). "
+            "Human approval required."
+        )
+    return reasons
+
+
+def _append_audit(root, entry):
+    """Append one JSON line to the audit log.
+
+    The audit file is protected from propose_edit, so a model cannot
+    edit it through self-editing. This internal append is the only
+    write path, and it is append-only — it never rewrites history.
+    The log is a review aid, not cryptographic proof; a human should
+    also check the git diff.
+    """
+    import json
+    import time
+    entry = dict(entry)
+    entry["time"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    audit_path = Path(root).resolve() / AUDIT_FILE
+    with audit_path.open("a") as f:
+        f.write(json.dumps(entry, sort_keys=True) + "\n")
+    return str(audit_path)
+
+
+def _apply_with_tests(root, proposal, test_command, approver, tier):
+    """Shared write path for human and self approval, with backup, tests, rollback, audit."""
+    target, rel = _check_editable(root, proposal.path)
+    current = target.read_text()
+    if current.count(proposal.old_text) != 1:
+        raise SelfEditError(f"File changed since proposal, refusing to apply: {rel}")
+    backup = target.with_suffix(target.suffix + ".self_edit_backup")
+    shutil.copyfile(target, backup)
+    try:
+        target.write_text(current.replace(proposal.old_text, proposal.new_text, 1))
+        if test_command:
+            result = subprocess.run(
+                test_command, cwd=root, capture_output=True, text=True, timeout=300,
+            )
+            if result.returncode != 0:
+                target.write_text(current)
+                raise SelfEditError(
+                    f"Tests failed after edit, rolled back {rel}.\n{result.stdout}\n{result.stderr}"
+                )
+        _append_audit(root, {
+            "path": rel, "tier": tier, "approver": approver,
+            "pending_human_review": tier == "medium",
+            "changed_lines": _changed_lines(proposal.old_text, proposal.new_text),
+        })
+        return rel
+    except Exception:
+        if target.exists() and target.read_text() != current:
+            target.write_text(current)
+        raise
+
+
+def self_approve(root, proposal, test_command=None):
+    """Apply a low or medium edit without a per-edit human approval.
+
+    The tier is recomputed here, not accepted from the caller. High
+    and never edits raise and must go through human approval (or,
+    for never, a human editing directly). Medium edits get a second
+    verification pass first. Tests are mandatory for self-approval:
+    if test_command is None, a py_compile check is used as a minimum,
+    and callers should pass the full test command in practice.
+    """
+    tier, reasons = classify_edit(root, proposal)
+    if tier == "never":
+        raise SelfEditError(f"Self-approval refused (never): {'; '.join(reasons)}")
+    if tier == "high":
+        raise SelfEditError(
+            f"Self-approval refused (high): {'; '.join(reasons)}. Human approval required."
+        )
+    if tier == "medium":
+        _verify_medium(root, proposal)
+    if test_command is None:
+        test_command = [sys.executable, "-m", "py_compile", proposal.path]
+    return _apply_with_tests(root, proposal, test_command, approver=f"self-{tier}", tier=tier)
+
+
 def propose_edit(root, rel_path, old_text, new_text):
     """Return a proposal with a diff. Writes nothing."""
     target, rel = _check_editable(root, rel_path)
@@ -127,34 +321,13 @@ def apply_edit(root, proposal, approved=False, test_command=None):
             "Edit not applied: approved=False. A human must read the "
             "diff and approve it before any file is written."
         )
-    target, rel = _check_editable(root, proposal.path)
-    current = target.read_text()
-    if current.count(proposal.old_text) != 1:
-        raise SelfEditError(f"File changed since proposal, refusing to apply: {rel}")
-    backup = target.with_suffix(target.suffix + ".self_edit_backup")
-    shutil.copyfile(target, backup)
-    try:
-        target.write_text(current.replace(proposal.old_text, proposal.new_text, 1))
-        if test_command:
-            result = subprocess.run(
-                test_command, cwd=root, capture_output=True, text=True, timeout=300,
-            )
-            if result.returncode != 0:
-                target.write_text(current)
-                raise SelfEditError(
-                    f"Tests failed after edit, rolled back {rel}.\n{result.stdout}\n{result.stderr}"
-                )
-        return rel
-    except Exception:
-        # Any failure after writing restores the original, unless the
-        # failure was the deliberate rollback error above (already restored).
-        if target.read_text() != current:
-            target.write_text(current)
-        raise
-    finally:
-        # The backup is kept on disk for manual revert(); it is not
-        # a secret, and it is excluded from GitHub pushes by .gitignore.
-        pass
+    # Human-approved edits are logged as tier "human" — they are not
+    # limited to low/medium, but they still cannot touch protected
+    # files, because _check_editable (via _apply_with_tests) refuses them.
+    tier, _reasons = classify_edit(root, proposal)
+    if tier == "never":
+        raise SelfEditError("Protected file, cannot be edited through self-edit, even with approval.")
+    return _apply_with_tests(root, proposal, test_command, approver="human", tier="human")
 
 
 def revert(root, rel_path):

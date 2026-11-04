@@ -93,8 +93,30 @@ itself — a human approves from outside the model.
 Protected, uneditable by the model, even with approval:
 - `mini_ai/self_edit.py` — the approval / guardrail code itself
 - `SAFETY.md` — the written safety rules
+- `APPROVAL_POLICY.md` — the tiered approval policy itself
 - `.gitignore` — so changes cannot be hidden from review / pushes
-- `tests/test_self_edit.py` — so the model cannot weaken its own tests
+- `tests/test_self_edit.py`, `tests/test_tiered_approval.py`
+  — so the model cannot weaken its own tests
+- `self_edit_audit.jsonl` — the audit log, append-only through
+  the module, never editable through a proposal
+
+## Tiered self-approval — low and medium only
+
+Full policy: `APPROVAL_POLICY.md`.
+
+- **Low, self-approvable:** at most 20 changed lines, no new
+  imports, no dangerous patterns, not a data file, tests pass.
+- **Medium, self-approvable with second verification:** at most
+  100 changed lines, standard-library imports only, no dangerous
+  patterns, tests pass, and a second pass re-classifies it from
+  scratch. Logged as pending human review.
+- **High, human only:** larger, non-standard-library imports,
+  dangerous patterns, or anything not in low/medium.
+- **Never:** guardrails, safety, approval policy, audit log —
+  human edits those directly, never through self-edit.
+
+The tier is always recomputed from the diff, never claimed by
+the proposer. A model cannot approve a change to its own scope.
 
 Removing those guardrails would break PCAC corrigibility
 — transparency, evaluability, and human oversight — so they are

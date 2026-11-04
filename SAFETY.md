@@ -39,6 +39,17 @@ and evaluability. A cooperative AI that people cannot inspect,
 challenge, or stop is not a cooperative AI, no matter how good
 its outputs look.
 
+## Tiered self-approval
+
+Low and medium edits may be self-approved, under
+`APPROVAL_POLICY.md`, which is itself protected. High edits need
+a human. Guardrail edits are never self-approvable and are not
+editable through self-edit at all.
+
+Self-approval never means approving a change to the approval
+rules, the safety rules, or the scope of self-approval itself.
+That scope can only be changed by a human, directly.
+
 ## Changing these rules
 
 Only a human, directly, in an editor, with a clear commit message.

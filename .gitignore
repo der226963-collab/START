@@ -1,6 +1,7 @@
 __pycache__/
 *.pyc
 *.self_edit_backup
+self_edit_audit.jsonl
 checkpoints/
 .venv/
 venv/

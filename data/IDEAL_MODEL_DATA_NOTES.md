@@ -68,6 +68,24 @@ general language model.
   better than the classic model on the same short run, but
   generation is still toy-level. This is a comparison, not
   an AGI result.
+- BPE + larger-model training, 2026-11-04: `train_gpt.py
+  --modern --tokenizer bpe --bpe-merges 300 --data-dir data
+  --size small --steps 2000 --dropout 0.1` gave a 367-token
+  BPE vocabulary, 17,511 train tokens, 1,946 val tokens,
+  best val loss 4.2811. By step 1200 train loss was already
+  0.12 while val loss was ~6.9: the larger model memorised
+  the tiny corpus instead of generalising. Evaluate on
+  weather.txt gave loss 4.3414, perplexity 76.8 (per-BPE-token
+  units, not directly comparable with per-character losses).
+  Generation is still not fluent: real words and phrases
+  appear ("planning", "emissions", "people"), but sentences
+  do not hold together. Lesson recorded honestly: a bigger
+  model and subword tokens alone do NOT move past toy-level
+  on a ~40,000-character corpus. The binding constraint is
+  data volume, not architecture. The next real step is a
+  much larger corpus in the same ideal domains, or accepting
+  that the language model stays a small assistant while the
+  planning layer and retrieval do the real work.
 
 3. `data/weather.txt` (original text)
    - Weather vs climate, variables, instruments, forecasting,

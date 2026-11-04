@@ -50,6 +50,17 @@ class TestAgent(unittest.TestCase):
         self.assertEqual(result["trace"][-1]["action"], "self_critique")
 
 
+class TestBPE(unittest.TestCase):
+    def test_bpe_roundtrip_and_compression(self):
+        from mini_ai.gpt.bpe import BPETokenizer
+
+        text = "climate climate climate soil soil water water water"
+        tok = BPETokenizer.train(text, num_merges=50)
+        ids = tok.encode(text)
+        self.assertEqual(tok.decode(ids), text)
+        self.assertLess(len(ids), len(text))
+
+
 class TestModernModel(unittest.TestCase):
     def test_modern_forward_and_generate(self):
         try:

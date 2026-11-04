@@ -28,7 +28,11 @@ def main():
     args = parser.parse_args()
 
     meta = json.loads(Path(args.checkpoint + ".json").read_text())
-    tokenizer = CharTokenizer.from_chars(meta["chars"])
+    if meta.get("tokenizer") == "bpe":
+        from mini_ai.gpt.bpe import BPETokenizer
+        tokenizer = BPETokenizer.from_json({"merges": meta["merges"], "vocab": meta["vocab"]})
+    else:
+        tokenizer = CharTokenizer.from_chars(meta["chars"])
     if args.modern or meta.get("architecture") == "modern":
         from mini_ai.gpt.model_modern import ModernGPT, ModernConfig
         cfg = ModernConfig(vocab_size=len(tokenizer), n_layer=meta["n_layer"],

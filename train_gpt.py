@@ -38,6 +38,7 @@ from pathlib import Path
 import torch
 
 from mini_ai.gpt import MiniGPT, GPTConfig, CharTokenizer
+from mini_ai.gpt.bpe import BPETokenizer
 from mini_ai.gpt.model_modern import ModernGPT, ModernConfig
 
 SIZES = {
@@ -77,6 +78,8 @@ def main():
     parser.add_argument("--dropout", type=float, default=0.0)
     parser.add_argument("--modern", action="store_true",
                         help="Use the modern transformer (RMSNorm, RoPE, SwiGLU) instead of the 2017-style model.")
+    parser.add_argument("--tokenizer", choices=["char", "bpe"], default="char")
+    parser.add_argument("--bpe-merges", type=int, default=300)
     parser.add_argument("--out", default="checkpoints/mini-gpt")
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
@@ -101,7 +104,11 @@ def main():
         text = data_path.read_text()
         provenance = [{"file": str(data_path), "chars": len(text),
                        "sha256": hashlib.sha256(text.encode()).hexdigest()}]
-    tokenizer = CharTokenizer(text)
+    if args.tokenizer == "bpe":
+        tokenizer = BPETokenizer.train(text, num_merges=args.bpe_merges)
+        print(f"BPE tokenizer: {len(tokenizer)} tokens from {args.bpe_merges} merges")
+    else:
+        tokenizer = CharTokenizer(text)
     data = torch.tensor(tokenizer.encode(text), dtype=torch.long)
     split = int(0.9 * len(data))
     train_data, val_data = data[:split], data[split:]
@@ -145,7 +152,10 @@ def main():
     out.parent.mkdir(parents=True, exist_ok=True)
     torch.save(model.state_dict(), out.with_suffix(".pt"))
     (out.with_suffix(".json")).write_text(json.dumps({
-        "chars": tokenizer.chars,
+        "tokenizer": args.tokenizer,
+        "chars": getattr(tokenizer, "chars", tokenizer.vocab),
+        "vocab": getattr(tokenizer, "vocab", None),
+        "merges": getattr(tokenizer, "merges", None),
         "n_layer": cfg.n_layer, "n_head": cfg.n_head,
         "n_embd": cfg.n_embd, "block_size": cfg.block_size,
         "architecture": "modern" if args.modern else "classic",

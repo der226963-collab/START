@@ -26,12 +26,25 @@ def main():
     args = parser.parse_args()
 
     meta = json.loads(Path(args.checkpoint + ".json").read_text())
-    cfg = GPTConfig(vocab_size=len(meta["chars"]), n_layer=meta["n_layer"],
-                    n_head=meta["n_head"], n_embd=meta["n_embd"],
-                    block_size=meta["block_size"])
-    model = MiniGPT(cfg)
+    if meta.get("tokenizer") == "bpe":
+        from mini_ai.gpt.bpe import BPETokenizer
+        tokenizer = BPETokenizer.from_json({"merges": meta["merges"], "vocab": meta["vocab"]})
+        vocab_size = len(tokenizer)
+    else:
+        tokenizer = CharTokenizer.from_chars(meta["chars"])
+        vocab_size = len(meta["chars"])
+    if meta.get("architecture") == "modern":
+        from mini_ai.gpt.model_modern import ModernConfig, ModernGPT
+        cfg = ModernConfig(vocab_size=vocab_size, n_layer=meta["n_layer"],
+                           n_head=meta["n_head"], n_embd=meta["n_embd"],
+                           block_size=meta["block_size"])
+        model = ModernGPT(cfg)
+    else:
+        cfg = GPTConfig(vocab_size=vocab_size, n_layer=meta["n_layer"],
+                        n_head=meta["n_head"], n_embd=meta["n_embd"],
+                        block_size=meta["block_size"])
+        model = MiniGPT(cfg)
     model.load_state_dict(torch.load(args.checkpoint + ".pt", map_location="cpu"))
-    tokenizer = CharTokenizer.from_chars(meta["chars"])
 
     unknown = sorted(set(args.prompt) - set(tokenizer.stoi))
     if unknown:

@@ -3,7 +3,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from mini_ai.planning import electricity_allocation, food_balance, load_snapshot, run_plan, soil_summary, systems_summary, weather_summary
+from mini_ai.planning import climate_trend, electricity_allocation, food_balance, load_snapshot, pilot_summary, run_plan, soil_summary, systems_summary, weather_summary
 
 
 def test_snapshot_loads_and_has_key_rows():
@@ -49,6 +49,17 @@ def test_systems_summary_ratios():
     assert result["cropland_hectares_per_person"] == 0.195
     assert result["road_transport_co2_million_tonnes_2023_approx"] == 6180.0
     assert result["unpaid_care_hours_per_day_billion"] == 16.4
+
+
+def test_climate_trend_and_pilot_example():
+    trend = climate_trend("data/climate_time_series_full.csv")
+    assert trend["years_in_series"] == 146
+    assert trend["co2_1959_ppm"] == 315.98
+    assert trend["co2_2025_ppm"] == 427.35
+    assert trend["co2_increase_ppm_1959_2025"] == 111.37
+    pilot = pilot_summary("data/local_pilot_example.csv")
+    assert pilot["people"] == 20
+    assert pilot["status"].startswith("SYNTHETIC")
 
 
 def test_weather_summary_uses_real_anomaly_and_moisture_rule():

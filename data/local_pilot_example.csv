@@ -1,0 +1,6 @@
+household_id,people_in_household,land_hectares_available,soil_tested,water_source,food_kcal_needed_per_day,energy_kwh_needed_per_year,housing_adequate,care_hours_per_week,transport_km_per_week,note
+SYNTH-001,4,0.5,yes,rain,10000,3000,yes,20,50,SYNTHETIC EXAMPLE ONLY NOT A REAL HOUSEHOLD
+SYNTH-002,3,0.2,no,well,7500,2200,no,35,80,SYNTHETIC EXAMPLE ONLY NOT A REAL HOUSEHOLD
+SYNTH-003,6,1.0,yes,piped,15000,4500,yes,15,30,SYNTHETIC EXAMPLE ONLY NOT A REAL HOUSEHOLD
+SYNTH-004,2,0.0,no,piped,5000,1800,no,10,120,SYNTHETIC EXAMPLE ONLY NOT A REAL HOUSEHOLD
+SYNTH-005,5,0.8,yes,river,12500,3800,yes,25,40,SYNTHETIC EXAMPLE ONLY NOT A REAL HOUSEHOLD

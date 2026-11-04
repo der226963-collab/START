@@ -5,8 +5,8 @@ year,indicator,value,unit,source,note
 2023,global_temperature_anomaly_vs_1951_1980,1.17,degrees Celsius,NASA GISTEMP via secondary compilation,Selected year not full series
 2024,global_temperature_anomaly_vs_1951_1980,1.28,degrees Celsius,NASA GISTEMP,Verified in NASA 2024 summary
 2025,global_temperature_anomaly_vs_1951_1980,1.18,degrees Celsius,NASA GISTEMP via secondary compilation,Selected year not full series; preliminary in some compilations
-2023,mauna_loa_co2_annual_mean,421.02,ppm,NOAA GML via secondary compilation,Derived: 2024 mean 424.60 minus 3.58 increase; check NOAA full series before serious use
-2024,mauna_loa_co2_annual_mean,424.60,ppm,NOAA GML,Verified annual mean
+2023,mauna_loa_co2_annual_mean,421.08,ppm,NOAA GML co2_annmean_mlo.csv,Full NOAA file value; earlier sample used 421.02 from a secondary compilation
+2024,mauna_loa_co2_annual_mean,424.61,ppm,NOAA GML co2_annmean_mlo.csv,Full NOAA file value; earlier sample used 424.60
 2024,global_co2_annual_mean,422.79,ppm,NOAA GML via secondary compilation,Marine surface sites global average
 2025,mauna_loa_co2_annual_mean,427.35,ppm,NOAA GML via secondary compilation,Annual mean as reported in 2026 compilations
 2025,global_co2_annual_mean,425.62,ppm,NOAA GML via secondary compilation,Marine surface sites global average

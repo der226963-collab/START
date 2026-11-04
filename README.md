@@ -153,7 +153,12 @@ engineering for planning within planetary limits. See
   `data/labour_care.txt` (original text) — water, land,
   housing, health, care, transport, logistics, and labour
   time, with a small selected time-series file
-  `data/time_series.csv`.
+  `data/time_series.csv`, and a full climate series
+  `data/climate_time_series_full.csv` (GISTEMP 1880-2025,
+  Mauna Loa CO2 1959-2025).
+- `data/local_pilot_template.md` and
+  `data/local_pilot_example.csv` — consent checklist and
+  SYNTHETIC teaching example only. No real community data.
 - `data/corpus.txt` — PCAC planning language, kept.
 - A Shakespeare drama sample was considered, then removed:
   it does not serve this goal, so it is not training data here.

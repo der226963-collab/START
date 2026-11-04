@@ -81,6 +81,18 @@ individual or community data, and no scraped private data is in it.
   annual means. The time-series file is a small selected
   sample, not a full download. For serious work, download
   the full GISTEMP and NOAA series directly.
+- **Full climate series** — `data/climate_time_series_full.csv`,
+  added 2026-11-04 from the files read that day: NASA
+  GISTEMP v4 GLB.Ts+dSST.csv, annual J-D means 1880-2025
+  (2026 excluded as incomplete), and NOAA GML
+  co2_annmean_mlo.csv, file created 2026-10-09, annual
+  means 1959-2025. CO2 rose 315.98 ppm in 1959 to 427.35
+  ppm in 2025, an increase of 111.37 ppm.
+- **Local pilot** — No real community data is in this repo.
+  `data/local_pilot_template.md` is a consent checklist and
+  field list. `data/local_pilot_example.csv` is synthetic
+  teaching data for a fictional place, marked SYNTHETIC in
+  every row, and must not be used for a real allocation.
 - **Energy Institute Statistical Review of World Energy 2024**
   (as reported) — renewables 14.6% of primary energy in 2023.
   Note: electricity share (30%) and primary energy share

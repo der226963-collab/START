@@ -202,6 +202,61 @@ def systems_summary(rows):
     }
 
 
+def climate_trend(path="data/climate_time_series_full.csv"):
+    """Simple trend check on the full GISTEMP/NOAA series.
+
+    Compares mean temperature anomaly in 1880-1899 with 2000-2025,
+    and CO2 in 1959 with 2025. This is a description of the series,
+    not a forecast and not a predictive model.
+    """
+    import csv
+
+    rows = []
+    with open(path, newline="") as f:
+        for row in csv.DictReader(f):
+            rows.append(row)
+    early = [float(r["gistemp_anomaly_c_vs_1951_1980"]) for r in rows if 1880 <= int(r["year"]) <= 1899]
+    late = [float(r["gistemp_anomaly_c_vs_1951_1980"]) for r in rows if 2000 <= int(r["year"]) <= 2025]
+    co2 = {int(r["year"]): float(r["mauna_loa_co2_ppm"]) for r in rows if r["mauna_loa_co2_ppm"]}
+    return {
+        "years_in_series": len(rows),
+        "first_year": int(rows[0]["year"]),
+        "last_year": int(rows[-1]["year"]),
+        "mean_anomaly_1880_1899_c": round(sum(early) / len(early), 3),
+        "mean_anomaly_2000_2025_c": round(sum(late) / len(late), 3),
+        "anomaly_change_c": round(sum(late) / len(late) - sum(early) / len(early), 3),
+        "co2_1959_ppm": co2[1959],
+        "co2_2025_ppm": co2[2025],
+        "co2_increase_ppm_1959_2025": round(co2[2025] - co2[1959], 2),
+        "warning": "Annual means only. A trend in the past does not by itself predict the future, and it does not allocate anything.",
+    }
+
+
+def pilot_summary(path="data/local_pilot_example.csv"):
+    """Totals for the SYNTHETIC pilot example only.
+
+    This function refuses to present the example as real data.
+    Replace the file with consented, anonymised real data only
+    after the checklist in local_pilot_template.md is met.
+    """
+    import csv
+
+    rows = list(csv.DictReader(open(path, newline="")))
+    if any("SYNTH" not in r["household_id"] for r in rows):
+        raise ValueError("Pilot file contains non-synthetic rows; check consent before using it.")
+    return {
+        "status": "SYNTHETIC EXAMPLE ONLY — NOT A REAL COMMUNITY",
+        "households": len(rows),
+        "people": sum(int(r["people_in_household"]) for r in rows),
+        "land_hectares": sum(float(r["land_hectares_available"]) for r in rows),
+        "food_kcal_needed_per_day": sum(int(r["food_kcal_needed_per_day"]) for r in rows),
+        "energy_kwh_needed_per_year": sum(int(r["energy_kwh_needed_per_year"]) for r in rows),
+        "care_hours_per_week": sum(int(r["care_hours_per_week"]) for r in rows),
+        "households_with_inadequate_housing": sum(1 for r in rows if r["housing_adequate"] == "no"),
+        "warning": "Do not use these totals for a real allocation. They test code shape only.",
+    }
+
+
 def run_plan(path="data/real_planning_data.csv"):
     rows = load_snapshot(path)
     return {
@@ -211,6 +266,8 @@ def run_plan(path="data/real_planning_data.csv"):
         "weather": weather_summary(rows),
         "soil": soil_summary(rows),
         "systems": systems_summary(rows),
+        "climate_trend": climate_trend(),
+        "pilot_example": pilot_summary(),
         "energy_and_materials": energy_and_materials(rows),
         "cereals_2023_million_tonnes": get(rows, "global_cereals_production", 2023),
         "primary_crops_2023_million_tonnes": get(rows, "global_primary_crops_production", 2023),

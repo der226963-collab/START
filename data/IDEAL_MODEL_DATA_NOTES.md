@@ -53,6 +53,14 @@ general language model.
   years). The time-series file is a sample, not a full
   download; full GISTEMP and NOAA series should be used
   for serious predictive modelling.
+- Combined-data training, 2026-11-04: `train_gpt.py
+  --data-dir data --size tiny --steps 300 --dropout 0.1`
+  gave 112,256 parameters, 37,626 train tokens, 4,181 val
+  tokens, best val loss 2.2528, and `evaluate_gpt.py` on
+  weather.txt gave loss 2.2665, perplexity 9.6. Generation
+  is still toy-level. The improvement here is in code,
+  evaluation, and data breadth, not in claiming coherent
+  output from a tiny model on a tiny corpus.
 
 3. `data/weather.txt` (original text)
    - Weather vs climate, variables, instruments, forecasting,

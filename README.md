@@ -24,9 +24,9 @@ Try: `hello`, `can you help me plan something?`, `thanks`, `bye`
 ## Run the tests
 
 ```bash
-python -m pytest tests/ -q
-# or, without pytest:
-python tests/test_neural_net.py
+python -m unittest discover -s tests
+# Planning tests are plain functions, run them by import:
+python -c "import importlib.util; s=importlib.util.spec_from_file_location('t','tests/test_planning.py'); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); [getattr(m,f)() for f in dir(m) if f.startswith('test_')]"
 ```
 
 ## Step 2 — MiniGPT: a larger model that generates text
@@ -53,6 +53,16 @@ learning-rate decay, gradient clipping, and saves the best
 validation checkpoint — not just the last step. The checkpoint
 JSON records the corpus file, its SHA-256, seed, config, and
 losses, so a model can be traced back to its exact training text.
+New: `--data-dir data` trains on all ideal-model text files with
+per-file provenance, `--dropout` regularises larger runs, and
+`evaluate_gpt.py` reports loss and perplexity on any held-out file.
+
+The planning layer now also has `check_plan_limits()` — a plan
+is checked against stored boundaries (phosphorus, food need,
+48-hour work threshold) and anything without a stored boundary
+is reported as unknown, not passed — and `backtest_climate()`,
+which fits a linear trend to 1999 and tests it on 2000-2025 as
+a baseline any fancier predictive model must beat.
 
 ## How this fits PCAC
 

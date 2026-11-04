@@ -257,6 +257,108 @@ def pilot_summary(path="data/local_pilot_example.csv"):
     }
 
 
+def _linfit(xs, ys):
+    """Least-squares line y = a + b*x, pure Python, no new dependency."""
+    n = len(xs)
+    mx = sum(xs) / n
+    my = sum(ys) / n
+    b = sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / sum((x - mx) ** 2 for x in xs)
+    a = my - b * mx
+    return a, b
+
+
+def backtest_climate(path="data/climate_time_series_full.csv"):
+    """Backtest a simple linear trend, training to 1999, testing 2000-2025.
+
+    This is NOT a climate model. It shows, honestly, what a naive
+    linear extrapolation gets wrong: it is a baseline to beat, and
+    a warning against treating a straight line as a prediction.
+    A real predictive model must be validated this way first.
+    """
+    import csv
+    import math
+
+    rows = []
+    with open(path, newline="") as f:
+        for row in csv.DictReader(f):
+            rows.append(row)
+
+    def backtest(year_key, value_key, train_end):
+        train = [(int(r["year"]), float(r[value_key])) for r in rows if r[value_key] and int(r["year"]) <= train_end]
+        test = [(int(r["year"]), float(r[value_key])) for r in rows if r[value_key] and int(r["year"]) > train_end]
+        a, b = _linfit([x for x, _ in train], [y for _, y in train])
+        errors = [a + b * x - y for x, y in test]
+        return {
+            "train_years": f"{train[0][0]}-{train[-1][0]}",
+            "test_years": f"{test[0][0]}-{test[-1][0]}",
+            "slope_per_year": round(b, 4),
+            "rmse": round(math.sqrt(sum(e * e for e in errors) / len(errors)), 3),
+            "bias_mean_predicted_minus_actual": round(sum(errors) / len(errors), 3),
+            "last_test_year_predicted": round(a + b * test[-1][0], 2),
+            "last_test_year_actual": test[-1][1],
+        }
+
+    return {
+        "temperature_anomaly": backtest("year", "gistemp_anomaly_c_vs_1951_1980", 1999),
+        "mauna_loa_co2": backtest("year", "mauna_loa_co2_ppm", 1999),
+        "warning": "Linear extrapolation is a baseline, not a forecast. If it beats a fancier model on held-out years, the fancier model has not earned its complexity.",
+    }
+
+
+def check_plan_limits(plan, rows=None):
+    """Check a proposed plan against limits stored in the snapshot.
+
+    plan is a dict, e.g. {"phosphorus_application_tg_per_year": 5.0,
+    "food_kcal_per_capita_per_day": 2600, "planning_need_kcal_per_capita_per_day": 2500,
+    "paid_work_hours_per_week": 40}.
+    Only limits with a stored boundary are pass/fail. Anything else
+    is reported as unknown, not silently passed. This checks a plan;
+    it does not approve or decide it.
+    """
+    if rows is None:
+        rows = load_snapshot()
+    checks = []
+    p_boundary = get(rows, "phosphorus_regional_boundary", 2025)
+    if "phosphorus_application_tg_per_year" in plan:
+        value = plan["phosphorus_application_tg_per_year"]
+        checks.append({
+            "limit": "phosphorus_application_tg_per_year",
+            "proposed": value, "boundary": p_boundary,
+            "status": "pass" if value <= p_boundary else "fail",
+            "excess": round(value - p_boundary, 2) if value > p_boundary else 0.0,
+        })
+    if "food_kcal_per_capita_per_day" in plan and "planning_need_kcal_per_capita_per_day" in plan:
+        supply = plan["food_kcal_per_capita_per_day"]
+        need = plan["planning_need_kcal_per_capita_per_day"]
+        checks.append({
+            "limit": "food_supply_meets_planning_need",
+            "proposed": supply, "boundary": need,
+            "status": "pass" if supply >= need else "fail",
+        })
+    if "paid_work_hours_per_week" in plan:
+        hours = plan["paid_work_hours_per_week"]
+        checks.append({
+            "limit": "paid_work_hours_per_week",
+            "proposed": hours, "boundary": 48,
+            "status": "pass" if hours <= 48 else "fail",
+            "note": "48 hours is the ILO long-hours threshold used in the sources, not a PCAC rule.",
+        })
+    if "nitrogen_fixation_tg_per_year" in plan:
+        checks.append({
+            "limit": "nitrogen_fixation_tg_per_year",
+            "proposed": plan["nitrogen_fixation_tg_per_year"], "boundary": None,
+            "status": "unknown",
+            "note": "Snapshot records nitrogen as more than twice its boundary, but no exact boundary value is stored, so no pass/fail is claimed.",
+        })
+    failed = [c for c in checks if c["status"] == "fail"]
+    return {
+        "checks": checks,
+        "passes_checked_limits": not failed,
+        "failed_count": len(failed),
+        "note": "Passing these checks does not mean a plan is good, fair, or decided. It means it did not breach the stored limits checked here.",
+    }
+
+
 def run_plan(path="data/real_planning_data.csv"):
     rows = load_snapshot(path)
     return {
@@ -269,6 +371,13 @@ def run_plan(path="data/real_planning_data.csv"):
         "climate_trend": climate_trend(),
         "pilot_example": pilot_summary(),
         "energy_and_materials": energy_and_materials(rows),
+        "backtest_climate": backtest_climate(),
+        "example_plan_check": check_plan_limits({
+            "phosphorus_application_tg_per_year": 5.0,
+            "food_kcal_per_capita_per_day": 2600,
+            "planning_need_kcal_per_capita_per_day": 2500,
+            "paid_work_hours_per_week": 40,
+        }, rows),
         "cereals_2023_million_tonnes": get(rows, "global_cereals_production", 2023),
         "primary_crops_2023_million_tonnes": get(rows, "global_primary_crops_production", 2023),
     }

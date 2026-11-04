@@ -3,7 +3,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from mini_ai.planning import climate_trend, electricity_allocation, food_balance, load_snapshot, pilot_summary, run_plan, soil_summary, systems_summary, weather_summary
+from mini_ai.planning import backtest_climate, check_plan_limits, climate_trend, electricity_allocation, food_balance, load_snapshot, pilot_summary, run_plan, soil_summary, systems_summary, weather_summary
 
 
 def test_snapshot_loads_and_has_key_rows():
@@ -60,6 +60,19 @@ def test_climate_trend_and_pilot_example():
     pilot = pilot_summary("data/local_pilot_example.csv")
     assert pilot["people"] == 20
     assert pilot["status"].startswith("SYNTHETIC")
+
+
+def test_backtest_and_plan_limits():
+    back = backtest_climate("data/climate_time_series_full.csv")
+    assert back["temperature_anomaly"]["test_years"] == "2000-2025"
+    assert back["temperature_anomaly"]["bias_mean_predicted_minus_actual"] < 0, "Linear trend should under-predict recent warming"
+    ok = check_plan_limits({"phosphorus_application_tg_per_year": 5.0, "paid_work_hours_per_week": 40})
+    assert ok["passes_checked_limits"] is True
+    bad = check_plan_limits({"phosphorus_application_tg_per_year": 18.2, "paid_work_hours_per_week": 55})
+    assert bad["passes_checked_limits"] is False
+    assert bad["failed_count"] == 2
+    unknown = check_plan_limits({"nitrogen_fixation_tg_per_year": 165})
+    assert unknown["checks"][0]["status"] == "unknown"
 
 
 def test_weather_summary_uses_real_anomaly_and_moisture_rule():

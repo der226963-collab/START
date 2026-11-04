@@ -19,6 +19,8 @@ Usage:
   python train_gpt.py                      # tiny model, quick CPU run
   python train_gpt.py --size small         # 128-dim, 4 layers, ~800k params
   python train_gpt.py --size small --steps 2000 --data data/corpus.txt
+  python train_gpt.py --data-dir data      # train on all .txt files in data/
+  python train_gpt.py --dropout 0.1        # regularisation for larger runs
 
 PCAC note: this model predicts text. It does not allocate
 resources and it does not decide. Allocation is a separate
@@ -69,19 +71,38 @@ def main():
     parser.add_argument("--batch", type=int, default=32)
     parser.add_argument("--lr", type=float, default=3e-3)
     parser.add_argument("--data", default="data/corpus.txt")
+    parser.add_argument("--data-dir", default=None,
+                        help="If set, train on all .txt files in this dir, sorted, instead of --data.")
+    parser.add_argument("--dropout", type=float, default=0.0)
     parser.add_argument("--out", default="checkpoints/mini-gpt")
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
 
     torch.manual_seed(args.seed)
     random.seed(args.seed)
-    data_path = Path(args.data)
-    text = data_path.read_text()
+    if args.data_dir:
+        files = sorted(Path(args.data_dir).glob("*.txt"))
+        if not files:
+            raise SystemExit(f"No .txt files in {args.data_dir}")
+        parts = []
+        provenance = []
+        for f in files:
+            content = f.read_text()
+            parts.append(f"\n--- {f.name} ---\n" + content)
+            provenance.append({"file": str(f), "chars": len(content),
+                               "sha256": hashlib.sha256(content.encode()).hexdigest()})
+        text = "".join(parts)
+        data_path = Path(args.data_dir)
+    else:
+        data_path = Path(args.data)
+        text = data_path.read_text()
+        provenance = [{"file": str(data_path), "chars": len(text),
+                       "sha256": hashlib.sha256(text.encode()).hexdigest()}]
     tokenizer = CharTokenizer(text)
     data = torch.tensor(tokenizer.encode(text), dtype=torch.long)
     split = int(0.9 * len(data))
     train_data, val_data = data[:split], data[split:]
-    cfg = GPTConfig(vocab_size=len(tokenizer), **SIZES[args.size])
+    cfg = GPTConfig(vocab_size=len(tokenizer), dropout=args.dropout, **SIZES[args.size])
     model = MiniGPT(cfg)
     print(f"Parameters: {model.count_parameters():,}  vocab: {len(tokenizer)}  "
           f"layers: {cfg.n_layer}  embd: {cfg.n_embd}  context: {cfg.block_size}")
@@ -120,8 +141,10 @@ def main():
         "chars": tokenizer.chars,
         "n_layer": cfg.n_layer, "n_head": cfg.n_head,
         "n_embd": cfg.n_embd, "block_size": cfg.block_size,
+        "dropout": cfg.dropout,
         "data_file": str(data_path),
         "data_sha256": hashlib.sha256(text.encode()).hexdigest(),
+        "data_files": provenance,
         "train_tokens": len(train_data), "val_tokens": len(val_data),
         "seed": args.seed, "steps": args.steps,
         "final_train_loss": final_train_loss, "best_val_loss": best_val,

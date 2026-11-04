@@ -29,14 +29,41 @@ python -m pytest tests/ -q
 python tests/test_neural_net.py
 ```
 
+## Step 2 — MiniGPT: a larger model that generates text
+
+v1 classified a sentence. MiniGPT (`mini_ai/gpt/`) predicts the
+next character, which is how a language model actually works:
+
+- Token + position embeddings, then stacked pre-norm transformer
+  blocks: causal multi-head self-attention, then a 4x feed-forward
+  network, with residual connections around both.
+- Default tiny config: 2 layers, 64-dim, ~100k parameters — small
+  enough to train on a CPU in minutes.
+- `small` config: 4 layers, 128-dim, ~800k parameters.
+
+```bash
+pip install -r requirements-gpt.txt   # PyTorch, CPU build is fine
+python train_gpt.py                   # tiny, 300 steps
+python train_gpt.py --size small --steps 2000
+python generate_gpt.py --prompt "The garden " --length 200
+```
+
+Train it on your own text by replacing `data/corpus.txt` — the
+model can only learn patterns that are actually in its training
+text, so a tiny corpus gives toy output, not coherent stories.
+That limitation is the point: it makes the data -> model link
+visible. Real next upgrades, in order: more / better text
+(TinyStories is the usual first dataset), BPE tokenization
+instead of characters, then a larger model on a GPU.
+
 ## How to grow it — in order
 
 1. **Add intents:** add examples in `mini_ai/data.py`, retrain. This is
    the fastest way to make it yours.
 2. **Understand the maths:** read the back-prop code in `neural_net.py`
    line by line, then look at the GitHub references below.
-3. **Make it generate text, not just classify:** move from intents to a
-   character-level language model (see microGPT / nanoGPT below).
+3. **Make it generate text, not just classify:** done — see MiniGPT
+   above. Next is better data and tokenization, not just more layers.
 4. **Make it useful locally:** plug a small open model in via Ollama or
    llama.cpp for real language, and keep this classifier as the
    small, auditable router in front of it. That matches the

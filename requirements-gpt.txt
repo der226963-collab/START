@@ -1,0 +1,5 @@
+# Only needed for the MiniGPT transformer (mini_ai/gpt/).
+# The v1 classifier still needs only NumPy (requirements.txt).
+# Install the CPU build unless you have a GPU with CUDA:
+#   pip install -r requirements-gpt.txt
+torch

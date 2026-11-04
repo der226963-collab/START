@@ -1,0 +1,14 @@
+{
+  "title": "Engineering Statics: Open and Interactive",
+  "author": "Daniel W. Baker, William Haynes et al.",
+  "source": "User-uploaded PDF workspace/user/files/statics_1_e3a8.pdf (421 pages, Sept 26 2026 edition)",
+  "url": "https://engineeringstatics.org",
+  "licence": "CC BY-NC-SA 4.0 International",
+  "staged_file": "engineering_statics_baker_haynes.txt",
+  "chars": 589865,
+  "sha256": "1208e16a6605e7b741f22293a249f6229d7b92aad26c54166f938a56b2ccf410",
+  "status": "manual-user-provided-approved",
+  "approved": true,
+  "licence_verified_from": "PDF About this Book page: CC BY-NC-SA 4.0 International; GeoGebra content CC BY-NC-SA 3.0",
+  "caveats": "PDF reader noted pages 1, 315-317 are pictures not text, and some font encodings are broken so some extracted text may be garbled"
+}

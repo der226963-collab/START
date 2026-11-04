@@ -84,7 +84,7 @@ copyrighted textbooks with no open licence are still excluded.
   Same Wikipedia navigation-text caveat as Climate change;
   approved knowing that.
 - MANUAL, user-provided, 2026-11-04, pushed by Eric's
-  approval in the START chat:
+  approval in the START chat, commit bd460f652d7762f90506680022ef0b0c3898459b:
   think_data_structures_downey.txt — Allen B. Downey,
   Think Data Structures v1.1.0, Green Tea Press, 191 pages,
   extracted from user-uploaded PDF with pdftotext, cleaned
@@ -94,3 +94,17 @@ copyrighted textbooks with no open licence are still excluded.
   This is the Green Tea Press version, NOT the O'Reilly
   all-rights-reserved edition. Assembled corpus with this
   file: 2,160,794 chars from 4 files.
+- MANUAL, user-provided, 2026-11-04, pushed by Eric's
+  approval in the START chat:
+  engineering_statics_baker_haynes.txt — Daniel W. Baker
+  and William Haynes, Engineering Statics: Open and
+  Interactive, Sept 26 2026 edition, 421 pages, extracted
+  from user-uploaded PDF with pdftotext, cleaned
+  (form feeds removed, hyphenated line breaks joined),
+  589,865 chars, sha256 1208e16a…. Licence verified
+  from the PDF About this Book page: CC BY-NC-SA 4.0
+  International (GeoGebra content CC BY-NC-SA 3.0).
+  Caveats: PDF pages 1, 315-317 are pictures, not text,
+  and some font encodings are broken, so some extracted
+  text may be garbled. Assembled corpus with this file:
+  2,750,659 chars from 5 files.

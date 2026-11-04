@@ -77,12 +77,15 @@ ALLOWED_SUFFIXES = {".py", ".md", ".txt"}
 #     If a model could edit them, it could weaken its own tests.
 PROTECTED = {
     "mini_ai/self_edit.py",
+    "mini_ai/data_fetch.py",
     "SAFETY.md",
     "APPROVAL_POLICY.md",
     ".gitignore",
     "tests/test_self_edit.py",
     "tests/test_tiered_approval.py",
+    "tests/test_data_fetch.py",
     "self_edit_audit.jsonl",
+    "data/expanded/staging/fetch_audit.jsonl",
 }
 
 # Names that are never editable, at any depth.

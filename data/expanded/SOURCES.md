@@ -83,3 +83,14 @@ copyrighted textbooks with no open licence are still excluded.
   (Origin Sixth Edition, Climate change, Renewable energy).
   Same Wikipedia navigation-text caveat as Climate change;
   approved knowing that.
+- MANUAL, user-provided, 2026-11-04, pushed by Eric's
+  approval in the START chat:
+  think_data_structures_downey.txt — Allen B. Downey,
+  Think Data Structures v1.1.0, Green Tea Press, 191 pages,
+  extracted from user-uploaded PDF with pdftotext, cleaned
+  (form feeds removed, hyphenated line breaks joined),
+  237,179 chars, sha256 710c58e1…. Licence verified from
+  the PDF copyright page itself: CC BY-NC-SA 3.0 Unported.
+  This is the Green Tea Press version, NOT the O'Reilly
+  all-rights-reserved edition. Assembled corpus with this
+  file: 2,160,794 chars from 4 files.

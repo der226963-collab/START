@@ -1,0 +1,10 @@
+{
+  "title": "Renewable energy (Wikipedia, second live fetcher test)",
+  "url": "https://en.wikipedia.org/wiki/Renewable_energy",
+  "licence": "CC BY-SA 4.0",
+  "staged_file": "Renewable_energy.txt",
+  "chars": 188581,
+  "sha256": "2967473930cc61b76a94a538d788037801df110f6d80ac8a7bb8078aa3544b05",
+  "status": "approved",
+  "approved": true
+}

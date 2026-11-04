@@ -76,3 +76,10 @@ copyrighted textbooks with no open licence are still excluded.
   pg944.txt (Voyage of the Beagle, 1,207,533 chars), both
   public domain, fetched via the fetcher after the browser
   Gutenberg task failed.
+- APPROVED by Eric, 2026-11-04, second live fetcher test,
+  and pushed: Renewable_energy.txt — Wikipedia Renewable
+  energy, 188,581 chars, CC BY-SA 4.0, sha256 29674739….
+  Assembled corpus updated to 1,923,615 chars from 3 files
+  (Origin Sixth Edition, Climate change, Renewable energy).
+  Same Wikipedia navigation-text caveat as Climate change;
+  approved knowing that.

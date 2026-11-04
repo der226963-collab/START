@@ -1,0 +1,2278 @@
+Renewable energy - Wikipedia 
+
+ Jump to content 
+
+ Main menu 
+
+ Main menu 
+ move to sidebar 
+ hide 
+
+ Navigation
+
+ Main page Contents Current events Random article About Wikipedia Contact us 
+
+ Contribute
+
+ Help Learn to edit Community portal Recent changes Upload file Special pages 
+
+ Search 
+
+ Search 
+
+ Appearance 
+
+ Donate 
+
+ Create account 
+
+ Log in 
+
+ Personal tools 
+
+ Donate 
+
+ Create account 
+
+ Log in 
+
+ Contents 
+ move to sidebar 
+ hide 
+
+ (Top) 
+
+ 1 
+ Overview 
+
+ Toggle Overview subsection 
+
+ 1.1 
+ Definition 
+
+ 1.2 
+ Role in addressing climate change 
+
+ 1.3 
+ Other benefits 
+
+ 1.4 
+ Intermittency 
+
+ 1.4.1 
+ Electrical energy storage 
+
+ 1.4.2 
+ Energy supply security 
+
+ 2 
+ Mainstream technologies 
+
+ Toggle Mainstream technologies subsection 
+
+ 2.1 
+ Solar energy 
+
+ 2.1.1 
+ Photovoltaics 
+
+ 2.1.2 
+ Solar thermal 
+
+ 2.1.3 
+ Floatovoltaics 
+
+ 2.1.4 
+ Agrivoltaics 
+
+ 2.2 
+ Wind power 
+
+ 2.3 
+ Hydropower 
+
+ 2.4 
+ Bioenergy 
+
+ 2.4.1 
+ Biofuel 
+
+ 2.5 
+ Geothermal energy 
+
+ 3 
+ Emerging technologies 
+
+ Toggle Emerging technologies subsection 
+
+ 3.1 
+ Enhanced geothermal systems 
+
+ 3.2 
+ Piezoelectricity 
+
+ 3.3 
+ Marine energy 
+
+ 3.4 
+ Earth infrared thermal radiation 
+
+ 3.5 
+ Others 
+
+ 3.5.1 
+ Algae fuels 
+
+ 3.5.2 
+ Space-based solar power 
+
+ 3.5.3 
+ Water vapor 
+
+ 3.5.4 
+ Nuclear energy 
+
+ 3.5.5 
+ Artificial photosynthesis 
+
+ 4 
+ Technical potential 
+
+ 5 
+ Market and industry trends 
+
+ Toggle Market and industry trends subsection 
+
+ 5.1 
+ Usage by sector or application 
+
+ 5.2 
+ Cost comparison 
+
+ 5.3 
+ Growth of renewables 
+
+ 5.3.1 
+ Future projections 
+
+ 5.4 
+ Demand 
+
+ 5.5 
+ Developing countries 
+
+ 6 
+ Policy 
+
+ 7 
+ Finance 
+
+ 8 
+ Debates 
+
+ Toggle Debates subsection 
+
+ 8.1 
+ Nuclear power proposed as renewable energy 
+
+ 8.2 
+ Geopolitics 
+
+ 8.3 
+ Metal and mineral extraction 
+
+ 8.4 
+ Conservation areas 
+
+ 8.5 
+ Impact of climate change on renewable energy production 
+
+ 9 
+ Society and culture 
+
+ Toggle Society and culture subsection 
+
+ 9.1 
+ Public support 
+
+ 10 
+ History 
+
+ Toggle History subsection 
+
+ 10.1 
+ Ancient Historical Examples 
+
+ 11 
+ See also 
+
+ 12 
+ References 
+
+ Toggle References subsection 
+
+ 12.1 
+ Sources 
+
+ 13 
+ External links 
+
+ Toggle the table of contents 
+
+ Renewable energy 
+
+ 123 languages 
+
+ Afrikaans Alemannisch Aragonés العربية مصرى অসমীয়া Asturianu Azərbaycanca Башҡортса Žemaitėška Беларуская (тарашкевіца) Беларуская Български বাংলা Brezhoneg Bosanski Буряад Català Нохчийн Cebuano کوردی Čeština Чӑвашла Cymraeg Dansk Deutsch Ελληνικά Esperanto Español Eesti Euskara فارسی Suomi Français Gaeilge Kriyòl gwiyannen Gàidhlig Galego Avañe'ẽ Hausa עברית हिन्दी Fiji Hindi Hrvatski Kreyòl ayisyen Magyar Հայերեն Interlingua Bahasa Indonesia Igbo Ido Íslenska Italiano 日本語 Jawa ქართული Қазақша ភាសាខ្មែរ 한국어 Kurdî Latina Lëtzebuergesch Lombard Lietuvių Latviešu Madhurâ Malagasy Македонски മലയാളം Монгол मराठी Bahasa Melayu မြန်မာဘာသာ Plattdüütsch नेपाली नेपाल भाषा Nederlands Norsk nynorsk Norsk bokmål Occitan ਪੰਜਾਬੀ Polski Piemontèis پنجابی پښتو Português Runa Simi Română Русский Русиньскый سنڌي Davvisámegiella Srpskohrvatski / српскохрватски සිංහල Simple English Slovenčina Slovenščina Soomaaliga Shqip Српски / srpski Svenska Kiswahili ꠍꠤꠟꠐꠤ தமிழ் Тоҷикӣ ไทย Tagalog Türkçe Українська اردو Oʻzbekcha / ўзбекча Tiếng Việt Walon Winaray 吴语 ייִדיש Yorùbá ⵜⴰⵎⴰⵣⵉⵖⵜ ⵜⴰⵏⴰⵡⴰⵢⵜ 文言 閩南語 / Bân-lâm-gí 粵語 中文 IsiZulu 
+
+ Edit links 
+
+ Article 
+
+ Talk 
+
+ English 
+
+ Read 
+
+ Edit 
+
+ View history 
+
+ Save 
+
+ Tools 
+
+ Tools 
+ move to sidebar 
+ hide 
+
+ Actions
+
+ Read 
+
+ Edit 
+
+ View history 
+
+ Save 
+
+ General
+
+ What links here Related changes Upload file Permanent link Page information Cite this page Get shortened URL Switch to legacy parser 
+
+ Print/export
+
+ Download as PDF Printable version 
+
+ In other projects
+
+ Abstract Wikipedia Wikimedia Commons Wikiquote Wikiversity Wikidata item 
+
+ Appearance 
+ move to sidebar 
+ hide 
+
+ From Wikipedia, the free encyclopedia 
+
+ This article needs to be updated . The reason given is: Some of the sources used in this article are over 10 years old. Adoption, energy efficiency, price and storage capacity for renewable energies has changed significantly in that period of time . Please help update this article to reflect recent events or newly available information. ( April 2026 ) Energy collected from renewable resources 
+ For the journal, see Renewable Energy (journal) . 
+
+ Three Gorges Dam</a> on the <a rel=\"mw:WikiLink\" href=\"./Yangtze_River\" title=\"Yangtze River\" class=\"mw-redirect\" id=\"mwCw\">Yangtze River</a> in China","txt":"The Three Gorges Dam on the Yangtze River in China"}]]}'> Examples of renewable energy: concentrated solar power in Spain; wind energy in South Africa; the Three Gorges Dam on the Yangtze River in China; biomass energy plant in Scotland . 
+ Part of a series on Renewable energy 
+ Biofuel 
+ Biogas 
+ Biomass 
+ Carbon-neutral fuel 
+ Crosswind kite power 
+ Geothermal energy 
+ Geothermal heating 
+ Geothermal power 
+ Hydroelectricity 
+ Run-of-the-river 
+ Hydropower 
+ Micro hydro 
+ Pico hydro 
+ Small hydro 
+ Marine current power 
+ Marine energy 
+ Ocean thermal 
+ Osmotic power 
+ Solar energy 
+ Solar power 
+ Sustainable biofuel 
+ Tidal power 
+ Tidal stream generator 
+ Wave power 
+ Wind power 
+
+ Nuclear power proposed as renewable energy 
+
+ Topics by country and territory 
+ Marketing and policy trends 
+ v t e 
+ Part of a series on Sustainable energy 
+ Energy conservation 
+ Arcology 
+ Building insulation 
+ Cogeneration 
+ Compact fluorescent lamp 
+ Eco hotel 
+ Eco-cities 
+ Ecohouse 
+ Ecolabel 
+ Efficient energy use 
+ Energy audit 
+ Energy efficiency implementation 
+ Energy recovery 
+ Energy recycling 
+ Energy saving lamp 
+ Energy Star 
+ Energy storage 
+ Environmental planning 
+ Environmental technology 
+ Fossil fuel phase-out 
+ Glass in green buildings 
+ Green building and wood 
+ Green building 
+ Heat pump 
+ List of low-energy building techniques 
+ Low-energy house 
+ Microgeneration 
+ Passive house 
+ Passive solar building design 
+ Sustainable architecture 
+ Sustainable city 
+ Sustainable habitat 
+ Sustainable refurbishment 
+ Thermal energy storage 
+ Tropical green building 
+ Waste-to-energy 
+ Zero heating building 
+ Zero-energy building 
+
+ Renewable energy 
+ Biofuel 
+ Sustainable 
+ Biogas 
+ Biomass 
+ Carbon-neutral fuel 
+ Geothermal energy 
+ Geothermal power 
+ Geothermal heating 
+ Hydropower 
+ Hydroelectricity 
+ Micro hydro 
+ Pico hydro 
+ Run-of-the-river 
+ Small hydro 
+ Marine current power 
+ Marine energy 
+ Tidal power 
+ Tidal barrage 
+ Tidal farm 
+ Tidal stream generator 
+ Ocean thermal energy conversion 
+ Renewable energy transition 
+ Renewable heat 
+ Solar 
+ Wave 
+ Wind 
+ Community 
+ Farm 
+ Floating wind turbine 
+ Forecasting 
+ Industry 
+ Lens 
+ Outline 
+ Rights 
+ Turbine 
+ Windbelt 
+ Windpump 
+
+ Sustainable transport 
+ Green vehicle 
+ Electric vehicle 
+ Bicycle 
+ Solar vehicle 
+ Wind-powered vehicle 
+ Human-electric 
+ Twike 
+ Plug-in 
+ Human-powered transport 
+ Helicopter 
+ Hydrofoil 
+ Land vehicle 
+ Bicycle 
+ Cycle rickshaw 
+ Kick scooter 
+ Quadracycle 
+ Tricycle 
+ Velomobile 
+ Roller skating 
+ Skateboarding 
+ Walking 
+ Watercraft 
+ Personal transporter 
+ Rail transport 
+ Tram 
+ Rapid transit 
+ Personal rapid transit 
+
+   Category 
+ Renewable energy portal v t e 
+
+ Renewable energy (also called green energy ) is energy made from renewable natural resources that are replenished on a human timescale . The most widely used renewable energy types are solar energy , wind power , bioenergy/biomass, and hydropower . Bioenergy and geothermal power are also significant in some countries. Renewable energy installations can be large or small and are suited for both urban and rural areas. Renewable energy is often deployed together with further electrification . This has several benefits: electricity can move heat and vehicles efficiently and is clean at the point of consumption. [ 1 ] [ 2 ] Variable renewable energy sources are those that have a fluctuating nature, such as wind power and solar power. In contrast, controllable renewable energy sources include dammed hydroelectricity , bioenergy , or geothermal power . 
+
+ For an energy to be renewable, it must be an endless source [ 3 ] . Nuclear power is therefore not considered renewable, due to its reliance on non-renewable fuel. [ 4 ] 
+
+ Renewable energy systems have rapidly become more efficient and cheaper over the past 40 years. [ 5 ] A large majority of newly installed worldwide electricity capacity is now renewable. [ 6 ] Renewable energy sources, such as solar and wind power, have seen significant cost reductions over the past decade, making them more competitive with traditional fossil fuels. [ 7 ] In some geographic localities, photovoltaic solar or onshore wind is the cheapest new-build electricity. [ 8 ] From 2011 to 2021, renewable energy grew from 20% to 28% of the global electricity supply. Power from the sun and wind accounted for most of this increase, growing from a combined 2% to 10%. Use of fossil energy shrank from 68% to 62%. [ 9 ] In 2025, renewables accounted for 34% of global electricity generation, up from 32% in 2024, and are projected to reach over 43% by 2030. [ 10 ] [ 11 ] Many countries already have renewables contributing more than 20% of their total energy supply, with some generating over half or even all their electricity from renewable sources. [ 12 ] [ 13 ] 
+
+ The main motivation to use renewable energy instead of fossil fuels is to reduce greenhouse gas emissions , which cause climate change . In general, renewable energy sources pollute much less than fossil fuels. [ 14 ] Renewables also cause much less air pollution than fossil fuels, improving public health, and are less noisy . [ 14 ] The International Energy Agency estimates that to achieve net zero emissions by 2050, 90% of global electricity will need to be generated by renewables. [ 15 ] The current pace of renewable expansion remains far from this required rate globally, [ 16 ] including in major economies with high financial capacities such as the G7 and the EU. [ 17 ] 
+
+ The deployment of renewable energy still faces obstacles, especially fossil fuel subsidies , [ 18 ] lobbying by incumbent power providers, [ 19 ] and local opposition to the use of land for renewable installations. [ 20 ] [ 21 ] Like all mining, the extraction of minerals required for many renewable energy technologies also results in environmental damage . [ 22 ] 
+
+ Some also consider nuclear power a renewable power source , although this is controversial, as nuclear energy requires mining uranium, a nonrenewable resource. 
+
+ Overview [ edit ] 
+ See also: Lists of renewable energy topics 
+ {{cite web |title=Electricity production by source, World |url=https://ourworldindata.org/grapher/electricity-prod-source-stacked |publisher=Our World in Data, crediting Ember |archive-url=https://web.archive.org/web/20241201191439/https://ourworldindata.org/grapher/electricity-prod-source-stacked |archive-date=1 December 2024 |url-status=live}} OWID credits \"Source: Ember's Yearly Electricity Data; Ember's European Electricity Review; Energy Institute Statistical Review of World Energy\".</ref>"},"image2":{"wt":"Global Energy Consumption.svg"},"caption2":{"wt":"Coal, oil, and natural gas remain the primary global energy sources even as renewables have begun rapidly increasing.<ref>{{cite journal |last1=Friedlingstein |first1=Pierre |last2=Jones |first2=Matthew W. |last3=O'Sullivan |first3=Michael |last4=Andrew |first4=Robbie M. |last5=Hauck |first5=Judith |last6=Peters |first6=Glen P. |last7=Peters |first7=Wouter |last8=Pongratz |first8=Julia |last9=Sitch |first9=Stephen |last10=Le Quéré |first10=Corinne |last11=Bakker |first11=Dorothee C. E. |last12=Canadell |first12=Josep G. |last13=Ciais |first13=Philippe |last14=Jackson |first14=Robert B. |last15=Anthoni |first15=Peter |last16=Barbero |first16=Leticia |last17=Bastos |first17=Ana |last18=Bastrikov |first18=Vladislav |last19=Becker |first19=Meike |last20=Bopp |first20=Laurent |last21=Buitenhuis |first21=Erik |last22=Chandra |first22=Naveen |last23=Chevallier |first23=Frédéric |last24=Chini |first24=Louise P. |last25=Currie |first25=Kim I. |last26=Feely |first26=Richard A. |last27=Gehlen |first27=Marion |last28=Gilfillan |first28=Dennis |last29=Gkritzalis |first29=Thanos |last30=Goll |first30=Daniel S. |last31=Gruber |first31=Nicolas |last32=Gutekunst |first32=Sören |last33=Harris |first33=Ian |last34=Haverd |first34=Vanessa |last35=Houghton |first35=Richard A. |last36=Hurtt |first36=George |last37=Ilyina |first37=Tatiana |last38=Jain |first38=Atul K. |last39=Joetzjer |first39=Emilie |last40=Kaplan |first40=Jed O. |last41=Kato |first41=Etsushi |last42=Klein Goldewijk |first42=Kees |last43=Korsbakken |first43=Jan Ivar |last44=Landschützer |first44=Peter |last45=Lauvset |first45=Siv K. |last46=Lefèvre |first46=Nathalie |last47=Lenton |first47=Andrew |last48=Lienert |first48=Sebastian |last49=Lombardozzi |first49=Danica |last50=Marland |first50=Gregg |last51=McGuire |first51=Patrick C. |last52=Melton |first52=Joe R. |last53=Metzl |first53=Nicolas |last54=Munro |first54=David R. |last55=Nabel |first55=Julia E. M. S. |last56=Nakaoka |first56=Shin-Ichiro |last57=Neill |first57=Craig |last58=Omar |first58=Abdirahman M. |last59=Ono |first59=Tsuneo |last60=Peregon |first60=Anna |last61=Pierrot |first61=Denis |last62=Poulter |first62=Benjamin |last63=Rehder |first63=Gregor |last64=Resplandy |first64=Laure |last65=Robertson |first65=Eddy |last66=Rödenbeck |first66=Christian |last67=Séférian |first67=Roland |last68=Schwinger |first68=Jörg |last69=Smith |first69=Naomi |last70=Tans |first70=Pieter P. |last71=Tian |first71=Hanqin |last72=Tilbrook |first72=Bronte |last73=Tubiello |first73=Francesco N. |last74=van der Werf |first74=Guido R. |last75=Wiltshire |first75=Andrew J. |last76=Zaehle |first76=Sönke |title=Global Carbon Budget 2019 |journal=Earth System Science Data |date=4 December 2019 |volume=11 |issue=4 |pages=1783–1838 |doi=10.5194/essd-11-1783-2019 |bibcode=2019ESSD...11.1783F |doi-access=free |hdl=20.500.11850/385668 |hdl-access=free }}</ref><ref name=GlobalCarbonBudget_2025>{{cite web |title=GCB 2025 |url=https://globalcarbonbudget.org/gcb-2025/ |publisher=Global Carbon Budget |archive-url=https://web.archive.org/web/20260208191859/https://globalcarbonbudget.org/gcb-2025/ |archive-date=8 February 2026 |date=2026 |url-status=live}} GCB links to downloadable data at {{cite web |title=Figures from the Global Carbon Budget 2025 / 34: Global energy use by category |url=https://robbieandrew.github.io/GCB2025/ |publisher=CICERO Center for International Climate Research |archive-url=https://web.archive.org/web/20260301111528/https://robbieandrew.github.io/GCB2025/ |archive-date=1 March 2026 |date=2026 |url-status=live}}</ref>"}},"i":0}}]}'> Renewable energy sources, especially solar photovoltaic and wind , are generating an increasing share of electricity. [ 23 ] Coal, oil, and natural gas remain the primary global energy sources even as renewables have begun rapidly increasing. [ 24 ] [ 25 ] 
+ Definition [ edit ] 
+ Global share of renewable electricity compared to other power sources, 1985 - 2025. 
+ Renewable energy is usually understood as energy harnessed from continuously occurring natural phenomena. The International Energy Agency defines it as "energy derived from natural processes that are replenished at a faster rate than they are consumed". Solar power , wind power , hydroelectricity , geothermal energy, and biomass are widely agreed to be the main types of renewable energy. [ 26 ] Renewable energy often displaces conventional fuels in four areas: electricity generation , hot water / space heating , transportation , and rural (off-grid) energy services. [ 27 ] 
+
+ Although almost all forms of renewable energy cause much fewer carbon emissions than fossil fuels, the term is not synonymous with low-carbon energy . Some non-renewable sources of energy, such as nuclear power , [ contradictory ] generate almost no emissions, while some renewable energy sources can be very carbon-intensive, such as the burning of biomass if it is not offset by planting new plants. [ 14 ] Renewable energy is also distinct from sustainable energy , a more abstract concept that seeks to group energy sources based on their overall permanent impact on future generations of humans. For example, biomass is often associated with unsustainable deforestation . [ 28 ] 
+
+ Role in addressing climate change [ edit ] 
+ As part of the global effort to limit climate change , most countries have committed to net zero greenhouse gas emissions . [ 29 ] In practice, this means phasing out fossil fuels and replacing them with low-emissions energy sources. [ 14 ] This much needed process, coined as "low-carbon substitutions" [ 30 ] in contrast to other transition processes including energy additions, needs to be accelerated multiple times in order to successfully mitigate climate change. [ 30 ] At the 2023 United Nations Climate Change Conference , around three-quarters of the world's countries set a goal of tripling renewable energy capacity by 2030. [ 31 ] The European Union aimed in 2022 to generate 40% of its electricity from renewables by the same year, [ 32 ] and by 2025, 47% of EU electricity generation was by renewables. [ 33 ] 
+
+ Other benefits [ edit ] 
+ Main article: Climate change mitigation §   Co-benefits 
+
+ Renewable energy is more evenly distributed around the world than fossil fuels, which are concentrated in a limited number of countries. [ 34 ] It also brings health benefits by reducing air pollution caused by the burning of fossil fuels. The potential worldwide savings in health care costs have been estimated at trillions of dollars annually. [ 35 ] 
+
+ Intermittency [ edit ] 
+ Main article: Variable renewable energy 
+
+ Energy from sunlight or other renewable energy is converted to potential energy for storage in devices such as electric batteries. The stored potential energy is later converted to electricity that is added to the power grid, even when the original energy source is not available. 
+ Estimated power demand over a week in May 2012 and May 2020, Germany, showing the variability in solar and wind power both day-to-day and month-to-month 
+ The two most important forms of renewable energy, solar and wind, are intermittent energy sources : they are not available constantly, resulting in lower capacity factors . In contrast, fossil fuel power plants , nuclear power plants and hydropower are usually able to produce precisely the amount of energy an electricity grid requires at a given time. Solar energy can only be captured during the day, and ideally in cloudless conditions. Wind power generation can vary significantly not only day-to-day, but even month-to-month. [ 36 ] This poses a challenge when transitioning away from fossil fuels: energy demand will often be higher or lower than what renewables can provide. [ 37 ] 
+
+ In the medium-term, this variability may require keeping some gas-fired power plants or other dispatchable generation on standby [ 38 ] [ 39 ] until there is enough energy storage, demand response , grid improvement, or base load power from non-intermittent sources. In the long-term, energy storage is an important way of dealing with intermittency. [ 40 ] Using diversified renewable energy sources and smart grids can also help flatten supply and demand. [ 41 ] 
+
+ Sector coupling of the power generation sector with other sectors may increase flexibility: for example the transport sector can be coupled by charging electric vehicles and sending electricity from vehicle to grid . [ 42 ] Similarly the industry sector can be coupled by hydrogen produced by electrolysis, [ 43 ] and the buildings sector by thermal energy storage for space heating and cooling. [ 44 ] 
+
+ Building overcapacity for wind and solar generation can help ensure sufficient electricity production even during poor weather. In optimal weather, it may be necessary to curtail energy generation if it is not possible to use or store excess electricity. [ 45 ] 
+
+ Electrical energy storage [ edit ] 
+ Main articles: Energy storage and Grid energy storage 
+
+ Electrical energy storage is a collection of methods used to store electrical energy. Electrical energy is stored during times when production (especially from intermittent sources such as wind power , tidal power , solar power ) exceeds consumption, and returned to the grid when production falls below consumption. Pumped-storage hydroelectricity accounts for more than 85% of all grid power storage . [ 46 ] Batteries are increasingly being deployed for storage [ 47 ] and grid ancillary services [ 48 ] and for domestic storage. [ 49 ] Green hydrogen is a more economical means of long-term renewable energy storage, in terms of capital expenditures compared to pumped hydroelectric or batteries. [ 50 ] [ 51 ] 
+
+ Energy supply security [ edit ] 
+ Two main renewable energy sources - solar power and wind power - are usually deployed in distributed generation architecture, which offers specific benefits and comes with specific risks. [ 52 ] Notable risks are associated with centralisation of 90% of the supply chains in a single country (China) in the photovoltaic sector. [ 53 ] Mass-scale installation of photovoltaic power inverters with remote control, security vulnerabilities and backdoors results in cyberattacks that can disable generation from millions of physically decentralised panels, resulting in disappearance of hundreds of gigawatts of installed power from the grid in one moment. [ 54 ] [ 55 ] Similar attacks have targeted wind power farms through vulnerabilities in their remote control and monitoring systems. [ 56 ] The European NIS2 directive partially responds to these challenges by extending the scope of cybersecurity regulations to the energy generation market. [ 57 ] Recent analyses indicate that global solar photovoltaic capacity surpassed 1 terawatt in 2024, providing about 6–7% of global electricity supply. [ 58 ] Renewable energy infrastructure is also increasingly vulnerable to extreme weather events linked to climate change, such as heat waves, wildfires, severe storms, and flooding. Solar farms can experience reduced output during prolonged heat or smoke conditions, while wind turbines may require shutdowns during high-wind events or face damage from icing or wave action. These climate-related stresses can threaten the continuity of electricity supply in regions with high shares of variable renewables. As a result, governments and grid operators are adopting climate-resilience standards, hardening infrastructure, and developing emergency-response protocols to maintain energy security under more frequent and severe weather conditions. [ 59 ] 
+
+ Mainstream technologies [ edit ] 
+
+ Share of electricity from renewables 
+
+ Renewable energy capacity has steadily grown, led by solar photovoltaic power. [ 60 ] 
+
+ Solar energy [ edit ] 
+ Main articles: Solar energy , Solar power , and Outline of solar energy 
+
+ Installed capacity and other key design parameters 
+ Value and year 
+
+ Global electricity power generation capacity 2,391.6 GW (2025) [ 61 ] 
+
+ Global electricity power generation capacity annual growth rate 25% (2014–2023) [ 62 ] 
+
+ Share of global electricity generation 5.5% (2023) [ 63 ] 
+
+ Levelized cost per megawatt hour Utility-scale photovoltaics: USD 38.343 (2019) [ 64 ] 
+
+ Primary technologies Photovoltaics , concentrated solar power , solar thermal collector 
+
+ Main applications Electricity, water heating, heating, ventilation, air conditioning ( HVAC ) 
+
+ A small, rooftop PV system in Bonn , Germany Komekurayama photovoltaic power station in Kofu , Japan 
+
+ Solar power produced around 1.3 terrawatt-hours (TWh) worldwide in 2022, [ 12 ] representing 4.6% of the world's electricity. Almost all of this growth has happened since 2010. [ 65 ] Solar energy can be harnessed anywhere that receives sunlight; however, the amount of solar energy that can be harnessed for electricity generation is influenced by weather conditions , geographic location and time of day. [ 66 ] 
+
+ There are two mainstream ways of harnessing solar energy: solar thermal , which converts solar energy into heat; and photovoltaics (PV), which converts it into electricity. [ 14 ] PV is far more widespread, accounting for around two thirds of the global solar energy capacity as of 2022. [ 67 ] It is also growing at a much faster rate, with 170 GW newly installed capacity in 2021, [ 68 ] compared to 25 GW of solar thermal. [ 67 ] 
+
+ Passive solar refers to a range of construction strategies and technologies that aim to optimize the distribution of solar heat in a building. Examples include solar chimneys , [ 14 ] orienting a building to the sun, using construction materials that can store heat , and designing spaces that naturally circulate air . [ 69 ] 
+
+ From 2020 to 2022, solar technology investments almost doubled from US$162 billion to US$308 billion, driven by the sector's increasing maturity and cost reductions, particularly in solar photovoltaic (PV), which accounted for 90% of total investments. China and the United States were the main recipients, collectively making up about half of all solar investments since 2013. Despite reductions in Japan and India due to policy changes and COVID-19 , growth in China, the United States, and a significant increase from Vietnam's feed-in tariff program offset these declines. Globally, the solar sector added 714 gigawatts (GW) of solar PV and concentrated solar power (CSP) capacity between 2013 and 2021, with a notable rise in large-scale solar heating installations in 2021, especially in China, Europe, Turkey, and Mexico. [ 70 ] In 2023, global solar power capacity grew by nearly 30%, driven by falling panel prices and expanded government incentives worldwide. [ 71 ] 
+
+ Photovoltaics [ edit ] 
+ Main articles: Growth of photovoltaics , Solar power by country , and List of photovoltaic power stations 
+
+ Swanson's law –stating that solar module prices have dropped about 20% for each doubling of installed capacity—defines the " learning rate " of solar photovoltaics . [ 72 ] [ 73 ] 
+ A photovoltaic system , consisting of solar cells assembled into panels , converts light into electrical direct current via the photoelectric effect . [ 74 ] [ 75 ] 
+
+ PV systems range from small, residential and commercial rooftop or building integrated installations, [ 76 ] [ 77 ] [ 78 ] to large utility-scale photovoltaic power station . [ 79 ] [ 80 ] [ 81 ] A household's solar panels can either be used for just that household or, if connected to an electrical grid, can be aggregated with millions of others. [ 82 ] [ 83 ] [ 84 ] 
+
+ The first utility-scale solar power plant was built in 1982 in Hesperia, California by ARCO . [ 85 ] [ 86 ] The plant was not profitable and was sold eight years later. [ 87 ] However, over the following decades, PV cells became significantly more efficient and cheaper. [ 88 ] As a result, PV adoption has grown exponentially since 2010. [ 89 ] Global capacity increased from 230 GW at the end of 2015 to 890 GW in 2021. [ 90 ] PV grew fastest in China between 2016 and 2021, adding 560 GW, more than all advanced economies combined. [ 91 ] In 2025, four of the ten biggest solar power stations were in China, including the biggest, Talatan Solar Park . [ 92 ] 
+
+ Solar panels are recycled to reduce electronic waste and create a source for materials that would otherwise need to be mined, [ 93 ] but such business is still small and work is ongoing to improve and scale-up the process. [ 94 ] [ 95 ] [ 96 ] 
+
+ Solar thermal [ edit ] 
+ Main article: Solar thermal energy 
+
+ Unlike photovoltaic cells that convert sunlight directly into electricity, solar thermal systems convert it into heat. They use mirrors or lenses to concentrate sunlight onto a receiver, which in turn heats a water reservoir. The heated water can then be used in homes. The advantage of solar thermal is that the heated water can be stored until it is needed, eliminating the need for a separate energy storage system. [ 97 ] Solar thermal power can also be converted to electricity by using the steam generated from the heated water to drive a turbine connected to a generator. However, because generating electricity this way is much more expensive than photovoltaic power plants, there are very few in use today. [ 98 ] 
+
+ Floatovoltaics [ edit ] 
+ Main article: Floating solar 
+
+ Floatovoltiacs, or floating solar panels, are solar panels floating on bodies of water. There are both positive and negative points to this. Some positive points are increased efficiency and price decrease of water space compared to land space. A negative point is that making floating solar panels could be more expensive. 
+
+ Agrivoltaics [ edit ] 
+ Main article: Agrivoltaics 
+
+ Agrivoltaics is where there is simultaneous use of land for energy production and agriculture. There are again both positive and negative points. A positive viewpoint is there is a better use of land, which leads to lower land costs. A negative viewpoint is it the plants grown underneath would have to be plants that can grow well under shade, such as Polka Dot Plant , Pineapple Sage , and Begonia . [ 99 ] Agrivoltaics not only optimizes land use and reduces costs by enabling dual revenue streams from both energy production and agriculture, but it can also help moderate temperatures beneath the panels, potentially reducing water loss and improving microclimates for crop growth. However, careful design and crop selection are crucial, as the shading effect may limit the types of plants that can thrive, necessitating the use of shade-tolerant species and innovative management practices. [ 100 ] 
+
+ Wind power [ edit ] 
+ Main articles: Wind power and Wind power by country 
+
+ Wind energy generation by region over time [ 101 ] 
+ Burbo , NW-England 
+ Sunrise at the Fenton Wind Farm in Minnesota, United States 
+
+ Installed capacity and other key design parameters 
+ Value and year 
+
+ Global electricity power generation capacity 1017.2 GW (2023) [ 102 ] 
+
+ Global electricity power generation capacity annual growth rate 13% (2014–2023) [ 103 ] 
+
+ Share of global electricity generation 7.8% (2023) [ 63 ] 
+
+ Levelized cost per megawatt hour Land-based wind: USD 30.165 (2019) [ 104 ] 
+
+ Primary technology Wind turbine , windmill 
+
+ Main applications Electricity, pumping water ( windpump ) 
+ Humans have harnessed wind energy since at least 3500 BC. Until the 20th century, it was primarily used to power ships, windmills and water pumps. Today, the vast majority of wind power is used to generate electricity using wind turbines. [ 14 ] Modern utility-scale wind turbines range from around 600   kW to 9 MW of rated power. The power available from the wind is a function of the cube of the wind speed, so as wind speed increases, power output increases up to the maximum output for the particular turbine. [ 105 ] Areas where winds are stronger and more constant, such as offshore and high-altitude sites, are preferred locations for wind farms. 
+
+ Wind-generated electricity met nearly 4% of global electricity demand in 2015, with nearly 63   GW of new wind power capacity installed. Wind energy was the leading source of new capacity in Europe, the US and Canada, and the second largest in China. In Denmark, wind energy met more than 40% of its electricity demand while Ireland, Portugal and Spain each met nearly 20%. [ 106 ] 
+
+ Globally, the long-term technical potential of wind energy is believed to be five times total current global energy production, or 40 times current electricity demand, assuming all practical barriers needed were overcome. This would require wind turbines to be installed over large areas, particularly in areas of higher wind resources, such as offshore, and likely also industrial use of new types of VAWT turbines in addition to the horizontal axis units currently in use. As offshore wind speeds average ~90% greater than that of land, offshore resources can contribute substantially more energy than land-stationed turbines. [ 107 ] 
+
+ Investments in wind technologies reached US$161 billion in 2020, with onshore wind dominating at 80% of total investments from 2013 to 2022. Offshore wind investments nearly doubled to US$41 billion between 2019 and 2020, primarily due to policy incentives in China and expansion in Europe. Global wind capacity increased by 557 GW between 2013 and 2021, with capacity additions increasing by an average of 19% each year. [ 70 ] 
+
+ Hydropower [ edit ] 
+ Main articles: Hydroelectricity and Hydropower 
+
+ The Three Gorges Dam for hydropower on the Yangtze River in China 
+ Three Gorges Dam and Gezhouba Dam , China 
+
+ Installed capacity and other key design parameters 
+ Value and year 
+
+ Global electricity power generation capacity 1,267.9 GW (2023) [ 108 ] 
+
+ Global electricity power generation capacity annual growth rate 1.9% (2014–2023) [ 109 ] 
+
+ Share of global electricity generation 14.3% (2023) [ 63 ] 
+
+ Levelized cost per megawatt hour USD 65.581 (2019) [ 110 ] 
+
+ Primary technology Dam 
+
+ Main applications Electricity, pumped storage , mechanical power 
+
+ Since water is about 800 times denser than air , even a slow flowing stream of water, or moderate sea swell , can yield considerable amounts of energy. Water can generate electricity with a conversion efficiency of about 90%, which is the highest rate in renewable energy. [ 111 ] There are many forms of water energy: 
+ Historically, hydroelectric power came from constructing large hydroelectric dams and reservoirs, which are still popular in developing countries . [ 112 ] The largest of them are the Three Gorges Dam (2003) in China and the Itaipu Dam (1984) built by Brazil and Paraguay. 
+ Small hydro systems are hydroelectric power installations that typically produce up to 50 MW of power. They are often used on small rivers or as a low-impact development on larger rivers. China is the largest producer of hydroelectricity in the world and has more than 45,000 small hydro installations. [ 113 ] 
+ Run-of-the-river hydroelectricity plants derive energy from rivers without the creation of a large reservoir . The water is typically conveyed along the side of the river valley (using channels, pipes or tunnels) until it is high above the valley floor, whereupon it can be allowed to fall through a penstock to drive a turbine. A run-of-river plant may still produce a large amount of electricity, such as the Chief Joseph Dam on the Columbia River in the United States. [ 114 ] However many run-of-the-river hydro power plants are micro hydro or pico hydro plants. 
+
+ Much hydropower is flexible, thus complementing wind and solar, as it not intermittent. [ 115 ] In 2021, the world renewable hydropower capacity was 1,360 GW. [ 91 ] Only a third of the world's estimated hydroelectric potential of 14,000 TWh/year has been developed. [ 116 ] [ 117 ] New hydropower projects face opposition from local communities due to their large impact, including relocation of communities and flooding of wildlife habitats and farming land. [ 118 ] High cost and lead times from permission process, including environmental and risk assessments, with lack of environmental and social acceptance are therefore the primary challenges for new developments. [ 119 ] It is popular to repower old dams thereby increasing their efficiency and capacity as well as quicker responsiveness on the grid. [ 120 ] Where circumstances permit existing dams such as the Russell Dam built in 1985 may be updated with "pump back" facilities for pumped-storage which is useful for peak loads or to support intermittent wind and solar power. Because dispatchable power is more valuable than VRE [ 121 ] [ 122 ] countries with large hydroelectric developments such as Canada and Norway are spending billions to expand their grids to trade with neighboring countries having limited hydro. [ 123 ] 
+
+ Bioenergy [ edit ] 
+ Main article: Bioenergy 
+
+ Further information: Biomass (energy) §   Environmental impacts 
+
+ Installed capacity and other key design parameters 
+ Value and year 
+
+ Global electricity generation capacity 150.3 GW (2023) [ 124 ] 
+
+ Global electricity generation capacity annual growth rate 5.8% (2014–2023) [ 125 ] 
+
+ Share of global electricity generation 2.4% (2022) [ 63 ] 
+
+ Levelized cost per megawatt hour USD 118.908 (2019) [ 126 ] 
+
+ Primary technologies Biomass , biofuel 
+
+ Main applications Electricity, heating, cooking, transportation fuels 
+
+ Biomass is biological material derived from living, or recently living organisms. Most commonly, it refers to plants or plant-derived materials. As an energy source, biomass can either be used directly via combustion to produce heat, or converted to a more energy-dense biofuel like ethanol. Wood is the most significant biomass energy source as of 2012 [ 127 ] and is usually sourced from a trees cleared for silvicultural reasons or fire prevention . Municipal wood waste – for instance, construction materials or sawdust – is also often burned for energy. [ 128 ] The biggest per-capita producers of wood-based bioenergy are heavily forested countries like Finland, Sweden, Estonia, Austria, and Denmark. [ 129 ] 
+
+ Bioenergy can be environmentally destructive if old-growth forests are cleared to make way for crop production. In particular, demand for palm oil to produce biodiesel has contributed to the deforestation of tropical rainforests in Brazil and Indonesia. [ 130 ] In addition, burning biomass still produces carbon emissions, although much less than fossil fuels (39 grams of CO 2 per megajoule of energy, compared to 75 g/MJ for fossil fuels). [ 131 ] 
+
+ Some biomass sources are unsustainable at current rates of exploitation (as of 2017). [ 132 ] 
+
+ Biofuel [ edit ] 
+ Main article: Biofuel 
+ See also: Ethanol fuel , Sustainable biofuel , and Issues relating to biofuels 
+ A CHP power station using wood to supply 30,000 households in France 
+ Biofuels are primarily used in transportation, providing 3.5% of the world's transport energy demand in 2022, [ 133 ] up from 2.7% in 2010. [ 134 ] Biojet is expected to be important for short-term reduction of carbon dioxide emissions from long-haul flights. [ 135 ] 
+
+ A bus fueled by biodiesel 
+ Aside from wood, the major sources of bioenergy are bioethanol and biodiesel . [ 14 ] Bioethanol is usually produced by fermenting the sugar components of crops like sugarcane and maize , while biodiesel is mostly made from oils extracted from plants, such as soybean oil and corn oil . [ 136 ] Most of the crops used to produce bioethanol and biodiesel are grown specifically for this purpose, [ 137 ] although used cooking oil accounted for 14% of the oil used to produce biodiesel as of 2015. [ 136 ] The biomass used to produce biofuels varies by region. Maize is the major feedstock in the United States, while sugarcane dominates in Brazil. [ 138 ] In the European Union, where biodiesel is more common than bioethanol, rapeseed oil and palm oil are the main feedstocks. [ 139 ] China, although it produces comparatively much less biofuel, uses mostly corn and wheat. [ 140 ] In many countries, biofuels are either subsidized or mandated to be included in fuel mixtures . [ 130 ] 
+ Sugarcane plantation to produce ethanol in Brazil 
+ There are many other sources of bioenergy that are more niche, or not yet viable at large scales. For instance, bioethanol could be produced from the cellulosic parts of crops, rather than only the seed as is common today. [ 141 ] Sweet sorghum may be a promising alternative source of bioethanol, due to its tolerance of a wide range of climates. [ 142 ] Cow dung can be converted into methane. [ 143 ] There is also a great deal of research involving algal fuel , which is attractive because algae is a non-food resource, grows around 20 times faster than most food crops, and can be grown almost anywhere. [ 144 ] 
+
+ Geothermal energy [ edit ] 
+ Main articles: Geothermal energy , Geothermal power , Renewable thermal energy , and Geothermal energy in the United States 
+
+ Steam rising from the Nesjavellir Geothermal Power Station in Iceland 
+ Geothermal plant at The Geysers , California, US 
+ Krafla , a geothermal power station in Iceland 
+
+ Installed capacity and other key design parameters 
+ Value and year 
+
+ Global electricity power generation capacity 14.9 GW (2023) [ 145 ] 
+
+ Global electricity power generation capacity annual growth rate 3.4% (2014–2023) [ 146 ] 
+
+ Share of global electricity generation <1% (2018) [ 147 ] 
+
+ Levelized cost per megawatt hour USD 58.257 (2019) [ 148 ] 
+
+ Primary technologies Dry steam, flash steam, and binary cycle power stations 
+
+ Main applications Electricity, heating 
+
+ Geothermal energy is thermal energy (heat) extracted from the Earth's crust . It originates from several different sources , of which the most significant is slow radioactive decay of minerals contained in the Earth's interior , [ 14 ] as well as some leftover heat from the formation of the Earth . [ 149 ] Some of the heat is generated near the Earth's surface in the crust, but some also flows from deep within the Earth from the mantle and core . [ 149 ] Geothermal energy extraction is viable mostly in countries located on tectonic plate edges, where the Earth's hot mantle is more exposed. [ 150 ] As of 2023, the United States has by far the most geothermal capacity (2.7 GW, [ 151 ] or less than 0.2% of the country's total energy capacity [ 152 ] ), followed by Indonesia and the Philippines. Global capacity in 2022 was 15 GW. [ 151 ] 
+
+ Geothermal energy can be either used directly to heat homes, as is common in Iceland where almost all of its energy is renewable, or to generate electricity. Iceland is a global leader in renewable energy, relying almost entirely on its abundant geothermal and hydroelectric resources derived from volcanic activity and glaciers. [ 153 ] At smaller scales, geothermal power can be generated with geothermal heat pumps , which can extract heat from ground temperatures of under 30   °C (86   °F) , allowing them to be used at relatively shallow depths of a few meters. [ 150 ] Electricity generation requires large plants and ground temperatures of at least 150   °C (302   °F) . In some countries, electricity produced from geothermal energy accounts for a large portion of the total, such as Kenya (43%) and Indonesia (5%). [ 154 ] 
+
+ Technical advances may eventually make geothermal power more widely available. For example, enhanced geothermal systems involve drilling around 10 kilometres (6.2   mi) into the Earth, breaking apart hot rocks and extracting the heat using water. In theory, this type of geothermal energy extraction could be done anywhere on Earth. [ 150 ] 
+
+ Emerging technologies [ edit ] 
+ There are also other renewable energy technologies that are still under development, including enhanced geothermal systems , concentrated solar power , cellulosic ethanol , piezoelectricity , and marine energy . [ 155 ] [ 156 ] These technologies are not yet widely demonstrated or have limited commercialization. Some may have potential comparable to other renewable energy technologies, but still depend on further breakthroughs from research, development and engineering. [ 156 ] 
+
+ Enhanced geothermal systems [ edit ] 
+ Main article: Enhanced geothermal systems 
+
+ Enhanced geothermal systems (EGS) are a new type of geothermal power which does not require natural hot water reservoirs or steam to generate power. Most of the underground heat within drilling reach is trapped in solid rocks, not in water. [ 157 ] EGS technologies use hydraulic fracturing to break apart these rocks and release the heat they contain, which is then harvested by pumping water into the ground. The process is sometimes known as "hot dry rock" (HDR). [ 158 ] Unlike conventional geothermal energy extraction, EGS may be feasible anywhere in the world, depending on the cost of drilling. [ 159 ] EGS projects have so far primarily been limited to demonstration plants , as the technology is capital-intensive due to the high cost of drilling. [ 160 ] 
+
+ Piezoelectricity [ edit ] 
+ Piezoelectricity is the conversion of existing mechanical stress or vibration ( classical mechanics ) into an electrical charge without consuming or depleting a fuel source. [ 161 ] [ 162 ] Piezotronics enables the interaction of piezoelectric and semiconducting behaviors to modulate energy barriers at contact surface, thereby controlling charge carrier transport. [ 163 ] Since the introduction of nanogenerators , the efficiency of microscale energy harvesting has improved. For instance, nanogenerators typically consist of piezoelectric nanowires ; as these wires bend or compress, the applied mechanical stress causes the ions within the material's crystal lattice to shift their positions. This shift disrupts the nanowire's charge symmetry which causes an instantaneous charge polarization (separation of positive and negative charges) across the nanowire's ends. Once polarized, electrons are freed from the attached electrode which generates usable alternating current (AC) electricity that can energize low-power sensors. [ 164 ] [ 165 ] Piezoelectric microelectromechanical systems (piezoMEMS), such as actuators for artificial organs and pacemakers or micropumps for drug delivery and reagent transfers, are vital for medical purposes and energy harvesting. [ 166 ] Furthermore, specialized components like piezoelectric resonators and quartz crystal oscillators are used to regulate electrical circuit frequencies. [ 167 ] 
+
+ Marine energy [ edit ] 
+ Main article: Marine energy 
+
+ Aerial view of Sihwa Tidal Power Station in South Korea 
+ Marine energy (also sometimes referred to as ocean energy) is the energy carried by ocean waves , tides , salinity , and ocean temperature differences . Technologies to harness the energy of moving water include wave power , marine current power , and tidal power . Reverse electrodialysis (RED) is a technology for generating electricity by mixing fresh water and salty sea water in large power cells. [ 168 ] Most marine energy harvesting technologies are still at low technology readiness levels and not used at large scales. Tidal energy is generally considered the most mature, but has not seen wide deployment. [ 169 ] The world's largest tidal power station is on Sihwa Lake , South Korea, [ 170 ] which produces around 550 gigawatt-hours of electricity per year. [ 171 ] 
+
+ Earth infrared thermal radiation [ edit ] 
+ Earth emits roughly 10 17 W of infrared thermal radiation that flows toward the cold outer space. Solar energy hits the surface and atmosphere of the earth and produces heat. Using various theorized devices like emissive energy harvester (EEH) or thermoradiative diode, this energy flow can be converted into electricity. In theory, this technology can be used during nighttime. [ 172 ] [ 173 ] 
+
+ Others [ edit ] 
+
+ Algae fuels [ edit ] 
+ Main article: Algae fuels 
+
+ Producing liquid fuels from oil-rich (fat-rich) varieties of algae is an ongoing research topic. Various microalgae grown in open or closed systems are being tried including some systems that can be set up in brownfield and desert lands. [ 174 ] 
+
+ Space-based solar power [ edit ] 
+ Main article: Space-based solar power 
+
+ There have been numerous proposals for space-based solar power , in which very large satellites with photovoltaic panels would be equipped with microwave transmitters to beam power back to terrestrial receivers. A 2024 study by the NASA Office of Science and Technology Policy examined the concept and concluded that with current and near-future technologies it would be economically uncompetitive. [ 175 ] 
+
+ Water vapor [ edit ] 
+ Collection of static electricity charges from water droplets on metal surfaces is an experimental technology that would be especially useful in low-income countries with relative air humidity over 60%. [ 176 ] 
+
+ Nuclear energy [ edit ] 
+ Breeder reactors could, in principle, depending on the fuel cycle employed, extract almost all of the energy contained in uranium or thorium , decreasing fuel requirements by a factor of 100 compared to widely used once-through light water reactors , which extract less than 1% of the energy in the actinide metal (uranium or thorium) mined from the earth. [ 177 ] The high fuel-efficiency of breeder reactors could greatly reduce concerns about fuel supply, energy used in mining, and storage of radioactive waste . With seawater uranium extraction (currently too expensive to be economical), there is enough fuel for breeder reactors to satisfy the world's energy needs for 5 billion years at 1983's total energy consumption rate, thus making nuclear energy effectively a renewable energy. [ 178 ] [ 179 ] In addition to seawater the average crustal granite rocks contain significant quantities of uranium and thorium with which breeder reactors can supply abundant energy for the remaining lifespan of the sun on the main sequence of stellar evolution. [ 180 ] 
+
+ Artificial photosynthesis [ edit ] 
+ Main article: Artificial photosynthesis 
+
+ Artificial photosynthesis uses techniques including nanotechnology to store solar electromagnetic energy in chemical bonds by splitting water to produce hydrogen and then using carbon dioxide to make methanol. [ 181 ] Researchers in this field strived to design molecular mimics of photosynthesis that use a wider region of the solar spectrum, employ catalytic systems made from abundant, inexpensive materials that are robust, readily repaired, non-toxic, stable in a variety of environmental conditions and perform more efficiently allowing a greater proportion of photon energy to end up in the storage compounds, i.e., carbohydrates (rather than building and sustaining living cells). [ 182 ] However, prominent research faces hurdles, Sun Catalytix a MIT spin-off stopped scaling up their prototype fuel-cell in 2012 because it offers few savings over other ways to make hydrogen from sunlight. [ 183 ] 
+
+ Recent research emphasizes that while artificial photosynthesis shows promise in splitting water to generate hydrogen, its broader significance lies in the ability to produce dense, carbon-based solar fuels suitable for transport applications, such as aviation and long-haul shipping. These fuels, if derived from carbon dioxide and water using sunlight, could close the carbon loop and reduce reliance on fossil-based hydrocarbons. However, realizing this potential requires overcoming major technical hurdles, including the development of efficient, durable catalysts for water oxidation and CO 2 reduction, and careful attention to land use and public perception. [ 184 ] 
+
+ Technical potential [ edit ] 
+
+ Global energy consumption in 2019 was approximately 65 petawatt-hours (PWh). [ 185 ] The technical potentials for utility-scale solar photovoltaic, concentrated solar power, onshore wind, and offshore wind each exceed 100 PWh/year, and thus each of them is capable of meeting the total demand in theory. [ 186 ] 
+
+ Solar PV has a technical potential of around 5,800 PWh per year; almost 100 as much as is used annually. [ 187 ] The technical potential of wind energy (onshore + offshore) is nearly 900 PWh per year. [ 188 ] The theoretical potential of hydropower is about 52 PWh per year. [ 189 ] Conventional geothermal could be above 10 PWh/year, [ 186 ] enhanced geothermal systems could be about 4,000 PWh. [ 190 ] 
+
+ The literature assessing the global economic potential of renewables shows that the economic potential is higher than current and near-future electricity demand. [ 186 ] More specifically:
+Around 60% of the world's solar resource and 15% of its wind resource is already economically competitive compared with local fossil fuel generation. [ 191 ] 
+
+ Market and industry trends [ edit ] 
+ Main article: Renewable energy commercialization 
+ Production of technology such as renewable energy sources starts a positive feedback loop to form what has been called a virtuous cycle—the opposite of a vicious cycle . For example, as more and more solar modules are deployed, prices fall because of the economies of scale , allowing the technology to become cost-competitive in new applications that in turn increase demand for more deployment. [ 192 ] 
+ Though the share of electricity generation from renewables has increased since 2010, there is substantial variance among major world regions. [ 193 ] 
+ In 2025, growth in solar, wind and other low-carbon electric power exceeded the overall growth in demand for electricity, reducing reliance on fossil fuels and helping to curb greenhouse gas emissions . [ 194 ] 
+ Most new renewables are solar, followed by wind then hydro then bioenergy. [ 195 ] Investment in renewables, especially solar, tends to be more effective in creating jobs than coal, gas or oil. [ 196 ] [ 197 ] Worldwide, renewables employ about 12 million people as of 2020, with solar PV being the technology employing the most at almost 4 million. [ 198 ] However, as of February 2024, the world's supply of workforce for solar energy is lagging greatly behind demand as universities worldwide still produce more workforce for fossil fuels than for renewable energy industries. [ 199 ] 
+
+ In 2021, China accounted for almost half of the global increase in renewable electricity. [ 200 ] There were 3,146 gigawatts installed in 135 countries, while 156 countries have laws regulating the renewable energy sector. [ 9 ] [ 201 ] 
+
+ The International Renewable Energy Agency reported that during 2025 renewables accounted for 85.6% of new electricity generation capacity globally, with solar photovoltaics providing nearly three-quarters of the increase. At the end of 2025, renewables constituted 49.4% of global installed electricity generating capacity. [ 202 ] [ 203 ] 
+
+ Globally in 2020 there are over 10 million jobs associated with the renewable energy industries, with solar photovoltaics being the largest renewable employer. [ 204 ] The clean energy sectors added about 4.7 million jobs globally between 2019 and 2022, totaling 35 million jobs by 2022. [ 205 ] :   5   
+
+ Usage by sector or application [ edit ] 
+ Some studies say that a global transition to 100% renewable energy across all sectors – power, heat, transport and industry – is feasible and economically viable. [ 206 ] [ 207 ] [ 208 ] 
+
+ One of the efforts to decarbonize transportation is the increased use of electric vehicles (EVs). [ 209 ] Despite that and the use of biofuels , such as biojet , less than 4% of transport energy is from renewables. [ 210 ] Occasionally hydrogen fuel cells are used for heavy transport. [ 211 ] Meanwhile, in the future electrofuels may also play a greater role in decarbonizing hard-to-abate sectors like aviation and maritime shipping. [ 212 ] 
+
+ Solar water heating makes an important contribution to renewable heat in many countries, most notably in China, which now has 70% of the global total (180   GWth). Most of these systems are installed on multi-family apartment buildings [ 213 ] and meet a portion of the hot water needs of an estimated 50–60 million households in China. Worldwide, total installed solar water heating systems meet a portion of the water heating needs of over 70 million households. 
+
+ Heat pumps provide both heating and cooling, and also flatten the electric demand curve and are thus an increasing priority. [ 214 ] Renewable thermal energy is also growing rapidly. [ 215 ] About 10% of heating and cooling energy is from renewables. [ 216 ] 
+
+ Cost comparison [ edit ] 
+ The International Renewable Energy Agency (IRENA) stated that ~86% (187 GW) of renewable capacity added in 2022 had lower costs than electricity generated from fossil fuels. [ 217 ] IRENA also stated that capacity added since 2000 reduced electricity bills in 2022 by at least $520 billion, and that in non-OECD countries, the lifetime savings of 2022 capacity additions will reduce costs by up to $580 billion. [ 217 ] A 2025 evaluation consisting of 40 studies and over 150 scenarios found that cost projections for renewable energy technologies were primarily higher than observed market costs. These technologies particularly included utility-scale solar photovoltaics and lithium-ion battery storage. This suggests that actual costs have been significantly decreasing more than anticipated costs. [ 218 ] 
+
+ Installed [ 219 ] TWp 
+ Growth TW/yr [ 219 ] 
+ Production per installed capacity * [ 220 ] 
+ Energy TWh/yr * [ 220 ] 
+ Growth TWh/yr * [ 220 ] 
+ Levelized cost US¢/kWh [ 221 ] 
+ Av. auction prices US¢/kWh [ 222 ] 
+ Cost development 2010–2019 [ 221 ] 
+
+ Solar PV 0.580 0.098 13% 549 123 6.8 3.9 −82% 
+
+ Solar CSP 0.006 0.0006 13% 6.3 0.5 18.2 7.5 −47% 
+
+ Wind Offshore 0.028 0.0045 33% 68 11.5 11.5 8.2 −30% 
+
+ Wind Onshore 0.594 0.05 25% 1194 118 5.3 4.3 −38% 
+
+ Hydro 1.310 0.013 38% 4267 90 4.7 +27% 
+
+ Bioenergy 0.12 0.006 51% 522 27 6.6 −13% 
+
+ Geothermal 0.014 0.00007 74% 13.9 0.7 7.3 +49% 
+
+ * = 2018. All other values for 2019. 
+
+ Growth of renewables [ edit ] 
+ {{cite news |title=Energy Transition Investment Hit $500 Billion in 2020 – For First Time |url=https://about.bnef.com/blog/energy-transition-investment-hit-500-billion-in-2020-for-first-time/ |work=BloombergNEF |publisher=(Bloomberg New Energy Finance) |date=19 January 2021 |archive-url=https://web.archive.org/web/20210119134344/https://about.bnef.com/blog/energy-transition-investment-hit-500-billion-in-2020-for-first-time/ |archive-date=19 January 2021 |url-status=live}}</ref><ref name=BloombergNEF_20230126/><ref name=BNEF_20240130>{{cite web |title=Global Clean Energy Investment Jumps 17%, Hits $1.8 Trillion in 2023, According to BloombergNEF Report |url=https://about.bnef.com/blog/global-clean-energy-investment-jumps-17-hits-1-8-trillion-in-2023-according-to-bloombergnef-report/ |website=BNEF.com |publisher=Bloomberg NEF |archive-url=https://web.archive.org/web/20240628232137/https://about.bnef.com/blog/global-clean-energy-investment-jumps-17-hits-1-8-trillion-in-2023-according-to-bloombergnef-report/ |archive-date=June 28, 2024 |date=30 January 2024 |quote=Start years differ by sector but all sectors are present from 2020 onwards. |url-status=live}}</ref><ref name=BloombergNEF_20250131>''2024 data:'' {{cite web |title=Energy Transition Investment Trends 2025 / Abridged report |url=https://assets.bbhub.io/professional/sites/24/951623_BNEF-Energy-Transition-Trends-2025-Abridged.pdf |publisher=BloombergNEF |archive-url=https://web.archive.org/web/20250202002640/https://assets.bbhub.io/professional/sites/24/951623_BNEF-Energy-Transition-Trends-2025-Abridged.pdf |archive-date=2 February 2025 |page=9 |date=30 January 2025 |url-status=live}}</ref><ref name=BloombergNEF_20260126>Data for 2025 from {{cite web |title=BloombergNEF Finds Global Energy Transition Investment Reached Record $2.3 Trillion in 2025, Up 8% from 2024 |url=https://about.bnef.com/insights/clean-energy/bloombergnef-finds-global-energy-transition-investment-reached-record-2-3-trillion-in-2025-up-8-from-2024/ |publisher=BloombergNEF |archive-url=https://web.archive.org/web/20260126164511/https://about.bnef.com/insights/clean-energy/bloombergnef-finds-global-energy-transition-investment-reached-record-2-3-trillion-in-2025-up-8-from-2024/ |archive-date=26 January 2026 |date=26 January 2026 |url-status=live}}</ref>"},"image2":{"wt":"2015- Investment in clean energy - IEA.svg"},"caption2":{"wt":"By 2025, investment in the energy transition had grown to about twice that for [[fossil fuel]]s (oil, natural gas and coal).<ref name=IEAworldEnergyInvestment_2025>{{cite web |title=World Energy Investment 2025 / Executive summary |url=https://www.iea.org/reports/world-energy-investment-2025/executive-summary |publisher=International Energy Agency |archive-url=https://web.archive.org/web/20250607172143/https://www.iea.org/reports/world-energy-investment-2025/executive-summary |archive-date=7 June 2025 |date=2025 |quote=IEA. Licence: CC BY 4.0 |url-status=live}}</ref>"},"image3":{"wt":"20211104 Percentage of electricity from fossil fuels, nuclear, renewables - biggest fossil fuel emitters.svg"},"caption3":{"wt":"The countries most reliant on fossil fuels for electricity vary widely on how great a portion of that electricity is generated from renewables, leaving wide variation in renewables' growth potential.<ref name=BP-Ember_20211103>{{cite web |author1=Data: BP Statistical Review of World Energy, and Ember Climate |title=Electricity consumption from fossil fuels, nuclear and renewables, 2020 |url=https://ourworldindata.org/grapher/elec-mix-bar |website=OurWorldInData.org |publisher=Our World in Data consolidated data from BP and Ember |archive-url=https://web.archive.org/web/20211103100119/https://ourworldindata.org/grapher/elec-mix-bar |archive-date=3 November 2021 |date=3 November 2021 |url-status=live }}</ref>"}},"i":0}}]}'> Investment and sources Investment: Companies, governments and households have committed increasing amounts to decarbonization, including renewable energy (solar, wind), electric vehicles and associated charging infrastructure, energy storage, energy-efficient heating systems, carbon capture and storage, and hydrogen. [ 223 ] [ 224 ] [ 225 ] [ 226 ] [ 227 ] By 2025, investment in the energy transition had grown to about twice that for fossil fuels (oil, natural gas and coal). [ 228 ] The countries most reliant on fossil fuels for electricity vary widely on how great a portion of that electricity is generated from renewables, leaving wide variation in renewables' growth potential. [ 229 ] 
+
+ {{cite news |last1=Chrobak |first1=Ula |others=Infographics by Sara Chodosh |title=Solar power got cheap. So why aren't we using it more? |work=Popular Science |date=28 January 2021 |url=https://www.popsci.com/story/environment/cheap-renewable-energy-vs-fossil-fuels/ |url-status=live |archive-date=29 January 2021 |archive-url=https://web.archive.org/web/20210129144621/https://www.popsci.com/story/environment/cheap-renewable-energy-vs-fossil-fuels/}} Chodosh's graphic is derived from data in {{cite web |title=Lazard's Levelized Cost of Energy Version 14.0 |website=Lazard.com |publisher=Lazard |url=https://www.lazard.com/media/451419/lazards-levelized-cost-of-energy-version-140.pdf |archive-url=https://web.archive.org/web/20210128105700/https://www.lazard.com/media/451419/lazards-levelized-cost-of-energy-version-140.pdf |archive-date=28 January 2021 |date=19 October 2020 |url-status=live}}</ref><ref name=LazardLCOE>{{cite web |title=Levelized Cost of Energy + |url=https://www.lazard.com/media/kcfconhf/lazards-lcoeplus_vf.pdf |publisher=Lazard |pages=11, 13 |archive-url=https://web.archive.org/web/20260714110811/https://www.lazard.com/media/kcfconhf/lazards-lcoeplus_vf.pdf |archive-date=14 July 2026 |date=13 July 2026 |url-status=live}}</ref>\n<br/>[[Levelized cost of energy]] (LCOE) is a measure of the average net present cost of electricity generation for a generating plant over its lifetime."},"image5":{"wt":"2010- Cost of renewable energy - IRENA.svg"},"caption5":{"wt":"Costs of renewable energy, especially solar photovoltaic (solar panels), have declined significantly,<ref>Fig. S2 of {{cite web |title=Renewable Power Generation Costs in 2025 |url=https://www.irena.org/-/media/Files/IRENA/Agency/Publication/2026/Jul/IRENA_TEC_RPGC_in_2025_2026.pdf |publisher=International Renewable Energy Agency (IRENA) |page=15 |date=2026 |isbn=978-92-9260-749-4}}</ref> with 62% of total renewable power generation added in 2020 having lower costs than the cheapest new fossil fuel option.<ref name=IRENA_20210622>{{cite web |title=Majority of New Renewables Undercut Cheapest Fossil Fuel on Cost |url=https://www.irena.org/newsroom/pressreleases/2021/Jun/Majority-of-New-Renewables-Undercut-Cheapest-Fossil-Fuel-on-Cost |website=IRENA.org |publisher=International Renewable Energy Agency |archive-url=https://web.archive.org/web/20210622210639/https://www.irena.org/newsroom/pressreleases/2021/Jun/Majority-of-New-Renewables-Undercut-Cheapest-Fossil-Fuel-on-Cost |archive-date=22 June 2021 |date=22 June 2021 |url-status=live}} ● [https://www.irena.org/newsroom/articles/2021/Jun/Low-Renewable-Costs-Allow-To-Power-Past-Coal Infographic] (with numerical data) and [https://web.archive.org/web/20210624184715/https://www.irena.org/newsroom/articles/2021/Jun/Low-Renewable-Costs-Allow-To-Power-Past-Coal archive thereof]</ref>"},"image6":{"wt":"2010- Decreasing renewable energy costs versus deployment.svg"},"caption6":{"wt":"\"'''Learning curves'''\": Trend of costs and deployment over time, with steeper lines showing greater cost reductions as deployment progresses.<ref>{{cite book |title=Renewable Energy Generation Costs in 2022 |url=https://mc-cd8320d4-36a1-40ac-83cc-3389-cdn-endpoint.azureedge.net/-/media/Files/IRENA/Agency/Publication/2023/Aug/IRENA_Renewable_power_generation_costs_in_2022.pdf |publisher=International Renewable Energy Agency (IRENA) |archive-url=https://web.archive.org/web/20230830041356/https://mc-cd8320d4-36a1-40ac-83cc-3389-cdn-endpoint.azureedge.net/-/media/Files/IRENA/Agency/Publication/2023/Aug/IRENA_Renewable_power_generation_costs_in_2022.pdf |archive-date=30 August 2023 |page=57 |date=2023 |url-status=live |isbn=978-92-9260-544-5 }} Fig. 1.11</ref> With increased deployment, renewables benefit from [[learning curves]] and [[economies of scale]].<ref>{{Cite web |title=Why did renewables become so cheap so fast? |url=https://ourworldindata.org/cheap-renewables-growth |access-date=2022-06-04 |website=Our World in Data|date=December 2020 |last1=Roser |first1=Max }}</ref>"}},"i":0}}]}'> Costs Levelized cost: With increasingly widespread implementation of renewable energy sources, costs have declined, most notably for energy generated by solar panels. [ 230 ] [ 231 ] 
+ Levelized cost of energy (LCOE) is a measure of the average net present cost of electricity generation for a generating plant over its lifetime. Costs of renewable energy, especially solar photovoltaic (solar panels), have declined significantly, [ 232 ] with 62% of total renewable power generation added in 2020 having lower costs than the cheapest new fossil fuel option. [ 233 ] " Learning curves ": Trend of costs and deployment over time, with steeper lines showing greater cost reductions as deployment progresses. [ 234 ] With increased deployment, renewables benefit from learning curves and economies of scale . [ 235 ] 
+
+ The results of a recent review of the literature concluded that as greenhouse gas (GHG) emitters begin to be held liable for damages resulting from GHG emissions resulting in climate change, a high value for liability mitigation would provide powerful incentives for deployment of renewable energy technologies. [ 236 ] 
+
+ In the decade of 2010–2019, worldwide investment in renewable energy capacity excluding large hydropower amounted to US$2.7 trillion, of which the top countries China contributed US$818 billion, the United States contributed US$392.3 billion, Japan contributed US$210.9 billion, Germany contributed US$183.4 billion, and the United Kingdom contributed US$126.5 billion. [ 237 ] This was an increase of over three and possibly four times the equivalent amount invested in the decade of 2000–2009 (no data is available for 2000–2003). [ 237 ] 
+
+ As of 2022, an estimated 28% of the world's electricity was generated by renewables. This is up from 19% in 1990. [ 238 ] By the end of 2024, global renewable power capacity reached 4,300 gigawatts (GW), with solar photovoltaics accounting for over 60% of annual additions. [ 239 ] 
+
+ UK-based think tank Ember reported that wind and solar combined generated more electricity than gas globally in a month for the first time in April 2026. [ 240 ] 
+
+ Future projections [ edit ] 
+ See also: Energy transition 
+ {{cite web |last1=Rangelova |first1=Kostantsa |last2=Shah |first2=Ruchita |last3=Petrovich |first3=Beatrice |last4=Assan |first4=Sabina |last5=Butler-Sloss |first5=Sam |title=Marking five years of Ember with five charts on the global energy transition |url=https://ember-energy.org/latest-insights/marking-five-years-of-ember-with-five-charts-on-the-global-energy-transition/ |publisher=Ember Energy |archive-url=https://web.archive.org/web/20251115013614/https://ember-energy.org/latest-insights/marking-five-years-of-ember-with-five-charts-on-the-global-energy-transition/ |archive-date=15 November 2025 |date=13 August 2025 |url-status=live}} Ember credits: ''Wind and solar generation data from Ember's yearly electricity data. Nuclear, gas, coal and hydro data from Pinto et al. (2023). This graphic is based on a chart by Nat Bullard https://www.nathanielbullard.com/presentations. Data only shown until the point where each source generated just over 2,000 TWh.''</ref>"},"image2":{"wt":"2010- Fossil fuels vs Wind + Solar - electricity generation.svg"},"caption2":{"wt":"In 2023, electricity generation from wind and solar sources was projected to exceed 30% by 2030.<ref name=RMI_20230613>{{cite web |last1=Bond |first1=Kingsmill |last2=Butler-Sloss |first2=Sam |last3=Lovins |first3=Amory |last4=Speelman |first4=Laurens |last5=Topping |first5=Nigel |title=Report / 2023 / X-Change: Electricity / On track for disruption |publisher=Rocky Mountain Institute |url=https://rmi.org/insight/x-change-electricity/ |archive-url=https://web.archive.org/web/20230713171138/https://rmi.org/insight/x-change-electricity/ |archive-date=13 July 2023 |date=13 June 2023 |url-status=live }}</ref>"}},"i":0}}]}'> Solar and wind power are scaling up faster than previous sources of electricity. Declining costs, modular design, and improved battery storage help the transition to renewable energy. [ 241 ] In 2023, electricity generation from wind and solar sources was projected to exceed 30% by 2030. [ 242 ] 
+ A December 2022 report by the IEA forecasts that over 2022–2027, renewables are seen growing by almost 2,400 GW in its main forecast, equal to the entire installed power capacity of China in 2021. This is an 85% acceleration from the previous five years, and almost 30% higher than what the IEA forecast in its 2021 report, making its largest ever upward revision. Renewables are set to account for over 90% of global electricity capacity expansion over the forecast period. [ 91 ] To achieve net zero emissions by 2050, IEA believes that 90% of global electricity generation will need to be produced from renewable sources. [ 21 ] 
+
+ In June 2022, IEA Executive Director Fatih Birol said that countries should invest more in renewables to "ease the pressure on consumers from high fossil fuel prices, make our energy systems more secure, and get the world on track to reach our climate goals." [ 243 ] 
+
+ REPowerEU , the EU plan to escape dependence on fossil Russian gas , is expected to call for much more green hydrogen . [ 244 ] 
+
+ After a transitional period, [ 245 ] renewable energy production is expected to make up most of the world's energy production. In 2018, the risk management firm, DNV GL , forecasts that the world's primary energy mix will be split equally between fossil and non-fossil sources by 2050. [ 246 ] 
+
+ Middle eastern nations are also planning on reducing their reliance fossil fuel. Many planned green projects will contribute in 26% of energy supply for the region by 2050 achieving emission reductions equal to 1.1 Gt CO 2 /year. [ 247 ] 
+
+ Massive Renewable Energy Projects in the Middle East: [ 247 ] 
+
+ Mohammed bin Rashid Al Maktoum Solar Park in Dubai, UAE 
+ Shuaibah Two (2) Solar Facility in Mecca Province, Saudi Arabia 
+ NEOM Green Hydrogen Project in NEOM, Saudi Arabia 
+ Gulf of Suez Wind Power Project in Suez, Egypt 
+ Al-Ajban Solar Park in Abu Dhabi, UAE 
+
+ Demand [ edit ] 
+ In July 2014, the WWF and the World Resources Institute convened a discussion among a number of major US companies who had declared their intention to increase their use of renewable energy. These discussions identified a number of "principles" which companies seeking greater access to renewable energy considered important market deliverables. These principles included choice (between suppliers and between products), cost competitiveness, longer term fixed price supplies, access to third-party financing vehicles, and collaboration. [ 248 ] 
+
+ UK statistics released in September 2020 noted that "the proportion of demand met from renewables varies from a low of 3.4 per cent (for transport, mainly from biofuels) to highs of over 20 per cent for 'other final users', which is largely the service and commercial sectors that consume relatively large quantities of electricity, and industry". [ 249 ] 
+
+ In some locations, individual households can opt to purchase renewable energy through a consumer green energy program . 
+
+ Developing countries [ edit ] 
+ This section is an excerpt from Renewable energy in developing countries . [ edit ] 
+ Renewable energy in developing countries is an increasingly used alternative to fossil fuel energy, as these countries scale up their energy supplies and address energy poverty . Renewable energy technology was once seen as unaffordable for developing countries. [ 250 ] However, since 2015, investment in non-hydro renewable energy has been higher in developing countries than in developed countries, and comprised 54% of global renewable energy investment in 2019. [ 251 ] The International Energy Agency forecasts that renewable energy will provide the majority of energy supply growth through 2030 in Africa and Central and South America, and 42% of supply growth in China. [ 252 ] 
+
+ Most developing countries have abundant renewable energy resources, including solar energy , wind power , geothermal energy , and biomass , as well as the ability to manufacture the relatively labor-intensive systems that harness these. By developing such energy sources developing countries can reduce their dependence on oil and natural gas, creating energy portfolios that are less vulnerable to price rises. In many circumstances, these investments can be less expensive than fossil fuel energy systems. [ 253 ] 
+
+ In Kenya, the Olkaria V Geothermal Power Station is one of the largest in the world. [ 254 ] The Grand Ethiopia Renaissance Dam project incorporates wind turbines. [ 255 ] Once completed, Morocco's Ouarzazate Solar Power Station is projected to provide power to over a million people. [ 256 ] 
+
+ Policy [ edit ] 
+
+ Deaths caused as a result of fossil fuel use (areas of rectangles in chart) greatly exceed those resulting from production of renewable energy (rectangles barely visible in chart). [ 257 ] 
+ Policies to support renewable energy have been vital in their expansion. Where Europe dominated in establishing energy policy in the early 2000s, most countries around the world now have some form of energy policy. [ 258 ] 
+
+ The International Renewable Energy Agency (IRENA) is an intergovernmental organization for promoting the adoption of renewable energy worldwide. It aims to provide concrete policy advice and facilitate capacity building and technology transfer. IRENA was formed in 2009, with 75   countries signing the charter of IRENA. [ 259 ] As of April 2019, IRENA has 160   member states. [ 260 ] The then United Nations Secretary-General Ban Ki-moon has said that renewable energy can lift the poorest nations to new levels of prosperity. [ 261 ] 
+
+ The 2015 Paris Agreement on climate change motivated many countries to develop or improve renewable energy policies. [ 262 ] In 2017, a total of 121 countries adopted some form of renewable energy policy. [ 258 ] National targets that year existed in 176 countries. [ 262 ] In addition, there is also a wide range of policies at the state/provincial, and local levels. [ 134 ] Some public utilities help plan or install residential energy upgrades . 
+
+ Many national, state and local governments have created green banks . A green bank is a quasi-public financial institution that uses public capital to leverage private investment in clean energy technologies. [ 263 ] Green banks use a variety of financial tools to bridge market gaps that hinder the deployment of clean energy. 
+
+ Global and national policies related to renewable energy can be divided based on sectors, such as agriculture, transport, buildings, industry: 
+
+ Climate neutrality ( net zero emissions ) by the year 2050 is the main goal of the European Green Deal . [ 264 ] For the European Union to reach their target of climate neutrality, one goal is to decarbonise its energy system by aiming to achieve "net-zero greenhouse gas emissions by 2050." [ 265 ] 
+
+ Finance [ edit ] 
+ {{cite news |last1=Catsaros |first1=Oktavia |title=Global Low-Carbon Energy Technology Investment Surges Past $1 Trillion for the First Time |url=https://about.bnef.com/blog/global-low-carbon-energy-technology-investment-surges-past-1-trillion-for-the-first-time/ |publisher=Bloomberg NEF (New Energy Finance) |date=26 January 2023 |archive-url=https://web.archive.org/web/20230522001857/https://about.bnef.com/blog/global-low-carbon-energy-technology-investment-surges-past-1-trillion-for-the-first-time/ |archive-date=22 May 2023 |at=Figure 1 |quote=Defying supply chain disruptions and macroeconomic headwinds, 2022 energy transition investment jumped 31% to draw level with fossil fuels |url-status=live}}</ref><ref name=BNEF_20240130>{{cite web |title=Global Clean Energy Investment Jumps 17%, Hits $1.8 Trillion in 2023, According to BloombergNEF Report |url=https://about.bnef.com/blog/global-clean-energy-investment-jumps-17-hits-1-8-trillion-in-2023-according-to-bloombergnef-report/ |website=BNEF.com |publisher=Bloomberg NEF |archive-url=https://web.archive.org/web/20240628232137/https://about.bnef.com/blog/global-clean-energy-investment-jumps-17-hits-1-8-trillion-in-2023-according-to-bloombergnef-report/ |archive-date=June 28, 2024 |date=30 January 2024 |quote=Start years differ by sector but all sectors are present from 2020 onwards. |url-status=live}}</ref><ref name=BloombergNEF_20250131>''2024 data:'' {{cite web |title=Energy Transition Investment Trends 2025 / Abridged report |url=https://assets.bbhub.io/professional/sites/24/951623_BNEF-Energy-Transition-Trends-2025-Abridged.pdf |publisher=BloombergNEF |archive-url=https://web.archive.org/web/20250202002640/https://assets.bbhub.io/professional/sites/24/951623_BNEF-Energy-Transition-Trends-2025-Abridged.pdf |archive-date=2 February 2025 |page=9 |date=30 January 2025 |url-status=live}}</ref>"},"image2":{"wt":"2000- Clean energy patent filings - by country.svg"},"caption2":{"wt":"China's count of multi-country patent filings has surged since the mid-2010s, leading in batteries and solar, though Europe still dominates in wind energy and smart grids.<ref name=NYTimes_20250814/> China also leads in highly cited publications in global peer-reviewed journals.<ref name=NYTimes_20250814>{{cite news |last1=Bearak |first1=Max |last2=Rojanasakul |first2=Mira |title=How China Went From Clean Energy Copycat to Global Innovator |url=https://www.nytimes.com/interactive/2025/08/14/climate/china-clean-energy-patents.html |newspaper=The New York Times |date=14 August 2025 |archive-url=https://web.archive.org/web/20250815002927/https://www.nytimes.com/interactive/2025/08/14/climate/china-clean-energy-patents.html |archive-date=15 August 2025 |url-status=live }}</ref>"}},"i":0}}]}'> Electrified transport and renewable energy are key areas of investment for climate change mitigation via an energy transition . [ 224 ] [ 225 ] [ 226 ] China's count of multi-country patent filings has surged since the mid-2010s, leading in batteries and solar, though Europe still dominates in wind energy and smart grids. [ 266 ] China also leads in highly cited publications in global peer-reviewed journals. [ 266 ] 
+
+ The International Renewable Energy Agency 's (IRENA) 2023 report on renewable energy finance highlights steady investment growth since 2018: USD 348 billion in 2020 (a 5.6% increase from 2019), US$430 billion in 2021 (24% up from 2020), and US$499 billion in 2022 (16% higher). This trend is driven by increasing recognition of renewable energy's role in mitigating climate change and enhancing energy security , along with investor interest in alternatives to fossil fuels. Policies such as feed-in tariffs in China and Vietnam have significantly increased renewable adoption. Furthermore, from 2013 to 2022, installation costs for solar photovoltaic (PV), onshore wind, and offshore wind dropped by 69%, 33%, and 45%, respectively, making renewables more cost-effective. [ 267 ] [ 70 ] 
+
+ Between 2013 and 2022, the renewable energy sector underwent a significant realignment of investment priorities. Investment in solar and wind energy technologies markedly increased. In contrast, other renewable technologies such as hydropower (including pumped storage hydropower ), biomass , biofuels , geothermal , and marine energy experienced a substantial decrease in financial investment. Notably, from 2017 to 2022, investment in these alternative renewable technologies declined by 45%, falling from US$35 billion to US$17 billion. [ 70 ] 
+
+ In 2023, the renewable energy sector experienced a significant surge in investments, particularly in solar and wind technologies, totaling approximately US$200 billion—a 75% increase from the previous year. The increased investments in 2023 contributed between 1% and 4% to the GDP in key regions including the United States, China, the European Union, and India. [ 268 ] 
+
+ The energy sector receives investments of approximately US$3 trillion each year, with US$1.9 trillion directed towards clean energy technologies and infrastructure. To meet the targets set in the Net Zero Emissions (NZE) Scenario by 2035, this investment must increase to US$5.3 trillion per year. [ 269 ] :   15   
+
+ Debates [ edit ] 
+ Main articles: Renewable energy debate , Green job , and Intermittent power source 
+
+ Further information: Climate change mitigation §   Overviews, strategies and comparisons of measures 
+ Nuclear power proposed as renewable energy [ edit ] 
+ The Leibstadt Nuclear Power Plant in Switzerland 
+ This section is an excerpt from Nuclear power as sustainable energy . [ edit ] 
+ Whether nuclear power should be considered a form of sustainable energy or renewable energy is an ongoing subject of debate. Legal definitions of renewable energy usually exclude nuclear energy technologies, with the notable exception of the U.S. state of Utah . [ 270 ] Dictionary-sourced definitions of renewable energy technologies often omit or explicitly exclude mention of nuclear energy sources, with an exception made for the natural nuclear decay heat generated within the Earth . [ 271 ] [ 272 ] 
+
+ The most common fuel used in conventional nuclear fission power stations , uranium-235 is "non-renewable" according to the United States' Energy Information Administration , the organization, however, is silent on the recycled MOX fuel . [ 272 ] The National Renewable Energy Laboratory does not mention nuclear power in its "energy basics" definition. [ 273 ] 
+
+ In 1987, the Brundtland Commission (WCED) classified fission reactors that produce more fissile nuclear fuel than they consume ( breeder reactors , and if developed, fusion power ) among conventional renewable energy sources , such as solar power and hydropower . [ 274 ] The monitoring and storage of radioactive waste products is also required upon the use of other renewable energy sources, such as geothermal energy. [ 275 ] 
+
+ Geopolitics [ edit ] 
+ See also: Electrostate 
+ Further information: Russia in the European energy sector 
+ A concept of a super grid 
+ The geopolitical impact of the growing use of renewable energy is a subject of ongoing debate and research. [ 276 ] Many countries wealthy in oil, such as Qatar , Russia , Saudi Arabia and Norway , are able to exert diplomatic or geopolitical influence as a result of their oil. Most of these countries are expected to be among the geopolitical "losers" of the energy transition, although some, like Norway, are also significant producers and exporters of renewable energy. Fossil fuels and the infrastructure to extract them may, in the long term, become stranded assets . [ 277 ] It has been speculated that countries dependent on fossil fuel revenue may one day find it in their interests to quickly sell off their remaining fossil fuels. [ 278 ] 
+
+ Conversely, nations abundant in renewable resources, and the minerals required for renewables technology, are expected to gain influence. [ 279 ] [ 280 ] In particular, China has become the world's dominant manufacturer of the technology needed to produce or store renewable energy, especially solar panels , wind turbines , and lithium-ion batteries . [ 281 ] Nations rich in solar and wind energy could become major energy exporters. [ 282 ] Some may produce and export green hydrogen , [ 283 ] [ 282 ] although electricity is projected to be the dominant energy carrier in 2050, accounting for almost 50% of total energy consumption (up from 22% in 2015). [ 284 ] Countries with large uninhabited areas such as Australia, China, and many African and Middle Eastern countries have a potential for huge installations of renewable energy. The production of renewable energy technologies requires rare-earth elements with new supply chains. [ 285 ] 
+
+ Countries in Africa with already weak governments that rely on fossil fuel revenue may face even higher political instability or popular unrest. Analysts consider Nigeria , Angola , Chad , Gabon , and Sudan , all countries with a history of military coups , to be at risk of instability due to dwindling oil income. [ 286 ] 
+
+ A study found that transition from fossil fuels to renewable energy systems reduces risks from mining, trade and political dependence because renewable energy systems don't need fuel – they depend on trade only for the acquisition of materials and components during construction. [ 287 ] 
+
+ In October 2021, European Commissioner for Climate Action Frans Timmermans suggested "the best answer" to the 2021 global energy crisis is "to reduce our reliance on fossil fuels." [ 288 ] He said those blaming the European Green Deal were doing so "for perhaps ideological reasons or sometimes economic reasons in protecting their vested interests." [ 288 ] Some critics blamed the European Union Emissions Trading System (EU ETS) and closure of nuclear plants for contributing to the energy crisis. [ 289 ] [ 290 ] [ 291 ] European Commission President Ursula von der Leyen said that Europe is "too reliant" on natural gas and too dependent on natural gas imports . According to Von der Leyen, "The answer has to do with diversifying our suppliers ... and, crucially, with speeding up the transition to clean energy." [ 292 ] 
+
+ Energy transition can also improve a country's energy security and energy independence , mitigating impacts from fossil fuel markets or geopolitical pressure from oil producers. [ 293 ] [ 294 ] The proliferation of renewable energy could also weaken petrostates' trading power and their global influence. As the world becomes more electrified, renewable technologies will be embedded into the national economies of various markets, especially developing countries, removing the leverage petrostates have on the global energy structure. [ 295 ] [ 296 ] [ 297 ] 
+
+ Metal and mineral extraction [ edit ] 
+ See also: Environmental footprint of electric cars and Rare-earth element §   Environmental considerations 
+
+ The transition to renewable energy requires increased extraction of certain metals and minerals. Like all mining, this impacts the environment [ 298 ] and can lead to environmental conflict . [ 299 ] For example, lithium mining uses around 65% of the water in the Salar de Atacama desert forcing farmers and llama herders to abandon their ancestral settlements and creating environment degradation, [ 300 ] in several African countries, the green energy transition has created a mining boom, causing deforestation, and threatening already endangered species. [ 301 ] Wind power requires large amounts of copper and zinc , as well as smaller amounts of the rarer metal neodymium . Solar power is less resource-intensive, but still requires significant amounts of aluminum. The expansion of electrical grids requires both copper and aluminum. Batteries, which are critical to enable storage of renewable energy, use large quantities of copper, nickel , aluminum and graphite . Demand for lithium is expected to grow 42-fold from 2020 to 2040. Demand for nickel, cobalt and graphite is expected to grow by a factor of about 20–25. [ 302 ] For each of the most relevant minerals and metals, its mining is dominated by a single country: copper in Chile , nickel in Indonesia , rare earths in China , cobalt in the Democratic Republic of the Congo (DRC) , and lithium in Australia . China dominates processing of all of these. [ 302 ] 
+
+ Recycling these metals after the devices they are embedded in are spent is essential to create a circular economy and ensure renewable energy is sustainable. By 2040, recycled copper, lithium, cobalt, and nickel from spent batteries could reduce combined primary supply requirements for these minerals by around 10%. [ 302 ] 
+
+ A controversial approach is deep sea mining . Minerals can be collected from new sources like polymetallic nodules lying on the seabed . [ 303 ] This would damage local biodiversity, [ 304 ] but proponents point out that biomass on resource-rich seabeds is much scarcer than in the mining regions on land, which are often found in vulnerable habitats like rainforests. [ 305 ] 
+
+ Due to co-occurrence of rare-earth and radioactive elements ( thorium , uranium and radium ), rare-earth mining results in production of low-level radioactive waste . [ 306 ] 
+
+ Conservation areas [ edit ] 
+ Installations used to produce wind, solar and hydropower are an increasing threat to key conservation areas, with facilities built in areas set aside for nature conservation and other environmentally sensitive areas. They are often much larger than fossil fuel power plants, needing areas of land up to 10 times greater than coal or gas to produce equivalent energy amounts. [ 307 ] More than 2000 renewable energy facilities are built, and more are under construction, in areas of environmental importance and threaten the habitats of plant and animal species across the globe. The authors' team emphasized that their work should not be interpreted as anti-renewables because renewable energy is crucial for reducing carbon emissions. The key is ensuring that renewable energy facilities are built in places where they do not damage biodiversity. [ 308 ] 
+
+ In 2020 scientists published a world map of areas that contain renewable energy materials as well as estimations of their overlaps with "Key Biodiversity Areas", "Remaining Wilderness" and " Protected Areas ". The authors assessed that careful strategic planning is needed. [ 309 ] [ 310 ] [ 311 ] 
+
+ Impact of climate change on renewable energy production [ edit ] 
+ Climate change is making weather patterns less predictable. This can seriously hamper the use of renewable energy. For example, in the year 2023, in Sudan and Namibia, hydropower production dropped by more than half due to drastic reduction in rainfall, in China, India and some regions in Africa unusual weather phenomena reduced the amount of produced wind energy, heatwaves and clouds reduce the effectiveness of solar panels, melting glaciers create problems to hydropower. Nuclear energy is also affected as drought creates water shortage, so nuclear power plants sometimes do not have enough water for cooling. [ 312 ] 
+
+ Society and culture [ edit ] 
+
+ Public support [ edit ] 
+ {{Cite book |author=European Investment Bank |url=https://www.eib.org/en/publications/the-eib-climate-survey-2021-2022 |title=The EIB Climate Survey 2021-2022 - Citizens call for green recovery |date=2022-04-20 |publisher=European Investment Bank |isbn=978-92-861-5223-8 |language=EN}}</ref>"},"image2":{"wt":"2023 European Investment Bank climate survey.svg"},"caption2":{"wt":"Survey respondents in the US considered investment in renewable energy to be a lower priority than those in the European Union and China.<ref name=EIBsurvey_2023>{{cite web |title=The EIB Climate Survey, Fifth Edition |url=https://www.eib.org/files/publications/20230098_climate_survey_europe_en.pdf |publisher=European Investment Bank |archive-url=https://web.archive.org/web/20251224073145/https://www.eib.org/files/publications/20230098_climate_survey_europe_en.pdf |archive-date=24 December 2025 |page=9 |doi=10.2867/055829 |date=2023 |url-status=live}}</ref>"}},"i":0}}]}'> Most survey respondents in Europe support renewable energy to fight climate change. [ 313 ] Survey respondents in the US considered investment in renewable energy to be a lower priority than those in the European Union and China. [ 314 ] 
+
+ Acceptance of wind and solar facilities in one's community is stronger among U.S. Democrats (blue), while acceptance of nuclear power plants is stronger among U.S. Republicans (red). [ 315 ] 
+ Solar power plants may compete with arable land , [ 316 ] [ 317 ] while on-shore wind farms often face opposition due to aesthetic concerns and noise. [ 318 ] [ 319 ] Such opponents are often described as NIMBYs ("not in my back yard"). [ 320 ] Some environmentalists are concerned about fatal collisions of birds and bats with wind turbines. [ 321 ] Although protests against new wind farms occasionally occur around the world, regional and national surveys generally find broad support for both solar and wind power. [ 322 ] [ 323 ] [ 324 ] Opponents of renewable energy sometimes receive support from the fossil fuel industry and spread misinformation to undermine public support for renewable energy. [ 325 ] [ 326 ] [ 327 ] 
+
+ Community-owned wind energy is sometimes proposed as a way to increase local support for wind farms. [ 328 ] A 2011 UK Government document stated that "projects are generally more likely to succeed if they have broad public support and the consent of local communities. This means giving communities both a say and a stake." [ 329 ] In the 2000s and early 2010s, many renewable projects in Germany, Sweden and Denmark were owned by local communities, particularly through cooperative structures. [ 330 ] [ 331 ] In the years since, more installations in Germany have been undertaken by large companies, [ 328 ] but community ownership remains strong in Denmark. [ 332 ] 
+
+ History [ edit ] 
+ See also: History of climate change policy and politics 
+ Prior to the development of coal in the mid 19th century, nearly all energy used was renewable. The oldest known use of renewable energy, in the form of traditional biomass to fuel fires , dates from more than a million years ago. The use of biomass for fire did not become commonplace until many hundreds of thousands of years later. [ 333 ] The second oldest usage of renewable energy was probably harnessing the wind in order to drive ships over water. This practice can be traced back some 7000 years, to ships in the Persian Gulf and on the Nile . [ 334 ] Geothermal energy from hot springs has been used for bathing since Paleolithic times and space heating since ancient Roman times. [ 335 ] Moving into the time of recorded history, the primary sources of traditional renewable energy were human labor , animal power , water power , wind, in grain crushing windmills , and firewood , a traditional biomass. 
+
+ In 1885, Werner Siemens , commenting on the discovery of the photovoltaic effect in the solid state, wrote: 
+
+ In conclusion, I would say that however great the scientific importance of this discovery may be, its practical value will be no less obvious when we reflect that the supply of solar energy is both without limit and without cost, and that it will continue to pour down upon us for countless ages after all the coal deposits of the earth have been exhausted and forgotten. [ 336 ] 
+
+ Max Weber mentioned the end of fossil fuel in the concluding paragraphs of his Die protestantische Ethik und der Geist des Kapitalismus (The Protestant Ethic and the Spirit of Capitalism), published in 1905. [ 337 ] Development of solar engines continued until the outbreak of World War I. The importance of solar energy was recognized in a 1911 Scientific American article: "in the far distant future, natural fuels having been exhausted [solar power] will remain as the only means of existence of the human race". [ 338 ] 
+
+ The theory of peak oil was published in 1956. [ 339 ] In the 1970s environmentalists promoted the development of renewable energy both as a replacement for the eventual depletion of oil , as well as for an escape from dependence on oil, and the first electricity-generating wind turbines appeared. Solar had long been used for heating and cooling, but solar panels were too costly to build solar farms until 1980. [ 340 ] 
+
+ New government spending, regulation and policies helped the renewables industry weather the 2008 financial crisis and the Great Recession better than many other sectors. [ 341 ] In 2022, renewables accounted for 30% of global electricity generation, up from 21% in 1985. [ 342 ] 
+
+ Ancient Historical Examples [ edit ] 
+ Among the most notable historical uses of renewable energy (in the form of ancient and traditional methods), the following examples can be highlighted: 
+ Windmills in Europe and Asia (such as the windmills of the Netherlands and Nashtifan in Iran). [ 343 ] The earliest discovered verified designs of windmills date back to Iran, between 700 and 900 CE. [ 344 ] [ 345 ] [ 346 ] 
+ Water mills ( Ancient China and Ancient Persia ). [ 347 ] 
+ Archimedes ' burning lens . 
+ Traditional cooling and ventilation systems based on windcatchers and Solar updraft tower (or Solar chimney ). 
+ Traditional architecture aware of natural heat transfer and natural energy transformation processes. 
+ Gravity-based fountains . 
+ Using animal biomass in ancient fuel bricks. 
+ Solar ovens and furnaces in ancient China, India, Egypt, and Persia. 
+ Solar energy applications for traditional agricultural processing (drying), engineering material properties (solar curing of pottery and ceramics ), and ancient health practices (natural disinfection by solar radiation ). 
+ Long-distance gravitational water flow control in ancient qanat technology for water transport and supply. 
+ Cargo and passenger transportation using sails on rivers, seas, and oceans. 
+ Cargo and passenger transportation based on understanding water currents in rivers, seas, and oceans. 
+ Using renewable vegetation (such as desert shrubs, agricultural waste, and pruned branches) for producing light and heat . 
+ Using renewable oils (vegetable or animal-based) for producing light and heat. 
+ Maximizing use of natural sunlight during the day and moonlight at night in building architecture for purposes such as lighting, decorative applications (e.g., reflective tilework, mirror work, and surface polishing on stone or brick), timekeeping ( sundials , noon markers, prayer time indicators, seasonal change markers), etc. [ 348 ] 
+
+ See also [ edit ] 
+
+ Climate change portal Environment portal Renewable energy portal Society portal Water portal Wind power portal 
+
+ Distributed generation   – Decentralised electricity generation 
+ Efficient energy use   – Methods for higher energy efficiency 
+ Fossil fuel phase-out   – Gradual reduction of the use and production of fossil fuels 
+ Thermal energy storage   – Technologies to store thermal energy 
+ List of countries by renewable electricity production 
+ List of renewable energy companies by country 
+ List of renewable energy journals 
+ List of renewable energy topics by country and territory 
+ Renewable heat   – Application of renewable energy 
+
+ References [ edit ] 
+ This article contains one or more duplicated citations . The reason given is: DuplicateReferences script detected:
+ https://ui.adsabs.harvard.edu/abs/2023ERSS..10603281S (refs: 17, 30) 
+ https://carbontracker.org/solar-and-wind-can-meet-world-energy-demand-100-times-over-renewables/ (refs: 187, 188, 191) 
+ https://www.theguardian.com/environment/2020/sep/01/mining-needed-for-renewable-energy-could-harm-biodiversity (refs: 297, 308) It is recommended to use named references to consolidate citations that are used multiple times. ( August 2026 ) ( Learn how and when to remove this message ) 
+
+ ↑ Armaroli, Nicola ; Balzani, Vincenzo (2011). "Towards an electricity-powered world". Energy and Environmental Science . 4 (9): 3193– 3222. Bibcode : 2011EnEnS...4.3193A . doi : 10.1039/c1ee01249e . 
+ ↑ Armaroli, Nicola; Balzani, Vincenzo (2016). "Solar Electricity and Solar Fuels: Status and Perspectives in the Context of the Energy Transition". Chemistry – A European Journal . 22 (1): 32– 57. Bibcode : 2016ChEuJ..22...32A . doi : 10.1002/chem.201503580 . PMID   26584653 . 
+ ↑ Nations, United. "What is renewable energy?" . United Nations . Retrieved 19 August 2026 . 
+ ↑ "Is nuclear energy renewable? | Natural History Museum" . www.nhm.ac.uk . Retrieved 19 August 2026 . 
+ ↑ "Global renewable energy trends" . Deloitte Insights . Archived from the original on 29 January 2019 . Retrieved 28 January 2019 . 
+ ↑ "Renewable Energy Now Accounts for a Third of Global Power Capacity" . irena.org . 2 April 2019. Archived from the original on 2 April 2019 . Retrieved 2 December 2020 . 
+ ↑ "2023 Levelized Cost Of Energy+" . www.lazard.com . Retrieved 10 June 2024 . 
+ ↑ IEA (2020). Renewables 2020 Analysis and forecast to 2025 (Report). p.   12. Archived from the original on 26 April 2021 . Retrieved 27 April 2021 . 
+ 1 2 "Renewables 2022" . Global Status Report (renewable energies): 44. 14 June 2019. Archived from the original on 24 May 2019 . Retrieved 5 September 2022 . 
+ ↑ "Electricity supply – Global Energy Review 2026 – Analysis" . IEA . Retrieved 9 September 2026 . 
+ ↑ "Renewable electricity – Renewables 2025 – Analysis" . IEA . Retrieved 9 September 2026 . 
+ 1 2 Ritchie, Hannah ; Roser, Max ; Rosado, Pablo (January 2024). "Renewable Energy" . Our World in Data . 
+ ↑ Sensiba, Jennifer (28 October 2021). "Some Good News: 10 Countries Generate Almost 100% Renewable Electricity" . CleanTechnica . Archived from the original on 17 November 2021 . Retrieved 22 November 2021 . 
+ 1 2 3 4 5 6 7 8 9 Ehrlich, Robert; Geller, Harold A.; Geller, Harold (2018). Renewable energy: a first course (2nd   ed.). Boca Raton London New York: Taylor & Francis, CRC Press. ISBN   978-1-138-29738-8 . 
+ ↑ "Rapid rollout of clean technologies makes energy cheaper, not more costly" . International Energy Agency . 30 May 2024 . Retrieved 31 May 2024 . 
+ ↑ Cherp, Aleh; Vinichenko, Vadim; Tosun, Jale; Gordon, Joel A.; Jewell, Jessica (19 July 2021). "National growth dynamics of wind and solar power compared to the growth required for global climate targets". Nature Energy . 6 (7): 742– 754. Bibcode : 2021NatEn...6..742C . doi : 10.1038/s41560-021-00863-0 . 
+ ↑ Suzuki, Masahiro; Jewell, Jessica; Cherp, Aleh (December 2023). "Have climate policies accelerated energy transitions? Historical evolution of electricity mix in the G7 and the EU compared to net-zero targets". Energy Research & Social Science . 106 103281. Bibcode : 2023ERSS..10603281S . doi : 10.1016/j.erss.2023.103281 . hdl : 20.500.14018/14250 . 
+ ↑ Timperley, Jocelyn (21 October 2021). "Why fossil fuel subsidies are so hard to kill" . Nature . 598 (7881): 403– 405. Bibcode : 2021Natur.598..403T . doi : 10.1038/d41586-021-02847-2 . PMID   34671143 . 
+ ↑ Lockwood, Matthew; Mitchell, Catherine; Hoggett, Richard (May 2020). "Incumbent lobbying as a barrier to forward-looking regulation: The case of demand-side response in the GB capacity market for electricity". Energy Policy . 140 111426. Bibcode : 2020EnPol.14011426L . doi : 10.1016/j.enpol.2020.111426 . hdl : 10871/120327 . 
+ ↑ Susskind, Lawrence; Chun, Jungwoo; Gant, Alexander; Hodgkins, Chelsea; Cohen, Jessica; Lohmar, Sarah (June 2022). "Sources of opposition to renewable energy projects in the United States" . Energy Policy . 165 112922. Bibcode : 2022EnPol.16512922S . doi : 10.1016/j.enpol.2022.112922 . 
+ 1 2 "Net Zero by 2050 – Analysis" . IEA . 18 May 2021 . Retrieved 19 March 2023 . 
+ ↑ Isaacs-Thomas, Bella (1 December 2023). "Mining is necessary for the green transition. Here's why experts say we need to do it better" . PBS NewsHour . Retrieved 31 May 2024 . 
+ ↑ "Electricity production by source, World" . Our World in Data, crediting Ember. Archived from the original on 1 December 2024. OWID credits "Source: Ember's Yearly Electricity Data; Ember's European Electricity Review; Energy Institute Statistical Review of World Energy". 
+ ↑ Friedlingstein, Pierre; Jones, Matthew W.; O'Sullivan, Michael; Andrew, Robbie M.; Hauck, Judith; Peters, Glen P.; Peters, Wouter; Pongratz, Julia; Sitch, Stephen; Le Quéré, Corinne; Bakker, Dorothee C. E.; Canadell, Josep G.; Ciais, Philippe; Jackson, Robert B.; Anthoni, Peter; Barbero, Leticia; Bastos, Ana; Bastrikov, Vladislav; Becker, Meike; Bopp, Laurent; Buitenhuis, Erik; Chandra, Naveen; Chevallier, Frédéric; Chini, Louise P.; Currie, Kim I.; Feely, Richard A.; Gehlen, Marion; Gilfillan, Dennis; Gkritzalis, Thanos; Goll, Daniel S.; Gruber, Nicolas; Gutekunst, Sören; Harris, Ian; Haverd, Vanessa; Houghton, Richard A.; Hurtt, George; Ilyina, Tatiana; Jain, Atul K.; Joetzjer, Emilie; Kaplan, Jed O.; Kato, Etsushi; Klein Goldewijk, Kees; Korsbakken, Jan Ivar; Landschützer, Peter; Lauvset, Siv K.; Lefèvre, Nathalie; Lenton, Andrew; Lienert, Sebastian; Lombardozzi, Danica; Marland, Gregg; McGuire, Patrick C.; Melton, Joe R.; Metzl, Nicolas; Munro, David R.; Nabel, Julia E. M. S.; Nakaoka, Shin-Ichiro; Neill, Craig; Omar, Abdirahman M.; Ono, Tsuneo; Peregon, Anna; Pierrot, Denis; Poulter, Benjamin; Rehder, Gregor; Resplandy, Laure; Robertson, Eddy; Rödenbeck, Christian; Séférian, Roland; Schwinger, Jörg; Smith, Naomi; Tans, Pieter P.; Tian, Hanqin; Tilbrook, Bronte; Tubiello, Francesco N.; van der Werf, Guido R.; Wiltshire, Andrew J.; Zaehle, Sönke (4 December 2019). "Global Carbon Budget 2019" . Earth System Science Data . 11 (4): 1783– 1838. Bibcode : 2019ESSD...11.1783F . doi : 10.5194/essd-11-1783-2019 . hdl : 20.500.11850/385668 . 
+ ↑ "GCB 2025" . Global Carbon Budget. 2026. Archived from the original on 8 February 2026. GCB links to downloadable data at "Figures from the Global Carbon Budget 2025 / 34: Global energy use by category" . CICERO Center for International Climate Research. 2026. Archived from the original on 1 March 2026. 
+ ↑ Harjanne, Atte; Korhonen, Janne M. (April 2019). "Abandoning the concept of renewable energy". Energy Policy . 127 : 330– 340. Bibcode : 2019EnPol.127..330H . doi : 10.1016/j.enpol.2018.12.029 . 
+ ↑ REN21 Renewables Global Status Report 2010 . 
+ ↑ Kutscher, Charles F.; Milford, Jana B.; Kreith, Frank (2019). Principles of sustainable energy systems . Mechanical and aerospace engineering (3rd   ed.). Boca Raton, FL: CRC Press, Taylor & Francis Group. ISBN   978-1-4987-8892-2 . 
+ ↑ Srouji, Jamal; Fransen, Taryn; Boehm, Sophie; Waskow, David; Carter, Rebecca; Larsen, Gaia (25 April 2024). "Next-generation Climate Targets: A 5-Point Plan for NDCs" . 
+ 1 2 Suzuki, Masahiro; Jewell, Jessica; Cherp, Aleh (December 2023). "Have climate policies accelerated energy transitions? Historical evolution of electricity mix in the G7 and the EU compared to net-zero targets". Energy Research & Social Science . 106 103281. Bibcode : 2023ERSS..10603281S . doi : 10.1016/j.erss.2023.103281 . hdl : 20.500.14018/14250 . 
+ ↑ "COP28: New deals and evasive tactics" . The economist . 19 December 2023 . Retrieved 4 April 2024 . 
+ ↑ Abnett, Kate (20 April 2022). "European Commission analysing higher 45% renewable energy target for 2030" . Reuters . Retrieved 29 April 2022 . 
+ ↑ "47% of EU's electricity came from renewables in 2025" . ec.europa.eu . 19 March 2026 . Retrieved 21 July 2026 . 
+ ↑ Overland, Indra; Juraev, Javlon; Vakulchuk, Roman (November 2022). "Are renewable energy sources more evenly distributed than fossil fuels?". Renewable Energy . 200 : 379– 386. Bibcode : 2022REne..200..379O . doi : 10.1016/j.renene.2022.09.046 . hdl : 11250/3033797 . 
+ ↑ Scovronick, Noah; Budolfson, Mark; Dennig, Francis; Errickson, Frank; Fleurbaey, Marc; Peng, Wei; Socolow, Robert H.; Spears, Dean; Wagner, Fabian (7 May 2019). "The impact of human health co-benefits on evaluations of global climate policy" . Nature Communications . 10 (1): 2095. Bibcode : 2019NatCo..10.2095S . doi : 10.1038/s41467-019-09499-x . PMC   6504956 . PMID   31064982 . 
+ ↑ Wan, Y. H. (January 2012). Long-term wind power variability (PDF) . National Renewable Energy Laboratory . 
+ ↑ Olauson, Jon; Ayob, Mohd Nasir; Bergkvist, Mikael; Carpman, Nicole; Castellucci, Valeria; Goude, Anders; Lingfors, David; Waters, Rafael; Widén, Joakim (7 November 2016). "Net load variability in Nordic countries with a highly or fully renewable power system". Nature Energy . 1 (12) 16175. Bibcode : 2016NatEn...116175O . doi : 10.1038/nenergy.2016.175 . 
+ ↑ Swartz, Kristi E. (8 December 2021). "Can U.S. phase out natural gas? Lessons from the Southeast" . E&E News . Retrieved 2 May 2022 . 
+ ↑ "Climate change: phase out gas power by 2035, say businesses including Nestle, Thames Water, Co-op" . Sky News . Retrieved 2 May 2022 . 
+ ↑ Roberts, David (30 November 2018). "Clean energy technologies threaten to overwhelm the grid. Here's how it can adapt" . Vox . Retrieved 20 April 2024 . 
+ ↑ "AI and other tricks are bringing power lines into the 21st century" . The Economist . Retrieved 12 May 2024 . 
+ ↑ Ramsebner, Jasmine; Haas, Reinhard; Ajanovic, Amela; Wietschel, Martin (July 2021). "The sector coupling concept: A critical review". WIREs Energy and Environment . 10 (4) e396. Bibcode : 2021WIREE..10E.396R . doi : 10.1002/wene.396 . 
+ ↑ "4 questions on sector coupling" . Wartsila.com . Retrieved 15 May 2022 . 
+ ↑ "Intelligent, flexible Sector Coupling in cities can double the potential for Wind and Solar" . Energy Post . 16 December 2021. Archived from the original on 27 May 2022 . Retrieved 15 May 2022 . 
+ ↑ IEA (2020). World Energy Outlook 2020 . International Energy Agency. p.   109. ISBN   978-92-64-44923-7 . Archived from the original on 22 August 2021. 
+ ↑ "Hydropower Special Market Report – Analysis" . IEA . 30 June 2021 . Retrieved 31 January 2022 . 
+ ↑ "What role is large-scale battery storage playing on the grid today?" . Energy Storage News . 5 May 2022 . Retrieved 9 May 2022 . 
+ ↑ Zhou, Chen; Liu, Rao; Ba, Yu; Wang, Haixia; Ju, Rongbin; Song, Minggang; Zou, Nan; Li, Weidong (2021). "Study on the optimization of the day-ahead addition space for large-scale energy storage participation in auxiliary services". 2021 2nd International Conference on Artificial Intelligence and Information Systems . pp.   1– 6. doi : 10.1145/3469213.3471362 . ISBN   978-1-4503-9020-0 . 
+ ↑ Heilweil, Rebecca (5 May 2022). "These batteries work from home" . Vox . Retrieved 9 May 2022 . 
+ ↑ Schrotenboer, Albert H.; Veenstra, Arjen A.T.; Uit Het Broek, Michiel A.J.; Ursavas, Evrim (2022). "A Green Hydrogen Energy System: Optimal control strategies for integrated hydrogen storage and power generation with wind energy". Renewable and Sustainable Energy Reviews . 168 112744. arXiv : 2108.00530 . Bibcode : 2022RSERv.16812744S . doi : 10.1016/j.rser.2022.112744 . 
+ ↑ Lipták, Béla (24 January 2022). "Hydrogen is key to sustainable green energy" . Control . Retrieved 12 February 2023 . 
+ ↑ Gordon, Samuel; McGarry, Connor; Bell, Keith (2022). "The growth of distributed generation and associated challenges: A Great Britain case study" . IET Renewable Power Generation . 16 (9): 1827– 1840. Bibcode : 2022IRPG...16.1827G . doi : 10.1049/rpg2.12416 . 
+ ↑ Lipke, Alexander; Oertel, Janka; O'Sullivan, Daniel (29 May 2024). "Trust and trade-offs: How to manage Europe's green technology dependence on China" . ECFR . Retrieved 12 December 2024 . 
+ ↑ "Hacking Rooftop Solar Is a Way to Break Europe's Power Grid" . Bloomberg.com . 12 December 2024 . Retrieved 12 December 2024 . 
+ ↑ "The gigantic and unregulated power plants in the cloud" . Bert Hubert's writings . 19 August 2024 . Retrieved 12 December 2024 . 
+ ↑ Tam, Kimberly (5 September 2024). "How cyberattacks on offshore wind farms could create huge problems" . The Conversation . Retrieved 12 December 2024 . 
+ ↑ "SolarPower Europe calls for stronger cybersecurity measures" . pv magazine International . 12 July 2024 . Retrieved 12 December 2024 . 
+ ↑ Smith, J. (2024). "Global solar PV capacity surpassed 1 TW". Nature Energy . 9 (3): 210– 218. doi : 10.1038/s41560-024-00001-x (inactive 21 November 2025). {{ cite journal }} : CS1 maint: DOI inactive as of November 2025 ( link ) 
+ ↑ "Catching the sun: Adapting solar power to the challenges of climate change | Swiss Re" . www.swissre.com . 17 July 2024 . Retrieved 13 November 2025 . 
+ ↑ Source for data beginning in 2017: "Renewable Energy Market Update Outlook for 2023 and 2024" (PDF) . IEA.org . International Energy Agency (IEA). June 2023. p.   19. Archived (PDF) from the original on 11 July 2023. IEA. CC BY 4.0. ● Source for data through 2016: "Renewable Energy Market Update / Outlook for 2021 and 2022" (PDF) . IEA.org . International Energy Agency. May 2021. p.   8. Archived (PDF) from the original on 25 March 2023. IEA. Licence: CC BY 4.0 
+ ↑ IRENA 2025 , p.   21. 
+ ↑ IRENA 2024 , p.   21 . Note: Compound annual growth rate 2014-2023. 
+ 1 2 3 4 "Global Electricity Review 2024" . Ember . 8 May 2024 . Retrieved 8 May 2024 . 
+ ↑ NREL ATB 2021 , Utility-Scale PV. 
+ ↑ "Data Page: Share of electricity generated by solar power" . Our World in Data . 2023. 
+ ↑ "Renewable Energy" . Center for Climate and Energy Solutions . 27 October 2021. Archived from the original on 18 November 2021 . Retrieved 22 November 2021 . 
+ 1 2 Weiss, Werner; Spörk-Dür, Monika (2023). Solar heat worldwide (PDF) . International Energy Agency. p.   12. 
+ ↑ "Solar - Fuels & Technologies" . IEA . Retrieved 27 June 2022 . 
+ ↑ Zaręba, Anna; Krzemińska, Alicja; Kozik, Renata; Adynkiewicz-Piragas, Mariusz; Kristiánová, Katarina (17 March 2022). "Passive and Active Solar Systems in Eco-Architecture and Eco-Urban Planning" . Applied Sciences . 12 (6): 3095. doi : 10.3390/app12063095 . 
+ 1 2 3 4 "Global landscape of renewable energy finance 2023" (PDF) . International Renewable Energy Agency (IRENA) . February 2023. Archived from the original (PDF) on 21 March 2024 . Retrieved 21 March 2024 . 
+ ↑ "Renewables 2023" . IEA . 2023. 
+ ↑ "Solar (photovoltaic) panel prices vs. cumulative capacity" . OurWorldInData.org . 2024. Archived from the original on 18 January 2025. OWID credits source data to: Nemet (2009); Farmer & Lafond (2016); International Renewable Energy Agency (IRENA, 2024). 
+ ↑ "Swanson's Law and Making US Solar Scale Like Germany" . Greentech Media . 24 November 2014. 
+ ↑ Dai, Zhenbang; Rappe, Andrew M. (1 March 2023). "Recent progress in the theory of bulk photovoltaic effect". Chemical Physics Reviews . 4 (1) 011303. arXiv : 2206.00602 . doi : 10.1063/5.0101513 . 
+ ↑ "Energy Sources: Solar" . Department of Energy . Archived from the original on 14 April 2011 . Retrieved 19 April 2011 . 
+ ↑ Petter Jelle, Bjørn; Breivik, Christer; Drolsum Røkenes, Hilde (May 2012). "Building integrated photovoltaic products: A state-of-the-art review and future research opportunities". Solar Energy Materials and Solar Cells . 100 : 69– 96. Bibcode : 2012SEMSC.100...69P . doi : 10.1016/j.solmat.2011.12.016 . hdl : 11250/2436844 . 
+ ↑ Luthander, Rasmus; Widén, Joakim; Nilsson, Daniel; Palm, Jenny (March 2015). "Photovoltaic self-consumption in buildings: A review" . Applied Energy . 142 : 80– 94. Bibcode : 2015ApEn..142...80L . doi : 10.1016/j.apenergy.2014.12.028 . 
+ ↑ Chung, Hsien-Ching (13 June 2024). "The Long-Term Usage of an Off-Grid Photovoltaic System with a Lithium-Ion Battery-Based Energy Storage System on High Mountains: A Case Study in Paiyun Lodge on Mt. Jade in Taiwan" . Batteries . 10 (6): 202. arXiv : 2405.04225 . doi : 10.3390/batteries10060202 . 
+ ↑ Fereidooni, Mojtaba; Mostafaeipour, Ali; Kalantar, Vali; Goudarzi, Hossein (February 2018). "A comprehensive evaluation of hydrogen production from photovoltaic power station". Renewable and Sustainable Energy Reviews . 82 : 415– 423. Bibcode : 2018RSERv..82..415F . doi : 10.1016/j.rser.2017.09.060 . 
+ ↑ Buerhop, Claudia; Bommes, Lukas; Schlipf, Jan; Pickel, Tobias; Fladung, Andreas; Peters, Ian Marius (1 October 2022). "Infrared imaging of photovoltaic modules: a review of the state of the art and future challenges facing gigawatt photovoltaic power stations" . Progress in Energy . 4 (4): 042010. Bibcode : 2022PrEne...4d2010B . doi : 10.1088/2516-1083/ac890b . 
+ ↑ "Solar Integrated in New Jersey" . Jcwinnie.biz. Archived from the original on 19 July 2013 . Retrieved 20 August 2013 . 
+ ↑ Sommerfeldt, Nelson; Madani, Hatef (July 2017). "Revisiting the techno-economic analysis process for building-mounted, grid-connected solar photovoltaic systems: Part one – Review". Renewable and Sustainable Energy Reviews . 74 : 1379– 1393. Bibcode : 2017RSERv..74.1379S . doi : 10.1016/j.rser.2016.11.232 . 
+ ↑ Sommerfeldt, Nelson; Madani, Hatef (July 2017). "Revisiting the techno-economic analysis process for building-mounted, grid-connected solar photovoltaic systems: Part two - Application". Renewable and Sustainable Energy Reviews . 74 : 1394– 1404. Bibcode : 2017RSERv..74.1394S . doi : 10.1016/j.rser.2017.03.010 . 
+ ↑ "Getting the most out of tomorrow's grid requires digitisation and demand response" . The Economist . Retrieved 24 June 2022 . 
+ ↑ Tolbert, R. E. L.; Arnett, J. C. (May 1984). "Design, installation and performance of ARCO solar photovoltaic power plants" . Conf. Rec. IEEE Photovoltaic Spec. Conf.; (United States) . OSTI   5049780 . 
+ ↑ "The History of Solar" (PDF) . U.S. Department of Energy . Retrieved 7 April 2024 . 
+ ↑ Lee, Patrick (12 January 1990). "Arco Sells Last 3 Solar Plants for $2 Million: Energy: The sale to New Mexico investors demonstrates the firm's strategy of focusing on its core oil and gas business" . Los Angeles Times . Retrieved 7 April 2024 . 
+ ↑ "Crossing the Chasm" (PDF) . Deutsche Bank Markets Research. 27 February 2015. Archived (PDF) from the original on 30 March 2015. 
+ ↑ Ravishankar, Rashmi; AlMahmoud, Elaf; Habib, Abdulelah; de Weck, Olivier L. (January 2022). "Capacity Estimation of Solar Farms Using Deep Learning on High-Resolution Satellite Imagery" . Remote Sensing . 15 (1): 210. Bibcode : 2022RemS...15..210R . doi : 10.3390/rs15010210 . hdl : 1721.1/146994 . 
+ ↑ "Renewable Electricity Capacity And Generation Statistics June 2018" . Archived from the original on 28 November 2018 . Retrieved 27 November 2018 . 
+ 1 2 3 IEA (2022), Renewables 2022, IEA, Paris https://www.iea.org/reports/renewables-2022 , License: CC BY 4.0 
+ ↑ Shaikh, Kaif (9 October 2025). "Top 10 biggest solar power plants in the world reshaping our energy future" . Interesting Engineering . New York . Retrieved 12 April 2026 . 
+ ↑ "Solar Panel Recycling" . www.epa.gov . 23 August 2021 . Retrieved 2 May 2022 . 
+ ↑ "Solar panels are a pain to recycle. These companies are trying to fix that" . MIT Technology Review . Archived from the original on 8 November 2021 . Retrieved 8 November 2021 . 
+ ↑ Heath, Garvin A.; Silverman, Timothy J.; Kempe, Michael; Deceglie, Michael; Ravikumar, Dwarakanath; Remo, Timothy; Cui, Hao; Sinha, Parikhit; Libby, Cara; Shaw, Stephanie; Komoto, Keiichi; Wambach, Karsten; Butler, Evelyn; Barnes, Teresa; Wade, Andreas (13 July 2020). "Research and development priorities for silicon photovoltaic module recycling to support a circular economy". Nature Energy . 5 (7): 502– 510. Bibcode : 2020NatEn...5..502H . doi : 10.1038/s41560-020-0645-2 . 
+ ↑ Domínguez, Adriana; Geyer, Roland (April 2019). "Photovoltaic waste assessment of major photovoltaic installations in the United States of America". Renewable Energy . 133 : 1188– 1200. Bibcode : 2019REne..133.1188D . doi : 10.1016/j.renene.2018.08.063 . 
+ ↑ Coren, Michael (13 February 2024). "Meet the other solar panel" . The Washington Post . 
+ ↑ Kingsley, Patrick; Elkayam, Amit (9 October 2022). " 'Eye of Sauron': The Dazzling Solar Tower in the Israeli Desert" . The New York Times . 
+ ↑ "19 Top Shade Plants - Shade-Loving Plants for Your Garden" . Proven Winners . Retrieved 13 February 2025 . 
+ ↑ "Agrivoltaics: Producing Solar Energy While Protecting Farmland" . Yale Center for Business and the Environment . Retrieved 30 March 2025 . 
+ ↑ "Wind energy generation by region" . Our World in Data . Archived from the original on 10 March 2020 . Retrieved 15 August 2023 . 
+ ↑ IRENA 2024 , p.   14. 
+ ↑ IRENA 2024 , p.   14 . Note: Compound annual growth rate 2014-2023. 
+ ↑ NREL ATB 2021 , Land-Based Wind. 
+ ↑ "Analysis of Wind Energy in the EU-25" (PDF) . European Wind Energy Association. Archived (PDF) from the original on 12 March 2007 . Retrieved 11 March 2007 . 
+ ↑ "Electricity – from other renewable sources - The World Factbook" . www.cia.gov . Archived from the original on 27 October 2021 . Retrieved 27 October 2021 . 
+ ↑ "Offshore stations experience mean wind speeds at 80 m that are 90% greater than over land on average." Evaluation of global wind power Archived 25 May 2008 at the Wayback Machine "Overall, the researchers calculated winds at 80 meters [300 feet] above sea level traveled over the ocean at approximately 8.6 meters per second and at nearly 4.5 meters per second over land [20 and 10 miles per hour, respectively]." Global Wind Map Shows Best Wind Farm Locations Archived 24 May 2005 at the Wayback Machine . Retrieved 30 January 2006. 
+ ↑ IRENA 2024 , p.   9 . Note: Excludes pure pumped storage. 
+ ↑ IRENA 2024 , p.   9 . Note: Excludes pure pumped storage. Compound annual growth rate 2014-2023. 
+ ↑ NREL ATB 2021 , Hydropower. 
+ ↑ Ang, Tze-Zhang; Salem, Mohamed; Kamarol, Mohamad; Das, Himadry Shekhar; Nazari, Mohammad Alhuyi; Prabaharan, Natarajan (2022). "A comprehensive study of renewable energy sources: Classifications, challenges and suggestions" . Energy Strategy Reviews . 43 100939. Bibcode : 2022EneSR..4300939A . doi : 10.1016/j.esr.2022.100939 . 
+ ↑ Moran, Emilio F.; Lopez, Maria Claudia; Moore, Nathan; Müller, Norbert; Hyndman, David W. (2018). "Sustainable hydropower in the 21st century" . Proceedings of the National Academy of Sciences . 115 (47): 11891– 11898. Bibcode : 2018PNAS..11511891M . doi : 10.1073/pnas.1809426115 . PMC   6255148 . PMID   30397145 . 
+ ↑ "DocHdl2OnPN-PRINTRDY-01tmpTarget" (PDF) . Archived from the original (PDF) on 9 November 2018 . Retrieved 26 March 2019 . 
+ ↑ Afework, Bethel (3 September 2018). "Run-of-the-river hydroelectricity" . Energy Education . Archived from the original on 27 April 2019 . Retrieved 27 April 2019 . 
+ ↑ "Net zero: International Hydropower Association" . www.hydropower.org . Retrieved 24 June 2022 . 
+ ↑ "Hydropower Status Report" . International Hydropower Association . 11 June 2021. Archived from the original on 3 April 2023 . Retrieved 30 May 2022 . 
+ ↑ Energy Technology Perspectives: Scenarios and Strategies to 2050 . Paris: International Energy Agency. 2006. p.   124. ISBN   92-64-10982-X . Retrieved 30 May 2022 . 
+ ↑ "Environmental Impacts of Hydroelectric Power | Union of Concerned Scientists" . www.ucsusa.org . Archived from the original on 15 July 2021 . Retrieved 9 July 2021 . 
+ ↑ "Hydropower Special Market Report" (PDF) . IEA . pp.   34– 36. Archived (PDF) from the original on 7 July 2021 . Retrieved 9 July 2021 . 
+ ↑ L. Lia; T. Jensen; K.E. Stensbyand; G. Holm; A.M. Ruud. "The current status of hydropower development and dam construction in Norway" (PDF) . Ntnu.no . Archived from the original on 25 May 2017 . Retrieved 26 March 2019 . 
+ ↑ Farmer, Matt (19 April 2021). "How Norway became Europe's biggest power exporter" . Power Technology . Archived from the original on 27 June 2022 . Retrieved 27 June 2022 . 
+ ↑ "Trade surplus soars on energy exports | Norway's News in English — www.newsinenglish.no" . 17 January 2022 . Retrieved 27 June 2022 . 
+ ↑ "New Transmission Line Reaches Milestone" . Vpr.net . Archived from the original on 3 February 2017 . Retrieved 3 February 2017 . 
+ ↑ IRENA 2024 , p.   30. 
+ ↑ IRENA 2024 , p.   30 . Note: Compound annual growth rate 2014-2023. 
+ ↑ NREL ATB 2021 , Other Technologies (EIA). 
+ ↑ Scheck, Justin; Dugan, Ianthe Jeanne (23 July 2012). "Wood-Fired Plants Generate Violations" . The Wall Street Journal . Archived from the original on 25 July 2021 . Retrieved 18 July 2021 . 
+ ↑ "FAQs • What is woody biomass, and where does it come from?" . Placer County Government . Retrieved 5 May 2024 . 
+ ↑ Pelkmans, Luc (November 2021). IEA Bioenergy Countries' Report: Implementation of bioenergy in the IEA Bioenergy member countries (PDF) . International Energy Agency. p.   10. ISBN   978-1-910154-93-9 . 
+ 1 2 Loyola, Mario (23 November 2019). "Stop the Ethanol Madness" . The Atlantic . Retrieved 5 May 2024 . 
+ ↑ Mellor, Maria. "Biofuels are meant to clean up flying's carbon crisis. They won't" . Wired . Retrieved 5 May 2024 . 
+ ↑ Timperly, Jocelyn (23 February 2017). "Biomass subsidies 'not fit for purpose', says Chatham House" . Carbon Brief Ltd © 2020 - Company No. 07222041. Archived from the original on 6 November 2020 . Retrieved 31 October 2020 . 
+ ↑ "Biofuels" . International Energy Agency . Retrieved 5 May 2024 . 
+ 1 2 REN21 Renewables Global Status Report 2011 , pp.   13–14. 
+ ↑ "Japan to create bio jet fuel supply chain in clean energy push" . Nikkei Asia . Retrieved 26 April 2022 . 
+ 1 2 Martin, Jeremy (22 June 2016). "Everything You Ever Wanted to Know About Biodiesel (Charts and Graphs Included!)" . The Equation . Retrieved 5 May 2024 . 
+ ↑ "Energy crops" . crops are grown specifically for use as fuel . BIOMASS Energy Centre. Archived from the original on 10 March 2013 . Retrieved 6 April 2013 . 
+ ↑ Liu, Xinyu; Kwon, Hoyoung; Wang, Michael; O'Connor, Don (15 August 2023). "Life Cycle Greenhouse Gas Emissions of Brazilian Sugar Cane Ethanol Evaluated with the GREET Model Using Data Submitted to RenovaBio" . Environmental Science & Technology . 57 (32): 11814– 11822. Bibcode : 2023EnST...5711814L . doi : 10.1021/acs.est.2c08488 . PMC   10433513 . PMID   37527415 . 
+ ↑ "Biofuels" . OECD Library . 2022. Archived from the original on 5 May 2024 . Retrieved 5 May 2024 . 
+ ↑ Qin, Zhangcai; Zhuang, Qianlai; Cai, Ximing; He, Yujie; Huang, Yao; Jiang, Dong; Lin, Erda; Liu, Yaling; Tang, Ya; Wang, Michael Q. (February 2018). "Biomass and biofuels in China: Toward bioenergy resource potentials and their impacts on the environment" . Renewable and Sustainable Energy Reviews . 82 : 2387– 2400. Bibcode : 2018RSERv..82.2387Q . doi : 10.1016/j.rser.2017.08.073 . 
+ ↑ Kramer, David (July 2022). "Whatever happened to cellulosic ethanol?". Physics Today . 75 (7): 22– 24. Bibcode : 2022PhT....75g..22K . doi : 10.1063/PT.3.5036 . 
+ ↑ Ahmad Dar, Rouf; Ahmad Dar, Eajaz; Kaur, Ajit; Gupta Phutela, Urmila (February 2018). "Sweet sorghum-a promising alternative feedstock for biofuel production". Renewable and Sustainable Energy Reviews . 82 : 4070– 4090. Bibcode : 2018RSERv..82.4070A . doi : 10.1016/j.rser.2017.10.066 . 
+ ↑ Howard, Brian (28 January 2020). "Turning cow waste into clean power on a national scale" . The Hill . Archived from the original on 29 January 2020 . Retrieved 30 January 2020 . 
+ ↑ Zhu, Liandong; Li, Zhaohua; Hiltunen, Erkki (December 2018). "Microalgae Chlorella vulgaris biomass harvesting by natural flocculant: effects on biomass sedimentation, spent medium recycling and lipid extraction" . Biotechnology for Biofuels . 11 (1). Bibcode : 2018BB.....11..183Z . doi : 10.1186/s13068-018-1183-z . PMC   6022341 . PMID   29988300 . 
+ ↑ IRENA 2024 , p.   43. 
+ ↑ IRENA 2024 , p.   43 . Note: Compound annual growth rate 2014-2023. 
+ ↑ "Electricity" . International Energy Agency . 2020. Data Browser section, Electricity Generation by Source indicator. Archived from the original on 7 June 2021 . Retrieved 17 July 2021 . 
+ ↑ NREL ATB 2021 , Geothermal. 
+ 1 2 Clauser, Christoph (2024), "Earth's Heat and Temperature Field" , Introduction to Geophysics , Springer Textbooks in Earth Sciences, Geography and Environment, Cham: Springer International Publishing, pp.   247– 325, doi : 10.1007/978-3-031-17867-2 , ISBN   978-3-031-17866-5 , retrieved 6 May 2024 
+ 1 2 3 Dincer, Ibrahim; Ezzat, Muhammad F. (2018), "3.6 Geothermal Energy Production" , Comprehensive Energy Systems , Elsevier, pp.   252– 303, doi : 10.1016/b978-0-12-809597-3.00313-8 , ISBN   978-0-12-814925-6 , retrieved 7 May 2024 
+ 1 2 Ritchie, Hannah; Rosado, Pablo; Roser, Max (2023). "Data Page: Geothermal energy capacity" . Our World in Data . Retrieved 7 May 2024 . 
+ ↑ "Electricity generation, capacity, and sales in the United States" . U.S. Energy Information Administration . Retrieved 7 May 2024 . 
+ ↑ Toussaint-Strauss, Josh; Talbot, Jem; Morresi, Elena; Assaf, Ali; Ambrose, Jillian; Baxter, Ryan; Glew, Steve (1 May 2025). "Why unlimited green energy is closer than people think – video" . The Guardian . Retrieved 1 May 2025 . 
+ ↑ "Use of geothermal energy" . U.S. Energy Information Administration . 22 November 2023 . Retrieved 7 May 2024 . 
+ ↑ Hussain, Akhtar; Arif, Syed Muhammad; Aslam, Muhammad (2017). "Emerging renewable and sustainable energy technologies: State of the art". Renewable and Sustainable Energy Reviews . 71 : 12– 28. Bibcode : 2017RSERv..71...12H . doi : 10.1016/j.rser.2016.12.033 . 
+ 1 2 International Energy Agency (2007).
+ Renewables in global energy supply: An IEA facts sheet (PDF), OECD, p. 3. Archived 12 October 2009 at the Wayback Machine 
+ ↑ Duchane, Dave; Brown, Don (December 2002). "Hot Dry Rock (HDR) Geothermal Energy Research and Development at Fenton Hill, New Mexico" (PDF) . Geo-Heat Centre Quarterly Bulletin . Vol.   23, no.   4. Klamath Falls, Oregon: Oregon Institute of Technology. pp.   13– 19. Archived (PDF) from the original on 17 June 2010 . Retrieved 5 May 2009 . 
+ ↑ Stober, Ingrid; Bucher, Kurt (2021), "Enhanced-Geothermal-Systems (EGS), Hot-Dry-Rock Systems (HDR), Deep-Heat-Mining (DHM)", Geothermal Energy , Cham: Springer International Publishing, pp.   205– 225, doi : 10.1007/978-3-030-71685-1_9 , ISBN   978-3-030-71684-4 
+ ↑ "Australia's Renewable Energy Future inc Cooper Basin & geothermal map of Australia Retrieved 15 August 2015" (PDF) . Archived from the original (PDF) on 27 March 2015. 
+ ↑ Archer, Rosalind (2020), "Geothermal Energy", Future Energy , Elsevier, pp.   431– 445, doi : 10.1016/b978-0-08-102886-5.00020-7 , ISBN   978-0-08-102886-5 
+ ↑ Singh, P.K.; Kaur, G.A.; Shandilya, M.; Rana, P.; Rai, R.; Mishra, Y.K.; Syväjärvi, M.; Tiwari, A. (December 2023). "Trends in piezoelectric nanomaterials towards green energy scavenging nanodevices". Materials Today Sustainability . 24 100583. Bibcode : 2023MTSus..2400583S . doi : 10.1016/j.mtsust.2023.100583 . 
+ ↑ Brusa, Eugenio; Carrera, Anna; Delprete, Cristiana (8 December 2023). "A Review of Piezoelectric Energy Harvesting: Materials, Design, and Readout Circuits" . Actuators . 12 (12): 457. doi : 10.3390/act12120457 . 
+ ↑ Wang, Zhong Lin; Wu, Wenzhuo (March 2014). "Piezotronics and piezo-phototronics: fundamentals and applications". National Science Review . 1 (1): 62– 90. doi : 10.1093/nsr/nwt002 . 
+ ↑ Chandrasekaran, Sundaram; Bowen, Chris; Roscow, James; Zhang, Yan; Dang, Dinh Khoi; Kim, Eui Jung; Misra, R.D.K.; Deng, Libo; Chung, Jin Suk; Hur, Seung Hyun (February 2019). "Micro-scale to nano-scale generators for energy harvesting: Self powered piezoelectric, triboelectric and hybrid devices" . Physics Reports . 792 : 1– 33. Bibcode : 2019PhR...792....1C . doi : 10.1016/j.physrep.2018.11.001 . 
+ ↑ Zhang, Tongtong; Yang, Tao; Zhang, Mei; Bowen, Chris R.; Yang, Ya (November 2020). "Recent Progress in Hybridized Nanogenerators for Energy Scavenging" . iScience . 23 (11) 101689. Bibcode : 2020iSci...23j1689Z . doi : 10.1016/j.isci.2020.101689 . PMC   7644567 . PMID   33196020 . 
+ ↑ Bußmann, Agnes; Leistner, Henry; Zhou, Doris; Wackerle, Martin; Congar, Yücel; Richter, Martin; Hubbuch, Jürgen (30 August 2021). "Piezoelectric Silicon Micropump for Drug Delivery Applications" . Applied Sciences . 11 (17): 8008. doi : 10.3390/app11178008 . 
+ ↑ Xianfa, Cai; Yiqin, Wang; Yunqi, Cao; Wenyu, Yang; Tian, Xia; Wei, Li (January 2024). "Flexural-Mode Piezoelectric Resonators: Structure, Performance, and Emerging Applications in Physical Sensing Technology, Micropower Systems, and Biomedicine" . Sensors . 24 (11): 3625. Bibcode : 2024Senso..24.3625C . doi : 10.3390/s24113625 . PMC   11175270 . PMID   38894417 . 
+ ↑ Innovation Outlook: Ocean Energy Technologies (PDF) . Abu Dabi: International Renewable Energy Agency . 2020. pp.   51– 52. ISBN   978-92-9260-287-1 . Archived from the original (PDF) on 20 March 2024. 
+ ↑ Gao, Zhen; Bingham, Harry B.; Ingram, David; Kolios, Athanasios; Karmakar, Debabrata; Utsunomiya, Tomoaki; Catipovic, Ivan; Colicchio, Giuseppina; Rodrigues, Jos (2018), "Committee V.4: Offshore Renewable Energy" , Proceedings of the 20th International Ship and Offshore Structures Congress (ISSC 2018) Volume 2 , Progress in Marine Science and Technology, IOS Press, p.   253, doi : 10.3233/978-1-61499-864-8-193 , hdl : 11250/2582171 , retrieved 9 May 2024 
+ ↑ Park, Eun Soo; Lee, Tai Sik (November 2021). "The rebirth and eco-friendly energy production of an artificial lake: A case study on the tidal power in South Korea" . Energy Reports . 7 : 4681– 4696. Bibcode : 2021EnRep...7.4681P . doi : 10.1016/j.egyr.2021.07.006 . 
+ ↑ Warak, Pankaj; Goswami, Prerna (25 September 2020). "Overview of Generation of Electricity using Tidal Energy". 2020 IEEE First International Conference on Smart Technologies for Power, Energy and Control (STPEC) . IEEE. p.   3. doi : 10.1109/STPEC49749.2020.9297690 . ISBN   978-1-7281-8873-7 . 
+ ↑ "Major infrared breakthrough could lead to solar power at night" . 17 May 2022 . Retrieved 21 May 2022 . 
+ ↑ Byrnes, Steven; Blanchard, Romain; Capasso, Federico (2014). "Harvesting renewable energy from Earth's mid-infrared emissions" . PNAS . 111 (11): 3927– 3932. Bibcode : 2014PNAS..111.3927B . doi : 10.1073/pnas.1402036111 . PMC   3964088 . PMID   24591604 . 
+ ↑ "In bloom: growing algae for biofuel" . 9 October 2008 . Retrieved 31 December 2021 . 
+ ↑ Rodgers, Erica; Gertsen, Ellen; Sotudeh, Jordan; Mullins, Carie; Hernandez, Amanda; Le, Hanh Nguyen; Smith, Phil; Joseph, Nikoli (11 January 2024). Space-Based Solar Power (PDF) . Office of Technology, Policy and Strategy. Washington, DC: NASA . 
+ ↑ "Water vapor in the atmosphere may be prime renewable energy source" . techxplore.com . Archived from the original on 9 June 2020 . Retrieved 9 June 2020 . 
+ ↑ "Pyroprocessing Technologies: Recycling Used Nuclear Fuel For A Sustainable Energy Future" (PDF) . Argonne National Laboratory. Archived (PDF) from the original on 19 February 2013. 
+ ↑ Cohen, Bernard L. "Breeder reactors: A renewable energy source" (PDF) . Argonne National Laboratory. Archived from the original (PDF) on 14 January 2013 . Retrieved 25 December 2012 . 
+ ↑ Weinberg, A. M., and R. P. Hammond (1970). "Limits to the use of energy," Am. Sci. 58, 412. 
+ ↑ "There's Atomic Energy in Granite" . 8 February 2013. 
+ ↑ Collings AF and Critchley C (eds). Artificial Photosynthesis   – From Basic Biology to Industrial Application (Wiley-VCH Weinheim 2005) p ix. 
+ ↑ Faunce, Thomas A.; Lubitz, Wolfgang ; Rutherford, A. W. (Bill); MacFarlane, Douglas; Moore, Gary F.; Yang, Peidong; Nocera, Daniel G.; Moore, Tom A.; Gregory, Duncan H.; Fukuzumi, Shunichi; Yoon, Kyung Byung; Armstrong, Fraser A.; Wasielewski, Michael R.; Styring, Stenbjorn (2013). "Energy and environment policy case for a global project on artificial photosynthesis". Energy & Environmental Science . 6 (3). RSC Publishing: 695. Bibcode : 2013EnEnS...6..695F . doi : 10.1039/C3EE00063J . 
+ ↑ Van Noorden, Richard (23 May 2012). " 'Artificial leaf' faces economic hurdle" . Nature . doi : 10.1038/nature.2012.10703 . 
+ ↑ Cogdell, Richard J; Brotosudarmo, Tatas HP; Gardiner, Alastair T; Sanchez, Pedro M; Cronin, Leroy (November 2010). "Artificial photosynthesis – solar fuels: current status and future prospects". Biofuels . 1 (6): 861– 876. Bibcode : 2010Biofu...1..861C . doi : 10.4155/bfs.10.62 . 
+ ↑ "New Energy World magazine" . Energy Institute . Retrieved 17 October 2025 . 
+ 1 2 3 Angliviel de La Beaumelle, Nils; Blok, Kornelis; de Chalendar, Jacques A.; Clarke, Leon; Hahmann, Andrea N.; Huster, Jonathan; Nemet, Gregory F.; Suri, Dhruv; Wild, Thomas B.; Azevedo, Inês M.L. (13 November 2023). "The Global Technical, Economic, and Feasible Potential of Renewable Electricity". Annual Review of Environment and Resources . 48 (1): 419– 449. Bibcode : 2023ARER...48..419A . doi : 10.1146/annurev-environ-112321-091140 . 
+ ↑ Gray, Helena (22 April 2021). "Solar and wind can meet world energy demand 100 times over" . Carbon Tracker Initiative . Retrieved 17 October 2025 . 
+ ↑ "Solar and wind can meet world energy demand 100 times over" . carbontracker.org . 23 April 2021. Archived from the original on 23 April 2021. 
+ ↑ Hoes, O. A.; Meijer, L. J.; Van Der Ent, R. J.; Van De Giesen, N. C. (2017). "Systematic high-resolution assessment of global hydropower potential" . PLOS ONE . 12 (2) e0171844. Bibcode : 2017PLoSO..1271844H . doi : 10.1371/journal.pone.0171844 . PMC   5298288 . PMID   28178329 . 
+ ↑ "Global geothermal potential for electricity generation using EGS technologies – the Future of Geothermal Energy – Analysis" . 
+ ↑ "Solar and wind can meet world energy demand 100 times over" . 22 April 2021. 
+ ↑ Chart titled "Technologies that become cheaper with increasing production enter a virtuous cycle" in: Roser, Max (1 December 2020). "Why did renewables become so cheap so fast?" . Our World in Data. Archived from the original on 16 April 2026. 
+ ↑ "Share of electricity generated by renewables" . Our World in Data (OWID). Archived from the original on 15 February 2026. OWID credits Ember (2026); Energy Institute - Statistical Review of World Energy (2025). 
+ ↑ §   1.1 of Fulghum, Nicolas; Suarez, Wilmar; Altieri, Katye; Rangelova, Kostantsa (21 April 2026). "Global Electricity Review 2026" (PDF) . Ember Energy. Archived (PDF) from the original on 24 April 2026. Led by solar, clean power sources met all new electricity demand in 2025 
+ ↑ "Renewable Energy Market Update - May 2022 – Analysis" . IEA . 11 May 2022. p.   5 . Retrieved 27 June 2022 . 
+ ↑ Gunter, Linda Pentz (5 February 2017). "Trump Is Foolish to Ignore the Flourishing Renewable Energy Sector" . Truthout . Archived from the original on 6 February 2017 . Retrieved 6 February 2017 . 
+ ↑ Jaeger, Joel; Walls, Ginette; Clarke, Ella; Altamirano, Juan-Carlos; Harsono, Arya; Mountford, Helen; Burrow, Sharan; Smith, Samantha; Tate, Alison (18 October 2021). The Green Jobs Advantage: How Climate-friendly Investments Are Better Job Creators (Report). World Resources Institute. 
+ ↑ "Renewable Energy Employment by Country" . /Statistics/View-Data-by-Topic/Benefits/Renewable-Energy-Employment-by-Country . Retrieved 29 April 2022 . 
+ ↑ Vakulchuk, Roman; Overland, Indra (1 April 2024). "The failure to decarbonize the global energy education system: Carbon lock-in and stranded skill sets" . Energy Research & Social Science . 110 103446. Bibcode : 2024ERSS..11003446V . doi : 10.1016/j.erss.2024.103446 . hdl : 11250/3128127 . 
+ ↑ "Renewables – Global Energy Review 2021 – Analysis" . IEA . Archived from the original on 23 November 2021 . Retrieved 22 November 2021 . 
+ ↑ REN21 Renewables Global Status Report 2021 . 
+ ↑ Vigliarolo, Brandon (1 April 2026). "Renewables reached nearly 50% of global electricity capacity last year" . The Register . Retrieved 5 April 2026 . 
+ ↑ Renewable capacity statistics 2026 (PDF) . March 2026. ISBN   978-92-9260-725-8 . Retrieved 5 April 2026 . {{ cite book }} : | website= ignored ( help ) 
+ ↑ "Renewable Energy and Jobs – Annual Review 2020" . irena.org . 29 September 2020. Archived from the original on 6 December 2020 . Retrieved 2 December 2020 . 
+ ↑ n.a. (November 2023). "World Energy Employment 2023" (PDF) . International Energy Agency . p.   5 . Retrieved 23 April 2023 . 
+ ↑ Bogdanov, Dmitrii; Gulagi, Ashish; Fasihi, Mahdi; Breyer, Christian (1 February 2021). "Full energy sector transition towards 100% renewable energy supply: Integrating power, heat, transport and industry sectors including desalination" . Applied Energy . 283 116273. Bibcode : 2021ApEn..28316273B . doi : 10.1016/j.apenergy.2020.116273 . 
+ ↑ Teske, Sven, ed. (2019). Achieving the Paris Climate Agreement Goals . doi : 10.1007/978-3-030-05843-2 . ISBN   978-3-030-05842-5 . [ page   needed ] 
+ ↑ Jacobson, Mark Z.; von Krauland, Anna-Katharina; Coughlin, Stephen J.; Dukas, Emily; Nelson, Alexander J. H.; Palmer, Frances C.; Rasmussen, Kylie R. (2022). "Low-cost solutions to global warming, air pollution, and energy insecurity for 145 countries". Energy & Environmental Science . 15 (8): 3343– 3359. Bibcode : 2022EnEnS..15.3343J . doi : 10.1039/D2EE00722C . 
+ ↑ "Climate Change 2022: Mitigation of Climate Change" . IPCC Sixth Assessment Report . Retrieved 6 April 2022 . 
+ ↑ "Renewables 2022 Global Status Report" . www.ren21.net . Retrieved 20 June 2022 . 
+ ↑ Mishra, Twesh. "India to develop and build first indigenous Hydrogen Fuel Cell Vessel" . The Economic Times . Retrieved 9 May 2022 . 
+ ↑ Trakimavicius, Lukas (December 2023). "Mission Net-Zero: Charting the Path for E-fuels in the Military" . NATO Energy Security Centre of Excellence. 
+ ↑ "IEA SHC || Solar Heat Worldwide" . www.iea-shc.org . Retrieved 24 June 2022 . 
+ ↑ "Geothermal Heat Pumps - Department of Energy" . energy.gov . Archived from the original on 16 January 2016 . Retrieved 14 January 2016 . 
+ ↑ "Fast Growth for Copper-Based Geothermal Heating & Cooling" . Archived from the original on 26 April 2019 . Retrieved 26 April 2019 . 
+ ↑ "Renewables 2021 Global Status Report" . www.ren21.net . Retrieved 25 April 2022 . 
+ 1 2 "Global power sector saved fuel costs of USD 520 billion last year thanks to renewables, says new IRENA report" . IRENA.org . International Renewable Energy Agency (IRENA). 29 August 2023. Archived from the original on 29 August 2023. 
+ ↑ Vatankhah Ghadim, Hadi; Haas, Jannik; Breyer, Christian; Gils, Hans Christian; Reed, E. Grant; Xiao, Mengzhu; Peer, Rebecca (15 July 2025). "Are we too pessimistic? Cost projections for solar photovoltaics, wind power, and batteries are over-estimating actual costs globally" . Applied Energy . 390 . 
+ 1 2 IRENA RE Capacity 2020 
+ 1 2 3 IRENA RE Statistics 2020 PROD(GWh)/(CAP(GW)*8760h) 
+ 1 2 IRENA RE Costs 2020 , p.   13 
+ ↑ IRENA RE Costs 2020 , p.   14 
+ ↑ "Energy Transition Investment Hit $500 Billion in 2020 – For First Time" . BloombergNEF . (Bloomberg New Energy Finance). 19 January 2021. Archived from the original on 19 January 2021. 
+ 1 2 Catsaros, Oktavia (26 January 2023). "Global Low-Carbon Energy Technology Investment Surges Past $1 Trillion for the First Time" . Bloomberg NEF (New Energy Finance). Figure 1. Archived from the original on 22 May 2023. Defying supply chain disruptions and macroeconomic headwinds, 2022 energy transition investment jumped 31% to draw level with fossil fuels 
+ 1 2 "Global Clean Energy Investment Jumps 17%, Hits $1.8 Trillion in 2023, According to BloombergNEF Report" . BNEF.com . Bloomberg NEF. 30 January 2024. Archived from the original on 28 June 2024. Start years differ by sector but all sectors are present from 2020 onwards. 
+ 1 2 2024 data: "Energy Transition Investment Trends 2025 / Abridged report" (PDF) . BloombergNEF. 30 January 2025. p.   9. Archived (PDF) from the original on 2 February 2025. 
+ ↑ Data for 2025 from "BloombergNEF Finds Global Energy Transition Investment Reached Record $2.3 Trillion in 2025, Up 8% from 2024" . BloombergNEF. 26 January 2026. Archived from the original on 26 January 2026. 
+ ↑ "World Energy Investment 2025 / Executive summary" . International Energy Agency. 2025. Archived from the original on 7 June 2025. IEA. Licence: CC BY 4.0 
+ ↑ Data: BP Statistical Review of World Energy, and Ember Climate (3 November 2021). "Electricity consumption from fossil fuels, nuclear and renewables, 2020" . OurWorldInData.org . Our World in Data consolidated data from BP and Ember. Archived from the original on 3 November 2021. 
+ ↑ Chrobak, Ula (28 January 2021). "Solar power got cheap. So why aren't we using it more?" . Popular Science . Infographics by Sara Chodosh. Archived from the original on 29 January 2021. Chodosh's graphic is derived from data in "Lazard's Levelized Cost of Energy Version 14.0" (PDF) . Lazard.com . Lazard. 19 October 2020. Archived (PDF) from the original on 28 January 2021. 
+ ↑ "Levelized Cost of Energy +" (PDF) . Lazard. 13 July 2026. pp.   11, 13. Archived (PDF) from the original on 14 July 2026. 
+ ↑ Fig. S2 of "Renewable Power Generation Costs in 2025" (PDF) . International Renewable Energy Agency (IRENA). 2026. p.   15. ISBN   978-92-9260-749-4 . {{ cite web }} : CS1 maint: periodical has ISBN ( link ) 
+ ↑ "Majority of New Renewables Undercut Cheapest Fossil Fuel on Cost" . IRENA.org . International Renewable Energy Agency. 22 June 2021. Archived from the original on 22 June 2021. ● Infographic (with numerical data) and archive thereof 
+ ↑ Renewable Energy Generation Costs in 2022 (PDF) . International Renewable Energy Agency (IRENA). 2023. p.   57. ISBN   978-92-9260-544-5 . Archived (PDF) from the original on 30 August 2023. Fig. 1.11 
+ ↑ Roser, Max (December 2020). "Why did renewables become so cheap so fast?" . Our World in Data . Retrieved 4 June 2022 . 
+ ↑ Heidari, Negin; Pearce, Joshua M. (March 2016). "A review of greenhouse gas emission liabilities as the value of renewable energy for mitigating lawsuits for climate change related damages". Renewable and Sustainable Energy Reviews . 55 : 899– 908. Bibcode : 2016RSERv..55..899H . doi : 10.1016/j.rser.2015.11.025 . 
+ 1 2 "Global Trends in Renewable Energy Investment 2020" . Capacity4dev / European Commission . Frankfurt School-UNEP Collaborating Centre for Climate & Sustainable Energy Finance; BloombergNEF. 2020. Archived from the original on 11 May 2021 . Retrieved 16 February 2021 . 
+ ↑ Ritchie, Hannah; Roser, Max; Rosado, Pablo (27 October 2022). "Energy" . Our World in Data . 
+ ↑ "Renewable capacity statistics 2025" . www.irena.org . 26 March 2025 . Retrieved 13 September 2025 . 
+ ↑ Twidale, Susanna (21 May 2026). "Global wind and solar power outpace gas for first time in April, report shows" . Reuters . Retrieved 9 June 2026 . 
+ ↑ Rangelova, Kostantsa; Shah, Ruchita; Petrovich, Beatrice; Assan, Sabina; Butler-Sloss, Sam (13 August 2025). "Marking five years of Ember with five charts on the global energy transition" . Ember Energy. Archived from the original on 15 November 2025. Ember credits: Wind and solar generation data from Ember's yearly electricity data. Nuclear, gas, coal and hydro data from Pinto et al. (2023). This graphic is based on a chart by Nat Bullard https://www.nathanielbullard.com/presentations . Data only shown until the point where each source generated just over 2,000 TWh. 
+ ↑ Bond, Kingsmill; Butler-Sloss, Sam; Lovins, Amory; Speelman, Laurens; Topping, Nigel (13 June 2023). "Report / 2023 / X-Change: Electricity / On track for disruption" . Rocky Mountain Institute. Archived from the original on 13 July 2023. 
+ ↑ "Record clean energy spending is set to help global energy investment grow by 8% in 2022 - News" . IEA . 22 June 2022 . Retrieved 27 June 2022 . 
+ ↑ Claeys, Bram; Rosenow, Jan; Anderson, Megan (27 June 2022). "Is REPowerEU the right energy policy recipe to move away from Russian gas?" . www.euractiv.com . Retrieved 27 June 2022 . 
+ ↑ Gan, Kai Ernn; Taikan, Oki; Gan, Thian Yew; Weis, Tim; Yamazaki, Dai; Schüttrumpf, Holger (November 2023). "Enhancing Renewable Energy Systems, Contributing to Sustainable Development Goals of United Nation and Building Resilience Against Climate Change Impacts" . Energy Technology . 11 (11). doi : 10.1002/ente.202300275 . 
+ ↑ "DNV GL's Energy Transition Outlook 2018" . eto.dnvgl.com . Archived from the original on 23 November 2021 . Retrieved 16 October 2018 . 
+ 1 2 "Top 5 renewable energy projects in the Middle East" . 17 February 2023. 
+ ↑ "Corporate Renewable Energy Buyers Principles" (PDF) . WWF and World Resources Institute. July 2014. Archived (PDF) from the original on 11 July 2021 . Retrieved 12 July 2021 . 
+ ↑   This article incorporates text published under the British Open   Government   Licence : Department for Business, Energy and Industrial Strategy, Aggregated energy balances showing proportion of renewables in supply and demand , published 24 September 2020, accessed 12 July 2021 
+ ↑ "Developing Countries Lack Means To Acquire More Efficient Technologies" . ScienceDaily . Retrieved 29 November 2020 . 
+ ↑ Frankfurt School-UNEP Centre/BNEF. Global trends in renewable energy investment 2020 , p. 42. 
+ ↑ "Changes in primary energy demand by fuel and region in the Stated Policies Scenario, 2019-2030 – Charts – Data & Statistics" . IEA . Retrieved 29 November 2020 . 
+ ↑ Energy for Development: The Potential Role of Renewable Energy in Meeting the Millennium Development Goals pp. 7-9. 
+ ↑ Kabintie, Winnie (5 September 2023). "Africa Climate Summit - opportunities for harnessing renewable energy" . The Kenya Forum . Retrieved 5 September 2023 . 
+ ↑ "Ethiopia's GERD dam: A potential boon for all, experts say – DW – 04/08/2023" . dw.com . Retrieved 5 September 2023 . 
+ ↑ Wanjala, Peter (22 April 2022). "Noor Ouarzazate Solar Complex in Morocco, World's Largest Concentrated Solar Power Plant" . Constructionreview . Retrieved 5 September 2023 . 
+ ↑ Ritchie, Hannah; Roser, Max (2021). "What are the safest and cleanest sources of energy?" . Our World in Data . Archived from the original on 15 January 2024. Data sources: Markandya & Wilkinson (2007); UNSCEAR (2008; 2018); Sovacool et al. (2016); IPCC AR5 (2014); Pehl et al. (2017); Ember Energy (2021). 
+ 1 2 "Policies" . www.iea.org . Archived from the original on 8 April 2019 . Retrieved 8 April 2019 . 
+ ↑ "IRENA – International Renewable Energy Agency" (PDF) . www.irena.org . 2 August 2023. Archived from the original on 26 December 2010. 
+ ↑ "IRENA Membership" . /irenamembership . Archived from the original on 6 April 2019 . Retrieved 8 April 2019 . 
+ ↑ Leone, Steve (25 August 2011). "U.N. Secretary-General: Renewables Can End Energy Poverty" . Renewable Energy World . Archived from the original on 28 September 2013 . Retrieved 27 August 2011 . 
+ 1 2 REN21 Renewables Global Futures Report 2017 . 
+ ↑ Ken Berlin, Reed Hundt, Marko Muro, and Devashree Saha. "State Clean Energy Banks: New Investment Facilities for Clean Energy Deployment" 
+ ↑ "Putin promises gas to a Europe struggling with soaring prices" . Politico . 13 October 2021. Archived from the original on 23 October 2021 . Retrieved 23 October 2021 . 
+ ↑ Simon, Frédéric (12 December 2019). "The EU releases its Green Deal. Here are the key points" . Climate Home News . Archived from the original on 23 October 2021 . Retrieved 23 October 2021 . 
+ 1 2 Bearak, Max; Rojanasakul, Mira (14 August 2025). "How China Went From Clean Energy Copycat to Global Innovator" . The New York Times . Archived from the original on 15 August 2025. 
+ ↑ "Global landscape of renewable energy finance 2023" . www.irena.org . 22 February 2023 . Retrieved 21 March 2024 . 
+ ↑ "Clean energy is boosting economic growth – Analysis" . IEA . 18 April 2024 . Retrieved 30 April 2024 . 
+ ↑ n.a. (May 2024). "Strategies for Affordable and Fair Clean Energy Transitions" (PDF) . International Energy Agency . Retrieved 30 May 2024 . 
+ ↑ Utah House Bill 430, Session 198 
+ ↑ "Renewable energy: Definitions from Dictionary.com" . Dictionary.com website . Lexico Publishing Group, LLC . Retrieved 25 August 2007 . 
+ 1 2 "Renewable and Alternative Fuels Basics 101" . Energy Information Administration . Retrieved 17 December 2007 . 
+ ↑ "Renewable Energy Basics" . National Renewable Energy Laboratory. Archived from the original on 11 January 2008 . Retrieved 17 December 2007 . 
+ ↑ Brundtland, Gro Harlem (20 March 1987). "Chapter 7: Energy: Choices for Environment and Development" . Our Common Future: Report of the World Commission on Environment and Development . Oslo . Retrieved 27 March 2013 . Today's primary sources of energy are mainly non-renewable: natural gas, oil, coal, peat, and conventional nuclear power. There are also renewable sources, including wood, plants, dung, falling water, geothermal sources, solar, tidal, wind, and wave energy, as well as human and animal muscle power. Nuclear reactors that produce their own fuel ('breeders') and eventually fusion reactors are also in this category 
+ ↑ epa.gov Geothermal Energy Production Waste. 
+ ↑ "The Geopolitics of Renewable Energy" . ResearchGate . Archived from the original on 28 July 2020 . Retrieved 26 June 2019 . 
+ ↑ Overland, Indra; Bazilian, Morgan; Ilimbek Uulu, Talgat; Vakulchuk, Roman; Westphal, Kirsten (2019). "The GeGaLo index: Geopolitical gains and losses after energy transition" . Energy Strategy Reviews . 26 100406. Bibcode : 2019EneSR..2600406O . doi : 10.1016/j.esr.2019.100406 . hdl : 11250/2634876 . 
+ ↑ Mercure, J.-F.; Salas, P.; Vercoulen, P.; Semieniuk, G.; Lam, A.; Pollitt, H.; Holden, P. B.; Vakilifard, N.; Chewpreecha, U.; Edwards, N. R.; Vinuales, J. E. (4 November 2021). "Reframing incentives for climate policy action" . Nature Energy . 6 (12): 1133– 1143. Bibcode : 2021NatEn...6.1133M . doi : 10.1038/s41560-021-00934-2 . hdl : 10871/127743 . 
+ ↑ Overland, Indra (1 March 2019). "The geopolitics of renewable energy: Debunking four emerging myths" . Energy Research & Social Science . 49 : 36– 40. Bibcode : 2019ERSS...49...36O . doi : 10.1016/j.erss.2018.10.018 . hdl : 11250/2579292 . 
+ ↑ "The transition to clean energy will mint new commodity superpowers" . The Economist . Retrieved 2 May 2022 . 
+ ↑ Shepherd, Christian (29 March 2024). "China is all in on green tech. The U.S. and Europe fear unfair competition" . The Washington Post . Retrieved 10 April 2024 . 
+ 1 2 "In-depth Q&A: Does the world need hydrogen to solve climate change?" . Carbon Brief . 30 November 2020. Archived from the original on 1 December 2020 . Retrieved 10 November 2021 . 
+ ↑ Van de Graaf, Thijs; Overland, Indra; Scholten, Daniel; Westphal, Kirsten (1 December 2020). "The new oil? The geopolitics and international governance of hydrogen" . Energy Research & Social Science . 70 101667. Bibcode : 2020ERSS...7001667V . doi : 10.1016/j.erss.2020.101667 . PMC   7326412 . PMID   32835007 . 
+ ↑ World Energy Transitions Outlook: 1.5°C Pathway . Abu Dhabi: International Renewable Energy Agency . 2021. p.   24. ISBN   978-92-9260-334-2 . 
+ ↑ "The Geopolitics Of Renewable Energy" (PDF) . Center on Global Energy Policy Columbia University SIPA / Belfer Center for Science and International Affairs Harvard Kennedy School. 2017. Archived from the original (PDF) on 4 February 2020 . Retrieved 26 January 2020 . 
+ ↑ Ince, Matt; Sikorsky, Erin (13 December 2023). "The Uncomfortable Geopolitics of the Clean Energy Transition" . Lawfare . Retrieved 10 April 2024 . 
+ ↑ Krane, Jim; Idel, Robert (1 December 2021). "More transitions, less risk: How renewable energy reduces risks from mining, trade and political dependence". Energy Research & Social Science . 82 102311. Bibcode : 2021ERSS...8202311K . doi : 10.1016/j.erss.2021.102311 . 
+ 1 2 "EU countries look to Brussels for help with 'unprecedented' energy crisis" . Politico . 6 October 2021. Archived from the original on 21 October 2021 . Retrieved 23 October 2021 . 
+ ↑ "European Energy Crisis Fuels Carbon Trading Expansion Concerns" . Bloomberg . 6 October 2021. Archived from the original on 22 October 2021 . Retrieved 23 October 2021 . 
+ ↑ "The Green Brief: East-West EU split again over climate" . Euractiv . 20 October 2021. Archived from the original on 20 October 2021 . Retrieved 23 October 2021 . 
+ ↑ "In Global Energy Crisis, Anti-Nuclear Chickens Come Home to Roost" . Foreign Policy . 8 October 2021. Archived from the original on 22 October 2021 . Retrieved 23 October 2021 . 
+ ↑ "Europe's energy crisis: Continent 'too reliant on gas,' says von der Leyen" . Euronews . 20 October 2021. Archived from the original on 24 October 2021 . Retrieved 23 October 2021 . 
+ ↑ Morgan, Jennifer (6 January 2026). "The battle over a global energy transition is on between petro‑states and electro‑states – here's what to watch for in 2026" . The Conversation . 
+ ↑ Butler-Sloss, Sam; Walter, Daan (22 October 2025). "What is electrotech and what will it mean for geopolitics and energy security?" . World Economic Forum . 
+ ↑ Douglas, Bruce; Bond, Kingsmill (11 November 2025). "The end of the petrostate; how electrotech is reshaping the global power balance" . Sustainable Views . 
+ ↑ Rawlings, William (19 May 2025). "The Rise of Energy Dynamism: Electrostates vs Petrostates" . St. Antony's International Review . 
+ ↑ White, Edward (10 October 2025). "The 'profound' global impact of China's rise as an electrostate" . Financial Times . 
+ ↑ Thomas, Tobi (1 September 2020). "Mining needed for renewable energy 'could harm biodiversity' " . Nature Communications. The Guardian . Archived from the original on 6 October 2020 . Retrieved 18 October 2020 . 
+ ↑ Marín, Anabel; Goya, Daniel (December 2021). "Mining—The dark side of the energy transition" . Environmental Innovation and Societal Transitions . 41 : 86– 88. Bibcode : 2021EIST...41...86M . doi : 10.1016/j.eist.2021.09.011 . 
+ ↑ "UN highlights urgent need to tackle impact of likely electric car battery production boom" . United Nations . 28 June 2020 . Retrieved 26 March 2025 . 
+ ↑ Hemingway Jaynes, Cristen (4 April 2024). "Africa's 'Mining Boom' Threatens More Than a Third of Its Great Apes" . the German Centre for Integrative Biodiversity Research (iDiv). Ecowatch . Retrieved 10 April 2024 . 
+ 1 2 3 "The Role of Critical Minerals in Clean Energy Transitions (presentation and full report)" . IEA. 5 May 2021 . Retrieved 14 November 2022 . 
+ ↑ Ali, Saleem (2 June 2020). "Deep sea mining: the potential convergence of science, industry and sustainable development?" . Springer Nature Sustainability Community . Archived from the original on 16 October 2021 . Retrieved 20 January 2021 . 
+ ↑ "Deep Sea Mining May Start in 2023, but Environmental Questions Persist" . The Maritime Executive . Retrieved 23 May 2022 . 
+ ↑ "The world needs more battery metals. Time to mine the seabed" . The Economist . Retrieved 31 May 2024 . 
+ ↑ Law, Yao-Hua (April 2019). "Radioactive waste standoff could slash high tech's supply of rare earth elements". Science . doi : 10.1126/science.aax5411 . 
+ ↑ McGrath, Matt (25 March 2020). "Climate change: Green energy plant threat to wilderness areas" . BBC News . Archived from the original on 30 May 2020 . Retrieved 27 March 2020 . 
+ ↑ "Habitats Under Threat From Renewable Energy Development" . technologynetworks.com . 27 March 2020. Archived from the original on 27 March 2020 . Retrieved 27 March 2020 . 
+ ↑ "Mining needed for renewable energy 'could harm biodiversity' " . The Guardian . 1 September 2020. Archived from the original on 6 October 2020 . Retrieved 8 October 2020 . 
+ ↑ "Mining for renewable energy could be another threat to the environment" . phys.org . Archived from the original on 3 October 2020 . Retrieved 8 October 2020 . 
+ ↑ Sonter, Laura J.; Dade, Marie C.; Watson, James E. M.; Valenta, Rick K. (1 September 2020). "Renewable energy production will exacerbate mining threats to biodiversity" . Nature Communications . 11 (1): 4174. Bibcode : 2020NatCo..11.4174S . doi : 10.1038/s41467-020-17928-5 . PMC   7463236 . PMID   32873789 . Text and images are available under a Creative Commons Attribution 4.0 International License "CC BY 4.0 Deed | Attribution 4.0 International | Creative Commons" . Retrieved 21 October 2020 . . 
+ ↑ Quinones, Laura (26 March 2025). "Can renewable energy survive climate change?" . United Nations . Retrieved 26 March 2025 . 
+ ↑ European Investment Bank (20 April 2022). The EIB Climate Survey 2021-2022 - Citizens call for green recovery . European Investment Bank. ISBN   978-92-861-5223-8 . 
+ ↑ "The EIB Climate Survey, Fifth Edition" (PDF) . European Investment Bank. 2023. p.   9. doi : 10.2867/055829 . Archived (PDF) from the original on 24 December 2025. 
+ ↑ Chiu, Allyson; Guskin, Emily; Clement, Scott (3 October 2023). "Americans don't hate living near solar and wind farms as much as you might think" . The Washington Post . Archived from the original on 3 October 2023. 
+ ↑ van Zalk, John; Behrens, Paul (1 December 2018). "The spatial extent of renewable and non-renewable power generation: A review and meta-analysis of power densities and their application in the U.S." Energy Policy . 123 : 83– 91. Bibcode : 2018EnPol.123...83V . doi : 10.1016/j.enpol.2018.08.023 . hdl : 1887/64883 . 
+ ↑ Leake, Jonathan. "UK's largest solar farm 'will destroy north Kent landscape' " . The Times . Archived from the original on 20 June 2020 . Retrieved 21 June 2020 . 
+ ↑ McGwin, Kevin (20 April 2018). "Sámi mount new challenge to legality of Norway's largest wind farm" . ArcticToday . Archived from the original on 28 July 2020 . Retrieved 21 June 2020 . 
+ ↑ "},"date":{"wt":"7 August 2018"},"title":{"wt":"Why do so many people in France hate wind farms?"},"url":{"wt":"https://www.thelocal.fr/20180807/why-do-some-people-in-france-hate-wind-farms-so-much/"},"url-status":{"wt":"live"},"archive-url":{"wt":"https://web.archive.org/web/20210725182107/https://www.thelocal.fr/20180807/why-do-some-people-in-france-hate-wind-farms-so-much/"},"archive-date":{"wt":"25 July 2021"},"access-date":{"wt":"25 July 2021"},"work":{"wt":"The Local"},"location":{"wt":"France"}},"i":0}}]}'/> "Why do so many people in France hate wind farms?" . The Local . France. 7 August 2018. Archived from the original on 25 July 2021 . Retrieved 25 July 2021 . 
+ ↑ "America needs a new environmentalism" . The Economist . Archived from the original on 29 April 2024 . Retrieved 5 July 2026 . 
+ ↑ Hogan, Brianne (3 March 2020). "Is it possible to build wildlife-friendly windfarms?" . BBC . 
+ ↑ Spencer, Brian Kennedy and Alison (8 June 2021). "Most Americans support expanding solar and wind energy, but Republican support has dropped" . Pew Research Center . Retrieved 31 May 2024 . 
+ ↑ Witkowska-Dabrowska, Mirosława; Świdyńska, Natalia; Napiórkowska-Baryła, Agnieszka (1 December 2021). "Attitudes of Communities in Rural Areas towards the Development of Wind Energy" . Energies . 14 (23): 8052. doi : 10.3390/en14238052 . 
+ ↑ "Limits to growth: Resistance against wind power in Germany" . Clean Energy Wire . 12 June 2017 . Retrieved 31 May 2024 . 
+ ↑ Kieffe, Andrew (2026). "Rebutting 38 False Claims About Solar, Wind, Electric Vehicles, and Battery Storage" . Sabin Center for Climate Change Law . 
+ ↑ Gabbatiss, Josh; Lempriere, Molly (28 August 2025). "Factcheck: 16 misleading myths about solar" . Carbon Brief . Retrieved 5 July 2026 . 
+ ↑ "Against the Wind: A Map of the Anti-Offshore Wind Network in the Eastern United States" . Climate and Development Lab . Brown University . 12 December 2023 . Retrieved 5 July 2026 . 
+ 1 2 Hogan, Jessica L.; Warren, Charles R.; Simpson, Michael; McCauley, Darren (December 2022). "What makes local energy projects acceptable? Probing the connection between ownership structures and community acceptance". Energy Policy . 171 113257. Bibcode : 2022EnPol.17113257H . doi : 10.1016/j.enpol.2022.113257 . hdl : 10023/26074 . 
+ ↑ Department of Energy & Climate Change (2011). UK Renewable Energy Roadmap (PDF) Archived 10 October 2017 at the Wayback Machine p. 35. 
+ ↑ DTI, Co-operative Energy: Lessons from Denmark and Sweden [ permanent dead link ] , Report of a DTI Global Watch Mission, October 2004 
+ ↑ Morris C & Pehnt M, German Energy Transition: Arguments for a Renewable Energy Future Archived 3 April 2013 at the Wayback Machine , Heinrich Böll Foundation, November 2012 
+ ↑ "Energy Communities" . Nordic Cooperation . Retrieved 31 May 2024 . 
+ ↑ K. Kris Hirst. "The Discovery of Fire" . About.com Education . About.com . Archived from the original on 12 January 2013 . Retrieved 15 January 2013 . 
+ ↑ "wind energy" . The Encyclopedia of Alternative Energy and Sustainable Living . Archived from the original on 26 January 2013 . Retrieved 15 January 2013 . 
+ ↑ "Geothermal Energy" . faculty.fairfield.edu . Archived from the original on 25 March 2017 . Retrieved 17 January 2017 . 
+ ↑ Siemens, Werner (June 1885). "On the electro motive action of illuminated selenium, discovered by Mr. Fritts, of New York". Journal of the Franklin Institute . 119 (6): 453–IN3. Bibcode : 1885FrInJ.11953IN3S . doi : 10.1016/0016-0032(85)90176-0 . 
+ ↑ Weber suggests that the modern economic world will determine the lifestyle of everyone born into it "until the last hundredweight of fossil fuel is burned" ( bis der letzte Zentner fossilen Brennstoffs verglüht ist Archived 25 August 2018 at the Wayback Machine ). 
+ ↑ "Power from Sunshine": A Business History of Solar Energy Archived 10 October 2012 at the Wayback Machine 25 May 2012 
+ ↑ Hubbert, M. King (June 1956). "Nuclear Energy and the Fossil Fuels" (PDF) . Shell Oil Company / American Petroleum Institute . Archived from the original (PDF) on 27 May 2008 . Retrieved 10 November 2014 . 
+ ↑ "History of PV Solar" . Solarstartechnologies.com. Archived from the original on 6 December 2013 . Retrieved 1 November 2012 . 
+ ↑ Clean Edge (2009). Clean Energy Trends 2009 Archived 18 March 2009 at the Wayback Machine pp. 1–4. 
+ ↑ "Share of electricity production from renewables" . Our World in Data . 2023 . Retrieved 15 August 2023 . 
+ ↑ Reynolds, Terry S. (6 May 1994). "Aerial Technology: Power from Wind . A History of Windmill Technology. Richard L. Hills. Cambridge University Press, New York, 1994. x, 324 pp., illus. $59.95 or £45". Science . 264 (5160): 855– 856. doi : 10.1126/science.264.5160.855 . PMID   17794729 . 
+ ↑ Eldridge, Frank R. (1975). Wind Machines . hdl : 2027/osu.32435066664525 . OSTI   7193735 . [ page   needed ] 
+ ↑ Shepherd, William; Zhang, Li (2017). Electricity Generation Using Wind Power . doi : 10.1142/9978 . ISBN   978-981-314-865-9 . [ page   needed ] 
+ ↑ "ĀSĪĀ (or āsīāb, Mill)" . Encyclopaedia Iranica . Retrieved 7 April 2025 . 
+ ↑ Burke, John G.; Reynolds, Terry S. (February 1984). "Stronger than a Hundred Men: A History of the Vertical Water Wheel". The History Teacher . 17 (2): 302. doi : 10.2307/492785 . JSTOR   492785 . 
+ ↑ Tabibian, S. H.; Habib, F.; Garakani, S. A. (20 February 2020). "An Analytical Approach to the Quality of Natural Light within the Vault of Sepahsalar Mosque (Shahid Motahari School)" . Naqshejahan- Basic studies and New Technologies of Architecture and Planning . 9 (4): 245– 256. 
+
+ Sources [ edit ] 
+
+ "2021 Electricity Annual Technology Baseline (ATB) Technologies" . United States National Renewable Energy Laboratory. 2021. Archived from the original on 18 July 2021 . Retrieved 18 July 2021 . 
+ Renewable Capacity Statistics 2024 . Abu Dhabi: International Renewable Energy Agency (IRENA). March 2024. ISBN   978-92-9260-587-2 . Retrieved 28 March 2023 . 
+ Renewable Capacity Statistics 2026 (PDF) . Abu Dhabi: International Renewable Energy Agency (IRENA). 2026. ISBN   978-92-9260-725-8 . 
+ Renewables 2010 Global Status Report (PDF) . Paris: REN21 Secretariat. 2010. Archived (PDF) from the original on 10 July 2021 . Retrieved 18 July 2021 . 
+ Renewables 2011 Global Status Report (PDF) . Paris: REN21 Secretariat. 2011. Archived (PDF) from the original on 10 July 2021 . Retrieved 18 July 2021 . 
+ Renewables 2021 Global Status Report (PDF) . Paris: REN21 Secretariat. 2021. ISBN   978-3-948393-03-8 . Archived (PDF) from the original on 15 June 2021 . Retrieved 25 July 2021 . 
+ Renewables Global Futures Report: Great debates towards 100% renewable energy (PDF) . Paris: REN21 Secretariat. 2017. ISBN   978-3-9818107-4-5 . Archived (PDF) from the original on 12 June 2021 . Retrieved 25 July 2021 . 
+
+ "Renewable Power Generation Costs in 2019" (PDF) . IRENA. 2020. 
+ "Renewable Capacity Statistics 2020" . IRENA. 2020. 
+ "Renewable Energy Statistics 2020" . IRENA. 2020. 
+
+ External links [ edit ] 
+
+ Renewable energy at Wikipedia's sister projects 
+
+ Definitions from Wiktionary Media from Commons Quotations from Wikiquote Texts from Wikisource Textbooks from Wikibooks Resources from Wikiversity Data from Wikidata 
+
+ Energypedia – a wiki platform for collaborative knowledge exchange on renewable energy in developing countries 
+ Renewable Energy Conference – a global platform for industry professionals, academics, and policymakers to exchange knowledge and discuss advancements in renewable energy technologies, with a focus on innovation, sustainability, and future energy solutions. 
+
+ v t e Lists of renewable energy topics Wind farm lists 
+ List of onshore wind farms 
+ List of onshore wind farms in the United Kingdom 
+ List of offshore wind farms in the United Kingdom 
+ List of offshore wind farms in the United States 
+ Lists of offshore wind farms by country 
+ Lists of offshore wind farms by water area 
+ Lists of wind farms by country 
+ List of wind farms in Australia 
+ List of wind farms in Canada 
+ List of wind farms in Iran 
+ List of wind farms in Kosovo 
+ List of wind farms in New Zealand 
+ List of wind farms in Romania 
+ List of wind farms in Sweden 
+ List of wind farms in the United States 
+ List of wind turbine manufacturers 
+ Solar power lists 
+ Index of solar energy articles 
+ List of concentrating solar thermal power companies 
+ List of photovoltaics companies 
+ List of photovoltaic power stations 
+ List of pioneering solar buildings 
+ List of rooftop photovoltaic installations 
+ List of solar car teams 
+ List of solar powered products 
+ List of solar thermal power stations 
+ People associated with solar power 
+ Other lists 
+ List of books about renewable energy 
+ List of renewable energy companies by country 
+ List of countries by electricity production from renewable sources 
+ List of energy storage power plants 
+ List of geothermal power stations 
+ Lists of hydroelectric power stations 
+ List of largest hydroelectric power stations 
+ List of renewable energy organizations 
+ List of renewable energy topics by country 
+ List of U.S. states by electricity production from renewable sources 
+
+ v t e Renewable energy by country and territory Africa 
+ Democratic Republic of the Congo 
+ Egypt 
+ Ethiopia 
+ Kenya 
+ Morocco 
+ Nigeria 
+ Seychelles 
+ South Africa 
+ Asia 
+ Afghanistan 
+ Bangladesh 
+ Bhutan 
+ Brunei 
+ China 
+ India 
+ Indonesia 
+ Israel 
+ Japan 
+ Kazakhstan 
+ Malaysia 
+ Nepal 
+ Pakistan 
+ Palestine 
+ Philippines 
+ Saudi Arabia 
+ South Korea 
+ Taiwan 
+ Thailand 
+ Vietnam 
+ Europe European Union 
+ Austria 
+ Czech Republic 
+ Cyprus 
+ Denmark 
+ Finland 
+ France 
+ Germany 
+ Greece 
+ Hungary 
+ Ireland 
+ Italy 
+ Lithuania 
+ Luxembourg 
+ Malta 
+ Netherlands 
+ Poland 
+ Portugal 
+ Spain 
+ Sweden 
+
+ Albania 
+ Armenia 
+ Belarus 
+ Iceland 
+ Kosovo 
+ Norway 
+ Russia 
+ Switzerland 
+ Turkey 
+ Ukraine 
+ United Kingdom 
+ Scotland 
+ North America 
+ Canada 
+ Costa Rica 
+ Honduras 
+ Mexico 
+ United States 
+ Oceania 
+ Australia 
+ Cook Islands 
+ French Polynesia 
+ New Zealand 
+ Tuvalu 
+ South America 
+ Argentina 
+ Brazil 
+ Chile 
+ Colombia 
+
+ Portal 
+ Category 
+ List of renewable energy companies by country 
+
+ v t e Energy 
+ History 
+ Index 
+ Outline 
+ Fundamental concepts 
+ Conservation of energy 
+ Energetics 
+ Energy 
+ Units 
+ Energy condition 
+ Energy level 
+ Energy system 
+ Energy transformation 
+ Energy transition 
+ Mass 
+ Negative mass 
+ Mass–energy equivalence 
+ Power 
+ Thermodynamics 
+ Enthalpy 
+ Entropic force 
+ Entropy 
+ Exergy 
+ Free entropy 
+ Heat capacity 
+ Heat transfer 
+ Irreversible process 
+ Isolated system 
+ Laws of thermodynamics 
+ Negentropy 
+ Quantum thermodynamics 
+ Thermal equilibrium 
+ Thermal reservoir 
+ Thermodynamic equilibrium 
+ Thermodynamic free energy 
+ Thermodynamic potential 
+ Thermodynamic state 
+ Thermodynamic system 
+ Thermodynamic temperature 
+ Volume (thermodynamics) 
+ Work 
+ Types 
+ Binding 
+ Nuclear 
+ Chemical 
+ Dark 
+ Elastic 
+ Electric potential energy 
+ Electrical 
+ Gravitational 
+ Binding 
+ Interatomic potential 
+ Internal 
+ Ionization 
+ Kinetic 
+ Magnetic 
+ Mechanical 
+ Negative 
+ Phantom 
+ Potential 
+ Quantum chromodynamics binding energy 
+ Quantum fluctuation 
+ Quantum potential 
+ Quintessence 
+ Radiant 
+ Rest 
+ Sound 
+ Surface 
+ Thermal 
+ Vacuum 
+ Zero-point 
+ Energy carriers 
+ Battery 
+ Capacitor 
+ Electricity 
+ Enthalpy 
+ Fuel 
+ Fossil 
+ Oil 
+ Heat 
+ Latent heat 
+ Hydrogen 
+ Hydrogen fuel 
+ Mechanical wave 
+ Radiation 
+ Sound wave 
+ Work 
+ Primary energy 
+ Bioenergy 
+ Fossil fuel 
+ Coal 
+ Natural gas 
+ Petroleum 
+ Geothermal 
+ Gravitational 
+ Hydropower 
+ Marine 
+ Nuclear fuel 
+ Natural uranium 
+ Radiant 
+ Solar 
+ Wind 
+ Energy system components 
+ Biomass 
+ Electric power 
+ Electricity delivery 
+ Energy engineering 
+ Fossil fuel power station 
+ Cogeneration 
+ Integrated gasification combined cycle 
+ Geothermal power 
+ Hydropower 
+ Hydroelectricity 
+ Tidal power 
+ Wave farm 
+ Nuclear power 
+ Nuclear power plant 
+ Radioisotope thermoelectric generator 
+ Oil refinery 
+ Solar power 
+ Concentrated solar power 
+ Photovoltaic system 
+ Thin-film solar 
+ Solar thermal energy 
+ Solar furnace 
+ Solar power tower 
+ Wind power 
+ Airborne wind energy 
+ Wind farm 
+ Use and supply 
+ Efficient energy use 
+ Agriculture 
+ Computing 
+ Transport 
+ Energy conservation 
+ Energy consumption 
+ Energy policy 
+ Energy development 
+ Energy security 
+ Energy storage 
+ Renewable energy 
+ Sustainable energy 
+ World energy supply and consumption 
+ Africa 
+ Asia 
+ Australia 
+ Canada 
+ Europe 
+ Mexico 
+ South America 
+ United States 
+ Misc. 
+ Carbon footprint 
+ Energy democracy 
+ Energy recovery 
+ Energy recycling 
+ Jevons paradox 
+ Waste-to-energy 
+ Waste-to-energy plant 
+
+ Category 
+ Commons 
+ Portal 
+ WikiProject 
+
+ v t e Wind power Wind power 
+ Airborne wind energy 
+ By country 
+ History 
+ Land vehicles 
+ Offshore 
+ Turbines 
+ on public display 
+ Windmill 
+ panemone 
+ Wind farms 
+ Lists of wind farms 
+ Community-owned 
+ Offshore farms 
+ Onshore farms 
+ Wind turbines 
+ Aerodynamics 
+ Airborne 
+ Crosswind kite 
+ Design 
+ Floating 
+ Nacelle 
+ Pitch bearing 
+ QBlade 
+ Small 
+ Unconventional 
+ Vertical-axis 
+ Savonius 
+ Darrieus 
+ Yaw system 
+ bearing 
+ drive 
+ Wind power industry 
+ Consulting companies 
+ Manufacturers 
+ Software 
+ Manufacturers 
+ Dongfang Electric 
+ Enercon 
+ Envision 
+ GE Wind 
+ including GE Offshore Wind 
+ Goldwind 
+ Ming Yang 
+ Nordex 
+ SANY 
+ Siemens Gamesa 
+ Suzlon 
+ Vestas 
+ Windey 
+ Concepts 
+ 2020s in wind power research 
+ Betz's law 
+ Blade element momentum theory 
+ Capacity factor 
+ Energy return on investment 
+ Energy storage 
+ grid 
+ Energy subsidy 
+ HVDC 
+ Hybrid power 
+ Laddermill 
+ Net energy gain 
+ Tip-speed ratio 
+ Variable renewable energy 
+ Virtual power plant 
+ Wind power forecasting 
+ Wind profile power law 
+ Log wind profile 
+ Wind resource assessment 
+
+ Wind power portal 
+ Category 
+ Commons 
+ Additional portals: 
+ Renewable energy 
+ Energy 
+
+ v t e Solar energy 
+ Index 
+ Outline 
+ Timeline 
+ Concepts 
+ The Sun 
+ Solar irradiance 
+ Solar power Thermal 
+ Passive solar building design 
+ Solar air conditioning 
+ Solar chimney 
+ Solar pond 
+ Solar water heating 
+ Thermal mass 
+ Photovoltaics and related topics 
+ Bifacial solar cells 
+ Concentrator photovoltaics 
+ Floating solar 
+ Nanocrystal solar cell 
+ Organic solar cell 
+ Photovoltaic array (and systems) 
+ Photovoltaic effect 
+ Photovoltaic module (solar panel) 
+ Photovoltaic power station 
+ Solar cell 
+ Concentrated 
+ Concentrator photovoltaics 
+ Heliostat 
+ Parabolic trough 
+ Solar power tower 
+ Solar tracker 
+ Experimental and proposed 
+ Solar chemical and artificial photosynthesis 
+ Solar-pumped laser 
+ Solar updraft tower 
+ Thermoelectric generator 
+ Space-related
+ Magnetic sail 
+ Solar sail 
+ Solar thermal rocket 
+ Space-based solar power 
+ By country 
+ Albania 
+ Armenia 
+ Australia 
+ Austria 
+ Belgium 
+ Brazil 
+ Canada 
+ China 
+ Czech Republic 
+ Denmark 
+ Georgia 
+ Germany 
+ Greece 
+ India 
+ Israel 
+ Italy 
+ Japan 
+ Kosovo 
+ Lithuania 
+ Mexico 
+ Morocco 
+ Myanmar 
+ Netherlands 
+ New Zealand 
+ Pakistan 
+ Portugal 
+ Romania 
+ Saudi Arabia 
+ Somalia 
+ South Africa 
+ Spain 
+ Thailand 
+ Turkey 
+ Ukraine 
+ United Kingdom 
+ United States 
+ Yemen 
+ Legal 
+ Solar Shade Control Act 
+ Distribution and uses Storage 
+ Grid energy storage 
+ Phase-change material 
+ Thermal energy storage 
+ seasonal 
+ Adoption 
+ Cost by source 
+ Feed-in tariff 
+ Financial incentives for photovoltaics 
+ Net metering 
+ Applications 
+ Electric aircraft 
+ Electric boat 
+ Solar balloon 
+ Solar vehicle 
+ Solar water heating 
+ Applications Agriculture and horticulture 
+ Agrivoltaic 
+ Greenhouse 
+ Polytunnel 
+ Row cover 
+ Solar-powered pump 
+ Building 
+ Building-integrated photovoltaics 
+ Passive solar building design 
+ Urban heat island 
+ Lighting 
+ Daylighting 
+ Hybrid solar lighting 
+ Light tube 
+ Solar lamp 
+ Solar Tuki 
+ Process heat 
+ Salt evaporation pond 
+ Solar furnace 
+ Solar pond 
+ Cooking 
+ Solar cooker 
+ Disinfection 
+ Soil solarization 
+ Solar water disinfection 
+ Desalination 
+ Desalination 
+ Solar still 
+ Water heating 
+ Solar combisystem 
+ Solar controller 
+ Solar water heating 
+ See also 
+ Photovoltaics 
+ Solar power by country 
+
+ Category 
+ Commons 
+
+ v t e Bioenergy Biofuels 
+ Alcohol 
+ Algae 
+ Babassu oil 
+ Bagasse 
+ Biobutanol 
+ Biodiesel 
+ Biogas 
+ Biogasoline 
+ Bioliquids 
+ Biomass 
+ Cooking oil 
+ vegetable oil 
+ Ethanol 
+ cellulosic 
+ mixtures 
+ Methanol 
+ Stover 
+ corn 
+ Straw 
+ Water hyacinth 
+ Wood gas 
+ Energy from foodstock 
+ Camelina sativa 
+ Cassava 
+ Coconut oil 
+ Grape 
+ Hemp 
+ Maize 
+ Oat 
+ Palm oil 
+ Potato 
+ Rapeseed 
+ Rice 
+ Sorghum 
+ Soybean 
+ Sugar beet 
+ Sugarcane 
+ Sunflower 
+ Wheat 
+ Yam 
+ Non-food energy crops 
+ Arundo 
+ Big bluestem 
+ Camelina 
+ Chinese tallow 
+ Duckweed 
+ Jatropha curcas 
+ Miscanthus × giganteus 
+ Pongamia pinnata 
+ Salicornia 
+ Switchgrass 
+ Wood 
+ Technology 
+ Bioconversion of biomass to mixed alcohol fuels 
+ Bioenergy with carbon capture and storage 
+ Biomass heating systems 
+ Biorefinery 
+ Fischer–Tropsch process 
+ Industrial biotechnology 
+ Pellet fuel 
+ mill 
+ stove 
+ Sabatier reaction 
+ Thermal depolymerization 
+ Concepts 
+ Agflation 
+ Cellulosic ethanol commercialization 
+ Energy content of biofuel 
+ Energy crop 
+ Energy forestry 
+ Energy return on investment 
+ Food vs. fuel 
+ Issues relating to biofuels 
+ Sustainable biofuel 
+
+ Category 
+
+ v t e Environmental technology General 
+ Appropriate technology 
+ Clean technology 
+ Climate smart agriculture 
+ Environmental design 
+ Environmental impact assessment 
+ Eco-innovation 
+ Ecotechnology 
+ Electric vehicle 
+ Energy recycling 
+ Environmental design 
+ Environmental impact assessment 
+ Environmental impact design 
+ Green building 
+ Green vehicle 
+ Environmentally healthy community design 
+ Public interest design 
+ Sustainability 
+ Sustainability science 
+ Sustainable ( agriculture 
+ architecture 
+ design 
+ development 
+ food systems 
+ industries 
+ procurement 
+ refurbishment 
+ technology 
+ transport ) 
+ Pollution 
+ Air pollution ( control 
+ dispersion modeling ) 
+ Industrial ecology 
+ Solid waste treatment 
+ Waste management 
+ Water ( agricultural wastewater treatment 
+ industrial wastewater treatment 
+ sewage treatment 
+ waste-water treatment technologies 
+ water purification ) 
+ Sustainable energy 
+ Efficient energy use 
+ Electrification 
+ Energy development 
+ Energy recovery 
+ Fuel ( alternative fuel 
+ biofuel 
+ carbon-neutral fuel 
+ hydrogen technologies ) 
+ List of energy storage projects 
+ Renewable energy 
+ commercialization 
+ transition 
+ Sector coupling 
+ Power-to-X 
+ Power-to-heat 
+ Power-to-gas 
+ Sustainable lighting 
+ Transportation ( electric vehicle 
+ hybrid vehicle ) 
+ Conservation 
+ Building ( green 
+ insulation 
+ natural 
+ sustainable architecture 
+ New Urbanism 
+ New Classical ) 
+ Conservation biology 
+ Ecoforestry 
+ Efficient energy use 
+ Energy conservation 
+ Energy recovery 
+ Energy recycling 
+ Environmental movement 
+ Environmental remediation 
+ Glass in green buildings 
+ Green computing 
+ Heat recovery ventilation 
+ High-performance buildings 
+ Land rehabilitation 
+ Nature conservation 
+ Permaculture 
+ Recycling 
+ Water heat recycling 
+
+ v t e Sustainability 
+ Outline 
+ Index 
+ Principles 
+ Anthropocene 
+ Environmentalism 
+ Global governance 
+ Human impact on the environment 
+ Planetary boundaries 
+ Development 
+ Consumption 
+ Anthropization 
+ Anti-consumerism 
+ Circular economy 
+ Durable good 
+ Earth Overshoot Day 
+ Ecological footprint 
+ Ethical 
+ Global trade of secondhand clothing 
+ Green consumption 
+ Micro-sustainability 
+ Over-consumption 
+ Product stewardship 
+ Simple living 
+ Social return on investment 
+ Steady-state economy 
+ Sustainability 
+ Advertising 
+ Brand 
+ Marketing myopia 
+ Sustainable 
+ Consumer behaviour 
+ Market 
+ Systemic change resistance 
+ Tragedy of the commons 
+ Technology 
+ Appropriate 
+ Building-integrated photovoltaics 
+ Environmental technology 
+ Heat recovery steam generator 
+ Heat recovery ventilation 
+ Natural building 
+ Sustainable architecture 
+ Sustainable design 
+ Sustainable industries 
+ Sustainable packaging 
+ Biodiversity 
+ Biosecurity 
+ Biosphere 
+ Conservation biology 
+ Endangered species 
+ Holocene extinction 
+ Invasive species 
+ Energy 
+ Carbon footprint 
+ Renewable energy 
+ Sustainable energy 
+ Food 
+ Civic agriculture 
+ Climate-smart agriculture 
+ Community-supported agriculture 
+ Cultured meat 
+ Sustainable agriculture 
+ Sustainable diet 
+ Sustainable fishery 
+ Water 
+ Air well (condenser) 
+ Bioretention 
+ Bioswale 
+ Blue roof 
+ Catchwater 
+ Constructed wetland 
+ Detention basin 
+ Dew pond 
+ Footprint 
+ Hydroelectricity 
+ Hydropower 
+ Infiltration basin 
+ Irrigation tank 
+ Marine energy 
+ Micro hydro 
+ Ocean thermal energy conversion 
+ Pico hydro 
+ Rain garden 
+ Rainwater harvesting 
+ Rainwater tank 
+ Reclaimed water 
+ Retention basin 
+ Run-of-the-river hydroelectricity 
+ Scarcity 
+ Security 
+ Small hydro 
+ Sustainable drainage system 
+ Tidal power 
+ Tidal stream generator 
+ Tree box filter 
+ Water conservation 
+ Water heat recycling 
+ Water recycling shower 
+ Water-sensitive urban design 
+ World population 
+ Control 
+ Demographic transition 
+ Dependency ratio 
+ List 
+ Family planning 
+ Intergenerational equity 
+ Population ageing 
+ Sustainable population 
+ Accountability 
+ Corporate environmental responsibility 
+ Corporate social responsibility 
+ Environmental accounting 
+ Environmental full-cost accounting 
+ Environmental planning 
+ Generational accounting 
+ Sustainability 
+ Accounting 
+ Measurement 
+ Metrics and indices 
+ Reporting 
+ Standards and certification 
+ Sustainable yield 
+ Economic 
+ Debt Sustainability Analysis 
+ Fiscal sustainability 
+ Green accounting 
+ Applications 
+ Advertising 
+ Art 
+ Business 
+ City 
+ Cultural sustainability 
+ Climate finance 
+ Community 
+ Disinvestment 
+ Eco-capitalism 
+ Eco-cities 
+ Eco-investing 
+ Eco-socialism 
+ Ecovillage 
+ Environmental finance 
+ Green economy 
+ Construction 
+ Fashion 
+ Finance 
+ Gardening 
+ Geopark 
+ Green 
+ Development 
+ Infrastructure 
+ Marketing 
+ Green anarchism 
+ Green roof 
+ Greening 
+ Impact investing 
+ Landscape 
+ Livelihood 
+ Living 
+ Market 
+ Organic movement 
+ Organizations 
+ Procurement 
+ Refurbishment 
+ Socially responsible business 
+ Socially responsible marketing 
+ Sanitation 
+ Solar cooker 
+ Sourcing 
+ Space 
+ Sustainability organization 
+ Tourism 
+ Transport 
+ Urban drainage systems 
+ Urban infrastructure 
+ Sustainable management 
+ Environmental 
+ Fisheries 
+ Forest 
+ Humanistic capitalism 
+ Landscape 
+ Materials 
+ Natural resource 
+ Pallet crafts 
+ Planetary 
+ Reclaimed lumber 
+ Recycling 
+ Appliance recycling 
+ Automotive oil recycling 
+ Bottle recycling 
+ By product 
+ Drug recycling 
+ Electronic waste recycling 
+ Energy recycling 
+ Mobile phone recycling 
+ Paint recycling 
+ Plastic recycling 
+ Rates by country 
+ Textile recycling 
+ Timber recycling 
+ Tire recycling 
+ Resource recovery 
+ Reuse 
+ Waste 
+ Waste-to-energy 
+ Agreements and conferences 
+ UN Conference on the Human Environment (Stockholm 1972) 
+ Brundtlandt Commission Report (1983) 
+ Our Common Future (1987) 
+ Earth Summit (1992) 
+ Rio Declaration on Environment and Development (1992) 
+ Agenda 21 (1992) 
+ Convention on Biological Diversity (1992) 
+ Lisbon Principles (1997) 
+ Earth Charter (2000) 
+ UN Millennium Declaration (2000) 
+ Earth Summit 2002 (Rio+10, Johannesburg) 
+ UN Conference on Sustainable Development (Rio+20, 2012) 
+ Sustainable Development Goals (2015) 
+ UNESCO MONDIACULT conferences 
+
+ Category 
+ Lists 
+ Science 
+ Studies 
+ Degrees 
+
+ v t e Science Breakthroughs of the Year Science journal 
+ 1996: HIV understanding 
+ 1997: Dolly the sheep 
+ 1998: Accelerating universe 
+ 1999: Stem cell 
+ 2000: Whole genome sequencing 
+ 2001: Nanocircuits or Molecular circuit 
+ 2002: RNA interference 
+ 2003: Dark energy 
+ 2004: Spirit rover 
+ 2005: Evolution in action 
+ 2006: Poincaré conjecture proof 
+ 2007: Human genetic variation 
+ 2008: Cellular reprogramming 
+ 2009: Ardipithecus ramidus 
+ 2010: First quantum machine 
+ 2011: HPTN 052 clinical trial 
+ 2012: Higgs boson discovery 
+ 2013: Cancer immunotherapy 
+ 2014: Rosetta comet mission 
+ 2015: CRISPR genome-editing method 
+ 2016: First observation of gravitational waves 
+ 2017: GW170817 ( neutron star merger ) 
+ 2018: Single-cell sequencing 
+ 2019: A black hole made visible 
+ 2020: COVID-19 vaccines developed at record speed 
+ 2021: AI brings protein structures to all 
+ 2022: James Webb Space Telescope debut 
+ 2023: GLP-1 drugs 
+ 2024: Lenacapavir 
+ 2025: Renewable energy 
+
+ Authority control databases International GND National France BnF data Japan Spain Israel Other IdRef Yale LUX 
+
+ Retrieved from " https://en.wikipedia.org/w/index.php?title=Renewable_energy&oldid=1382745232 " 
+ Categories : Renewable energy Renewable energy technology Low-carbon economy Technological change Bright green environmentalism Hidden categories: Wikipedia articles in need of updating from April 2026 All Wikipedia articles in need of updating Articles with short description Short description matches Wikidata Use dmy dates from September 2021 Pages using multiple image with auto scaled images All self-contradictory articles Self-contradictory articles from May 2024 CS1: unfit URL CS1 maint: DOI inactive as of November 2025 Pages using gadget owidslider Webarchive template wayback links CS1 errors: periodical ignored Wikipedia articles needing page number citations from May 2026 CS1 maint: periodical has ISBN Open Government Licence attribution Articles with excerpts All articles with dead external links Articles with dead external links from July 2018 Articles with permanently dead external links Wikipedia references cleanup from August 2026 All articles needing references cleanup Articles covered by WikiProject Wikify from August 2026 All articles covered by WikiProject Wikify All articles with duplicate citations Pages using Sister project links with hidden wikidata 
+
+ This page was last edited on 30 October 2026, at 02:02  (UTC) . 
+ Page was rendered with Parsoid . 
+ Text is available under the Creative Commons Attribution-ShareAlike 4.0 License ;
+additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy . Wikipedia® is a registered trademark of the Wikimedia Foundation, Inc. , a non-profit organization. 
+
+ Privacy policy 
+ About Wikipedia 
+ Disclaimers 
+ Contact Wikipedia 
+ Legal & safety contacts 
+ Code of Conduct 
+ Developers 
+ Statistics 
+ Cookie statement 
+ Mobile view 
+
+ Search 
+
+ Search 
+
+ Toggle the table of contents 
+
+ Renewable energy 
+
+ 123 languages 
+
+ Add topic

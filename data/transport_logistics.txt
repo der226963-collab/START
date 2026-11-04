@@ -1,0 +1,25 @@
+Transport and logistics.
+Transport moves people and goods. Logistics is the planning of that movement: routes, timing, storage, and delivery.
+Transport accounts for about 23 percent of world energy-related carbon dioxide emissions, according to ITF Transport Outlook 2023 citing IEA.
+Transport carbon dioxide emissions grew to 8.24 gigatonnes in 2023, according to Statista summary of transport data.
+Road vehicles account for about three quarters of transport carbon dioxide in 2023. Road transport was responsible for about 12 percent of global greenhouse gas emissions that year.
+Passenger cars pumped out roughly 3.2 gigatonnes of carbon dioxide in 2023. Heavy-duty freight trucks emitted almost 2 gigatonnes per year.
+Freight transport alone results in about 3.2 gigatonnes of direct carbon dioxide emissions, over 40 percent of all transport carbon dioxide and 10 percent of global carbon dioxide, according to ICCT.
+Modes.
+Walking and cycling use human energy and need safe space. They are low emission and healthy, for short trips.
+Buses and trains carry many people at once. Electric trains and buses use electricity directly and reduce local air pollution.
+Cars carry few people per vehicle and use more energy per person. Electric cars reduce tailpipe emissions, but still need materials, electricity, and space.
+Ships carry most world trade by weight. Shipping is efficient per tonne, but still emits carbon dioxide and air pollutants.
+Planes are fast and energy intensive per person. Aviation is a small share of total emissions, but high per trip.
+Rail is generally the least carbon intensive mode per passenger or tonne kilometre. Rail share is small, about 1 to 2 percent of transport carbon dioxide, because road dominates.
+Freight and logistics.
+Freight demand is projected to roughly double by 2050, according to ICCT. Without change, freight emissions will rise with demand.
+Intermodal routes, combining road with rail or waterway, cut carbon dioxide emissions by 30 to 60 percent compared with truck-only transport, according to ICCT.
+Cold chains keep food and medicine cold from farm or factory to home or hospital. Cold chains need energy, refrigeration, and reliable transport.
+A broken cold chain wastes food and medicine. Logistics planning must include temperature, time, and backup power.
+Last mile delivery is the final step to a home or shop. It is often the most expensive and polluting step per parcel, because vehicles make many stops.
+Transport, housing, and food together.
+A food plan needs transport from farms to markets to homes. A housing plan needs transport to work, school, and health care.
+Reducing transport need is as important as cleaner vehicles. Shorter distances, local supply, and public transport reduce emissions and time.
+Plan transport for everyone, not only car owners. Walking, cycling, buses, and trains must be safe, frequent, and affordable.
+People decide transport priorities. Drivers, passengers, freight workers, and residents must be part of transport planning.

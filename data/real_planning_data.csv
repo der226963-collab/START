@@ -31,3 +31,29 @@ phosphorus_regional_boundary,2025,6.2,teragrams P per year,Planetary Health Chec
 nitrogen_fixation,2025,165,teragrams N per year,Planetary Health Check 2025,PIK report,More than twice its boundary; high-risk zone in same report
 soil_typical_mineral_percent,2025,45,percent,General soil science,Textbook generalisation,Typical soil composition not exact for every soil
 soil_typical_organic_matter_percent,2025,5,percent,General soil science,Textbook generalisation,Typical soil composition not exact for every soil
+agriculture_share_freshwater_withdrawals,2025,70,percent,FAO AQUASTAT and UNESCO,FAO/UNESCO,Reported share; 2025 study warns range 45-90 percent with central 70-85 percent
+people_lacking_safely_managed_drinking_water,2022,2200,million people,UN,UN data,2.2 billion people in 2022
+people_lacking_safely_managed_sanitation,2022,3500,million people,UN,UN data,3.5 billion people
+people_severe_water_scarcity_at_least_one_month,2022,4000,million people,UN,UN data,4 billion people at least one month per year
+global_agricultural_land,2023,4800,million hectares,FAO Land Statistics 2001-2023,FAO CC-BY-4.0,More than one-third of global land area
+global_cropland,2023,1600,million hectares,FAO Land Statistics 2001-2023,FAO CC-BY-4.0,Within agricultural land
+global_forest_area,2025,4140,million hectares,FAO Global Forest Resources Assessment 2025,FAO,32 percent of global land area
+deforestation_rate,2025,10.9,million hectares per year,FAO Global Forest Resources Assessment 2025,FAO,Average 2015-2025 down from 17.6 in 1990-2000
+net_forest_loss_rate,2025,4.12,million hectares per year,FAO Global Forest Resources Assessment 2025,FAO,Average 2015-2025 down from 10.7 in 1990-2000
+buildings_share_global_energy,2023,32,percent,UNEP Global Status Report 2024-2025,UNEP,Buildings and construction
+buildings_share_global_co2,2023,34,percent,UNEP Global Status Report 2024-2025,UNEP,Buildings and construction
+buildings_operational_co2,2023,9800,million tonnes CO2,UNEP Global Status Report 2024-2025,UNEP,Operational emissions record in 2023
+people_lacking_adequate_housing,2026,3400,million people,UN-Habitat World Cities Report 2026,UN-Habitat,Up to 3.4 billion about 42 percent of humanity
+people_in_slums_informal_settlements,2024,1160,million people,UN SDG Indicators Goal 11,UN,1.16 billion urban residents almost one in four in 2024
+housing_deficit_units,2023,288,million units,UN-Habitat World Cities Report 2026,UN-Habitat,Up from 251 million in 2010
+heat_related_deaths_per_year,2019,489000,deaths per year,WMO,WMO estimate,Average 2000-2019; 45 percent Asia 36 percent Europe; under-reported
+unpaid_care_hours_per_day,2018,16400,million hours per day,ILO,ILO 2018,16.4 billion hours per day
+women_share_unpaid_care_work,2018,76.2,percent,ILO,ILO 2018,Women perform 76.2 percent of unpaid care work
+unpaid_care_value_share_gdp,2018,9,percent of global GDP,ILO,ILO 2018,About 11 trillion US dollars
+women_outside_labour_force_due_to_care,2023,708,million women,ILO,ILO 2024a,Aged 15 and over compared with 40 million men
+transport_co2,2023,8240,million tonnes CO2,Statista transport summary,Secondary summary,Transport CO2 grew almost 4 percent year-on-year in 2023
+transport_share_energy_related_co2,2023,23,percent,ITF Transport Outlook 2023 citing IEA,ITF/OECD,Transport share of world energy-related CO2
+road_share_transport_co2,2023,75,percent,Statista transport summary,Secondary summary,About three quarters of transport CO2 in 2023
+freight_co2,2023,3200,million tonnes CO2,ICCT,ICCT,Over 40 percent of transport CO2 and 10 percent of global CO2
+paid_work_hours_per_week_employed,2026,43,hours per week,Gethin and Saez IMF global dataset,IMF/World Bank/ILO surveys,160 countries 97 percent of world population; excludes unpaid home services
+paid_work_hours_per_week_all_adults,2026,25,hours per week,Gethin and Saez IMF global dataset,IMF/World Bank/ILO surveys,Average adult including those without employment

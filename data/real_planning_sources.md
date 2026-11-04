@@ -45,6 +45,42 @@ individual or community data, and no scraped private data is in it.
   fixation about 165 Tg N per year, more than twice its
   boundary, high-risk zone. These are global boundaries, not
   a field-level fertiliser recommendation.
+- **Water and land** — FAO AQUASTAT/UNESCO: agriculture
+  about 70 percent of freshwater withdrawals, but a 2025
+  PNAS Nexus study warns the range could be 45 to 90
+  percent, central 70 to 85 percent; UN: 2.2 billion lacked
+  safely managed drinking water in 2022, 3.5 billion lacked
+  safely managed sanitation, 4 billion face severe scarcity
+  at least one month a year. FAO Land Statistics 2001-2023:
+  agricultural land 4,800 million hectares in 2023,
+  cropland 1,600 million, pastures 3,200 million. FAO FRA
+  2025: forest 4.14 billion hectares, deforestation 10.9
+  million hectares per year 2015-2025, net loss 4.12 million
+  per year.
+- **Housing** — UN-Habitat World Cities Report 2026: up to
+  3.4 billion lack adequate housing, over 1.1 billion in
+  slums, deficit 288 million units in 2023 up from 251
+  million in 2010. UN SDG Goal 11: 1.16 billion urban
+  residents in slums in 2024. UNEP Buildings 2024-2025:
+  buildings 32 percent of global energy, 34 percent of
+  CO2, operational emissions 9.8 gigatonnes in 2023.
+- **Health and care** — WMO: about 489,000 heat-related
+  deaths per year 2000-2019, under-reported. ILO: 16.4
+  billion unpaid care hours per day, women 76.2 percent,
+  about 9 percent of global GDP, 708 million women outside
+  labour force due to care in 2023 vs 40 million men.
+- **Transport and labour** — ITF/IEA: transport about 23
+  percent of energy-related CO2. Statista summary: transport
+  CO2 8.24 gigatonnes in 2023, road about 75 percent.
+  ICCT: freight about 3.2 gigatonnes. Gethin and Saez
+  global dataset via IMF: employed people average 43 hours
+  per week, all adults about 25 hours per week, excluding
+  unpaid home services.
+- **Time series** — NASA GISTEMP temperature anomalies
+  vs 1951-1980 for selected years, NOAA Mauna Loa CO2
+  annual means. The time-series file is a small selected
+  sample, not a full download. For serious work, download
+  the full GISTEMP and NOAA series directly.
 - **Energy Institute Statistical Review of World Energy 2024**
   (as reported) — renewables 14.6% of primary energy in 2023.
   Note: electricity share (30%) and primary energy share

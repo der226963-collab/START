@@ -148,6 +148,12 @@ engineering for planning within planetary limits. See
 - `data/soil.txt` (original text) — soil science and nutrient
   understanding: texture, pH, NPK, cycles, balance, degradation,
   and nitrogen/phosphorus boundaries.
+- `data/water_land.txt`, `data/housing.txt`,
+  `data/health_care.txt`, `data/transport_logistics.txt`,
+  `data/labour_care.txt` (original text) — water, land,
+  housing, health, care, transport, logistics, and labour
+  time, with a small selected time-series file
+  `data/time_series.csv`.
 - `data/corpus.txt` — PCAC planning language, kept.
 - A Shakespeare drama sample was considered, then removed:
   it does not serve this goal, so it is not training data here.

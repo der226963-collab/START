@@ -43,6 +43,17 @@ general language model.
      micronutrients, nutrient cycles, balance, degradation,
      and planetary boundaries for nitrogen and phosphorus.
 
+- `data/water_land.txt`, `data/housing.txt`,
+  `data/health_care.txt`, `data/transport_logistics.txt`,
+  `data/labour_care.txt` (original text, extensive search
+  2026-11-04) — water, land, housing, health, care,
+  transport, logistics, labour time, with real anchors in
+  the snapshot and a small selected time-series file
+  `data/time_series.csv` (temperature and CO2, plus land
+  years). The time-series file is a sample, not a full
+  download; full GISTEMP and NOAA series should be used
+  for serious predictive modelling.
+
 3. `data/weather.txt` (original text)
    - Weather vs climate, variables, instruments, forecasting,
      extremes, and how weather affects food, energy, buildings,

@@ -171,6 +171,37 @@ def soil_summary(rows):
     }
 
 
+def systems_summary(rows):
+    """Water, land, housing, health, transport, and labour at global scale.
+
+    All ratios below are simple divisions of snapshot values, shown
+    so a reader can check them. They are global averages, not local
+    allocations, and they do not decide anything.
+    """
+    population_billion = get(rows, "world_population", 2024)
+    population = population_billion * 1_000_000_000
+    ag_land_mha = get(rows, "global_agricultural_land", 2023)
+    cropland_mha = get(rows, "global_cropland", 2023)
+    return {
+        "agricultural_land_hectares_per_person": round(ag_land_mha * 1_000_000 / population, 3),
+        "cropland_hectares_per_person": round(cropland_mha * 1_000_000 / population, 3),
+        "agriculture_share_freshwater_withdrawals_percent": get(rows, "agriculture_share_freshwater_withdrawals", 2025),
+        "water_share_uncertainty_note": "FAO/UNESCO report about 70 percent; a 2025 PNAS Nexus study warns the possible range is 45 to 90 percent, central 70 to 85 percent. Do not quote 70 percent as exact.",
+        "people_lacking_drinking_water_percent_of_population": round(100 * get(rows, "people_lacking_safely_managed_drinking_water", 2022) * 1_000_000 / population, 1),
+        "people_lacking_adequate_housing_million": get(rows, "people_lacking_adequate_housing", 2026),
+        "people_in_slums_million_2024": get(rows, "people_in_slums_informal_settlements", 2024),
+        "buildings_share_energy_percent": get(rows, "buildings_share_global_energy", 2023),
+        "buildings_share_co2_percent": get(rows, "buildings_share_global_co2", 2023),
+        "heat_related_deaths_per_year_2000_2019": get(rows, "heat_related_deaths_per_year", 2019),
+        "unpaid_care_hours_per_day_billion": get(rows, "unpaid_care_hours_per_day", 2018) / 1000,
+        "women_share_unpaid_care_percent": get(rows, "women_share_unpaid_care_work", 2018),
+        "transport_co2_million_tonnes_2023": get(rows, "transport_co2", 2023),
+        "road_transport_co2_million_tonnes_2023_approx": round(get(rows, "transport_co2", 2023) * get(rows, "road_share_transport_co2", 2023) / 100, 1),
+        "paid_work_hours_per_week_employed": get(rows, "paid_work_hours_per_week_employed", 2026),
+        "warning": "Global averages hide distribution by region, income, gender, and household. Use them for scale, then get consented local data for a real plan.",
+    }
+
+
 def run_plan(path="data/real_planning_data.csv"):
     rows = load_snapshot(path)
     return {
@@ -179,6 +210,7 @@ def run_plan(path="data/real_planning_data.csv"):
         "food": food_balance(rows),
         "weather": weather_summary(rows),
         "soil": soil_summary(rows),
+        "systems": systems_summary(rows),
         "energy_and_materials": energy_and_materials(rows),
         "cereals_2023_million_tonnes": get(rows, "global_cereals_production", 2023),
         "primary_crops_2023_million_tonnes": get(rows, "global_primary_crops_production", 2023),

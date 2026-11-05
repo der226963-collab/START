@@ -1,0 +1,2272 @@
+--- SOURCE: Mojo/examples/README.md ---
+# Mojo code examples
+
+This directory contains a collection of sample programs written in the
+[Mojo](https://mojolang.org/docs/manual/) programming language.
+
+## Getting started
+
+You can use `git` to clone the repository containing all of these sample
+programs:
+
+```bash
+git clone https://github.com/modular/modular.git
+```
+
+For the most reliable experience building and running these examples, we
+recommend using [Pixi](https://pixi.sh/latest/). It's both a package manager and
+virtual environment manager—which alone makes development a lot easier—but it's
+also fast, language agnostic, and provides lock files for package dependencies.
+
+Each subdirectory of this directory is a self-contained project that
+demonstrates features of the Mojo programming language and its standard library.
+Each contains a `README.md` file and a `pixi.toml` file that specifies the
+required dependencies. Simply follow the instructions in each `README.md` file
+to use `pixi` to download and install the dependencies for the project and to
+build and run the examples.
+
+For more information on system requirements, installing Mojo and the Mojo
+extension for VS Code, and getting started with Mojo programming, see the
+[Install Mojo](https://mojolang.org/docs/manual/install/) section of the
+[Mojo Manual](https://mojolang.org/docs/manual/).
+
+## Example subdirectories
+
+- `hello.mojo`: The smallest Mojo program. Run it from the root of the
+  repository with `./bazelw run //Mojo:mojo -- Mojo/examples/hello.mojo`.
+
+- `life/`: The
+  [Get started with Mojo](https://mojolang.org/docs/manual/get-started)
+  tutorial solution. A complete implementation of Conway's Game of Life cellular
+  automaton, demonstrating Mojo basics including structs, modules, and Python
+  interoperability.
+
+- `python-interop/`: Calling Mojo functions from Python
+  code, enabling progressive migration of Python hotspots to Mojo.
+
+- `operators/`:
+  [Implementing operators for a custom Mojo type](https://mojolang.org/docs/manual/operators#an-example-of-implementing-operators-for-a-custom-type).
+
+- `testing/`: Writing and running unit tests using the [Mojo testing
+  framework](https://mojolang.org/docs/tools/testing).
+
+## License
+
+The Mojo examples in this repository are licensed under the Apache License v2.0
+with LLVM Exceptions (see the LLVM [License](https://llvm.org/LICENSE.txt)).
+
+## Contributing
+
+As a contributor, your efforts and expertise are invaluable in driving the
+evolution of the Mojo programming language. The [Mojo contributor
+guide](../../CONTRIBUTING.md) provides all the information necessary to make
+meaningful contributions—from understanding the submission process to
+adhering to best practices.
+--- SOURCE: Mojo/examples/hello.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+
+def main():
+    print("Hello, Mojo!")
+--- SOURCE: Mojo/examples/gpu-block-and-warp/README.md ---
+The examples of GPU block and warp operations
+[have moved here](../../../max/examples/gpu-block-and-warp/).
+--- SOURCE: Mojo/examples/gpu-functions/README.md ---
+The examples of GPU functions written in Mojo
+[have moved here](../../../max/examples/gpu-functions/).
+--- SOURCE: Mojo/examples/gpu-intro/README.md ---
+The solution for the get started with GPU programming tutorial
+[has moved here](../../../max/examples/gpu-intro/).
+--- SOURCE: Mojo/examples/homepage/README.md ---
+# Code examples and tests
+
+This directory contains code examples for the existing Modular site and
+the future Mojo homepage.
+
+Contents:
+
+- Each `.mojo` file is a standalone Mojo application.
+- The `BUILD.bazel` file defines:
+  - A `mojo_binary` target for each `.mojo` file (using the file name without
+    extension).
+  - A `modular_run_binary_test` target for each binary (with a `_test` suffix).
+--- SOURCE: Mojo/examples/homepage/homepage_examples.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+# Code examples from the mojolang.org landing page.
+
+from std.algorithm import vectorize
+from max.gpu import global_idx
+from max.gpu.host import DeviceContext
+from max.gpu.host.info import is_cpu, is_gpu
+from std.math import ceildiv
+from std.python import Python, PythonObject
+from std.reflection import reflect
+
+from std.sys import has_accelerator, simd_width_of
+
+from layout import TileTensor
+from layout.tensor_engine import DefaultEngine
+from layout.layout import Layout, row_major
+from extensibility import InputTensor, OutputTensor
+
+
+comptime float_dtype = DType.float32
+
+comptime size = 8
+
+comptime layout = row_major[size]()
+
+# GPU programming example
+# The homepage example shows only the vector_add kernel.
+# we use a.layout.size() instead of the comptime size because
+# there's no explanation of where "size" comes from.
+
+
+def vector_add(
+    a: TileTensor[
+        float_dtype,
+        type_of(layout),
+        Engine=DefaultEngine[element_width=1],
+        ...,
+    ],
+    b: TileTensor[
+        float_dtype,
+        type_of(layout),
+        Engine=DefaultEngine[element_width=1],
+        ...,
+    ],
+    result: TileTensor[
+        mut=True,
+        float_dtype,
+        type_of(layout),
+        Engine=DefaultEngine[element_width=1],
+        ...,
+    ],
+):
+    var i = global_idx.x
+    if i < a.layout.size():
+        result[i] = a[i] + b[i]
+
+
+def run_gpu_programming_example() raises:
+    comptime assert (
+        has_accelerator()
+    ), "This example requires a supported accelerator"
+
+    var ctx = DeviceContext()
+    var a_buffer = ctx.enqueue_create_buffer[float_dtype](size)
+    var b_buffer = ctx.enqueue_create_buffer[float_dtype](size)
+    var result_buffer = ctx.enqueue_create_buffer[float_dtype](size)
+
+    # Map input buffers to host to fill with values from CPU
+    with a_buffer.map_to_host() as host_buffer:
+        var a_tensor = TileTensor(host_buffer, layout)
+        for i in range(size):
+            a_tensor[i] = Float32(i)
+        print("a vector:", a_tensor)
+
+    with b_buffer.map_to_host() as host_buffer:
+        var b_tensor = TileTensor(host_buffer, layout)
+        for i in range(size):
+            b_tensor[i] = Float32(i)
+        print("b vector:", b_tensor)
+
+    # Wrap device buffers in `TileTensor`
+    var a_tensor = TileTensor(a_buffer, layout)
+    var b_tensor = TileTensor(b_buffer, layout)
+    var result_tensor = TileTensor(result_buffer, layout)
+    print("wrapped")
+
+    # The grid is divided up into blocks, making sure there's an extra
+    # full block for any remainder. This hasn't been tuned for any specific
+    # GPU.
+    comptime BLOCK_SIZE = 16
+    comptime num_blocks = ceildiv(size, BLOCK_SIZE)
+
+    # wrapper closure for the actual kernel
+    def wrapper() {var}:
+        vector_add(a_tensor, b_tensor, result_tensor)
+
+    # Launch the compiled function on the GPU. The last two named parameters
+    # are the dimensions of the grid in blocks, and the block dimensions.
+    ctx.enqueue_function(wrapper, grid_dim=(num_blocks), block_dim=(BLOCK_SIZE))
+
+    # Move the output tensor back onto the CPU so that we can read the results.
+    with result_buffer.map_to_host() as host_buffer:
+        var host_tensor = TileTensor(host_buffer, layout)
+        print("Resulting vector:", host_tensor)
+
+
+# Python interop example
+
+
+def mojo_square_array(array_obj: PythonObject) raises:
+    comptime simd_width = simd_width_of[DType.int64]()
+    var ptr = array_obj.ctypes.data.unsafe_get_as_pointer[.int64]()
+
+    def pow[width: Int](i: Int) {mut ptr}:
+        var elem = ptr.unsafe_load[width=width](i)
+        ptr.unsafe_store[width=width](i, elem * elem)
+
+    vectorize[simd_width](len(array_obj), pow)
+
+
+def run_python_interop_example() raises:
+    var np = Python.import_module("numpy")
+    # values: List[Int64] = [1, 3, 5, 7, 11]
+    var pylist = Python.list(1, 3, 5, 7, 11)
+    var nparray = np.array(pylist, np.int64)
+    mojo_square_array(nparray)
+    print(nparray)
+
+
+# Metaprogramming example
+
+
+trait FauxEquatable(Deinitable):
+    # Generic implementation using reflection: compare all fields
+    def __eq__(self, other: Self) -> Bool:
+        comptime r = reflect[Self]
+
+        comptime for i in range(r.field_names().length):
+            comptime assert conforms_to(r.field_types()[i], Equatable)
+            if r.field_ref[i](self) != r.field_ref[i](other):
+                return False
+        return True
+
+
+@fieldwise_init
+struct EqTest(Copyable, FauxEquatable):
+    var i: Int
+    var s: String
+
+
+def run_metaprogramming_example():
+    var v1 = EqTest(1, "Lucy")
+    var v2 = EqTest(1, "Lucy")
+    var v3 = EqTest(2, "Linus")
+    print(v1 == v2)
+    print(v1 == v3)
+
+
+def main() raises:
+    run_gpu_programming_example()
+    run_python_interop_example()
+    run_metaprogramming_example()
+--- SOURCE: Mojo/examples/layouts/README.md ---
+The layout examples
+[have moved here](../../../max/examples/layouts/).
+--- SOURCE: Mojo/examples/life/README.md ---
+# Introduction to Mojo tutorial solution
+
+This directory contains a complete solution for the
+[Get started with Mojo](https://mojolang.org/docs/manual/get-started)
+tutorial project, which is an implementation of [Conway's Game of
+Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) cellular
+automation.
+
+## Files
+
+This directory contains the following files:
+
+- The source files `lifev1.mojo` and `gridv1.mojo` provide an initial version of
+  the project, with a `Grid` struct representing the grid of cells as a
+  `List[List[Int]]`.
+
+- The source files `lifev2.mojo` and `gridv2.mojo` provide a subsequent version
+  of the project, with a `Grid` struct representing the grid of cells as a block
+  of memory managed by `ThinAllocation`.
+
+- The `benchmark.mojo` file performs a simple performance benchmark of the two
+  versions by running 1,000 evolutions of each `Grid` implementation using a
+  1,024 x 1,024 grid.
+
+- The `test` directory contains unit tests for each `Grid` implementation using
+  the [Mojo testing framework](https://mojolang.org/docs/tools/testing).
+
+- The `pixi.toml` file is a [Pixi](https://pixi.sh)
+  project file containing the project dependencies and task definitions.
+
+## Run the code
+
+If you have [Pixi](https://pixi.sh/latest/) installed, you can
+execute version 1 of the program by running the following command:
+
+```bash
+pixi run lifev1
+```
+
+This displays a window that shows an initial random state for the grid and then
+automatically updates it with subsequent generations. Quit the program by
+pressing the `q` or `<Escape>` key or by closing the window.
+
+You can execute version 2 of the program by running the following command:
+
+```bash
+pixi run lifev2
+```
+
+Just like for version 1, this displays a window that shows an initial random
+state for the grid and then automatically updates it with subsequent
+generations. Quit the program by pressing the `q` or `<Escape>` key or by
+closing the window.
+
+You can execute the benchmark program by running the following command:
+
+```bash
+pixi run benchmark
+```
+
+You can run the unit tests by running the following command:
+
+```bash
+pixi run test
+```
+
+## Dependencies
+
+This project includes an example of using a Python package,
+[pygame-ce](https://pyga.me/docs/index.html), from Mojo. Building the program
+does *not* embed pygame or a Python runtime in the resulting executable.
+Therefore, to run this program your environment must have both a compatible
+Python runtime (Python 3.12) and the pygame package installed.
+
+The easiest way to ensure that the runtime dependencies are met is to run the
+program with [`pixi`](https://pixi.sh), which manages a virtual
+environment for the project as defined by the `pixi.toml` file.
+--- SOURCE: Mojo/examples/life/benchmark.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+from std.time import perf_counter_ns
+
+import gridv1
+import gridv2
+
+
+def main():
+    comptime warmup_iterations = 10
+    comptime benchmark_iterations = 1000
+    comptime rows = 1024
+    comptime cols = 1024
+
+    # Initial state
+    var gridv1 = gridv1.Grid.random(rows, cols, seed=42)
+    var gridv2 = gridv2.Grid[rows, cols].random(seed=42)
+
+    # Warm up
+    var warmv1 = gridv1.copy()
+    for _ in range(warmup_iterations):
+        warmv1 = warmv1.evolve()
+
+    var warmv2 = gridv2.copy()
+    for _ in range(warmup_iterations):
+        warmv2 = warmv2.evolve()
+
+    # Benchmark
+    var start_time = perf_counter_ns()
+    for _ in range(benchmark_iterations):
+        gridv1 = gridv1.evolve()
+    var stop_time = perf_counter_ns()
+    var elapsed = round(Float64(stop_time - start_time) / 1e6, 3)
+    print(
+        benchmark_iterations,
+        "evolutions of gridv1.Grid elapsed time: ",
+        elapsed,
+        "ms",
+    )
+
+    start_time = perf_counter_ns()
+    for _ in range(benchmark_iterations):
+        gridv2 = gridv2.evolve()
+    stop_time = perf_counter_ns()
+    elapsed = round(Float64(stop_time - start_time) / 1e6, 3)
+    print(
+        benchmark_iterations,
+        "evolutions of gridv2.Grid elapsed time: ",
+        elapsed,
+        "ms",
+    )
+--- SOURCE: Mojo/examples/life/gridv1.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+# DOC: Mojo/docs/site/manual/get-started.mdx
+
+from std import random
+from std.collections import Optional
+
+
+@fieldwise_init
+struct Grid(Copyable, Writable):
+    # ===-------------------------------------------------------------------===#
+    # Fields
+    # ===-------------------------------------------------------------------===#
+
+    var rows: Int
+    var cols: Int
+    var data: List[List[Int]]
+
+    # ===-------------------------------------------------------------------===#
+    # Indexing
+    # ===-------------------------------------------------------------------===#
+
+    def __getitem__(self, row: Int, col: Int) -> Int:
+        return self.data[row][col]
+
+    def __setitem__(mut self, row: Int, col: Int, value: Int) -> None:
+        self.data[row][col] = value
+
+    # ===-------------------------------------------------------------------===#
+    # Trait implementations
+    # ===-------------------------------------------------------------------===#
+
+    def write_to(self, mut writer: Some[Writer]):
+        # Iterate through rows 0 through rows-1
+        for row in range(self.rows):
+            # Iterate through columns 0 through cols-1
+            for col in range(self.cols):
+                if self[row, col] == 1:
+                    # If cell is populated, write an asterisk
+                    writer.write_string("*")
+                else:
+                    # If cell is not populated, write a space
+                    writer.write_string(" ")
+            if row != self.rows - 1:
+                # Add a newline between rows, but not at the end
+                writer.write_string("\n")
+
+    # ===-------------------------------------------------------------------===#
+    # Factory methods
+    # ===-------------------------------------------------------------------===#
+
+    @staticmethod
+    def glider() -> Self:
+        var glider = [
+            [0, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 1, 0, 0, 0, 0, 0],
+            [1, 1, 1, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+        ]
+        return Grid(8, 8, glider^)
+
+    @staticmethod
+    def random(rows: Int, cols: Int, seed: Optional[Int] = None) -> Self:
+        if case .Some(seed) = seed:
+            random.seed(seed)
+        else:
+            # Seed the random number generator using the current time.
+            random.seed()
+
+        var data = List[List[Int]]()
+
+        for _row in range(rows):
+            var row_data = List[Int]()
+            for _col in range(cols):
+                # Generate a random 0 or 1 and append it to the row.
+                row_data.append(Int(random.random_si64(0, 1)))
+            data.append(row_data^)
+
+        return Self(rows, cols, data^)
+
+    # ===-------------------------------------------------------------------===#
+    # Methods
+    # ===-------------------------------------------------------------------===#
+
+    def evolve(self) -> Self:
+        var next_generation = List[List[Int]]()
+
+        for row in range(self.rows):
+            var row_data = List[Int]()
+
+            # Calculate neighboring row indices, handling "wrap-around"
+            var row_above = (row - 1) % self.rows
+            var row_below = (row + 1) % self.rows
+
+            for col in range(self.cols):
+                # Calculate neighboring column indices, handling "wrap-around"
+                var col_left = (col - 1) % self.cols
+                var col_right = (col + 1) % self.cols
+
+                # Determine number of populated cells around the current cell
+                var num_neighbors = (
+                    self[row_above, col_left]
+                    + self[row_above, col]
+                    + self[row_above, col_right]
+                    + self[row, col_left]
+                    + self[row, col_right]
+                    + self[row_below, col_left]
+                    + self[row_below, col]
+                    + self[row_below, col_right]
+                )
+
+                # Determine the state of the current cell for the next generation
+                var new_state = 0
+                if self[row, col] == 1 and (
+                    num_neighbors == 2 or num_neighbors == 3
+                ):
+                    new_state = 1
+                elif self[row, col] == 0 and num_neighbors == 3:
+                    new_state = 1
+                row_data.append(new_state)
+
+            next_generation.append(row_data^)
+
+        return Self(self.rows, self.cols, next_generation^)
+--- SOURCE: Mojo/examples/life/gridv2.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+from std import random
+from std.collections import Optional
+
+from std.memory import (
+    ThinAllocation,
+    alloc,
+    dealloc,
+    unsafe_memcpy,
+    unsafe_memset_zero,
+)
+
+
+struct Grid[rows: Int, cols: Int](Copyable, Writable):
+    # ===-------------------------------------------------------------------===#
+    # Fields
+    # ===-------------------------------------------------------------------===#
+
+    comptime num_cells = Self.rows * Self.cols
+    var data: ThinAllocation[Int8]
+
+    # ===-------------------------------------------------------------------===#
+    # Life cycle methods
+    # ===-------------------------------------------------------------------===#
+
+    def __init__(out self):
+        self.data = alloc[Int8]({length = self.num_cells}).into_thin()
+        unsafe_memset_zero(self.data.unsafe_ptr(), self.num_cells)
+
+    def __init__(out self, *, copy: Self):
+        self.data = alloc[Int8]({length = self.num_cells}).into_thin()
+        unsafe_memcpy(
+            dest=self.data.unsafe_ptr(),
+            src=copy.data.unsafe_ptr(),
+            count=self.num_cells,
+        )
+        # The lifetime of `existing` continues unchanged
+
+    def __deinit__(deinit self):
+        dealloc(self.data^.unsafe_with_layout({length = Self.num_cells}))
+
+    # ===-------------------------------------------------------------------===#
+    # Factory methods
+    # ===-------------------------------------------------------------------===#
+
+    @staticmethod
+    def random(seed: Optional[Int] = None) -> Self:
+        if case .Some(seed) = seed:
+            random.seed(seed)
+        else:
+            random.seed()
+
+        var grid = Self()
+        random.randint(grid.data.unsafe_ptr(), grid.num_cells, 0, 1)
+
+        return grid^
+
+    # ===-------------------------------------------------------------------===#
+    # Indexing
+    # ===-------------------------------------------------------------------===#
+
+    def __getitem__(self, row: Int, col: Int) -> Int8:
+        return self.data.unsafe_ptr().unsafe_offset(row * Self.cols + col)[]
+
+    def __setitem__(mut self, row: Int, col: Int, value: Int8) -> None:
+        self.data.unsafe_ptr().unsafe_offset(row * Self.cols + col)[] = value
+
+    # ===-------------------------------------------------------------------===#
+    # Trait implementations
+    # ===-------------------------------------------------------------------===#
+
+    def write_to(self, mut writer: Some[Writer]):
+        for row in range(Self.rows):
+            for col in range(Self.cols):
+                if self[row, col] == 1:
+                    writer.write_string("*")
+                else:
+                    writer.write_string(" ")
+            if row != Self.rows - 1:
+                writer.write_string("\n")
+
+    # ===-------------------------------------------------------------------===#
+    # Methods
+    # ===-------------------------------------------------------------------===#
+
+    def evolve(self) -> Self:
+        var next_generation = Self()
+
+        for row in range(Self.rows):
+            # Calculate neighboring row indices, handling "wrap-around"
+            var row_above = (row - 1) % Self.rows
+            var row_below = (row + 1) % Self.rows
+
+            for col in range(Self.cols):
+                # Calculate neighboring column indices, handling "wrap-around"
+                var col_left = (col - 1) % Self.cols
+                var col_right = (col + 1) % Self.cols
+
+                # Determine number of populated cells around the current cell
+                var num_neighbors = (
+                    self[row_above, col_left]
+                    + self[row_above, col]
+                    + self[row_above, col_right]
+                    + self[row, col_left]
+                    + self[row, col_right]
+                    + self[row_below, col_left]
+                    + self[row_below, col]
+                    + self[row_below, col_right]
+                )
+
+                if num_neighbors | self[row, col] == 3:
+                    next_generation[row, col] = 1
+
+        return next_generation^
+--- SOURCE: Mojo/examples/life/lifev1.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+# DOC: Mojo/docs/site/manual/get-started.mdx
+
+from std import time
+
+from gridv1 import Grid
+from std.python import Python
+
+
+def run_display(
+    var grid: Grid,
+    window_height: Int = 600,
+    window_width: Int = 600,
+    background_color: String = "black",
+    cell_color: String = "green",
+    pause: Float64 = 0.1,
+) raises -> None:
+    # Import the pygame Python package
+    var pygame = Python.import_module("pygame")
+
+    # Initialize pygame modules
+    pygame.init()
+
+    # Create a window and set its title
+    var window = pygame.display.set_mode(
+        Python.tuple(window_width, window_height)
+    )
+    pygame.display.set_caption("Conway's Game of Life")
+
+    var cell_height = Float64(window_height) / Float64(grid.rows)
+    var cell_width = Float64(window_width) / Float64(grid.cols)
+    var border_size = 1
+    var cell_fill_color = pygame.Color(cell_color)
+    var background_fill_color = pygame.Color(background_color)
+
+    var running = True
+    while running:
+        # Poll for events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                # Quit if the window is closed
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                # Also quit if the user presses <Escape> or 'q'
+                if event.key == pygame.K_ESCAPE or event.key == pygame.K_q:
+                    running = False
+
+        # Clear the window by painting with the background color
+        window.fill(background_fill_color)
+
+        # Draw each live cell in the grid
+        for row in range(grid.rows):
+            for col in range(grid.cols):
+                if grid[row, col]:
+                    var x = Float64(col) * cell_width + Float64(border_size)
+                    var y = Float64(row) * cell_height + Float64(border_size)
+                    var width = cell_width - Float64(border_size)
+                    var height = cell_height - Float64(border_size)
+                    pygame.draw.rect(
+                        window,
+                        cell_fill_color,
+                        Python.tuple(x, y, width, height),
+                    )
+
+        # Update the display
+        pygame.display.flip()
+
+        # Pause to let the user appreciate the scene
+        time.sleep(pause)
+
+        # Next generation
+        grid = grid.evolve()
+
+    # Shut down pygame cleanly
+    pygame.quit()
+
+
+def main() raises:
+    var start = Grid.random(128, 128)
+    run_display(start^)
+--- SOURCE: Mojo/examples/life/lifev2.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+from std import time
+
+from gridv2 import Grid
+from std.python import Python
+
+
+def run_display(
+    var grid: Grid,
+    window_height: Int = 600,
+    window_width: Int = 600,
+    background_color: String = "black",
+    cell_color: String = "green",
+    pause: Float64 = 0.1,
+) raises -> None:
+    # Import the pygame Python package
+    var pygame = Python.import_module("pygame")
+
+    # Initialize pygame modules
+    pygame.init()
+
+    # Create a window and set its title
+    var window = pygame.display.set_mode(
+        Python.tuple(window_width, window_height)
+    )
+    pygame.display.set_caption("Conway's Game of Life")
+
+    var cell_height = Float64(window_height) / Float64(grid.rows)
+    var cell_width = Float64(window_width) / Float64(grid.cols)
+    var border_size = 1
+    var cell_fill_color = pygame.Color(cell_color)
+    var background_fill_color = pygame.Color(background_color)
+
+    var running = True
+    while running:
+        # Poll for events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                # Quit if the window is closed
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                # Also quit if the user presses <Escape> or 'q'
+                if event.key == pygame.K_ESCAPE or event.key == pygame.K_q:
+                    running = False
+
+        # Clear the window by painting with the background color
+        window.fill(background_fill_color)
+
+        # Draw each live cell in the grid
+        for row in range(grid.rows):
+            for col in range(grid.cols):
+                if grid[row, col]:
+                    var x = Float64(col) * cell_width + Float64(border_size)
+                    var y = Float64(row) * cell_height + Float64(border_size)
+                    var width = cell_width - Float64(border_size)
+                    var height = cell_height - Float64(border_size)
+                    pygame.draw.rect(
+                        window,
+                        cell_fill_color,
+                        Python.tuple(x, y, width, height),
+                    )
+
+        # Update the display
+        pygame.display.flip()
+
+        # Pause to let the user appreciate the scene
+        time.sleep(pause)
+
+        # Next generation
+        grid = grid.evolve()
+
+    # Shut down pygame cleanly
+    pygame.quit()
+
+
+def main() raises:
+    var start = Grid[128, 128].random()
+    run_display(start^)
+--- SOURCE: Mojo/examples/life/test/test_gridv1.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+from gridv1 import Grid
+from std.testing import assert_equal, TestSuite
+
+comptime data4x4: List[List[Int]] = [
+    [0, 1, 1, 0],
+    [1, 1, 0, 0],
+    [0, 0, 1, 1],
+    [1, 0, 0, 1],
+]
+
+
+def test_gridv1_init() raises:
+    var grid = Grid(4, 4, materialize[data4x4]())
+    assert_equal(4, grid.rows)
+    assert_equal(4, grid.cols)
+    for row in range(4):
+        assert_equal(materialize[data4x4]()[row], grid.data[row])
+
+
+def test_gridv1_index() raises:
+    var grid = Grid(4, 4, materialize[data4x4]())
+    for row in range(4):
+        for col in range(4):
+            assert_equal(materialize[data4x4]()[row][col], grid[row, col])
+            grid[row, col] = 1
+            assert_equal(1, grid[row, col])
+            grid[row, col] = 0
+            assert_equal(0, grid[row, col])
+
+
+def test_gridv1_str() raises:
+    var grid = Grid(4, 4, materialize[data4x4]())
+    var grid_str = String(grid)
+    var str4x4 = " ** \n**  \n  **\n*  *"
+    assert_equal(str4x4, grid_str)
+
+
+def test_gridv1_evolve() raises:
+    var data_gen2 = [
+        [0, 0, 1, 0],
+        [1, 0, 0, 0],
+        [0, 0, 1, 0],
+        [1, 0, 0, 0],
+    ]
+    var data_gen3 = [
+        [0, 1, 0, 1],
+        [0, 1, 0, 1],
+        [0, 1, 0, 1],
+        [0, 1, 0, 1],
+    ]
+
+    var grid_gen1 = Grid(4, 4, materialize[data4x4]())
+
+    var grid_gen2 = grid_gen1.evolve()
+    for row in range(4):
+        for col in range(4):
+            assert_equal(data_gen2[row][col], grid_gen2[row, col])
+
+    var grid_gen3 = grid_gen2.evolve()
+    for row in range(4):
+        for col in range(4):
+            assert_equal(data_gen3[row][col], grid_gen3[row, col])
+
+
+def main() raises:
+    TestSuite.discover_tests[__functions_in_module()]().run()
+--- SOURCE: Mojo/examples/life/test/test_gridv2.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+from gridv2 import Grid
+from std.testing import assert_equal, TestSuite
+
+comptime data4x4: List[List[Int8]] = [
+    [0, 1, 1, 0],
+    [1, 1, 0, 0],
+    [0, 0, 1, 1],
+    [1, 0, 0, 1],
+]
+
+
+def grid4x4() raises -> Grid[4, 4]:
+    var grid = Grid[4, 4]()
+    for row in range(4):
+        for col in range(4):
+            grid[row, col] = materialize[data4x4]()[row][col]
+    return grid^
+
+
+def test_gridv2_init() raises:
+    var grid = Grid[4, 4]()
+    assert_equal(4, grid.rows)
+    assert_equal(4, grid.cols)
+    for row in range(4):
+        for col in range(4):
+            assert_equal(Int8(0), grid[row, col])
+
+
+def test_gridv2_index() raises:
+    var grid = grid4x4()
+    for row in range(4):
+        for col in range(4):
+            assert_equal(materialize[data4x4]()[row][col], grid[row, col])
+            grid[row, col] = 1
+            assert_equal(Int8(1), grid[row, col])
+            grid[row, col] = 0
+            assert_equal(Int8(0), grid[row, col])
+
+
+def test_gridv2_str() raises:
+    var grid = grid4x4()
+    var grid_str = String(grid)
+    var str4x4 = " ** \n**  \n  **\n*  *"
+    assert_equal(str4x4, grid_str)
+
+
+def test_gridv2_evolve() raises:
+    var data_gen2: List[List[Int8]] = [
+        [0, 0, 1, 0],
+        [1, 0, 0, 0],
+        [0, 0, 1, 0],
+        [1, 0, 0, 0],
+    ]
+    var data_gen3: List[List[Int8]] = [
+        [0, 1, 0, 1],
+        [0, 1, 0, 1],
+        [0, 1, 0, 1],
+        [0, 1, 0, 1],
+    ]
+
+    var grid_gen1 = grid4x4()
+
+    var grid_gen2 = grid_gen1.evolve()
+    for row in range(4):
+        for col in range(4):
+            assert_equal(data_gen2[row][col], grid_gen2[row, col])
+
+    var grid_gen3 = grid_gen2.evolve()
+    for row in range(4):
+        for col in range(4):
+            assert_equal(data_gen3[row][col], grid_gen3[row, col])
+
+
+def main() raises:
+    TestSuite.discover_tests[__functions_in_module()]().run()
+--- SOURCE: Mojo/examples/operators/README.md ---
+# Implementing operators for a custom Mojo type
+
+This directory contains an example of implementing operators for a custom Mojo
+struct named `Complex`, which represents a single complex number. The
+`my_complex.mojo` module defines the `Complex` struct, and `main.mojo` is a
+program that imports the module and shows examples of applying the operators to
+instances of the `Complex` struct. The `test_my_complex.mojo` file is a set of
+unit tests using the [Mojo testing
+framework](https://mojolang.org/docs/tools/testing).
+
+Refer to
+[Add operator support to custom types](https://mojolang.org/docs/manual/structs/operator-support)
+in the [Mojo manual](https://mojolang.org/docs/manual/) for a complete
+explanation of the implementation of the `Complex` type.
+
+If you have [Pixi](https://pixi.sh/latest/) installed, you can
+execute the example by running the following command:
+
+```bash
+pixi run mojo main.mojo
+```
+
+You can run the unit tests by running the following command:
+
+```bash
+pixi run test
+```
+--- SOURCE: Mojo/examples/operators/main.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+
+from my_complex import Complex
+
+
+def main() raises:
+    # Examples of creating Complex instances
+    var c1 = Complex(-1.2, 6.5)
+    print("c1 =", repr(c1))
+
+    var c2 = Complex(3.14159)
+    print("c2 =", repr(c2))
+
+    print()
+
+    # Examples of using Complex values with String(), repr(), and print()
+    var c3 = Complex(3.14159, -2.71828)
+    print("c3 =", repr(c3))
+    var msg = String("The value is: ", c3)
+    print(msg)
+    print(repr(c3))
+
+    print()
+
+    # Examples of using Complex indexing
+    print("c2[0]", c2[0], "; c2[1]", c2[1])
+    c2[0] = 2.71828
+    c2[1] = 42
+    print("c2[0] = 2.71828; c2[1] = 42; c2:", c2)
+
+    print()
+
+    # Examples of unary arithmetic operators
+    print("+c1:", +c1)
+    print("-c1:", -c1)
+
+    print()
+
+    # Examples of binary arithmetic operators
+    print("c1 + c3 =", c1 + c3)
+    print("c1 - c3 =", c1 - c3)
+    print("c1 * c3 =", c1 * c3)
+    print("c1 / c3 =", c1 / c3)
+
+    print()
+
+    # Examples of binary arithmetic operators mixing Complex and Float64 values
+    var f1 = 2.5
+    print("c1 + f1 =", c1 + f1)
+    print("f1 + c1 =", f1 + c1)
+    print("c1 - f1 =", c1 - f1)
+    print("f1 - c1 =", f1 - c1)
+    print("c1 * f1 =", c1 * f1)
+    print("f1 * c1 =", f1 * c1)
+    print("c1 / f1 =", c1 / f1)
+    print("f1 / c1 =", f1 / c1)
+
+    print()
+
+    # Examples of in-place arithmetic operators
+    var c4 = Complex(-1, -1)
+    print("c4 =", c4)
+    c4 += Complex(0.5, -0.5)
+    print("c4 += Complex(0.5, -0.5) =>", c4)
+    c4 += 2.75
+    print("c4 += 2.75 =>", c4)
+    c4 -= Complex(0.25, 1.5)
+    print("c4 -= Complex(0.25, 1.5) =>", c4)
+    c4 -= 3
+    print("c4 -= 3 =>", c4)
+    c4 *= Complex(-3.0, 2.0)
+    print("c4 *= Complex(-3.0, 2.0) =>", c4)
+    c4 *= 0.75
+    print("c4 *= 0.75 =>", c4)
+    c4 /= Complex(1.25, 2.0)
+    print("c4 /= Complex(1.25, 2.0) =>", c4)
+    c4 /= 2.0
+    print("c4 /= 2.0 =>", c4)
+
+    print()
+
+    # Examples of equality and inequality comparison operators
+    c1 = Complex(-1.2, 6.5)
+    c3 = Complex(3.14159, -2.71828)
+    var c5 = Complex(-1.2, 6.5)
+
+    if c1 == c5:
+        print("c1 is equal to c5")
+    else:
+        print("c1 is not equal to c5")
+
+    if c1 != c3:
+        print("c1 is not equal to c3")
+    else:
+        print("c1 is equal to c3")
+--- SOURCE: Mojo/examples/operators/my_complex.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+from std.math import sqrt
+
+
+@fieldwise_init
+struct Complex(
+    Boolable,
+    Equatable,
+    TrivialRegisterPassable,
+    Writable,
+):
+    """Represents a complex value.
+
+    The struct provides basic methods for manipulating complex values.
+    """
+
+    # ===-------------------------------------------------------------------===#
+    # Fields
+    # ===-------------------------------------------------------------------===#
+
+    var re: Float64
+    var im: Float64
+
+    # ===-------------------------------------------------------------------===#
+    # Initializers
+    # ===-------------------------------------------------------------------===#
+
+    def __init__(out self, re: Float64):
+        self.re = re
+        self.im = 0.0
+
+    # ===-------------------------------------------------------------------===#
+    # Trait implementations
+    # ===-------------------------------------------------------------------===#
+
+    def write_to(self, mut writer: Some[Writer]):
+        writer.write("(", self.re)
+        if self.im < 0:
+            writer.write(" - ", -self.im)
+        else:
+            writer.write(" + ", self.im)
+        writer.write("i)")
+
+    def write_repr_to(self, mut writer: Some[Writer]):
+        t"Complex(re = {self.re}, im = {self.im})".write_to(writer)
+
+    def __bool__(self) -> Bool:
+        return self.re != 0.0 or self.im != 0.0
+
+    # ===-------------------------------------------------------------------===#
+    # Unary arithmetic operator dunders
+    # ===-------------------------------------------------------------------===#
+
+    def __pos__(self) -> Self:
+        return self
+
+    def __neg__(self) -> Self:
+        return Self(-self.re, -self.im)
+
+    # ===-------------------------------------------------------------------===#
+    # Binary arithmetic operator dunders
+    # ===-------------------------------------------------------------------===#
+
+    def __add__(self, rhs: Self) -> Self:
+        return Self(self.re + rhs.re, self.im + rhs.im)
+
+    def __add__(self, rhs: Float64) -> Self:
+        return Self(self.re + rhs, self.im)
+
+    def __radd__(self, lhs: Float64) -> Self:
+        return Self(self.re + lhs, self.im)
+
+    def __iadd__(mut self, rhs: Self):
+        self.re += rhs.re
+        self.im += rhs.im
+
+    def __iadd__(mut self, rhs: Float64):
+        self.re += rhs
+
+    def __sub__(self, rhs: Self) -> Self:
+        return Self(self.re - rhs.re, self.im - rhs.im)
+
+    def __sub__(self, rhs: Float64) -> Self:
+        return Self(self.re - rhs, self.im)
+
+    def __rsub__(self, lhs: Float64) -> Self:
+        return Self(lhs - self.re, -self.im)
+
+    def __isub__(mut self, rhs: Self):
+        self.re -= rhs.re
+        self.im -= rhs.im
+
+    def __isub__(mut self, rhs: Float64):
+        self.re -= rhs
+
+    def __mul__(self, rhs: Self) -> Self:
+        return Self(
+            self.re * rhs.re - self.im * rhs.im,
+            self.re * rhs.im + self.im * rhs.re,
+        )
+
+    def __mul__(self, rhs: Float64) -> Self:
+        return Self(self.re * rhs, self.im * rhs)
+
+    def __rmul__(self, lhs: Float64) -> Self:
+        return Self(lhs * self.re, lhs * self.im)
+
+    def __imul__(mut self, rhs: Self):
+        var new_re = self.re * rhs.re - self.im * rhs.im
+        var new_im = self.re * rhs.im + self.im * rhs.re
+        self.re = new_re
+        self.im = new_im
+
+    def __imul__(mut self, rhs: Float64):
+        self.re *= rhs
+        self.im *= rhs
+
+    def __truediv__(self, rhs: Self) -> Self:
+        var denom = rhs.squared_norm()
+        return Self(
+            (self.re * rhs.re + self.im * rhs.im) / denom,
+            (self.im * rhs.re - self.re * rhs.im) / denom,
+        )
+
+    def __truediv__(self, rhs: Float64) -> Self:
+        return Self(self.re / rhs, self.im / rhs)
+
+    def __rtruediv__(self, lhs: Float64) -> Self:
+        var denom = self.squared_norm()
+        return Self(
+            (lhs * self.re) / denom,
+            (-lhs * self.im) / denom,
+        )
+
+    def __itruediv__(mut self, rhs: Self):
+        var denom = rhs.squared_norm()
+        var new_re = (self.re * rhs.re + self.im * rhs.im) / denom
+        var new_im = (self.im * rhs.re - self.re * rhs.im) / denom
+        self.re = new_re
+        self.im = new_im
+
+    def __itruediv__(mut self, rhs: Float64):
+        self.re /= rhs
+        self.im /= rhs
+
+    # ===-------------------------------------------------------------------===#
+    # Indexing
+    # ===-------------------------------------------------------------------===#
+
+    def __getitem__(self, idx: Int) raises -> Float64:
+        if idx == 0:
+            return self.re
+        if idx == 1:
+            return self.im
+        raise "index out of bounds"
+
+    def __setitem__(mut self, idx: Int, value: Float64) raises:
+        if idx == 0:
+            self.re = value
+        elif idx == 1:
+            self.im = value
+        else:
+            raise "index out of bounds"
+
+    # ===-------------------------------------------------------------------===#
+    # Methods
+    # ===-------------------------------------------------------------------===#
+
+    def squared_norm(self) -> Float64:
+        return self.re * self.re + self.im * self.im
+
+    def norm(self) -> Float64:
+        return sqrt(self.squared_norm())
+--- SOURCE: Mojo/examples/operators/test_my_complex.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+from my_complex import Complex
+from std.testing import *
+
+
+def test_init() raises:
+    var re1 = -1.2
+    var im1 = 6.5
+    var c1 = Complex(re1, im1)
+    var re2 = 3.14159
+    var im2 = 0.0
+    var c2 = Complex(re2)
+
+    assert_equal(re1, c1.re)
+    assert_equal(im1, c1.im)
+    assert_equal(re2, c2.re)
+    assert_equal(im2, c2.im)
+
+
+def test_bool() raises:
+    var c1 = Complex(0.0, 0.0)
+    var c2 = Complex(1.0, 0.0)
+    var c3 = Complex(0.0, 1.0)
+    var c4 = Complex(-1.2, 6.5)
+
+    assert_false(c1)
+    assert_true(c2)
+    assert_true(c3)
+    assert_true(c4)
+
+
+def test_str() raises:
+    var re1 = 3.3
+    var im1 = 5.1
+    var str1 = "({} + {}i)".format(re1, im1)
+    var out_str1 = String()
+    var c1 = Complex(re1, im1)
+    assert_equal(str1, String(c1))
+
+    c1.write_to(out_str1)
+    assert_equal(str1, out_str1)
+
+    var re2 = -1.2
+    var im2 = -3.4
+    var str2 = "({} - {}i)".format(re2, abs(im2))
+    var out_str2 = String()
+    var c2 = Complex(re2, im2)
+    assert_equal(str2, String(c2))
+
+    c2.write_to(out_str2)
+    assert_equal(str2, out_str2)
+
+
+def test_indexing() raises:
+    var re1 = -1.2
+    var im1 = 6.5
+    var c1 = Complex(re1, im1)
+    assert_equal(re1, c1[0])
+    assert_equal(im1, c1[1])
+
+    var re2 = 4.5
+    var im2 = 7.8
+    c1[0] = re2
+    c1[1] = im2
+    assert_equal(re2, c1[0])
+    assert_equal(im2, c1[1])
+
+
+def test_unary() raises:
+    var re1 = -1.2
+    var im1 = 6.5
+    var c1 = Complex(re1, im1)
+    var re2 = 4.5
+    var im2 = -7.8
+    var c2 = Complex(re2, im2)
+
+    var c1_pos = +c1
+    assert_equal(c1.re, c1_pos.re)
+    assert_equal(c1.im, c1_pos.im)
+
+    var c2_pos = +c2
+    assert_equal(c2.re, c2_pos.re)
+    assert_equal(c2.im, c2_pos.im)
+
+    var c1_neg = -c1
+    assert_equal(-c1.re, c1_neg.re)
+    assert_equal(-c1.im, c1_neg.im)
+
+    var c2_neg = -c2
+    assert_equal(-c2.re, c2_neg.re)
+    assert_equal(-c2.im, c2_neg.im)
+
+
+def test_binary_complex() raises:
+    var c1 = Complex(-1.2, 6.5)
+    var c2 = Complex(3.14159, -2.71828)
+
+    var sum = c1 + c2
+    var diff = c1 - c2
+    var prod = c1 * c2
+    var quot = c1 / c2
+
+    var sum_re = 1.94159
+    var sum_im = 3.78172
+    var diff_re = -4.34159
+    var diff_im = 9.21828
+    var prod_re = 13.898912
+    var prod_im = 23.682271
+    var quot_re = -1.242203
+    var quot_im = 0.994192
+
+    assert_almost_equal(sum_re, sum.re, atol=0.00001)
+    assert_almost_equal(sum_im, sum.im, atol=0.00001)
+    assert_almost_equal(diff_re, diff.re, atol=0.00001)
+    assert_almost_equal(diff_im, diff.im, atol=0.00001)
+    assert_almost_equal(prod_re, prod.re, atol=0.000001)
+    assert_almost_equal(prod_im, prod.im, atol=0.000001)
+    assert_almost_equal(quot_re, quot.re, atol=0.000001)
+    assert_almost_equal(quot_im, quot.im, atol=0.000001)
+
+
+def test_binary_float() raises:
+    var c1 = Complex(-1.2, 6.5)
+    var f1 = 2.5
+
+    var sum = c1 + f1
+    var diff = c1 - f1
+    var prod = c1 * f1
+    var quot = c1 / f1
+
+    var sum_re = 1.3
+    var sum_im = 6.5
+    var diff_re = -3.7
+    var diff_im = 6.5
+    var prod_re = -3.0
+    var prod_im = 16.25
+    var quot_re = -0.48
+    var quot_im = 2.6
+
+    assert_almost_equal(sum_re, sum.re, atol=0.00001)
+    assert_almost_equal(sum_im, sum.im, atol=0.00001)
+    assert_almost_equal(diff_re, diff.re, atol=0.00001)
+    assert_almost_equal(diff_im, diff.im, atol=0.00001)
+    assert_almost_equal(prod_re, prod.re, atol=0.000001)
+    assert_almost_equal(prod_im, prod.im, atol=0.000001)
+    assert_almost_equal(quot_re, quot.re, atol=0.000001)
+    assert_almost_equal(quot_im, quot.im, atol=0.000001)
+
+
+def test_binary_rfloat() raises:
+    var c1 = Complex(-1.2, 6.5)
+    var f1 = 2.5
+
+    var sum = f1 + c1
+    var diff = f1 - c1
+    var prod = f1 * c1
+    var quot = f1 / c1
+
+    var sum_re = 1.3
+    var sum_im = 6.5
+    var diff_re = 3.7
+    var diff_im = -6.5
+    var prod_re = -3.0
+    var prod_im = 16.25
+    var quot_re = -0.068666
+    var quot_im = -0.371939
+
+    assert_almost_equal(sum_re, sum.re, atol=0.00001)
+    assert_almost_equal(sum_im, sum.im, atol=0.00001)
+    assert_almost_equal(diff_re, diff.re, atol=0.00001)
+    assert_almost_equal(diff_im, diff.im, atol=0.00001)
+    assert_almost_equal(prod_re, prod.re, atol=0.000001)
+    assert_almost_equal(prod_im, prod.im, atol=0.000001)
+    assert_almost_equal(quot_re, quot.re, atol=0.000001)
+    assert_almost_equal(quot_im, quot.im, atol=0.000001)
+
+
+def test_complex_inplace() raises:
+    var c1 = Complex(-1, -1)
+    c1 += Complex(0.5, -0.5)
+    assert_almost_equal(-0.5, c1.re, atol=0.000001)
+    assert_almost_equal(-1.5, c1.im, atol=0.000001)
+
+    c1 = Complex(-0.5, -1.5)
+    c1 += 2.75
+    assert_almost_equal(2.25, c1.re, atol=0.000001)
+    assert_almost_equal(-1.5, c1.im, atol=0.000001)
+
+    c1 = Complex(2.25, -1.5)
+    c1 -= Complex(0.25, 1.5)
+    assert_almost_equal(2.0, c1.re, atol=0.000001)
+    assert_almost_equal(-3.0, c1.im, atol=0.000001)
+
+    c1 = Complex(2.0, -3.0)
+    c1 -= 3
+    assert_almost_equal(-1.0, c1.re, atol=0.000001)
+    assert_almost_equal(-3.0, c1.im, atol=0.000001)
+
+    c1 = Complex(-1.0, -3.0)
+    c1 *= Complex(-3.0, 2.0)
+    assert_almost_equal(9.0, c1.re, atol=0.000001)
+    assert_almost_equal(7.0, c1.im, atol=0.000001)
+
+    c1 = Complex(9.0, 7.0)
+    c1 *= 0.75
+    assert_almost_equal(6.75, c1.re, atol=0.000001)
+    assert_almost_equal(5.25, c1.im, atol=0.000001)
+
+    c1 = Complex(6.75, 5.25)
+    c1 /= Complex(1.25, 2.0)
+    assert_almost_equal(3.404494, c1.re, atol=0.000001)
+    assert_almost_equal(-1.247191, c1.im, atol=0.000001)
+
+    c1 = Complex(-9.0, 7.0)
+    c1 /= 2.0
+    assert_almost_equal(-4.5, c1.re, atol=0.000001)
+    assert_almost_equal(3.5, c1.im, atol=0.000001)
+
+
+def test_equality() raises:
+    var c1 = Complex(-1.2, 6.5)
+    var c2 = Complex(-1.2, 0.0)
+    var c3 = Complex(0.0, 6.5)
+
+    assert_true(c1 == c1)
+    assert_false(c1 != c1)
+
+    assert_true(c1 != c2)
+    assert_false(c1 == c2)
+
+    assert_true(c1 != c3)
+    assert_false(c1 == c3)
+
+
+def main() raises:
+    TestSuite.discover_tests[__functions_in_module()]().run()
+--- SOURCE: Mojo/examples/process/process_example.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+from std.collections import List, Optional
+from std.os import Process
+from std.sys._libc import SignalCodes
+from std.time import sleep
+
+
+def test_long_running_process_wait() raises:
+    print("== Test: Wait for a long-running process ==")
+
+    var command = "sleep"
+    var arguments = List[String]()
+    arguments.append("1")
+
+    print("Running 'sleep 1'...")
+    var process = Process.run(command, arguments)
+
+    print("Waiting for process to finish...")
+    var status = process.wait()
+
+    if case .Some(exit_code) = status.exit_code:
+        print("Process finished with exit code:", exit_code)
+    elif case .Some(term_signal) = status.term_signal:
+        print("Process terminated by signal:", term_signal)
+
+
+def test_long_running_process_poll() raises:
+    print("== Test: Poll a long-running process ==")
+
+    var command = "sleep"
+    var arguments = List[String]()
+    arguments.append("2")
+
+    print("Running 'sleep 2'...")
+    var process = Process.run(command, arguments)
+
+    print("Polling process status...")
+    while not process.poll().has_exited():
+        print("Process is still running...")
+        sleep(0.5)
+
+    var status = process.status.value()
+    print("Process has exited.")
+    if case .Some(exit_code) = status.exit_code:
+        print("Process finished with exit code:", exit_code)
+    elif case .Some(term_signal) = status.term_signal:
+        print("Process terminated by signal:", term_signal)
+
+
+def test_interrupt_process() raises:
+    print("== Test: Interrupt a process (SIGINT) ==")
+
+    var command = "sleep"
+    var arguments = List[String]()
+    arguments.append("5")
+
+    print("Running 'sleep 5'...")
+    var process = Process.run(command, arguments)
+
+    print("Sleeping for 1 second before sending SIGINT...")
+    sleep(1.0)
+
+    if process.interrupt():
+        print("Successfully sent SIGINT.")
+    else:
+        print("Failed to send SIGINT.")
+
+    var status = process.wait()
+
+    if case .Some(term_signal) = status.term_signal:
+        print("Process terminated by signal:", term_signal)
+        if term_signal == SignalCodes.INT:
+            print("Termination signal was SIGINT, as expected.")
+    elif case .Some(exit_code) = status.exit_code:
+        print("Process finished with exit code:", exit_code)
+
+
+def test_kill_process() raises:
+    print("== Test: Kill a process (SIGKILL) ==")
+
+    var command = "sleep"
+    var arguments = List[String]()
+    arguments.append("5")
+
+    print("Running 'sleep 5'...")
+    var process = Process.run(command, arguments)
+
+    print("Sleeping for 1 second before sending SIGKILL...")
+    sleep(1.0)
+
+    if process.kill():
+        print("Successfully sent SIGKILL.")
+    else:
+        print("Failed to send SIGKILL.")
+
+    var status = process.wait()
+
+    if case .Some(term_signal) = status.term_signal:
+        print("Process terminated by signal:", term_signal)
+        if term_signal == SignalCodes.KILL:
+            print("Termination signal was SIGKILL, as expected.")
+    elif case .Some(exit_code) = status.exit_code:
+        print("Process finished with exit code:", exit_code)
+
+
+def main() raises:
+    test_long_running_process_wait()
+    print("\n--------------------\n")
+    test_long_running_process_poll()
+    print("\n--------------------\n")
+    test_interrupt_process()
+    print("\n--------------------\n")
+    test_kill_process()
+--- SOURCE: Mojo/examples/python-interop/README.md ---
+# Calling Mojo functions from Python
+
+Mojo now has the ability to be called from Python, with Mojo functions
+representing themselves as if they were native Python functions. When a Python
+script is run that references a Mojo module, that module is transparently
+compiled to present an interface that can be used from Python. At present,
+the interface that is presented to Python must be manually defined in Mojo
+code.
+
+A full description of this functionality can be found
+[within the Mojo manual](https://mojolang.org/docs/manual/python/mojo-from-python/),
+including current
+[known limitations](https://mojolang.org/docs/manual/python/mojo-from-python/#known-limitations).
+
+These examples show how to perform basic to more advanced use of Mojo code from
+Python in order to progressively replace hotspots in Python code with fast
+Mojo. This includes using Mojo to drive calculations on
+[MAX-compatible GPUs](https://max.modular.com/gpu/hardware-compatibility/).
+
+The two examples of Mojo functions being called from Python consist of:
+
+- **hello.py**: A literal "hello world" example, where a string is passed in
+  from Python to Mojo, concatenated with a string in Mojo code, and the result
+  passed back to Python to be printed.
+- **mandelbrot.py**: A parallel calculation of the number of iterations to
+  escape in the Mandelbrot set, performed on a MAX-compatible GPU in Mojo. The
+  Python code calls into the Mojo GPU calculation and gets the results back as
+  ASCII art in a string to be printed.
+
+You can run these examples via [Pixi](https://pixi.sh):
+
+```sh
+pixi run hello
+pixi run mandelbrot
+```
+
+or directly in a Python virtual environment where the `max` PyPI package has
+been installed:
+
+```sh
+python hello.py
+python mandelbrot.py
+```
+--- SOURCE: Mojo/examples/python-interop/hello_mojo.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+
+from std.os import abort
+
+from std.python import PythonObject
+from std.python.bindings import PythonModuleBuilder
+
+
+# An interface for this Mojo module must be exported to Python.
+@export
+def PyInit_hello_mojo() abi("C") -> PythonObject:
+    try:
+        # A Python module is constructed, matching the name of this Mojo module.
+        var module = PythonModuleBuilder("hello_mojo")
+        # The functions to be exported are registered within this module.
+        module.def_function[passthrough]("passthrough")
+        return module.finalize()
+    except e:
+        abort(String("failed to create Python module: ", e))
+
+
+def passthrough(value: PythonObject) raises -> PythonObject:
+    """A very basic function illustrating passing values to and from Mojo."""
+    return value + " world from Mojo"
+--- SOURCE: Mojo/examples/python-interop/mandelbrot_mojo.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+from std.math import ceildiv
+from std.os import abort
+from std.sys import has_accelerator
+
+from std.complex import ComplexSIMD, ComplexScalar
+from max.gpu import global_idx
+from max.gpu.host import DeviceContext
+from layout import TileTensor, row_major
+from std.python import PythonObject
+from std.python.bindings import PythonModuleBuilder
+
+comptime GRID_WIDTH = 60
+comptime GRID_HEIGHT = 25
+
+comptime float_dtype = DType.float32
+comptime int_dtype = DType.int32
+
+comptime MIN_X: Scalar[float_dtype] = -2.0
+comptime MAX_X: Scalar[float_dtype] = 0.7
+comptime MIN_Y: Scalar[float_dtype] = -1.12
+comptime MAX_Y: Scalar[float_dtype] = 1.12
+
+comptime layout = row_major[GRID_HEIGHT, GRID_WIDTH]()
+
+
+# An interface for this Mojo module must be exported to Python.
+@export
+def PyInit_mandelbrot_mojo() abi("C") -> PythonObject:
+    try:
+        # A Python module is constructed, matching the name of this Mojo module.
+        var module = PythonModuleBuilder("mandelbrot_mojo")
+        # The functions to be exported are registered within this module.
+        module.def_function[run_mandelbrot]("run_mandelbrot")
+        return module.finalize()
+    except e:
+        abort(String("failed to create Python module: ", e))
+
+
+def run_mandelbrot(iterations: PythonObject) raises -> PythonObject:
+    """Dispatches the Mandelbrot calculation from Python to the GPU."""
+    comptime assert has_accelerator(), "This example requires a supported GPU"
+
+    # Get the context for the attached GPU
+    var ctx = DeviceContext()
+
+    # Allocate a tensor on the target device to hold the resulting set.
+    var dev_buf = ctx.enqueue_create_buffer[int_dtype](comptime (layout.size()))
+    var out_tensor = TileTensor(dev_buf, layout)
+
+    # Compute how many blocks are needed in each dimension to fully cover the grid,
+    # rounding up to ensure even partially filled blocks are launched.
+    comptime BLOCK_SIZE = 16
+    comptime COL_BLOCKS = ceildiv(GRID_WIDTH, BLOCK_SIZE)
+    comptime ROW_BLOCKS = ceildiv(GRID_HEIGHT, BLOCK_SIZE)
+
+    # Launch the Mandelbrot kernel on the GPU with a 2D grid of thread blocks.
+    ctx.enqueue_function[mandelbrot](
+        out_tensor,
+        Int32(py=iterations),
+        grid_dim=(COL_BLOCKS, ROW_BLOCKS),
+        block_dim=(BLOCK_SIZE, BLOCK_SIZE),
+    )
+    ctx.synchronize()
+
+    # Map the output tensor data to CPU so that we can read the results.
+    with dev_buf.map_to_host() as host_buf:
+        var host_tensor = TileTensor(host_buf, layout)
+        # Return the ASCII art string representation to Python.
+        return draw_mandelbrot(host_tensor, Int32(py=iterations))
+
+
+def mandelbrot(
+    tensor: TileTensor[int_dtype, type_of(layout), MutAnyOrigin],
+    iterations: Int32,
+):
+    """Calculates each element's escape iteration in the Mandelbrot set."""
+    # Obtain the position in the grid from the X, Y thread locations.
+    var row = global_idx.y
+    var col = global_idx.x
+
+    comptime SCALE_X = (MAX_X - MIN_X) / GRID_WIDTH
+    comptime SCALE_Y = (MAX_Y - MIN_Y) / GRID_HEIGHT
+
+    # Calculate the complex C corresponding to that grid location.
+    var cx = MIN_X + Float32(col) * SCALE_X
+    var cy = MIN_Y + Float32(row) * SCALE_Y
+    var c = ComplexScalar[float_dtype](cx, cy)
+
+    # Perform the Mandelbrot iteration loop calculation.
+    var z = ComplexScalar[float_dtype](0, 0)
+    var iters = Scalar[int_dtype](0)
+
+    var in_set_mask = Scalar[.bool](True)
+    for _ in range(iterations):
+        if not any(in_set_mask):
+            break
+        in_set_mask = z.squared_norm().le(4)
+        iters = in_set_mask.select(iters + 1, iters)
+        z = z.squared_add(c)
+
+    # Write out the resulting iterations to escape.
+    tensor[row, col] = iters
+
+
+def draw_mandelbrot(
+    tensor: TileTensor[int_dtype, type_of(layout), ...], iterations: Int32
+) raises -> String:
+    """Visualizes the Mandelbrot set as ASCII art."""
+    comptime sr = StringSpan("....,c8M@jawrpogOQEPGJ")
+    var buffer = String()
+    for row in range(GRID_HEIGHT):
+        for col in range(GRID_WIDTH):
+            var v = tensor[row, col]
+            if v < iterations:
+                var idx = Int(Int(v) % len(sr.bytes()))
+                var p = sr[byte=idx]
+                buffer += p
+            else:
+                buffer += " "
+        buffer += "\n"
+    return buffer
+--- SOURCE: Mojo/examples/python-interop/person_module.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+# DOC: Mojo/docs/site/manual/python/mojo-from-python.mdx
+
+from std.os import abort
+
+from std.python import PythonObject
+from std.python.bindings import PythonModuleBuilder
+
+
+@fieldwise_init
+struct Person(Movable, Writable):
+    var name: String
+    var age: Int
+
+    @staticmethod
+    def py_init(
+        out self: Person, args: PythonObject, kwargs: PythonObject
+    ) raises:
+        # Validate argument count
+        if len(args) != 2:
+            raise Error("Person() takes exactly 2 arguments")
+
+        # Convert Python arguments to Mojo types
+        var name = String(py=args[0])
+        var age = Int(py=args[1])
+
+        self = Self(name, age)
+
+
+@export
+def PyInit_person_module() abi("C") -> PythonObject:
+    try:
+        var mb = PythonModuleBuilder("person_module")
+
+        _ = mb.add_type[Person]("Person").def_py_init[Person.py_init]()
+
+        return mb.finalize()
+    except e:
+        abort(String("error creating Python Mojo module:", e))
+--- SOURCE: Mojo/examples/testing/README.md ---
+# Modular testing framework examples
+
+This directory contains examples of using the Mojo testing framework for unit
+testing. See the [Testing](https://mojolang.org/docs/tools/testing) section
+of the [Mojo manual](https://mojolang.org/docs/manual/) for a complete
+discussion of how to use the Mojo testing framework.
+
+## Files
+
+This directory contains the following files:
+
+- `src/my_math/__init__.mojo`: a Mojo package file
+
+- `src/my_math/utils.mojo`: a Mojo module source file
+
+- `src/example.mojo`: a simple Mojo program that uses the functions from the
+  `my_math` package
+
+- `test/my_math/test_*.mojo`: Mojo test files containing unit tests for
+  functions defined in the `my_math` package
+
+- `pixi.toml`: a [Pixi](https://pixi.sh) project file
+  containing the project dependencies and task definitions.
+
+## Run the code
+
+This example project uses the [Pixi](https://pixi.sh/latest/) package
+and virtual environment manager.
+
+Once you have installed `pixi`, activate the project's virtual environment by
+navigating to the project's root directory and executing:
+
+```bash
+pixi shell
+```
+
+Run the unit tests contained in the `test` directory by executing:
+
+```bash
+mojo run -I src test/my_math/test_dec.mojo
+mojo run -I src test/my_math/test_inc.mojo
+```
+
+If desired, you can run the example program by executing:
+
+```bash
+mojo src/example.mojo
+```
+
+Once you're done, deactivate the project's virtual environment by executing:
+
+```bash
+exit
+```
+--- SOURCE: Mojo/examples/testing/src/example.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+from my_math import dec, inc
+
+
+def main() raises:
+    var i = 0
+    print("Incrementing")
+    while i < 5:
+        i = inc(i)
+        print(i)
+    print("Decrementing")
+    while i > 0:
+        print(i)
+        i = dec(i)
+--- SOURCE: Mojo/examples/testing/src/my_math/__init__.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+# ===----------------------------------------------------------------------=== #
+# Package file
+# ===----------------------------------------------------------------------=== #
+"""Basic mathematical utilities.
+
+This package defines a collection of utility functions for manipulating
+integer values.
+
+You can import these APIs from the `my_math` package. For example:
+
+```mojo
+from my_math import dec, inc
+```
+"""
+
+from .utils import dec, inc
+--- SOURCE: Mojo/examples/testing/src/my_math/utils.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+"""Implements various mathematical utilities.
+
+You can import these APIs from the `my_math` package. For example:
+
+```mojo
+from my_math import inc
+```
+"""
+
+
+def inc(n: Int) raises -> Int:
+    """Returns an incremented integer value.
+
+    ```mojo
+    from my_math import inc
+    i = 7
+    j = inc(i)  # j = 8
+    ```
+
+    However, `inc()` raises an error if it would result in integer overflow:
+
+    ```mojo
+    k = 0
+    try:
+         k = inc(Int.MAX)
+    except e:
+         print(e)  # inc overflow
+    ```
+
+    Args:
+         n: The integer value to increment.
+
+    Returns:
+         The input value plus one.
+
+    Raises:
+         An error if the incremented value exceeds `Int.MAX`.
+    """
+    if n == Int.MAX:
+        raise Error("inc overflow")
+    return n + 1
+
+
+def dec(n: Int) raises -> Int:
+    """Returns a decremented integer value.
+
+    ```mojo
+    from my_math import dec
+    i = 7
+    j = dec(i)  # j = 6
+    ```
+
+    However, `dec()` raises an error if it would result in integer overflow:
+
+    ```mojo
+    k = 0
+    try:
+         k = dec(Int.MIN)
+    except e:
+         print(e)  # inc overflow
+    ```
+
+    Args:
+         n: The integer value to decrement.
+
+    Returns:
+         The input value minus one.
+
+    Raises:
+         An error if the decremented value is less than `Int.MIN`.
+
+    """
+    if n == Int.MIN:
+        raise Error("dec overflow")
+    return n - 1
+--- SOURCE: Mojo/examples/testing/test/my_math/test_dec.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+from my_math import dec
+from std.testing import assert_equal, assert_raises, TestSuite
+
+
+def test_dec_valid() raises:
+    assert_equal(dec(1), 0)
+    assert_equal(dec(0), -1)
+
+
+def test_dec_min() raises:
+    with assert_raises():
+        # Assign the return value to the discard pattern to prevent the Mojo
+        # compiler from warning that it is unused.
+        _ = dec(Int.MIN)
+
+
+def main() raises:
+    TestSuite.discover_tests[__functions_in_module()]().run()
+--- SOURCE: Mojo/examples/testing/test/my_math/test_inc.mojo ---
+# ===----------------------------------------------------------------------=== #
+# Copyright (c) 2026, Modular Inc. All rights reserved.
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions:
+# https://llvm.org/LICENSE.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ===----------------------------------------------------------------------=== #
+
+from my_math import inc
+from std.testing import assert_equal, assert_raises, TestSuite
+
+
+def test_inc_valid() raises:
+    assert_equal(inc(0), 1)
+    assert_equal(inc(1), 2)
+
+
+def test_inc_max() raises:
+    with assert_raises():
+        # Assign the return value to the discard pattern to prevent the Mojo
+        # compiler from warning that it is unused.
+        _ = inc(Int.MAX)
+
+
+def main() raises:
+    TestSuite.discover_tests[__functions_in_module()]().run()

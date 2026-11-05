@@ -1,0 +1,43 @@
+{
+  "title": "Julia by Example",
+  "authors": [
+    "Samuel Colvin"
+  ],
+  "source_repo": "samuelcolvin/JuliaByExample",
+  "source_branch": "master",
+  "source_commit": "9fc5516b7f6d03bd2f340b7a9bb52a06fedb7458",
+  "source": "samuelcolvin/JuliaByExample, master, README.md, main_page.md, src/*.jl",
+  "licence": "MIT License",
+  "licence_detail": "MIT License, Copyright (c) 2014 Samuel Colvin and other contributors",
+  "licence_verified_from": "samuelcolvin/JuliaByExample LICENSE, read via GitHub connector",
+  "notes": "Short unofficial collection of Julia examples (hello world, arrays, dicts, functions, strings, IO, loops/map, types, error handling, DataFrames, plots). Small file (~60k chars) because the repo is small; data files src/iris.csv, src/simple.dat and src/plots.svg were left out (data/binary, not text teaching material). Repo is archived by its author; examples target an older Julia but remain valid introductory patterns.",
+  "file": "julia_by_example.txt",
+  "chars": 34765,
+  "sha256": "da1d4366695c955a0a4a63b2c040468325cc07fc97c832c385877d9a63074087",
+  "files": [
+    "README.md",
+    "main_page.md",
+    "src/arrays.jl",
+    "src/booleans.jl",
+    "src/dataframes.jl",
+    "src/dicts.jl",
+    "src/error_handling.jl",
+    "src/formatting_converting_strings.jl",
+    "src/functions.jl",
+    "src/hello_world.jl",
+    "src/io.jl",
+    "src/loops_map.jl",
+    "src/multiarrays.jl",
+    "src/plots.jl",
+    "src/string_manipulation.jl",
+    "src/strings_basics.jl",
+    "src/types.jl",
+    "src/using_packages.jl"
+  ],
+  "file_count": 18,
+  "failed": [],
+  "failed_count": 0,
+  "status": "proposed",
+  "approved": false,
+  "pushed": false
+}

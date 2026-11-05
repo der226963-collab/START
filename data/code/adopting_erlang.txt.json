@@ -1,0 +1,26 @@
+{
+  "title": "Adopting Erlang",
+  "authors": [
+    "Tristan Sloughter",
+    "Fred Hébert",
+    "Evan Vigil-McClanahan"
+  ],
+  "source_repo": "adoptingerlang/adoptingerlang",
+  "source_branch": "main",
+  "source_commit": "899008f7f43c860a4f3df4be5b75d9a3c1e9ff9b",
+  "licence": "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)",
+  "licence_detail": "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)",
+  "licence_verified_from": "adoptingerlang/adoptingerlang LICENSE, read via GitHub connector (full CC BY-NC-SA 4.0 text); booksite introduction also states CC BY-NC-SA 4.0",
+  "status": "proposed",
+  "approved": false,
+  "pushed": false,
+  "file": "adopting_erlang.txt",
+  "chars": 357390,
+  "sha256": "195d258ac22a04e5e6d27c130adbd5933307f2e1c428f97a193c7f1f863577d4",
+  "file_count": 1,
+  "files": [
+    "adoptingerlang.org"
+  ],
+  "failed": [],
+  "notes": "Production Erlang book (Org-mode source, kept as-is): OTP concepts, releases, continuous delivery, and building a team. Book content is the single file adoptingerlang.org; Hugo site scaffolding (content/, themes/, layouts/) is not book content and was not included."
+}

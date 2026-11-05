@@ -1,0 +1,31 @@
+{
+  "title": "Apache Commons Lang (curated selection)",
+  "authors": [
+    "Apache Software Foundation / Apache Commons Lang contributors"
+  ],
+  "source": "apache/commons-lang, branch master, commit e547d704b21a1b10a2dae0158f7288d7afa4d064 (2026-11-03), src/main/java/org/apache/commons/lang3/",
+  "licence": "Apache License, Version 2.0 (Apache-2.0)",
+  "licence_verified_from": "apache/commons-lang LICENSE.txt, read via GitHub connector; each selected file carries the Apache 2.0 header",
+  "files": [
+    "ObjectUtils.java",
+    "BooleanUtils.java",
+    "CharUtils.java",
+    "Strings.java",
+    "Validate.java",
+    "EnumUtils.java",
+    "RandomStringUtils.java",
+    "RegExUtils.java",
+    "CharSequenceUtils.java",
+    "ClassUtils.java",
+    "StringEscapeUtils.java",
+    "LocaleUtils.java",
+    "Range.java"
+  ],
+  "file_count": 13,
+  "failed": [],
+  "failed_count": 0,
+  "notes": "Curated real-world Java utility library code, unmodified: string/char/boolean/object helpers, validation, enums, random strings, regex, class utilities. Left out for the size budget and repetitiveness: StringUtils.java (406,745 chars) and ArrayUtils.java (409,734 chars), mostly generated overloads \u2014 candidates for a follow-up file.",
+  "chars": 527748,
+  "sha256": "52b7d6ce40feb8c4015b57d863b2e22501cfe6ba8a99b14b096e35c434dc6b7d",
+  "status": "proposed"
+}

@@ -86,6 +86,13 @@ ALLOWED_LICENCES = {
     "CC BY-SA 4.0",
     "CC BY-SA 3.0",
     "CC BY-NC-SA 4.0",
+    # 2026-11-04: added, because books already approved and
+    # added manually under this licence (Downey, CC BY-NC-SA
+    # 3.0; Statics GeoGebra content, 3.0) were refused by the
+    # fetcher, which only listed the 4.0 version. NC-SA terms
+    # are the same shape as 4.0: attribution, non-commercial,
+    # share-alike, recorded with the file.
+    "CC BY-NC-SA 3.0",
 }
 
 MAX_BYTES = 5_000_000
@@ -147,8 +154,61 @@ def clean_text(text, url=""):
     return text.strip() + "\n"
 
 
+def _wikipedia_plain_text(api_response):
+    """Extract plain article text from a Wikipedia API JSON response.
+
+    Returns None if no extract is present, so the caller can fall
+    back to fetching the HTML page and stripping tags.
+    """
+    try:
+        pages = api_response["query"]["pages"]
+        for page in pages.values():
+            extract = page.get("extract")
+            if extract:
+                return extract
+    except (KeyError, TypeError, AttributeError):
+        pass
+    return None
+
+
+def _fetch_wikipedia_plain(url):
+    """Fetch a Wikipedia article as plain text via its API.
+
+    2026-11-04 improvement: the old route fetched the HTML page
+    and stripped tags, which left navigation/menu text in the
+    Climate change and Renewable energy files. The API's
+    extracts endpoint returns the article body only, on the
+    same allowlisted host, with the same CC BY-SA licence.
+    Returns None if the API gives no extract, so _download
+    can fall back to the HTML route.
+    """
+    parsed = urllib.parse.urlparse(url)
+    if parsed.hostname not in ("en.wikipedia.org",):
+        return None
+    if not parsed.path.startswith("/wiki/"):
+        return None
+    title = urllib.parse.unquote(parsed.path[len("/wiki/"):])
+    if not title or ":" in title.split("/")[0]:
+        return None
+    api_url = ("https://en.wikipedia.org/w/api.php?action=query&prop=extracts"
+               "&explaintext=1&format=json&titles=" + urllib.parse.quote(title))
+    req = urllib.request.Request(api_url, headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        raw = resp.read(MAX_BYTES + 1)
+    if len(raw) > MAX_BYTES:
+        raise FetchError(f"Response over {MAX_BYTES} bytes, refused: {api_url}")
+    return _wikipedia_plain_text(json.loads(raw.decode("utf-8", errors="replace")))
+
+
 def _download(url):
     """Fetch one URL, refusing oversize responses and off-allowlist redirects."""
+    if "wikipedia.org" in url:
+        try:
+            plain = _fetch_wikipedia_plain(url)
+        except urllib.error.URLError:
+            plain = None
+        if plain:
+            return plain
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     try:
         with urllib.request.urlopen(req, timeout=60) as resp:

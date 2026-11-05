@@ -25,7 +25,10 @@ def main():
     parser.add_argument("--data", required=True)
     parser.add_argument("--batches", type=int, default=20)
     parser.add_argument("--modern", action="store_true")
+    parser.add_argument("--seed", type=int, default=42,
+                        help="Seed for evaluation batches, so two runs on the same checkpoint are comparable (2026-11-04 fix).")
     args = parser.parse_args()
+    torch.manual_seed(args.seed)
 
     meta = json.loads(Path(args.checkpoint + ".json").read_text())
     if meta.get("tokenizer") == "bpe":
@@ -37,12 +40,15 @@ def main():
         from mini_ai.gpt.model_modern import ModernGPT, ModernConfig
         cfg = ModernConfig(vocab_size=len(tokenizer), n_layer=meta["n_layer"],
                            n_head=meta["n_head"], n_embd=meta["n_embd"],
-                           block_size=meta["block_size"], dropout=0.0)
+                           block_size=meta["block_size"], dropout=0.0,
+                           qk_norm=meta.get("qk_norm", False),
+                           tie_weights=meta.get("tie_weights", False))
         model = ModernGPT(cfg)
     else:
         cfg = GPTConfig(vocab_size=len(tokenizer), n_layer=meta["n_layer"],
                         n_head=meta["n_head"], n_embd=meta["n_embd"],
-                        block_size=meta["block_size"], dropout=0.0)
+                        block_size=meta["block_size"], dropout=0.0,
+                        tie_weights=meta.get("tie_weights", False))
         model = MiniGPT(cfg)
     model.load_state_dict(torch.load(args.checkpoint + ".pt", map_location="cpu"))
     model.eval()

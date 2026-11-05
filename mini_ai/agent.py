@@ -57,7 +57,12 @@ def retrieve(query, data_dir="data", top_k=3):
     if not query_words:
         return []
     # First pass: document frequency for IDF weighting.
-    files = sorted(Path(data_dir).glob("*.txt"))
+    # 2026-11-04 fix: exclude the assembled corpus itself.
+    # It is 19M chars of already-assembled text, so including
+    # it made every retrieval scan the whole corpus and return
+    # assembled passages instead of the original source files.
+    files = sorted(f for f in Path(data_dir).glob("*.txt")
+                   if f.name != "expanded_corpus.txt")
     paragraphs = []
     for f in files:
         for para in f.read_text().split("\n\n"):

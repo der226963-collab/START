@@ -37,12 +37,15 @@ def main():
         from mini_ai.gpt.model_modern import ModernConfig, ModernGPT
         cfg = ModernConfig(vocab_size=vocab_size, n_layer=meta["n_layer"],
                            n_head=meta["n_head"], n_embd=meta["n_embd"],
-                           block_size=meta["block_size"])
+                           block_size=meta["block_size"],
+                           qk_norm=meta.get("qk_norm", False),
+                           tie_weights=meta.get("tie_weights", False))
         model = ModernGPT(cfg)
     else:
         cfg = GPTConfig(vocab_size=vocab_size, n_layer=meta["n_layer"],
                         n_head=meta["n_head"], n_embd=meta["n_embd"],
-                        block_size=meta["block_size"])
+                        block_size=meta["block_size"],
+                        tie_weights=meta.get("tie_weights", False))
         model = MiniGPT(cfg)
     model.load_state_dict(torch.load(args.checkpoint + ".pt", map_location="cpu"))
 

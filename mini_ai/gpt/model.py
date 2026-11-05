@@ -40,6 +40,8 @@ class GPTConfig:
     n_head: int = 4
     n_embd: int = 64
     dropout: float = 0.0
+    # Weight tying, off by default for checkpoint compatibility.
+    tie_weights: bool = False
 
 
 class CharTokenizer:
@@ -101,11 +103,11 @@ class CausalSelfAttention(nn.Module):
         q = q.view(batch, seq, self.n_head, self.head_dim).transpose(1, 2)
         k = k.view(batch, seq, self.n_head, self.head_dim).transpose(1, 2)
         v = v.view(batch, seq, self.n_head, self.head_dim).transpose(1, 2)
-        scores = q @ k.transpose(-2, -1) / math.sqrt(self.head_dim)
-        scores = scores.masked_fill(self.mask[:seq, :seq] == 0, float("-inf"))
-        weights = F.softmax(scores, dim=-1)
-        weights = self.dropout(weights)
-        out = weights @ v  # (batch, heads, seq, head_dim)
+        # Fused SDPA (2026-11-04): same causal attention as the
+        # manual scores/mask above, via PyTorch's fused kernel.
+        out = F.scaled_dot_product_attention(
+            q, k, v, is_causal=True,
+            dropout_p=self.dropout.p if self.training else 0.0)
         out = out.transpose(1, 2).contiguous().view(batch, seq, embd)
         return self.proj(out)
 
@@ -139,6 +141,8 @@ class MiniGPT(nn.Module):
         self.ln_f = nn.LayerNorm(config.n_embd)
         self.head = nn.Linear(config.n_embd, config.vocab_size, bias=False)
         self.apply(self._init_weights)
+        if config.tie_weights:
+            self.head.weight = self.token_emb.weight
 
     @staticmethod
     def _init_weights(module):

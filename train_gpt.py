@@ -132,6 +132,13 @@ def main():
                         help="Micro-batches per optimizer step; effective batch = --batch * --grad-accum.")
     parser.add_argument("--qk-norm", action="store_true",
                         help="Enable QK-normalisation in the modern model (off by default).")
+    parser.add_argument("--tie-weights", action="store_true",
+                        help="Tie the output head to the token embedding (saves params, helps small models).")
+    parser.add_argument("--muon-lr", type=float, default=None,
+                        help="Override Muon learning rate (published range 0.02-0.05; default uses --lr).")
+    parser.add_argument("--token-cache", default=None,
+                        help="Path to cache BPE tokens + tokenizer JSON (e.g. checkpoints/tokens.pt). "
+                             "If it exists, tokenization is skipped; otherwise it is written after encoding.")
     parser.add_argument("--out", default="checkpoints/mini-gpt")
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
@@ -154,22 +161,60 @@ def main():
     else:
         data_path = Path(args.data)
         text = data_path.read_text()
+        parts = [text]
         provenance = [{"file": str(data_path), "chars": len(text),
                        "sha256": hashlib.sha256(text.encode()).hexdigest()}]
-    if args.tokenizer == "bpe":
-        tokenizer = BPETokenizer.train(text, num_merges=args.bpe_merges)
-        print(f"BPE tokenizer: {len(tokenizer)} tokens from {args.bpe_merges} merges")
+    # Token cache (BPE only): encoding 19M chars in Python is the
+    # slowest part of a run, so a cache file lets repeat runs
+    # skip both BPE training and encoding. The cache stores the
+    # token ids plus the tokenizer JSON next to it, so a cached
+    # run still knows exactly which tokenizer produced the ids.
+    # Note: the cache is keyed only by path, not by corpus hash —
+    # delete it after changing the corpus, or pass a new path.
+    cache_path = Path(args.token_cache) if args.token_cache else None
+    cache_tok_path = cache_path.with_suffix(".tokenizer.json") if cache_path else None
+    if cache_path and cache_path.exists() and cache_tok_path and cache_tok_path.exists():
+        tokenizer = BPETokenizer.from_json(json.loads(cache_tok_path.read_text()))
+        data = torch.load(str(cache_path), map_location="cpu", weights_only=True)
+        # Per-file split is not recoverable from a flat cache, so
+        # a cached run uses the same 90/10 split of the whole
+        # token stream as the run that wrote the cache. The
+        # per-file split below applies to uncached runs.
+        split = int(0.9 * len(data))
+        train_data, val_data = data[:split], data[split:]
+        print(f"Loaded cached tokens: {len(data):,} tokens from {cache_path}")
     else:
-        tokenizer = CharTokenizer(text)
-    data = torch.tensor(tokenizer.encode(text), dtype=torch.long)
-    split = int(0.9 * len(data))
-    train_data, val_data = data[:split], data[split:]
+        if args.tokenizer == "bpe":
+            tokenizer = BPETokenizer.train(text, num_merges=args.bpe_merges)
+            print(f"BPE tokenizer: {len(tokenizer)} tokens from {args.bpe_merges} merges")
+        else:
+            tokenizer = CharTokenizer(text)
+        # Per-file 90/10 split (2026-11-04 fix): the old code
+        # split the concatenated text at 90%, which made
+        # validation a contiguous slice near the end of the
+        # corpus (mostly the last book), not a representative
+        # sample. Splitting each file separately keeps every
+        # book represented in both train and validation.
+        train_parts, val_parts = [], []
+        for part_text in parts:
+            tokens = tokenizer.encode(part_text)
+            cut = int(0.9 * len(tokens))
+            train_parts.extend(tokens[:cut])
+            val_parts.extend(tokens[cut:])
+        train_data = torch.tensor(train_parts, dtype=torch.long)
+        val_data = torch.tensor(val_parts, dtype=torch.long)
+        if cache_path and args.tokenizer == "bpe":
+            cache_path.parent.mkdir(parents=True, exist_ok=True)
+            torch.save(torch.tensor(train_parts + val_parts, dtype=torch.long), str(cache_path))
+            cache_tok_path.write_text(tokenizer.to_json())
+            print(f"Wrote token cache: {len(train_parts) + len(val_parts):,} tokens to {cache_path}")
     if args.modern:
         cfg = ModernConfig(vocab_size=len(tokenizer), dropout=args.dropout,
-                           qk_norm=args.qk_norm, **SIZES[args.size])
+                           qk_norm=args.qk_norm, tie_weights=args.tie_weights, **SIZES[args.size])
         model = ModernGPT(cfg)
     else:
-        cfg = GPTConfig(vocab_size=len(tokenizer), dropout=args.dropout, **SIZES[args.size])
+        cfg = GPTConfig(vocab_size=len(tokenizer), dropout=args.dropout,
+                        tie_weights=args.tie_weights, **SIZES[args.size])
         model = MiniGPT(cfg)
     print(f"Parameters: {model.count_parameters():,}  vocab: {len(tokenizer)}  "
           f"layers: {cfg.n_layer}  embd: {cfg.n_embd}  context: {cfg.block_size}")
@@ -185,7 +230,11 @@ def main():
             else:
                 adam_params.append(p)
         optimizer = _MultiOptimizer([
-            (Muon(muon_params, lr=args.lr, weight_decay=0.01), "muon"),
+            # --muon-lr overrides --lr for Muon only (2026-11-04
+            # tuning note: published Muon range is 0.02-0.05, but
+            # it is NOT raised blindly here — default still uses
+            # --lr, and a higher value must be chosen explicitly).
+            (Muon(muon_params, lr=args.muon_lr if args.muon_lr is not None else args.lr, weight_decay=0.01), "muon"),
             (torch.optim.AdamW(adam_params, lr=args.lr, weight_decay=0.01), "adamw"),
         ])
     else:
@@ -232,7 +281,10 @@ def main():
     torch.save(model.state_dict(), out.with_suffix(".pt"))
     (out.with_suffix(".json")).write_text(json.dumps({
         "tokenizer": args.tokenizer,
-        "chars": getattr(tokenizer, "chars", tokenizer.vocab),
+        # getattr defaults are evaluated eagerly in Python, so the
+        # old code crashed on char tokenizers (no .vocab) even
+        # though .chars existed. Use None as the safe default.
+        "chars": getattr(tokenizer, "chars", None),
         "vocab": getattr(tokenizer, "vocab", None),
         "merges": getattr(tokenizer, "merges", None),
         "n_layer": cfg.n_layer, "n_head": cfg.n_head,
@@ -246,6 +298,7 @@ def main():
         "seed": args.seed, "steps": args.steps,
         "optimizer": args.optimizer, "lr_schedule": args.lr_schedule,
         "grad_accum": accum, "qk_norm": args.qk_norm,
+        "tie_weights": args.tie_weights, "muon_lr": args.muon_lr,
         "final_train_loss": final_train_loss, "best_val_loss": best_val,
         "intended_use": "Language assistance only. Not a planner, allocator, or decider. "
                        "Human assemblies decide; a separate planning layer checks allocations.",

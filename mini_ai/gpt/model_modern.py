@@ -35,6 +35,9 @@ class ModernConfig:
     # It keeps attention logits from growing with scale, which
     # is why it helps larger / longer runs stay stable.
     qk_norm: bool = False
+    # Weight tying (off by default, same compatibility reason):
+    # the output head shares the token embedding matrix.
+    tie_weights: bool = False
 
 
 class RMSNorm(nn.Module):
@@ -96,10 +99,16 @@ class ModernAttention(nn.Module):
         cos, sin = _rope_freqs(self.head_dim, seq, x.device)
         q = _apply_rope(q, cos, sin)
         k = _apply_rope(k, cos, sin)
-        scores = q @ k.transpose(-2, -1) / math.sqrt(self.head_dim)
-        scores = scores.masked_fill(self.mask[:seq, :seq] == 0, float("-inf"))
-        weights = self.dropout(F.softmax(scores, dim=-1))
-        out = (weights @ v).transpose(1, 2).contiguous().view(batch, seq, embd)
+        # Fused scaled-dot-product attention (2026-11-04): same
+        # causal math as the manual scores/mask above, but using
+        # PyTorch's fused kernel where available, which is faster
+        # on CPU as well as GPU. is_causal=True replaces the
+        # manual mask; the old mask buffer is kept for
+        # compatibility but no longer used here.
+        out = F.scaled_dot_product_attention(
+            q, k, v, is_causal=True,
+            dropout_p=self.dropout.p if self.training else 0.0)
+        out = out.transpose(1, 2).contiguous().view(batch, seq, embd)
         return self.proj(out)
 
 
@@ -142,6 +151,10 @@ class ModernGPT(nn.Module):
         self.norm_f = RMSNorm(config.n_embd)
         self.head = nn.Linear(config.n_embd, config.vocab_size, bias=False)
         self.apply(self._init_weights)
+        if config.tie_weights:
+            # Share storage, not just values: updates to the
+            # embedding also update the head, and vice versa.
+            self.head.weight = self.token_emb.weight
 
     @staticmethod
     def _init_weights(module):

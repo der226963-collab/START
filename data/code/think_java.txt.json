@@ -1,0 +1,43 @@
+{
+  "title": "Think Java: How to Think Like a Computer Scientist, 2nd Edition",
+  "authors": [
+    "Allen B. Downey",
+    "Chris Mayfield"
+  ],
+  "source": "ChrisMayfield/ThinkJava2, branch master, commit 012feca6a67950adacade05ce54ead64b362cf1b (2026-10-29)",
+  "edition": "2nd Edition, Version 7.1.1",
+  "licence": "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)",
+  "licence_verified_from": "ChrisMayfield/ThinkJava2 thinkjava2.tex copyright page and README.md (no LICENSE file in repo; licence stated in the book's own front matter)",
+  "files": [
+    "Preface",
+    "Computer Programming",
+    "Variables and Operators",
+    "Input and Output",
+    "Methods and Testing",
+    "Conditionals and Logic",
+    "Loops and Strings",
+    "Arrays and References",
+    "Recursive Methods",
+    "Immutable Objects",
+    "Mutable Objects",
+    "Designing Classes",
+    "Arrays of Objects",
+    "Objects of Arrays",
+    "Extending Classes",
+    "Arrays of Arrays",
+    "Reusing Classes",
+    "Advanced Topics",
+    "Appendix: Tools",
+    "Appendix: Javadoc",
+    "Appendix: Graphics",
+    "Appendix: Debugging",
+    "Appendix: Extras"
+  ],
+  "file_count": 23,
+  "failed": [],
+  "failed_count": 0,
+  "notes": "LaTeX source (ch00-ch17, appa-appe) stripped to prose + code with '--- SOURCE: ThinkJava2/<file>.tex ---' separators. LaTeX commands stripped, code blocks (code/verbatim/stdout environments) kept verbatim, tables dropped, exercises kept as prose. Book's supporting code repo AllenDowney/ThinkJavaCode is MIT-licensed but was not assembled separately; the book text already contains its examples.",
+  "chars": 478603,
+  "sha256": "7ad8b6c35f3adcf4f8ab8f5ae07291dfb6af46a4bf2d4598c3fa9a17557ea0f8",
+  "status": "proposed"
+}

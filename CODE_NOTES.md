@@ -263,6 +263,43 @@ Licences checked directly from each repo's LICENSE file:
   the same day once verified (see below).
   Pushed 2026-11-05, see commit(s) below.
 
+## 2026-11-05 — Advanced Python batch (Library Reference + PEPs + DevGuide)
+
+- Eric approved the advanced Python batch on
+  2026-11-05 (the recommended first batch).
+  Assembled by a coordinator with three workers,
+  verified by the assistant (chars + SHA-256 +
+  separator counts against provenance for all
+  9 files). Total 7,441,776 chars, 9 files.
+  Library Reference 6,150,186 chars, all 329
+  Doc/library/ .rst files from python/cpython
+  main commit 288cc2bf, PSF 2, split into six
+  ~1.2M-char parts at file boundaries (a–f)
+  because the full reference cannot be pushed
+  as one file; no truncation. PEPs 386,304
+  chars, 9 PEPs (484, 492, 525, 530, 563, 567,
+  572, 649, 695) — licence is public domain /
+  CC0, NOT PSF, verified from each PEP's own
+  Copyright section. DevGuide 619,468 chars,
+  61 pages — licence CC0 1.0, NOT PSF, verified
+  from the devguide repo's own LICENSE.
+  InternalDocs 285,818 chars, 20 sections,
+  PSF 2, at InternalDocs/ (Doc/internal/ does
+  not exist). The first Library Reference
+  worker rate-limited at 40/329 files; the
+  coordinator finished it from a shallow
+  sparse git clone (deleted after assembly).
+  Resume state in data/code/
+  library_reference_parts/ was deleted after
+  assembly (intermediates only). Combined code
+  corpus after this batch: 21,767,197 chars,
+  36 files, counting only previously pushed
+  files plus this batch — language batches
+  (Java, Mojo, Julia, Erlang, Elixir,
+  Solidity) were landing in parallel and are
+  counted separately when verified. Pushed
+  2026-11-05.
+
 ## 2026-11-05 — musl libc (follow-up to the C batch)
 
 - musl_c_source.txt, 335 files, 345,899 chars,

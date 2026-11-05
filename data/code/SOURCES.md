@@ -203,6 +203,12 @@ sha256 b6fb4d79c0c19b17842a64766354f9e9188b12526e9628c1abaefa7730aaf5e9.
   later push once the parent verifies it.
 - Excluded C sources (do not add): Beej's Guide to C (CC BY-NC-ND 3.0), Thinking in C (CC BY-NC-ND 2.5), The C Book (licence convoluted/unclear), K&R, C: A Modern Approach, Learn C the Hard Way (commercial/copyrighted). Modern C 1st edition (CC BY-NC-ND 4.0) also excluded.
 
+## Advanced Python, added 2026-11-05 (assembled locally, pushed same day)
+- python_library_reference_a.txt through _f.txt — Python Library Reference, python/cpython branch main, Doc/library/, commit 288cc2bf (2026-11-05 snapshot), all 329 .rst files, 6,150,186 chars total: a 1,190,649 (76 files, sha256 32623ed221010ee2…), b 1,188,397 (77, cf9331ebc85eb49b…), c 1,192,279 (60, e2c2ffcb23485a08…), d 1,196,403 (60, e9863a0d28dcd19f…), e 1,167,340 (42, 9b1c9387deae4fd3…), f 215,118 (14, ee20fa86b6ee1cd8…). Licence PSF License Version 2 (docs code additionally dual PSF/0BSD from 3.8.6), verified from python/cpython's own LICENSE. Split into six ~1.2M-char parts at file boundaries because the full reference is ~6.15M chars and a single file cannot be pushed; no truncation. 21 non-text files excluded.
+- python_peps.txt — Python Enhancement Proposals, python/peps, 9 PEPs, 386,304 chars, sha256 19d2ef6dba0237bbe35cc6d655965b89cafca9dc0357aa42f4b12b70ff007729. PEPs 484, 492, 525, 530, 563, 567, 572, 649, 695. Licence: public domain / CC0-1.0-Universal — NOT PSF, verified from each PEP's own Copyright section (484, 492, 525, 530, 563, 567, 572 public domain; 649 and 695 public domain or CC0, whichever is more permissive, per PEP 1 §15). PEP 563 is superseded by 649 and is kept as design history.
+- cpython_devguide.txt — CPython Developer Guide, python/devguide branch main, commit d0a9edd4, all 61 .rst pages, 619,468 chars, sha256 79796e833a44d4b9772b1598a40a7f9944dd41f1a8b1a39e75cf54b9cad20d17. Licence CC0 1.0 Universal — NOT PSF, verified from the devguide repo's own LICENSE file.
+- cpython_internaldocs.txt — CPython InternalDocs, python/cpython, InternalDocs/ (Doc/internal/ does not exist), all 19 files plus Objects/listsort.txt (timsort, linked from the InternalDocs README), 20 sections, 285,818 chars, sha256 bb233d0559fa1cc63b6ea26e58b5a4393ac34785cb49341cbb7b87a2c8f28346. Licence PSF License Version 2, verified from cpython's LICENSE. 5 PNG diagrams excluded (prose kept).
+
 ## Not yet added
 - Java: flagged by Eric as having potential, no
   source verified or added yet. Each will need its own

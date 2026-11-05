@@ -141,6 +141,28 @@ sha256 b6fb4d79c0c19b17842a64766354f9e9188b12526e9628c1abaefa7730aaf5e9.
   assemble_code.py only reads data/code/*.txt),
   and are NOT pushed as the ATBS source.
 
+## Original advanced Python, written for START, 2026-11-04
+- python_advanced_original.txt — 10 original chapters,
+  18,997 chars, sha256 20673ee3d5b7e648fefa69c81f6995f06358a6a0b58ee82236da96fc05d3df28.
+  Written at Eric's direction to create genuine
+  material from facts only from the books that
+  cannot be used (notably Fluent Python, CPython
+  Internals, and the ND-licensed Cosmic Python).
+  Method, recorded in provenance: topics only,
+  no book text, chapter order, or distinctive
+  book example reproduced; grounded in PSF
+  documentation and the standard library; all
+  code examples written for this file and run
+  to pass on 2026-11-04. Chapters: data model /
+  special methods, sequences and hashing,
+  first-class functions and decorators,
+  descriptors and properties, metaclasses and
+  class creation, iterators / generators /
+  coroutines, context managers, typing,
+  performance / memory / __slots__, CPython
+  compilation pipeline. This is original to
+  this project, not a paraphrase of any book.
+
 ## Not yet added
 - C and Java: flagged by Eric as having potential, no
   source verified or added yet. Each will need its own

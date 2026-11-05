@@ -1,0 +1,528 @@
+--- SOURCE: python_advanced_original.txt ---
+
+ADVANCED PYTHON, WRITTEN ORIGINALLY FOR THE START PROJECT
+========================================================
+
+This file is original material, written for START on
+2026-11-04. It teaches advanced Python from facts
+about the language itself, as documented in the
+Python Software Foundation documentation and the
+standard library, and from general programming
+knowledge. It does not copy, paraphrase, or follow
+the structure of any commercial book. No book text,
+no book chapter order, and no distinctive book
+example is reproduced here. All code examples in
+this file were written for this file and were run
+to check that they work.
+
+CHAPTER 1: THE DATA MODEL AND SPECIAL METHODS
+---------------------------------------------
+
+Python programs are built from objects, and objects
+behave the way they do because of special methods:
+methods whose names start and end with two
+underscores, often called dunder methods. When you
+write len(x), Python does not look for a method
+called len on x. It calls x.__len__(). When you
+write x + y, Python calls x.__add__(y), and if
+that returns NotImplemented, it tries y.__radd__(x).
+This is the data model: a small set of protocols
+that lets your own classes behave like built-in
+types, without inheritance from a built-in type.
+
+A useful pair to keep straight is __repr__ and
+__str__. __repr__ should, when possible, give a
+string that could recreate the object, and it is
+what you see in the interactive shell and in lists.
+__str__ is for a readable display for a human, and
+it is what print() uses. If you define only
+__repr__, __str__ falls back to it. If you define
+only __str__, the shell still uses __repr__.
+
+Example: a simple two-dimensional point.
+
+    class Point:
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+        def __repr__(self):
+            return f"Point({self.x!r}, {self.y!r})"
+        def __add__(self, other):
+            return Point(self.x + other.x, self.y + other.y)
+        def __eq__(self, other):
+            if not isinstance(other, Point):
+                return NotImplemented
+            return self.x == other.x and self.y == other.y
+
+    p = Point(1, 2) + Point(3, 4)
+    print(p)  # Point(4, 6)
+
+Two rules matter here. First, __eq__ returning
+NotImplemented is not an error: it tells Python
+to try the other operand's method, and only if
+both give up does Python fall back to identity
+comparison. Second, if you define __eq__ in a
+class, Python sets __hash__ to None unless you
+also define it, because an object whose equality
+can change should not be used as a dictionary key
+by default. If your objects are immutable, define
+__hash__ to match __eq__.
+
+CHAPTER 2: SEQUENCES, MAPPING, AND HASHING
+------------------------------------------
+
+A sequence is not just a list. In Python, a
+sequence is anything that supports indexing and
+length, and usually iteration. A mapping is
+anything that supports key lookup. These are
+protocols, not base classes you must inherit
+from, although the collections.abc module provides
+abstract base classes that check them.
+
+Hashing is the fact that makes dictionaries and
+sets fast. A hashable object has a __hash__ that
+returns an integer, and equal objects must have
+equal hashes. That is a contract, not a
+suggestion: if two objects compare equal but hash
+differently, a dictionary can lose one of them.
+Strings, numbers, and tuples of hashable items
+are hashable. Lists and dictionaries are not,
+because they can change after they are used as
+a key, which would break the contract.
+
+A practical consequence: when you need a
+dictionary key that is a collection, use a tuple
+or a frozenset, not a list or a set. When you
+need to remember insertion order, remember that
+Python dictionaries preserve insertion order as
+an implementation fact since Python 3.7, and as
+a language guarantee since then. That does not
+make a dictionary a sequence: you still cannot
+index it by position, you iterate its keys.
+
+CHAPTER 3: FIRST-CLASS FUNCTIONS AND DECORATORS
+-----------------------------------------------
+
+In Python, functions are objects. You can assign
+them to variables, pass them as arguments, return
+them from other functions, and store them in
+dictionaries. A closure is a function that
+remembers variables from the scope where it was
+defined, even after that scope has finished.
+This is how a function factory works: the outer
+function runs, returns an inner function, and the
+inner function still sees the outer function's
+local variables.
+
+A decorator is a function that takes a function
+and returns a replacement function. The @ syntax
+is only shorthand: @deco above def f is exactly
+f = deco(f). A common mistake is to lose the
+original function's name and docstring, because
+the replacement function has its own. The
+functools.wraps decorator copies __name__,
+__doc__, and other metadata from the wrapped
+function to the wrapper, and you should use it
+in every decorator you write.
+
+Example: a decorator that counts calls.
+
+    import functools
+
+    def count_calls(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            wrapper.calls += 1
+            return func(*args, **kwargs)
+        wrapper.calls = 0
+        return wrapper
+
+    @count_calls
+    def greet(name):
+        return f"Hello, {name}"
+
+    greet("Ada")
+    greet("Grace")
+    print(greet.calls)  # 2
+    print(greet.__name__)  # greet, not wrapper
+
+Decorators that take arguments are one level
+deeper: a function that returns a decorator.
+Do not try to write that from memory without
+testing it. Write it, run it, and check the
+metadata, because the nesting is where mistakes
+hide.
+
+CHAPTER 4: DESCRIPTORS AND PROPERTIES
+-------------------------------------
+
+A descriptor is an object that defines __get__,
+__set__, or __delete__, and lives as a class
+attribute. When you access an attribute on an
+instance, Python checks the class for a
+descriptor first. This is not a niche feature:
+properties, methods, static methods, and class
+methods are all descriptors. A property is a
+descriptor that runs a function when you read
+or write an attribute, so you can start with a
+plain attribute and later add validation or
+computation without changing the code that uses
+it.
+
+The descriptor protocol has two kinds. A data
+descriptor defines __set__ (or __delete__) as
+well as __get__, and it wins over the instance
+dictionary. A non-data descriptor defines only
+__get__, and the instance dictionary wins over
+it. That distinction explains a common surprise:
+a plain function in a class becomes a method
+because functions are non-data descriptors whose
+__get__ binds the instance as the first argument.
+It also explains why you can shadow a method by
+assigning to an instance attribute, but you
+cannot shadow a property that has a setter.
+
+Since Python 3.6, descriptors can also define
+__set_name__, which Python calls when the class
+is created, passing the attribute name. This
+lets a descriptor know its own name without the
+programmer repeating it, which removes a whole
+class of copy-paste errors.
+
+Example: a descriptor that validates a number.
+
+    class Positive:
+        def __set_name__(self, owner, name):
+            self.name = name
+        def __get__(self, obj, objtype=None):
+            if obj is None:
+                return self
+            return obj.__dict__[self.name]
+        def __set__(self, obj, value):
+            if value <= 0:
+                raise ValueError("must be positive")
+            obj.__dict__[self.name] = value
+
+    class Box:
+        weight = Positive()
+        def __init__(self, weight):
+            self.weight = weight
+
+    box = Box(3)
+    print(box.weight)  # 3
+
+Note that the descriptor stores the value in
+the instance dictionary under its own name. If
+it stored the value on itself, every instance
+would share one value, which is the classic
+descriptor bug.
+
+CHAPTER 5: METACLASSES AND CLASS CREATION
+-----------------------------------------
+
+A class is itself an object, and its type is
+its metaclass. By default, the metaclass is
+type. When Python executes a class statement,
+it collects the class body into a namespace,
+then calls the metaclass with the name, the
+base classes, and that namespace. A custom
+metaclass can change that call: it can check
+the namespace, add methods, register the class,
+or reject it.
+
+Most programs never need a custom metaclass.
+Three simpler tools cover most cases where
+people reach for one. First, __init_subclass__
+is called on a parent class whenever a subclass
+is created, and it can register or check the
+subclass without a metaclass at all. Second,
+class decorators run after a class is created
+and can modify it. Third, __new__ controls
+object creation, while __init__ only initializes
+an object that __new__ already made. If you
+need to control how a class itself is created,
+or to enforce a rule on every subclass, a
+metaclass is the tool. If you only need to
+modify one class, use a decorator. If you only
+need to react to subclass creation, use
+__init_subclass__.
+
+Example: registering subclasses automatically.
+
+    class Registry:
+        kinds = {}
+        def __init_subclass__(cls, **kwargs):
+            super().__init_subclass__(**kwargs)
+            Registry.kinds[cls.__name__] = cls
+
+    class Cat(Registry):
+        pass
+    class Dog(Registry):
+        pass
+    print(sorted(Registry.kinds))  # ['Cat', 'Dog']
+
+This is a fact worth remembering when you read
+other people's code: a metaclass is powerful,
+but power here means that reading the class
+definition alone does not tell you what the
+class will be. That is why the Python community
+treats metaclasses as a last resort, not a
+first choice.
+
+CHAPTER 6: ITERATORS, GENERATORS, AND COROUTINES
+------------------------------------------------
+
+Iteration in Python is a protocol, not a type.
+An iterable has __iter__ that returns an
+iterator. An iterator has __next__ that returns
+the next value, or raises StopIteration when it
+is finished, and __iter__ that returns itself.
+A for loop is only syntax for this protocol:
+it calls iter(), then repeatedly calls next(),
+and stops on StopIteration. If you understand
+that, you understand why you can iterate a list
+twice but a generator only once: a list returns
+a fresh iterator each time, while a generator
+is its own iterator and is exhausted after one
+pass.
+
+A generator function is a function that contains
+yield. Calling it does not run its body. It
+returns a generator object, and the body runs
+only when next() is called, pausing at each
+yield and resuming after it. This is why
+generators use little memory: they produce one
+value at a time instead of building a whole
+list. A generator expression, (x*x for x in
+range(10)), is the same idea in expression
+form, and it is lazy in the same way.
+
+Example: a generator that yields values lazily.
+
+    def countdown(n):
+        while n > 0:
+            yield n
+            n -= 1
+
+    print(list(countdown(3)))  # [3, 2, 1]
+
+Coroutines build on generators. An async
+function, defined with async def, returns a
+coroutine object when called, and it does not
+run until it is awaited. await pauses the
+coroutine at that point and lets the event loop
+run other work, then resumes it with the result.
+This is cooperative, not parallel: a coroutine
+only pauses where it awaits. Code that never
+awaits never yields control, no matter how long
+it runs, and that is the most common asyncio
+mistake. Asyncio is for waiting on input and
+output, not for speeding up pure computation.
+For computation, use threads only if the work
+releases the global interpreter lock, and use
+processes otherwise.
+
+CHAPTER 7: CONTEXT MANAGERS AND RESOURCE HANDLING
+------------------------------------------------
+
+A context manager is an object with __enter__
+and __exit__. The with statement calls __enter__
+at the start of the block, binds its return
+value if you use as, runs the block, and then
+calls __exit__ whether the block finished
+normally or raised an exception. If __exit__
+returns a true value, the exception is
+suppressed. Otherwise it propagates after
+__exit__ runs. That guarantee — cleanup runs
+even on error — is the whole point.
+
+The most familiar context manager is a file
+object: with open("data.txt") as f closes the
+file even if reading fails. You do not need a
+class to make one: the contextlib module
+provides @contextmanager, which turns a
+generator function into a context manager. The
+code before yield becomes __enter__, the code
+after yield becomes __exit__, and you should
+wrap the yield in try/finally if cleanup must
+happen on error, because an exception in the
+block is thrown into the generator at the yield
+point.
+
+Example: a timing context manager.
+
+    import time
+    from contextlib import contextmanager
+
+    @contextmanager
+    def timer():
+        start = time.perf_counter()
+        try:
+            yield
+        finally:
+            elapsed = time.perf_counter() - start
+            print(f"elapsed: {elapsed:.3f}s")
+
+    with timer():
+        total = sum(range(1000))
+    print(total)  # 499500
+
+A related fact: contextlib.ExitStack lets you
+enter a variable number of context managers,
+for example one per file in a list, and it
+closes them in reverse order at the end of the
+with block. Use it when the number of resources
+is not known when you write the code.
+
+CHAPTER 8: TYPING: STATIC CHECKS, RUNTIME BEHAVIOUR
+---------------------------------------------------
+
+Python's type annotations are, by default,
+hints, not enforcement. At runtime, def f(x:
+int) does not stop you passing a string. A
+separate tool, such as mypy or pyright, reads
+the annotations and reports mismatches before
+you run the code. That split — annotations for
+tools, no runtime checking by default — is
+deliberate, and it is why you can add typing
+gradually to an untyped program.
+
+Three typing facts are worth knowing deeply.
+First, a generic class or function is written
+with a type variable, and the checker
+substitutes the actual type at each use. Second,
+a Protocol describes a structural type: a class
+matches a Protocol if it has the required
+methods, without inheriting from it. This is
+duck typing made checkable. Third, TypedDict
+describes a dictionary with fixed keys and
+known value types per key, which is different
+from dict[str, int], where every value has the
+same type.
+
+Example: a generic function and a protocol.
+
+    from typing import Protocol, TypeVar
+
+    T = TypeVar("T")
+
+    def first(items: list[T]) -> T:
+        return items[0]
+
+    class Drawable(Protocol):
+        def draw(self) -> None:
+            ...
+
+    def render(obj: Drawable) -> None:
+        obj.draw()
+
+    print(first([10, 20, 30]))  # 10
+
+At runtime, first() works on any list, and
+render() works on any object with a draw
+method. The annotations only constrain what a
+checker will accept. If you need runtime
+checking, you must write it yourself, with
+isinstance checks, or use a validation library.
+Do not assume an annotation has enforced
+anything just because it is written down.
+
+CHAPTER 9: PERFORMANCE, MEMORY, AND __SLOTS__
+----------------------------------------------
+
+Performance in Python is usually decided by
+algorithm and data structure, not by micro-
+optimisation. A linear scan through a list is
+slow when a dictionary lookup would be constant
+time. Building a string by repeated
+concatenation in a loop is quadratic, because
+each concatenation copies the string so far,
+while collecting pieces in a list and joining
+them once is linear. Measure before you
+optimise: the cProfile module and time.perf_counter
+tell you where time actually goes, and guessing
+is how programmers optimise the wrong function.
+
+Two memory facts are useful. First, __slots__
+in a class tells Python to store attributes in
+a fixed array instead of a per-instance
+dictionary. This saves memory when you create
+many instances, and it makes attribute access
+slightly faster, but it also means instances
+cannot gain new attributes unless you include
+'__dict__' in __slots__, and subclasses need
+their own __slots__ to keep the benefit.
+Second, Python uses reference counting plus a
+cyclic garbage collector. Most objects are
+freed as soon as their last reference goes
+away. Objects in reference cycles — for
+example, an object that refers to itself
+through a container — are freed by the cyclic
+collector, not immediately. Weak references,
+from the weakref module, let you refer to an
+object without keeping it alive, which is how
+caches avoid leaking memory.
+
+A final performance fact: the global
+interpreter lock, the GIL, means that only one
+thread executes Python bytecode at a time in
+the standard CPython build. Threads help when
+the work waits — on network, on disk, on a
+lock — because a waiting thread releases the
+lock. Threads do not speed up pure Python
+computation on multiple cores. For that, use
+the multiprocessing module, which runs separate
+processes with separate interpreters, at the
+cost of sending data between processes.
+
+CHAPTER 10: HOW CPython RUNS YOUR CODE
+--------------------------------------
+
+When you run a Python program, CPython does
+not execute your source text directly. It
+compiles it, in memory, through several stages.
+First it parses the source into an abstract
+syntax tree, a tree that represents the
+structure of the program without punctuation
+or layout. Then it compiles that tree into
+bytecode: a sequence of instructions for a
+stack-based virtual machine, stored in a code
+object. Then the interpreter's evaluation loop
+executes those instructions, one at a time,
+maintaining a frame for each active function
+call. A frame holds local variables, the
+evaluation stack, and the instruction pointer.
+
+You can see this machinery yourself, without
+any special tooling, using the dis module,
+which disassembles a function into its
+bytecode instructions. You can also inspect a
+code object: function.__code__.co_varnames
+lists its local variables, and co_consts lists
+its constants. This is not trivia: it explains
+why a name lookup in a function is fast (local
+variables are indexed, not searched by name),
+why a closure needs cells (a variable shared
+between nested functions cannot live only on
+one frame's stack), and why a generator can
+pause and resume (its frame is kept alive
+between yields, instead of being discarded on
+return).
+
+Objects in CPython are reference counted.
+Every object carries a count of references to
+it. Creating a reference increments the count,
+dropping one decrements it, and when the count
+reaches zero the object is freed. This is why
+most memory management in Python feels
+automatic, and why a reference cycle needs the
+separate cyclic collector described in the
+previous chapter.
+
+The overall lesson of this file is the same
+for every chapter: Python's advanced features
+are not magic. They are a small number of
+protocols — special methods, iteration,
+descriptors, context managers, and the
+compilation pipeline — applied consistently.
+Learn the protocol, and the feature follows.

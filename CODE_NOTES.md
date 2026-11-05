@@ -221,6 +221,26 @@ Licences checked directly from each repo's LICENSE file:
   until a deletion is done another way; the local
   and code-corpus location data/code/rust_book.txt
   is authoritative.
+## 2026-11-04 — Original advanced Python chapters (facts only, not a rewrite)
+
+- Eric: "create genuine material from facts only
+  from these books", confirmed by tapping "Write
+  original advanced Python chapters from PSF docs".
+  New file data/code/python_advanced_original.txt:
+  10 chapters, 18,997 chars, sha256 20673ee3…,
+  provenance in its .json. Method: topics only
+  from the unusable books, no book text, order,
+  or distinctive example copied; grounded in PSF
+  docs and the stdlib; every code example in the
+  file was run and passed (Point arithmetic,
+  call-counting decorator, Positive descriptor,
+  subclass registry, countdown generator, timer
+  context manager, generic first(), and others).
+  Combined code corpus after this file:
+  8,288,373 chars, 15 files. Pushed 2026-11-04
+  at Eric's "Once complete we can push", see
+  commit below.
+
 ## 2026-11-04 — Automate the Boring Stuff, official 3rd edition (supersedes 2e)
 
 - Eric: "Let's work with the official 3rd edition

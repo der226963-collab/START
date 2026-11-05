@@ -1,0 +1,39 @@
+{
+  "title": "Erlang/OTP kernel Source (curated selection)",
+  "authors": [
+    "Ericsson AB / Erlang/OTP contributors"
+  ],
+  "source_repo": "erlang/otp",
+  "source_branch": "master",
+  "source_commit": "a0bd80d9cbb7fb712e36c1d584eb33c5c8a7e4e6",
+  "licence": "Apache License 2.0",
+  "licence_detail": "Apache License 2.0",
+  "licence_verified_from": "erlang/otp LICENSE.txt, read via GitHub connector (full Apache 2.0 text)",
+  "status": "proposed",
+  "approved": false,
+  "pushed": false,
+  "file": "erlang_otp_kernel.txt",
+  "chars": 876472,
+  "sha256": "93aacef0690209dc06b5e5b90da0f9a0524e564206cfc1a855acf43a687a54f0",
+  "file_count": 16,
+  "files": [
+    "lib/kernel/src/application.erl",
+    "lib/kernel/src/code.erl",
+    "lib/kernel/src/file.erl",
+    "lib/kernel/src/logger.erl",
+    "lib/kernel/src/os.erl",
+    "lib/kernel/src/rpc.erl",
+    "lib/kernel/src/global.erl",
+    "lib/kernel/src/net_kernel.erl",
+    "lib/kernel/src/gen_tcp.erl",
+    "lib/kernel/src/gen_udp.erl",
+    "lib/kernel/src/error_logger.erl",
+    "lib/kernel/src/inet_db.erl",
+    "lib/kernel/src/dist_util.erl",
+    "lib/kernel/src/auth.erl",
+    "lib/kernel/src/kernel.erl",
+    "lib/kernel/src/erl_boot_server.erl"
+  ],
+  "failed": [],
+  "notes": "Curated real Erlang teaching the runtime-facing kernel: applications, code loading, file I/O, logger, OS interaction, rpc, global name registration, distribution (net_kernel, dist_util, auth, erl_boot_server), TCP/UDP sockets, error_logger. Code unmodified. Left out for the ~1.1M budget: inet.erl (174k), socket.erl (284k), gen_tcp_socket/gen_udp_socket, disk_log, global_group, application_controller, trace, group, prim_tty, and the rest of lib/kernel/src (104 .erl files total)."
+}

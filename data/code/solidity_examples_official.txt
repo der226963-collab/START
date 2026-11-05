@@ -1,0 +1,5831 @@
+--- SOURCE: examples/bits/BitsExamples.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Bits} from "../src/bits/Bits.sol";
+
+
+contract BitsExamples {
+
+    using Bits for uint;
+
+    // Set bits
+    function setBitExample() public pure {
+        uint n = 0;
+        n = n.setBit(0); // Set the 0th bit.
+        assert(n == 1);  // 1
+        n = n.setBit(1); // Set the 1st bit.
+        assert(n == 3);  // 11
+        n = n.setBit(2); // Set the 2nd bit.
+        assert(n == 7);  // 111
+        n = n.setBit(3); // Set the 3rd bit.
+        assert(n == 15); // 1111
+
+        // x.bit(y) == 1 => x.setBit(y) == x
+        n = 1;
+        assert(n.setBit(0) == n);
+    }
+
+    // Clear bits
+    function clearBitExample() public pure {
+        uint n = 15;       // 1111
+        n = n.clearBit(0); // Clear the 0th bit.
+        assert(n == 14);   // 1110
+        n = n.clearBit(1); // Clear the 1st bit.
+        assert(n == 12);   // 1100
+        n = n.clearBit(2); // Clear the 2nd bit.
+        assert(n == 8);    // 1000
+        n = n.clearBit(3); // Clear the 3rd bit.
+        assert(n == 0);    // 0
+
+        // x.bit(y) == 0 => x.clearBit(y) == x
+        n = 0;
+        assert(n.clearBit(0) == n);
+    }
+
+    // Toggle bits
+    function toggleBitExample() public pure {
+        uint n = 9;         // 1001
+        n = n.toggleBit(0); // Toggle the 0th bit.
+        assert(n == 8);     // 1000
+        n = n.toggleBit(1); // Toggle the 1st bit.
+        assert(n == 10);    // 1010
+        n = n.toggleBit(2); // Toggle the 2nd bit.
+        assert(n == 14);    // 1110
+        n = n.toggleBit(3); // Toggle the 3rd bit.
+        assert(n == 6);     // 0110
+
+        // x.toggleBit(y).toggleBit(y) == x (invertible)
+        n = 55;
+        assert(n.toggleBit(5).toggleBit(5) == n);
+    }
+
+    // Get an individual bit
+    function bitExample() public pure {
+        uint n = 9; // 1001
+        assert(n.bit(0) == 1);
+        assert(n.bit(1) == 0);
+        assert(n.bit(2) == 0);
+        assert(n.bit(3) == 1);
+    }
+
+    // Is a bit set
+    function bitSetExample() public pure {
+        uint n = 9; // 1001
+        assert(n.bitSet(0) == true);
+        assert(n.bitSet(1) == false);
+        assert(n.bitSet(2) == false);
+        assert(n.bitSet(3) == true);
+    }
+
+    // Are bits equal
+    function bitEqualExample() public pure {
+        uint n = 9; // 1001
+        uint m = 3; // 0011
+        assert(n.bitEqual(m, 0) == true);
+        assert(n.bitEqual(m, 1) == false);
+        assert(n.bitEqual(m, 2) == true);
+        assert(n.bitEqual(m, 3) == false);
+    }
+
+    // Bit 'not'
+    function bitNotExample() public pure {
+        uint n = 9; // 1001
+        assert(n.bitNot(0) == 0);
+        assert(n.bitNot(1) == 1);
+        assert(n.bitNot(2) == 1);
+        assert(n.bitNot(3) == 0);
+
+        // x.bit(y) = 1 - x.bitNot(y);
+        assert(n.bitNot(0) == 1 - n.bit(0));
+        assert(n.bitNot(1) == 1 - n.bit(1));
+        assert(n.bitNot(2) == 1 - n.bit(2));
+        assert(n.bitNot(3) == 1 - n.bit(3));
+    }
+
+    // Bits 'and'
+    function bitAndExample() public pure {
+        uint n = 9; // 1001
+        uint m = 3; // 0011
+        assert(n.bitAnd(m, 0) == 1);
+        assert(n.bitAnd(m, 1) == 0);
+        assert(n.bitAnd(m, 2) == 0);
+        assert(n.bitAnd(m, 3) == 0);
+    }
+
+    // Bits 'or'
+    function bitOrExample() public pure {
+        uint n = 9; // 1001
+        uint m = 3; // 0011
+        assert(n.bitOr(m, 0) == 1);
+        assert(n.bitOr(m, 1) == 1);
+        assert(n.bitOr(m, 2) == 0);
+        assert(n.bitOr(m, 3) == 1);
+    }
+
+    // Bits 'xor'
+    function bitXorExample() public pure {
+        uint n = 9; // 1001
+        uint m = 3; // 0011
+        assert(n.bitXor(m, 0) == 0);
+        assert(n.bitXor(m, 1) == 1);
+        assert(n.bitXor(m, 2) == 0);
+        assert(n.bitXor(m, 3) == 1);
+    }
+
+    // Get bits
+    function bitsExample() public pure {
+        uint n = 13;                // 0 ... 01101
+        assert(n.bits(0, 4) == 13); // 1101
+        assert(n.bits(1, 4) == 6);  // 0110
+        assert(n.bits(2, 4) == 3);  // 0011
+        assert(n.bits(3, 4) == 1);  // 0001
+
+        assert(n.bits(0, 4) == 13); // 1101
+        assert(n.bits(0, 3) == 5);  // 101
+        assert(n.bits(0, 2) == 1);  // 01
+        assert(n.bits(0, 1) == 1);  // 1
+    }
+
+    function bitsExampleThatFails() public pure {
+        uint n = 13;
+        n.bits(2, 0); // There is no zero-bit uint!
+    }
+
+    // Highest bit set
+    function highestBitSetExample() public pure {
+        uint n = 13;                    // 0 ... 01101
+        assert(n.highestBitSet() == 3); //        ^
+
+    }
+
+    // Highest bit set
+    function lowestBitSetExample() public pure {
+        uint n = 12;                    // 0 ... 01100
+        assert(n.lowestBitSet() == 2);  //         ^
+
+    }
+
+}
+
+--- SOURCE: examples/bytes/BytesExamples.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Bytes} from "../src/bytes/Bytes.sol";
+
+
+contract BytesExamples {
+
+    using Bytes for *;
+
+    // Check if bytes are equal.
+    function bytesEqualsExample() public pure {
+        bytes memory bts0 = hex"01020304";
+        bytes memory bts1 = hex"01020304";
+        bytes memory bts2 = hex"05060708";
+
+        assert(bts0.equals(bts0)); // Check if a byte array equal to itself.
+        assert(bts0.equals(bts1)); // Should be equal because they have the same byte at each position.
+        assert(!bts0.equals(bts2)); // Should not be equal.
+    }
+
+    // Check reference equality
+    function bytesEqualsRefExample() public pure {
+        bytes memory bts0 = hex"01020304";
+        bytes memory bts1 = bts0;
+
+        // Every 'bytes' will satisfy 'equalsRef' with itself.
+        assert(bts0.equalsRef(bts0));
+        // Different variables, but bts0 was assigned to bts1, so they point to the same area in memory.
+        assert(bts0.equalsRef(bts1));
+        // Changing a byte in bts0 will also affect bts1.
+        bts0[2] = 0x55;
+        assert(bts1[2] == 0x55);
+
+        bytes memory bts2 = hex"01020304";
+        bytes memory bts3 = hex"01020304";
+
+        // These bytes has the same byte at each pos (so they would pass 'equals'), but they are referencing different areas in memory.
+        assert(!bts2.equalsRef(bts3));
+
+        // Changing a byte in bts2 will not affect bts3.
+        bts2[2] = 0x55;
+        assert(bts3[2] != 0x55);
+    }
+
+    // copying
+    function bytesCopyExample() public pure {
+        bytes memory bts0 = hex"01020304";
+
+        var bts0Copy0 = bts0.copy();
+
+        // The individual bytes are the same.
+        assert(bts0.equals(bts0Copy0));
+        // bts0Copy is indeed a (n independent) copy.
+        assert(!bts0.equalsRef(bts0Copy0));
+
+        bytes memory bts1 = hex"0304";
+
+        // Copy with start index.
+        var bts0Copy1 = bts0.copy(2);
+
+        assert(bts0Copy1.equals(bts1));
+
+        bytes memory bts2 = hex"0203";
+
+        // Copy with start index and length.
+        var bts0Copy2 = bts0.copy(1, 2);
+
+        assert(bts0Copy2.equals(bts2));
+    }
+
+    // concatenate
+    function bytesConcatExample() public pure {
+        bytes memory bts0 = hex"01020304";
+        bytes memory bts1 = hex"05060708";
+
+        bytes memory bts01 = hex"0102030405060708";
+
+        var cct = bts0.concat(bts1);
+
+        // Should be equal to bts01
+        assert(cct.equals(bts01));
+    }
+
+    // find the highest byte set in a bytes32
+    function bytes32HighestByteSetExample() public pure {
+        bytes32 test0 = 0x01;
+        bytes32 test1 = 0xbb00aa00;
+        bytes32 test2 = "abc";
+
+        // with bytesN, the highest byte is the least significant one.
+        assert(test0.highestByteSet() == 31);
+        assert(test1.highestByteSet() == 30); // aa
+        assert(test2.highestByteSet() == 2);
+
+        // Make sure that in the case of test2, the highest byte is equal to "c".
+        assert(test2[test2.highestByteSet()] == 0x63);
+    }
+
+    // find the lowest byte set in a bytes32
+    function bytes32LowestByteSetExample() public pure {
+        bytes32 test0 = 0x01;
+        bytes32 test1 = 0xbb00aa00;
+        bytes32 test2 = "abc";
+
+        // with bytesN, the lowest byte is the most significant one.
+        assert(test0.lowestByteSet() == 31);
+        assert(test1.lowestByteSet() == 28); // bb
+        assert(test2.lowestByteSet() == 0);
+    }
+
+    // find the highest byte set in a uint
+    function uintHighestByteSetExample() public pure {
+        uint test0 = 0x01;
+        uint test1 = 0xbb00aa00;
+
+        // with uint, the highest byte is the most significant one.
+        assert(test0.highestByteSet() == 0);
+        assert(test1.highestByteSet() == 3);
+    }
+
+    // find the lowest byte set in a uint
+    function uintLowestByteSetExample() public pure {
+        uint test0 = 0x01;
+        uint test1 = 0xbb00aa00;
+
+        // with uint, the lowest byte is the least significant one.
+        assert(test0.lowestByteSet() == 0);
+        assert(test1.lowestByteSet() == 1);
+    }
+
+}
+
+--- SOURCE: examples/math/ExactMathExamples.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {ExactMath} from "../src/math/ExactMath.sol";
+
+
+contract MathExamples {
+
+    using ExactMath for int;
+    using ExactMath for uint;
+
+    // Add exact uints example.
+    function uintExactAddOverflowExample() public pure {
+        var n = uint(~0);
+        n.exactAdd(1);
+    }
+
+    // Subtract exact uints example.
+    function uintExactSubUnderflowExample() public pure {
+        var n = uint(0);
+        n.exactSub(1);
+    }
+
+    // Multiply exact uints example.
+    function uintExactMulOverflowExample() public pure {
+        var n = uint(~0);
+        n.exactMul(2);
+    }
+
+    // Add exact ints example.
+    function intExactAddOverflowExample() public pure {
+        int n = 2**255 - 1;
+        n.exactAdd(1);
+    }
+
+    // Add exact ints example.
+    function intExactAddUnderflowExample() public pure {
+        int n = int(2**255);
+        n.exactAdd(-1);
+    }
+
+    // Subtract exact ints example.
+    function intExactSubOverflowExample() public pure {
+        var n = int(2**255 - 1);
+        n.exactSub(-1);
+    }
+
+    // Subtract exact ints example.
+    function intExactSubUnderflowExample() public pure {
+        var n = int(2**255);
+        n.exactSub(1);
+    }
+
+    // Multiply exact ints example.
+    function intExactMulOverflowExample() public pure {
+        var n = int(2**255 - 1);
+        n.exactMul(2);
+    }
+
+    // Multiply exact ints example.
+    function intExactMulUnderflowExample() public pure {
+        var n = int(2**255);
+        n.exactMul(2);
+    }
+
+    // Multiply exact ints example.
+    function intExactMulIllegalUseOfIntMinExample() public pure {
+        var n = int(2**255);
+        n.exactMul(-1);
+    }
+
+    // Multiply exact ints example.
+    function intExactMulIllegalUseOfIntMinExample2() public pure {
+        var n = int(-1);
+        n.exactMul(int(2**255));
+    }
+
+    // Multiply exact ints example.
+    function intExactDivIllegalUseOfIntMinExample() public pure {
+        var n = int(2**255);
+        n.exactDiv(-1);
+    }
+}
+
+--- SOURCE: examples/patricia_tree/PatriciaTreeExamples.sol ---
+
+
+
+--- SOURCE: examples/strings/StringsExamples.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Strings} from "../src/strings/Strings.sol";
+
+/* solhint-disable max-line-length */
+
+contract StringsExamples {
+
+    using Strings for string;
+
+    function stringExampleValidateBrut() public pure {
+        string memory str = "An preost wes on leoden, Laȝamon was ihoten He wes Leovenaðes sone -- liðe him be Drihten. He wonede at Ernleȝe at æðelen are chirechen, Uppen Sevarne staþe, sel þar him þuhte, Onfest Radestone, þer he bock radde.";
+        str.validate();
+    }
+
+    function stringExampleValidateOdysseusElytis() public pure {
+        string memory str = "Τη γλώσσα μου έδωσαν ελληνική το σπίτι φτωχικό στις αμμουδιές του Ομήρου. Μονάχη έγνοια η γλώσσα μου στις αμμουδιές του Ομήρου. από το Άξιον Εστί του Οδυσσέα Ελύτη";
+        str.validate();
+    }
+
+    function stringExampleValidatePushkinsHorseman() public pure {
+        string memory str = "На берегу пустынных волн Стоял он, дум великих полн, И вдаль глядел. Пред ним широко Река неслася; бедный чёлн По ней стремился одиноко. По мшистым, топким берегам Чернели избы здесь и там, Приют убогого чухонца; И лес, неведомый лучам В тумане спрятанного солнца, Кругом шумел.";
+        str.validate();
+    }
+
+    function stringExampleValidateRunePoem() public pure {
+        string memory str = "ᚠᛇᚻ᛫ᛒᛦᚦ᛫ᚠᚱᚩᚠᚢᚱ᛫ᚠᛁᚱᚪ᛫ᚷᛖᚻᚹᛦᛚᚳᚢᛗ ᛋᚳᛖᚪᛚ᛫ᚦᛖᚪᚻ᛫ᛗᚪᚾᚾᚪ᛫ᚷᛖᚻᚹᛦᛚᚳ᛫ᛗᛁᚳᛚᚢᚾ᛫ᚻᛦᛏ᛫ᛞᚫᛚᚪᚾ ᚷᛁᚠ᛫ᚻᛖ᛫ᚹᛁᛚᛖ᛫ᚠᚩᚱ᛫ᛞᚱᛁᚻᛏᚾᛖ᛫ᛞᚩᛗᛖᛋ᛫ᚻᛚᛇᛏᚪᚾ";
+        str.validate();
+    }
+
+}
+/* solhint-enable max-line-length */
+
+--- SOURCE: perf/STLPerf.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+
+// Extend for performance tests. Output of 'perf()' is the gas diff.
+// If buildup is required before gauging, override 'perf()' and do
+// gas reporting manually.
+// If no buildup is needed, just extend 'prefImpl()'.
+contract STLPerf {
+    function perf() public payable returns (uint);
+}
+
+--- SOURCE: perf/bits/bits.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Bits} from "../../src/bits/Bits.sol";
+import {STLPerf} from "../STLPerf.sol";
+
+
+contract BitsPerf is STLPerf {
+    using Bits for uint;
+}
+
+
+contract PerfBitsSetBit is BitsPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 1;
+        uint gasPre = msg.gas;
+        var res_ = n.setBit(66);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBitsClearBit is BitsPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 1;
+        uint gasPre = msg.gas;
+        var res_ = n.clearBit(66);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBitsToggleBit is BitsPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 1;
+        uint gasPre = msg.gas;
+        var res_ = n.toggleBit(66);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBitsBit is BitsPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 1;
+        uint gasPre = msg.gas;
+        var res_ = n.bit(66);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBitsBitSet is BitsPerf {
+    bool public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 1;
+        uint gasPre = msg.gas;
+        var res_ = n.bitSet(66);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBitsBitEqual is BitsPerf {
+    bool public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 1;
+        uint gasPre = msg.gas;
+        var res_ = n.bitEqual(5, 66);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBitsBitNot is BitsPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 1;
+        uint gasPre = msg.gas;
+        var res_ = n.bitNot(66);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBitsBitAnd is BitsPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 1;
+        uint gasPre = msg.gas;
+        var res_ = n.bitAnd(0, 66);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBitsBitOr is BitsPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 1;
+        uint gasPre = msg.gas;
+        var res_ = n.bitOr(0, 66);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBitsBitXor is BitsPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 1;
+        uint gasPre = msg.gas;
+        var res_ = n.bitXor(0, 66);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBitsBits is BitsPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 1;
+        uint gasPre = msg.gas;
+        var res_ = n.bits(5, 66);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBitsHighestBitSetLow is BitsPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 1;
+        uint gasPre = msg.gas;
+        var res_ = n.highestBitSet();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBitsHighestBitSetHigh is BitsPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = uint(1) << uint(255);
+        uint gasPre = msg.gas;
+        var res_ = n.highestBitSet();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBitsLowestBitSetLow is BitsPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 1;
+        uint gasPre = msg.gas;
+        var res_ = n.lowestBitSet();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBitsLowestBitSetHigh is BitsPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = uint(1) << uint(255);
+        uint gasPre = msg.gas;
+        var res_ = n.lowestBitSet();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+--- SOURCE: perf/bytes/bytes.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Bytes} from "../../src/bytes/Bytes.sol";
+import {STLPerf} from "../STLPerf.sol";
+
+
+contract BytesPerf is STLPerf {
+    using Bytes for *;
+}
+
+
+contract PerfBytesEqualsOneWordSuccess is BytesPerf {
+    bool public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(32);
+        uint gasPre = msg.gas;
+        var res_ = Bytes.equals(bts, bts);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesEqualsTenWordsSuccess is BytesPerf {
+    bool public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(320);
+        uint gasPre = msg.gas;
+        var res_ = Bytes.equals(bts, bts);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesEqualsHalfWordSuccess is BytesPerf {
+    bool public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(16);
+        uint gasPre = msg.gas;
+        var res_ = Bytes.equals(bts, bts);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesEqualsDifferentLengthFail is BytesPerf {
+    bool public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts1 = new bytes(0);
+        bytes memory bts2 = new bytes(1);
+        uint gasPre = msg.gas;
+        var res_ = Bytes.equals(bts1, bts2);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesEqualsOneWordFail is BytesPerf {
+    bool public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts1 = new bytes(32);
+        bytes memory bts2 = hex"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+        uint gasPre = msg.gas;
+        var res_ = Bytes.equals(bts1, bts2);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesEqualsRef is BytesPerf {
+    bool public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = hex"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+        uint gasPre = msg.gas;
+        var res_ = Bytes.equalsRef(bts, bts);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesCopyOneWord is BytesPerf {
+    bytes public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(32);
+        uint gasPre = msg.gas;
+        var res_ = bts.copy();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesCopyTenWords is BytesPerf {
+    bytes public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(320);
+        uint gasPre = msg.gas;
+        var res_ = bts.copy();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesCopyEmpty is BytesPerf {
+    bytes public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(0);
+        uint gasPre = msg.gas;
+        var res_ = bts.copy();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesSubstrOneWord is BytesPerf {
+    bytes public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(35);
+        uint gasPre = msg.gas;
+        var res_ = bts.substr(3);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesSubstrWithLengthOneWord is BytesPerf {
+    bytes public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(35);
+        uint gasPre = msg.gas;
+        var res_ = bts.substr(2, 32);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesConcatTwoWords is BytesPerf {
+    bytes public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(32);
+        uint gasPre = msg.gas;
+        var res_ = bts.concat(bts);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesConcatTenWords is BytesPerf {
+    bytes public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(160);
+        uint gasPre = msg.gas;
+        var res_ = bts.concat(bts);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesConcatEmpty is BytesPerf {
+    bytes public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(0);
+        uint gasPre = msg.gas;
+        var res_ = bts.concat(bts);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesBytes32Substr is BytesPerf {
+    bytes32 public res;
+
+    function perf() public payable returns (uint) {
+        bytes32 b32 = 0;
+        uint gasPre = msg.gas;
+        var res_ = b32.substr(3);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesBytes32SubstrWithLength is BytesPerf {
+    bytes32 public res;
+
+    function perf() public payable returns (uint) {
+        bytes32 b32 = 0;
+        uint gasPre = msg.gas;
+        var res_ = b32.substr(2, 21);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesBytes32ToBytes is BytesPerf {
+    bytes public res;
+
+    function perf() public payable returns (uint) {
+        bytes32 b32 = 0x10203040;
+        uint gasPre = msg.gas;
+        var res_ = b32.toBytes();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesBytes32ToBytesWithLength is BytesPerf {
+    bytes public res;
+
+    function perf() public payable returns (uint) {
+        bytes32 b32 = 0x10203040;
+        uint gasPre = msg.gas;
+        var res_ = b32.toBytes(4);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesAddressToBytes is BytesPerf {
+    bytes public res;
+
+    function perf() public payable returns (uint) {
+        address addr = 0;
+        uint gasPre = msg.gas;
+        var res_ = addr.toBytes();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesUintToBytes is BytesPerf {
+    bytes public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 0x10203040;
+        uint gasPre = msg.gas;
+        var res_ = n.toBytes();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesUintToBytesWithBitsize is BytesPerf {
+    bytes public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 0x10203040;
+        uint gasPre = msg.gas;
+        var res_ = n.toBytes(64);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesBooleanToBytes is BytesPerf {
+    bytes public res;
+
+    function perf() public payable returns (uint) {
+        uint gasPre = msg.gas;
+        var res_ = true.toBytes();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesBytes32HighestByteSetLow is BytesPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        bytes32 b32 = bytes32("a");
+        uint gasPre = msg.gas;
+        var res_ = b32.highestByteSet();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesBytes32HighestByteSetHigh is BytesPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        bytes32 b32 = bytes32(0x01);
+        uint gasPre = msg.gas;
+        var res_ = b32.highestByteSet();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesBytes32LowestByteSetLow is BytesPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        bytes32 b32 = bytes32("a");
+        uint gasPre = msg.gas;
+        var res_ = b32.lowestByteSet();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesBytes32LowestByteSetHigh is BytesPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        bytes32 b32 = bytes32(0x01);
+        uint gasPre = msg.gas;
+        var res_ = b32.lowestByteSet();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesUintHighestByteSetLow is BytesPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 1;
+        uint gasPre = msg.gas;
+        var res_ = n.highestByteSet();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesUintHighestByteSetHigh is BytesPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = uint(1) << 255;
+        uint gasPre = msg.gas;
+        var res_ = n.highestByteSet();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesUintLowestByteSetLow is BytesPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 1;
+        uint gasPre = msg.gas;
+        var res_ = n.lowestByteSet();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfBytesUintLowestByteSetHigh is BytesPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = uint(1) << 255;
+        uint gasPre = msg.gas;
+        var res_ = n.lowestByteSet();
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+--- SOURCE: perf/math/exact_math.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {ExactMath} from "../../src/math/ExactMath.sol";
+import {STLPerf} from "../STLPerf.sol";
+
+
+contract PerfMathExactAddUint is STLPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 5;
+        uint m = 2;
+        uint gasPre = msg.gas;
+        var res_ = ExactMath.exactAdd(n, m);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMathExactSubUint is STLPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 5;
+        uint m = 2;
+        uint gasPre = msg.gas;
+        var res_ = ExactMath.exactSub(n, m);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMathExactMulUint is STLPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint n = 5;
+        uint m = 2;
+        uint gasPre = msg.gas;
+        var res_ = ExactMath.exactMul(n, m);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMathExactAddInt is STLPerf {
+    int public res;
+
+    function perf() public payable returns (uint) {
+        int n = 5;
+        int m = 2;
+        uint gasPre = msg.gas;
+        var res_ = ExactMath.exactAdd(n, m);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMathExactSubInt is STLPerf {
+    int public res;
+
+    function perf() public payable returns (uint) {
+        int n = 5;
+        int m = 2;
+        uint gasPre = msg.gas;
+        var res_ = ExactMath.exactSub(n, m);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMathExactMulInt is STLPerf {
+    int public res;
+
+    function perf() public payable returns (uint) {
+        int n = 5;
+        int m = 2;
+        uint gasPre = msg.gas;
+        var res_ = ExactMath.exactMul(n, m);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMathExactDivInt is STLPerf {
+    int public res;
+
+    function perf() public payable returns (uint) {
+        int n = 5;
+        int m = 2;
+        uint gasPre = msg.gas;
+        var res_ = ExactMath.exactDiv(n, m);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+--- SOURCE: perf/patricia_tree/data.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Data} from "../../src/patricia_tree/Data.sol";
+import {STLPerf} from "../STLPerf.sol";
+
+
+contract PatriciaTreeDataPerf is STLPerf {
+    using Data for Data.Node;
+    using Data for Data.Edge;
+    using Data for Data.Label;
+
+    uint internal constant MAX_LENGTH = 256;
+    uint internal constant UINT256_ZEROES = 0;
+    uint internal constant UINT256_ONES = ~uint(0);
+
+    bytes32 internal constant B32_ZEROES = bytes32(UINT256_ZEROES);
+    bytes32 internal constant B32_ONES = bytes32(UINT256_ONES);
+}
+
+
+contract PerfPatriciaTreeDataChopFirstBit is PatriciaTreeDataPerf {
+    function perf() public payable returns (uint) {
+        var lbl = Data.Label(0, 1);
+        uint gasPre = msg.gas;
+        lbl.chopFirstBit();
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfPatriciaTreeDataRemovePrefix is PatriciaTreeDataPerf {
+    function perf() public payable returns (uint) {
+        var lbl = Data.Label(0, 5);
+        uint gasPre = msg.gas;
+        lbl.removePrefix(5);
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfPatriciaTreeDataCommonPrefixLengthZero is PatriciaTreeDataPerf {
+    function perf() public payable returns (uint) {
+        var lbl = Data.Label(B32_ZEROES, 0);
+        uint gasPre = msg.gas;
+        lbl.commonPrefix(lbl);
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfPatriciaTreeDataCommonPrefixNoMatch is PatriciaTreeDataPerf {
+    function perf() public payable returns (uint) {
+        var lbl = Data.Label(B32_ZEROES, 256);
+        var lbl2 = Data.Label(B32_ONES, 256);
+        uint gasPre = msg.gas;
+        lbl.commonPrefix(lbl2);
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfPatriciaTreeDataCommonPrefixFullMatch is PatriciaTreeDataPerf {
+    function perf() public payable returns (uint) {
+        var lbl = Data.Label(B32_ZEROES, 256);
+        uint gasPre = msg.gas;
+        lbl.commonPrefix(lbl);
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfPatriciaTreeDataSplitAtPositionZero is PatriciaTreeDataPerf {
+    function perf() public payable returns (uint) {
+        var lbl = Data.Label(B32_ZEROES, 256);
+        uint gasPre = msg.gas;
+        lbl.splitAt(0);
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfPatriciaTreeDataSplitAt is PatriciaTreeDataPerf {
+    function perf() public payable returns (uint) {
+        var lbl = Data.Label(B32_ZEROES, 256);
+        uint gasPre = msg.gas;
+        lbl.splitAt(55);
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfPatriciaTreeDataSplitCommonPrefix is PatriciaTreeDataPerf {
+    function perf() public payable returns (uint) {
+        var lbl = Data.Label(B32_ZEROES, 256);
+        var lbl2 = Data.Label(0x1111, 256);
+        uint gasPre = msg.gas;
+        lbl.splitCommonPrefix(lbl2);
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+--- SOURCE: perf/patricia_tree/patricia_tree.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Data} from "../../src/patricia_tree/Data.sol";
+import {PatriciaTree} from "../../src/patricia_tree/PatriciaTree.sol";
+import {STLPerf} from "../STLPerf.sol";
+
+
+contract PatriciaTreeDataPerf is STLPerf {
+    using Data for Data.Tree;
+    using Data for Data.Node;
+    using Data for Data.Edge;
+    using Data for Data.Label;
+
+    uint internal constant MAX_LENGTH = 256;
+    uint internal constant UINT256_ZEROES = 0;
+    uint internal constant UINT256_ONES = ~uint(0);
+
+    bytes32 internal constant B32_ZEROES = bytes32(UINT256_ZEROES);
+    bytes32 internal constant B32_ONES = bytes32(UINT256_ONES);
+}
+
+
+contract PerfPatriciaTreeInsertIntoEmpty is PatriciaTreeDataPerf {
+    function perf() public payable returns (uint) {
+        var pt = new PatriciaTree();
+        uint gasPre = msg.gas;
+        pt.insert("val", "VAL");
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfPatriciaTreeInsertAfterRoot is PatriciaTreeDataPerf {
+    function perf() public payable returns (uint) {
+        var pt = new PatriciaTree();
+        pt.insert("val", "VAL");
+        uint gasPre = msg.gas;
+        pt.insert("val2", "VAL2");
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfPatriciaTreeInsertReplaceRoot is PatriciaTreeDataPerf {
+    function perf() public payable returns (uint) {
+        var pt = new PatriciaTree();
+        pt.insert("val", "VAL");
+        uint gasPre = msg.gas;
+        pt.insert("val", "VAL2");
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfPatriciaTreeInsertReplaceAfterRoot is PatriciaTreeDataPerf {
+    function perf() public payable returns (uint) {
+        var pt = new PatriciaTree();
+        pt.insert("val", "VAL");
+        pt.insert("val2", "VAL2");
+        uint gasPre = msg.gas;
+        pt.insert("val2", "VAL3");
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfPatriciaTreeGetProofRoot is PatriciaTreeDataPerf {
+    function perf() public payable returns (uint) {
+        var pt = new PatriciaTree();
+        pt.insert("val", "VAL");
+        uint gasPre = msg.gas;
+        pt.getProof("val");
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfPatriciaTreeGetProofSecondAfterRoot is PatriciaTreeDataPerf {
+    function perf() public payable returns (uint) {
+        var pt = new PatriciaTree();
+        pt.insert("val", "VAL");
+        pt.insert("val2", "VAL2");
+        uint gasPre = msg.gas;
+        pt.getProof("val2");
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfPatriciaTreeValidateProofRootOnlyNode is PatriciaTreeDataPerf, PatriciaTree {
+    function perf() public payable returns (uint) {
+        insert("val", "VAL");
+        var (mask, siblings) = getProof("val");
+        uint gasPre = msg.gas;
+        verifyProof(tree.root, "val", "VAL", mask, siblings);
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfPatriciaTreeEdgeHash is PatriciaTreeDataPerf, PatriciaTree {
+    function perf() public payable returns (uint) {
+        var e = Data.Edge(0, Data.Label(0, 1));
+        uint gasPre = msg.gas;
+        e.edgeHash();
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+--- SOURCE: perf/patricia_tree/patricia_tree_extended.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Data} from "../../src/patricia_tree/Data.sol";
+import {PatriciaTree} from "../../src/patricia_tree/PatriciaTree.sol";
+import {PatriciaTreeDataPerf} from "./patricia_tree.sol";
+
+
+contract PerfPatriciaTreeGetProof1To10AverageCost is PatriciaTreeDataPerf, PatriciaTree {
+    function perf() public payable returns (uint) {
+        var pt = new PatriciaTree();
+        bytes memory bts = new bytes(1);
+        for (uint i = 0; i < 10; i++) {
+            bts[0] = byte(i);
+            insert(bts, bts);
+        }
+        uint aggregateGas = 0;
+        for (i = 0; i < 10; i++) {
+            bts[0] = byte(i);
+            uint gasPre = msg.gas;
+            getProof(bts);
+            aggregateGas += gasPre - msg.gas;
+        }
+        return aggregateGas / uint(10);
+    }
+}
+
+
+contract PerfPatriciaTreeGetProof91To100AverageCost is PatriciaTreeDataPerf, PatriciaTree {
+    function perf() public payable returns (uint) {
+        var pt = new PatriciaTree();
+        bytes memory bts = new bytes(1);
+        for (uint i = 0; i < 100; i++) {
+            bts[0] = byte(i);
+            insert(bts, bts);
+        }
+        uint aggregateGas = 0;
+        for (i = 90; i < 100; i++) {
+            bts[0] = byte(i);
+            uint gasPre = msg.gas;
+            getProof(bts);
+            aggregateGas += gasPre - msg.gas;
+        }
+        return aggregateGas / uint(10);
+    }
+}
+
+
+contract PerfPatriciaTreeGetProof191To200AverageCost is PatriciaTreeDataPerf, PatriciaTree {
+    function perf() public payable returns (uint) {
+        var pt = new PatriciaTree();
+        bytes memory bts = new bytes(1);
+        for (uint i = 0; i < 200; i++) {
+            bts[0] = byte(i);
+            insert(bts, bts);
+        }
+        uint aggregateGas = 0;
+        for (i = 190; i < 200; i++) {
+            bts[0] = byte(i);
+            uint gasPre = msg.gas;
+            getProof(bts);
+            aggregateGas += gasPre - msg.gas;
+        }
+        return aggregateGas / uint(10);
+    }
+}
+
+contract PerfPatriciaTreeValidateProof1To10AverageCost is PatriciaTreeDataPerf, PatriciaTree {
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(1);
+        for (uint i = 0; i < 10; i++) {
+            bts[0] = byte(i);
+            insert(bts, bts);
+        }
+        uint aggregateGas = 0;
+        for (i = 0; i < 10; i++) {
+            bts[0] = byte(i);
+            var (mask, siblings) = getProof(bts);
+            uint gasPre = msg.gas;
+            verifyProof(root, bts, bts, mask, siblings);
+            aggregateGas += gasPre - msg.gas;
+        }
+        return aggregateGas / uint(10);
+    }
+}
+
+
+contract PerfPatriciaTreeValidateProof91To100AverageCost is PatriciaTreeDataPerf, PatriciaTree {
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(1);
+        for (uint i = 0; i < 100; i++) {
+            bts[0] = byte(i);
+            insert(bts, bts);
+        }
+        uint aggregateGas = 0;
+        for (i = 90; i < 100; i++) {
+            bts[0] = byte(i);
+            var (mask, siblings) = getProof(bts);
+            uint gasPre = msg.gas;
+            verifyProof(root, bts, bts, mask, siblings);
+            aggregateGas += gasPre - msg.gas;
+        }
+        return aggregateGas / uint(10);
+    }
+}
+
+
+contract PerfPatriciaTreeValidateProof191To200AverageCost is PatriciaTreeDataPerf, PatriciaTree {
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(1);
+        for (uint i = 0; i < 200; i++) {
+            bts[0] = byte(i);
+            insert(bts, bts);
+        }
+        uint aggregateGas = 0;
+        for (i = 190; i < 200; i++) {
+            bts[0] = byte(i);
+            var (mask, siblings) = getProof(bts);
+            uint gasPre = msg.gas;
+            verifyProof(root, bts, bts, mask, siblings);
+            aggregateGas += gasPre - msg.gas;
+        }
+        return aggregateGas / uint(10);
+    }
+}
+
+
+contract PerfPatriciaTreeInsert1To10AverageCost is PatriciaTreeDataPerf, PatriciaTree {
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(1);
+        uint aggregateGas = 0;
+        for (uint i = 0; i < 10; i++) {
+            bts[0] = byte(i);
+            uint gasPre = msg.gas;
+            insert(bts, bts);
+            aggregateGas += gasPre - msg.gas;
+        }
+        return aggregateGas / uint(10);
+    }
+}
+
+
+contract PerfPatriciaTreeInsert91To100AverageCost is PatriciaTreeDataPerf, PatriciaTree {
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(1);
+        for (uint i = 0; i < 90; i++) {
+            bts[0] = byte(i);
+            insert(bts, bts);
+        }
+        uint aggregateGas = 0;
+        for (i = 90; i < 100; i++) {
+            bts[0] = byte(i);
+            uint gasPre = msg.gas;
+            insert(bts, bts);
+            aggregateGas += gasPre - msg.gas;
+        }
+        return aggregateGas / uint(10);
+    }
+}
+
+
+contract PerfPatriciaTreeInsert191To200AverageCost is PatriciaTreeDataPerf, PatriciaTree {
+    function perf() public payable returns (uint) {
+        var pt = new PatriciaTree();
+        bytes memory bts = new bytes(1);
+        for (uint i = 0; i < 190; i++) {
+            bts[0] = byte(i);
+            insert(bts, bts);
+        }
+        uint aggregateGas = 0;
+        for (i = 190; i < 200; i++) {
+            bts[0] = byte(i);
+            uint gasPre = msg.gas;
+            insert(bts, bts);
+            aggregateGas += gasPre - msg.gas;
+        }
+        return aggregateGas / uint(10);
+    }
+}
+
+--- SOURCE: perf/strings/strings.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Strings} from "../../src/strings/Strings.sol";
+import {STLPerf} from "../STLPerf.sol";
+import {Memory} from "../../src/unsafe/Memory.sol";
+
+/* solhint-disable max-line-length */
+
+contract StringsPerf is STLPerf {
+    using Strings for string;
+    using Strings for uint;
+}
+
+
+contract PerfStringsParseRuneLengthOne is StringsPerf {
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = hex"00";
+        uint addr = Memory.dataPtr(bts);
+        uint gasPre = msg.gas;
+        addr.parseRune();
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfStringsParseRuneLengthTwo is StringsPerf {
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = hex"DF80";
+        uint addr = Memory.dataPtr(bts);
+        uint gasPre = msg.gas;
+        addr.parseRune();
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfStringsParseRuneLengthThree is StringsPerf {
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = hex"E0A080";
+        uint addr = Memory.dataPtr(bts);
+        uint gasPre = msg.gas;
+        addr.parseRune();
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfStringsParseRuneLengthFour is StringsPerf {
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = hex"F0908080";
+        uint addr = Memory.dataPtr(bts);
+        uint gasPre = msg.gas;
+        addr.parseRune();
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfStringsParseValidateQuickBrownFox is StringsPerf {
+
+    function perf() public payable returns (uint) {
+        string memory str = "The quick brown fox jumps over the lazy dog";
+        uint gasPre = msg.gas;
+        str.validate();
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfStringsParseValidateRunePoem is StringsPerf {
+
+    function perf() public payable returns (uint) {
+        string memory str = "ᚠᛇᚻ᛫ᛒᛦᚦ᛫ᚠᚱᚩᚠᚢᚱ᛫ᚠᛁᚱᚪ᛫ᚷᛖᚻᚹᛦᛚᚳᚢᛗ ᛋᚳᛖᚪᛚ᛫ᚦᛖᚪᚻ᛫ᛗᚪᚾᚾᚪ᛫ᚷᛖᚻᚹᛦᛚᚳ᛫ᛗᛁᚳᛚᚢᚾ᛫ᚻᛦᛏ᛫ᛞᚫᛚᚪᚾ ᚷᛁᚠ᛫ᚻᛖ᛫ᚹᛁᛚᛖ᛫ᚠᚩᚱ᛫ᛞᚱᛁᚻᛏᚾᛖ᛫ᛞᚩᛗᛖᛋ᛫ᚻᛚᛇᛏᚪᚾ";
+        uint gasPre = msg.gas;
+        str.validate();
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfStringsParseValidateBrut is StringsPerf {
+
+    function perf() public payable returns (uint) {
+        string memory str = "An preost wes on leoden, Laȝamon was ihoten He wes Leovenaðes sone -- liðe him be Drihten. He wonede at Ernleȝe at æðelen are chirechen, Uppen Sevarne staþe, sel þar him þuhte, Onfest Radestone, þer he bock radde.";
+        uint gasPre = msg.gas;
+        str.validate();
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+/* solhint-enable max-line-length */
+
+--- SOURCE: perf/unsafe/memory.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Memory} from "../../src/unsafe/Memory.sol";
+import {STLPerf} from "../STLPerf.sol";
+
+
+contract PerfMemoryEqualsOneWord is STLPerf {
+    bool public res;
+
+    function perf() public payable returns (uint) {
+        uint gasPre = msg.gas;
+        var res_ = Memory.equals(0, 0, 32);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryEqualsHalfWord is STLPerf {
+    bool public res;
+
+    function perf() public payable returns (uint) {
+        uint gasPre = msg.gas;
+        var res_ = Memory.equals(0, 0, 16);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryEqualsTenWords is STLPerf {
+    bool public res;
+
+    function perf() public payable returns (uint) {
+        uint gasPre = msg.gas;
+        var res_ = Memory.equals(0, 0, 320);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryEqualsHundredWords is STLPerf {
+    bool public res;
+
+    function perf() public payable returns (uint) {
+        uint gasPre = msg.gas;
+        var res_ = Memory.equals(0, 0, 3200);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryEqualsBytesOneWord is STLPerf {
+    bool public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(32);
+        uint addr = Memory.allocate(32);
+        uint gasPre = msg.gas;
+        var res_ = Memory.equals(addr, 32, bts);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryEqualsHundredWordsFailFirst is STLPerf {
+    bool public res;
+
+    function perf() public payable returns (uint) {
+        assembly {
+            mstore(0x200, 6)
+        }
+        uint gasPre = msg.gas;
+        var res_ = Memory.equals(0, 0x200, 3200);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryAllocateOneWord is STLPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint gasPre = msg.gas;
+        var res_ = Memory.allocate(32);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryAllocateTenWords is STLPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint gasPre = msg.gas;
+        var res_ = Memory.allocate(320);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryCopyOneWord is STLPerf {
+    function perf() public payable returns (uint) {
+        var a = Memory.allocate(32);
+        var b = Memory.allocate(32);
+        uint gasPre = msg.gas;
+        Memory.copy(a, b, 32);
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryCopyHalfWord is STLPerf {
+    function perf() public payable returns (uint) {
+        var a = Memory.allocate(16);
+        var b = Memory.allocate(16);
+        uint gasPre = msg.gas;
+        Memory.copy(a, b, 16);
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryCopyTenWords is STLPerf {
+    function perf() public payable returns (uint) {
+        var a = Memory.allocate(320);
+        var b = Memory.allocate(320);
+        uint gasPre = msg.gas;
+        Memory.copy(a, b, 320);
+        uint gasPost = msg.gas;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryPtrBytes is STLPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(0);
+        uint gasPre = msg.gas;
+        var res_ = Memory.ptr(bts);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryDataPtrBytes is STLPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(0);
+        uint gasPre = msg.gas;
+        var res_ = Memory.dataPtr(bts);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryFromBytes is STLPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        bytes memory bts = new bytes(0);
+        uint gasPre = msg.gas;
+        var (res_, ) = Memory.fromBytes(bts);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryToBytesOneWord is STLPerf {
+    bytes public res;
+
+    function perf() public payable returns (uint) {
+        uint gasPre = msg.gas;
+        var res_ = Memory.toBytes(0, 32);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryToUint is STLPerf {
+    uint public res;
+
+    function perf() public payable returns (uint) {
+        uint gasPre = msg.gas;
+        var res_ = Memory.toUint(0);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+
+contract PerfMemoryToBytes32 is STLPerf {
+    bytes32 public res;
+
+    function perf() public payable returns (uint) {
+        uint gasPre = msg.gas;
+        var res_ = Memory.toBytes32(0);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+
+/*
+contract PerfMemoryToByte is STLPerf {
+    byte public res;
+
+    function perf() public payable returns (uint) {
+        uint gasPre = msg.gas;
+        var res_ = Memory.toByte(0, 0);
+        uint gasPost = msg.gas;
+        res = res_;
+        return gasPre - gasPost;
+    }
+}
+*/
+
+--- SOURCE: src/bits/Bits.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+
+library Bits {
+
+    uint constant internal ONE = uint(1);
+    uint constant internal ONES = uint(~0);
+
+    // Sets the bit at the given 'index' in 'self' to '1'.
+    // Returns the modified value.
+    function setBit(uint self, uint8 index) internal pure returns (uint) {
+        return self | ONE << index;
+    }
+
+    // Sets the bit at the given 'index' in 'self' to '0'.
+    // Returns the modified value.
+    function clearBit(uint self, uint8 index) internal pure returns (uint) {
+        return self & ~(ONE << index);
+    }
+
+    // Sets the bit at the given 'index' in 'self' to:
+    //  '1' - if the bit is '0'
+    //  '0' - if the bit is '1'
+    // Returns the modified value.
+    function toggleBit(uint self, uint8 index) internal pure returns (uint) {
+        return self ^ ONE << index;
+    }
+
+    // Get the value of the bit at the given 'index' in 'self'.
+    function bit(uint self, uint8 index) internal pure returns (uint8) {
+        return uint8(self >> index & 1);
+    }
+
+    // Check if the bit at the given 'index' in 'self' is set.
+    // Returns:
+    //  'true' - if the value of the bit is '1'
+    //  'false' - if the value of the bit is '0'
+    function bitSet(uint self, uint8 index) internal pure returns (bool) {
+        return self >> index & 1 == 1;
+    }
+
+    // Checks if the bit at the given 'index' in 'self' is equal to the corresponding
+    // bit in 'other'.
+    // Returns:
+    //  'true' - if both bits are '0' or both bits are '1'
+    //  'false' - otherwise
+    function bitEqual(uint self, uint other, uint8 index) internal pure returns (bool) {
+        return (self ^ other) >> index & 1 == 0;
+    }
+
+    // Get the bitwise NOT of the bit at the given 'index' in 'self'.
+    function bitNot(uint self, uint8 index) internal pure returns (uint8) {
+        return uint8(1 - (self >> index & 1));
+    }
+
+    // Computes the bitwise AND of the bit at the given 'index' in 'self', and the
+    // corresponding bit in 'other', and returns the value.
+    function bitAnd(uint self, uint other, uint8 index) internal pure returns (uint8) {
+        return uint8((self & other) >> index & 1);
+    }
+
+    // Computes the bitwise OR of the bit at the given 'index' in 'self', and the
+    // corresponding bit in 'other', and returns the value.
+    function bitOr(uint self, uint other, uint8 index) internal pure returns (uint8) {
+        return uint8((self | other) >> index & 1);
+    }
+
+    // Computes the bitwise XOR of the bit at the given 'index' in 'self', and the
+    // corresponding bit in 'other', and returns the value.
+    function bitXor(uint self, uint other, uint8 index) internal pure returns (uint8) {
+        return uint8((self ^ other) >> index & 1);
+    }
+
+    // Gets 'numBits' consecutive bits from 'self', starting from the bit at 'startIndex'.
+    // Returns the bits as a 'uint'.
+    // Requires that:
+    //  - '0 < numBits <= 256'
+    //  - 'startIndex < 256'
+    //  - 'numBits + startIndex <= 256'
+    function bits(uint self, uint8 startIndex, uint16 numBits) internal pure returns (uint) {
+        require(0 < numBits && startIndex < 256 && startIndex + numBits <= 256);
+        return self >> startIndex & ONES >> 256 - numBits;
+    }
+
+    // Computes the index of the highest bit set in 'self'.
+    // Returns the highest bit set as an 'uint8'.
+    // Requires that 'self != 0'.
+    function highestBitSet(uint self) internal pure returns (uint8 highest) {
+        require(self != 0);
+        uint val = self;
+        for (uint8 i = 128; i >= 1; i >>= 1) {
+            if (val & (ONE << i) - 1 << i != 0) {
+                highest += i;
+                val >>= i;
+            }
+        }
+    }
+
+    // Computes the index of the lowest bit set in 'self'.
+    // Returns the lowest bit set as an 'uint8'.
+    // Requires that 'self != 0'.
+    function lowestBitSet(uint self) internal pure returns (uint8 lowest) {
+        require(self != 0);
+        uint val = self;
+        for (uint8 i = 128; i >= 1; i >>= 1) {
+            if (val & (ONE << i) - 1 == 0) {
+                lowest += i;
+                val >>= i;
+            }
+        }
+    }
+
+}
+
+--- SOURCE: src/bytes/Bytes.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Memory} from "../unsafe/Memory.sol";
+
+
+library Bytes {
+
+    uint internal constant BYTES_HEADER_SIZE = 32;
+
+    // Checks if two `bytes memory` variables are equal. This is done using hashing,
+    // which is much more gas efficient then comparing each byte individually.
+    // Equality means that:
+    //  - 'self.length == other.length'
+    //  - For 'n' in '[0, self.length)', 'self[n] == other[n]'
+    function equals(bytes memory self, bytes memory other) internal pure returns (bool equal) {
+        if (self.length != other.length) {
+            return false;
+        }
+        uint addr;
+        uint addr2;
+        assembly {
+            addr := add(self, /*BYTES_HEADER_SIZE*/32)
+            addr2 := add(other, /*BYTES_HEADER_SIZE*/32)
+        }
+        equal = Memory.equals(addr, addr2, self.length);
+    }
+
+    // Checks if two 'bytes memory' variables points to the same bytes array.
+    // Technically this is done by de-referencing the two arrays in inline assembly,
+    // and checking if the values are the same.
+    function equalsRef(bytes memory self, bytes memory other) internal pure returns (bool equal) {
+        assembly {
+            equal := eq(self, other)
+        }
+    }
+
+    // Copies a byte array.
+    // Returns the copied bytes.
+    // The function works by creating a new bytes array in memory, with the
+    // same length as 'self', then copying all the bytes from 'self' into
+    // the new array.
+    function copy(bytes memory self) internal pure returns (bytes memory) {
+        if (self.length == 0) {
+            return;
+        }
+        var addr = Memory.dataPtr(self);
+        return Memory.toBytes(addr, self.length);
+    }
+
+    // Copies a section of 'self' into a new array, starting at the provided 'startIndex'.
+    // Returns the new copy.
+    // Requires that 'startIndex <= self.length'
+    // The length of the substring is: 'self.length - startIndex'
+    function substr(bytes memory self, uint startIndex) internal pure returns (bytes memory) {
+        require(startIndex <= self.length);
+        var len = self.length - startIndex;
+        var addr = Memory.dataPtr(self);
+        return Memory.toBytes(addr + startIndex, len);
+    }
+
+    // Copies 'len' bytes from 'self' into a new array, starting at the provided 'startIndex'.
+    // Returns the new copy.
+    // Requires that:
+    //  - 'startIndex + len <= self.length'
+    // The length of the substring is: 'len'
+    function substr(bytes memory self, uint startIndex, uint len) internal pure returns (bytes memory) {
+        require(startIndex + len <= self.length);
+        if (len == 0) {
+            return;
+        }
+        var addr = Memory.dataPtr(self);
+        return Memory.toBytes(addr + startIndex, len);
+    }
+
+    // Combines 'self' and 'other' into a single array.
+    // Returns the concatenated arrays:
+    //  [self[0], self[1], ... , self[self.length - 1], other[0], other[1], ... , other[other.length - 1]]
+    // The length of the new array is 'self.length + other.length'
+    function concat(bytes memory self, bytes memory other) internal pure returns (bytes memory) {
+        bytes memory ret = new bytes(self.length + other.length);
+        var (src, srcLen) = Memory.fromBytes(self);
+        var (src2, src2Len) = Memory.fromBytes(other);
+        var (dest,) = Memory.fromBytes(ret);
+        var dest2 = dest + srcLen;
+        Memory.copy(src, dest, srcLen);
+        Memory.copy(src2, dest2, src2Len);
+        return ret;
+    }
+
+    // Copies a section of a 'bytes32' starting at the provided 'startIndex'.
+    // Returns the copied bytes (padded to the right) as a new 'bytes32'.
+    // Requires that 'startIndex < 32'
+    function substr(bytes32 self, uint8 startIndex) internal pure returns (bytes32) {
+        require(startIndex < 32);
+        return bytes32(uint(self) << startIndex*8);
+    }
+
+    // Copies 'len' bytes from 'self' into a new array, starting at the provided 'startIndex'.
+    // Returns the copied bytes (padded to the right) as a new 'bytes32'.
+    // Requires that:
+    //  - 'startIndex < 32'
+    //  - 'startIndex + len <= 32'
+    function substr(bytes32 self, uint8 startIndex, uint8 len) internal pure returns (bytes32) {
+        require(startIndex < 32 && startIndex + len <= 32);
+        return bytes32(uint(self) << startIndex*8 & ~uint(0) << (32 - len)*8);
+    }
+
+    // Copies 'self' into a new 'bytes memory'.
+    // Returns the newly created 'bytes memory'
+    // The returned bytes will be of length '32'.
+    function toBytes(bytes32 self) internal pure returns (bytes memory bts) {
+        bts = new bytes(32);
+        assembly {
+            mstore(add(bts, /*BYTES_HEADER_SIZE*/32), self)
+        }
+    }
+
+    // Copies 'len' bytes from 'self' into a new 'bytes memory', starting at index '0'.
+    // Returns the newly created 'bytes memory'
+    // The returned bytes will be of length 'len'.
+    function toBytes(bytes32 self, uint8 len) internal pure returns (bytes memory bts) {
+        require(len <= 32);
+        bts = new bytes(len);
+        // Even though the bytes will allocate a full word, we don't want
+        // any potential garbage bytes in there.
+        uint data = uint(self) & ~uint(0) << (32 - len)*8;
+        assembly {
+            mstore(add(bts, /*BYTES_HEADER_SIZE*/32), data)
+        }
+    }
+
+    // Copies 'self' into a new 'bytes memory'.
+    // Returns the newly created 'bytes memory'
+    // The returned bytes will be of length '20'.
+    function toBytes(address self) internal pure returns (bytes memory bts) {
+        bts = toBytes(bytes32(uint(self) << 96), 20);
+    }
+
+    // Copies 'self' into a new 'bytes memory'.
+    // Returns the newly created 'bytes memory'
+    // The returned bytes will be of length '32'.
+    function toBytes(uint self) internal pure returns (bytes memory bts) {
+        bts = toBytes(bytes32(self), 32);
+    }
+
+    // Copies 'self' into a new 'bytes memory'.
+    // Returns the newly created 'bytes memory'
+    // Requires that:
+    //  - '8 <= bitsize <= 256'
+    //  - 'bitsize % 8 == 0'
+    // The returned bytes will be of length 'bitsize / 8'.
+    function toBytes(uint self, uint16 bitsize) internal pure returns (bytes memory bts) {
+        require(8 <= bitsize && bitsize <= 256 && bitsize % 8 == 0);
+        self <<= 256 - bitsize;
+        bts = toBytes(bytes32(self), uint8(bitsize / 8));
+    }
+
+    // Copies 'self' into a new 'bytes memory'.
+    // Returns the newly created 'bytes memory'
+    // The returned bytes will be of length '1', and:
+    //  - 'bts[0] == 0 (if self == false)'
+    //  - 'bts[0] == 1 (if self == true)'
+    function toBytes(bool self) internal pure returns (bytes memory bts) {
+        bts = new bytes(1);
+        bts[0] = self ? byte(1) : byte(0);
+    }
+
+    // Computes the index of the highest byte set in 'self'.
+    // Returns the index.
+    // Requires that 'self != 0'
+    // Uses big endian ordering (the most significant byte has index '0').
+    function highestByteSet(bytes32 self) internal pure returns (uint8 highest) {
+        highest = 31 - lowestByteSet(uint(self));
+    }
+
+    // Computes the index of the lowest byte set in 'self'.
+    // Returns the index.
+    // Requires that 'self != 0'
+    // Uses big endian ordering (the most significant byte has index '0').
+    function lowestByteSet(bytes32 self) internal pure returns (uint8 lowest) {
+        lowest = 31 - highestByteSet(uint(self));
+    }
+
+    // Computes the index of the highest byte set in 'self'.
+    // Returns the index.
+    // Requires that 'self != 0'
+    // Uses little endian ordering (the least significant byte has index '0').
+    function highestByteSet(uint self) internal pure returns (uint8 highest) {
+        require(self != 0);
+        uint ret;
+        if (self & 0xffffffffffffffffffffffffffffffff00000000000000000000000000000000 != 0) {
+            ret += 16;
+            self >>= 128;
+        }
+        if (self & 0xffffffffffffffff0000000000000000 != 0) {
+            ret += 8;
+            self >>= 64;
+        }
+        if (self & 0xffffffff00000000 != 0) {
+            ret += 4;
+            self >>= 32;
+        }
+        if (self & 0xffff0000 != 0) {
+            ret += 2;
+            self >>= 16;
+        }
+        if (self & 0xff00 != 0) {
+            ret += 1;
+        }
+        highest = uint8(ret);
+    }
+
+    // Computes the index of the lowest byte set in 'self'.
+    // Returns the index.
+    // Requires that 'self != 0'
+    // Uses little endian ordering (the least significant byte has index '0').
+    function lowestByteSet(uint self) internal pure returns (uint8 lowest) {
+        require(self != 0);
+        uint ret;
+        if (self & 0xffffffffffffffffffffffffffffffff == 0) {
+            ret += 16;
+            self >>= 128;
+        }
+        if (self & 0xffffffffffffffff == 0) {
+            ret += 8;
+            self >>= 64;
+        }
+        if (self & 0xffffffff == 0) {
+            ret += 4;
+            self >>= 32;
+        }
+        if (self & 0xffff == 0) {
+            ret += 2;
+            self >>= 16;
+        }
+        if (self & 0xff == 0) {
+            ret += 1;
+        }
+        lowest = uint8(ret);
+    }
+
+}
+
+--- SOURCE: src/math/ExactMath.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+
+library ExactMath {
+
+    uint constant internal UINT_ZERO = 0;
+    uint constant internal UINT_ONE = 1;
+    uint constant internal UINT_TWO = 2;
+    uint constant internal UINT_MAX = ~uint(0);
+    uint constant internal UINT_MIN = 0;
+
+    int constant internal INT_ZERO = 0;
+    int constant internal INT_ONE = 1;
+    int constant internal INT_TWO = 2;
+    int constant internal INT_MINUS_ONE = -1;
+    int constant internal INT_MAX = int(2**255 - 1);
+    int constant internal INT_MIN = int(2**255);
+
+    // Calculates and returns 'self + other'
+    // The function will throw if the operation would result in an overflow.
+    function exactAdd(uint self, uint other) internal pure returns (uint sum) {
+        sum = self + other;
+        require(sum >= self);
+    }
+
+    // Calculates and returns 'self - other'
+    // The function will throw if the operation would result in an underflow.
+    function exactSub(uint self, uint other) internal pure returns (uint diff) {
+        require(other <= self);
+        diff = self - other;
+    }
+
+    // Calculates and returns 'self * other'
+    // The function will throw if the operation would result in an overflow.
+    function exactMul(uint self, uint other) internal pure returns (uint prod) {
+        prod = self * other;
+        require(self == 0 || prod / self == other);
+    }
+
+    // Calculates and returns 'self + other'
+    // The function will throw if the operation would result in an over/underflow.
+    function exactAdd(int self, int other) internal pure returns (int sum) {
+        sum = self + other;
+        if (self > 0 && other > 0) {
+            require(0 <= sum && sum <= INT_MAX);
+        } else if (self < 0 && other < 0) {
+            require(INT_MIN <= sum && sum <= 0);
+        }
+    }
+
+    // Calculates and returns 'self - other'
+    // The function will throw if the operation would result in an over/underflow.
+    function exactSub(int self, int other) internal pure returns (int diff) {
+        diff = self - other;
+        if (self > 0 && other < 0) {
+            require(0 <= diff && diff <= INT_MAX);
+        } else if (self < 0 && other > 0) {
+            require(INT_MIN <= diff && diff <= 0);
+        }
+    }
+
+    // Calculates and returns 'self * other'
+    // The function will throw if the operation would result in an over/underflow.
+    function exactMul(int self, int other) internal pure returns (int prod) {
+        prod = self * other;
+        require(self == 0 || ((other != INT_MIN || self != INT_MINUS_ONE) && prod / self == other));
+    }
+
+    // Calculates and returns 'self / other'
+    // The function will throw if the operation would result in an over/underflow.
+    function exactDiv(int self, int other) internal pure returns (int quot) {
+        require(self != INT_MIN || other != INT_MINUS_ONE);
+        quot = self / other;
+    }
+}
+
+--- SOURCE: src/patricia_tree/Data.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Bits} from "../bits/Bits.sol";
+
+
+/*
+ * Data structures and utilities used in the Patricia Tree.
+ *
+ * More info at: https://github.com/chriseth/patricia-trie
+ */
+library Data {
+
+    struct Label {
+        bytes32 data;
+        uint length;
+    }
+
+    struct Edge {
+        bytes32 node;
+        Label label;
+    }
+
+    struct Node {
+        Edge[2] children;
+    }
+
+    struct Tree {
+        bytes32 root;
+        Data.Edge rootEdge;
+        mapping(bytes32 => Data.Node) nodes;
+    }
+
+    // Returns a label containing the longest common prefix of `self` and `label`,
+    // and a label consisting of the remaining part of `label`.
+    function splitCommonPrefix(Label memory self, Label memory other) internal pure returns (
+        Label memory prefix,
+        Label memory labelSuffix
+    ) {
+        return splitAt(self, commonPrefix(self, other));
+    }
+
+    // Splits the label at the given position and returns prefix and suffix,
+    // i.e. 'prefix.length == pos' and 'prefix.data . suffix.data == l.data'.
+    function splitAt(Label memory self, uint pos) internal pure returns (Label memory prefix, Label memory suffix) {
+        assert(pos <= self.length && pos <= 256);
+        prefix.length = pos;
+        if (pos == 0) {
+            prefix.data = bytes32(0);
+        } else {
+            prefix.data = bytes32(uint(self.data) & ~uint(1) << 255 - pos);
+        }
+        suffix.length = self.length - pos;
+        suffix.data = self.data << pos;
+    }
+
+    // Returns the length of the longest common prefix of the two labels.
+    /*
+    function commonPrefix(Label memory self, Label memory other) internal pure returns (uint prefix) {
+        uint length = self.length < other.length ? self.length : other.length;
+        // TODO: This could actually use a "highestBitSet" helper
+        uint diff = uint(self.data ^ other.data);
+        uint mask = uint(1) << 255;
+        for (; prefix < length; prefix++) {
+            if ((mask & diff) != 0) {
+                break;
+            }
+            diff += diff;
+        }
+    }
+    */
+
+    function commonPrefix(Label memory self, Label memory other) internal pure returns (uint prefix) {
+        uint length = self.length < other.length ? self.length : other.length;
+        if (length == 0) {
+            return 0;
+        }
+        uint diff = uint(self.data ^ other.data) & ~uint(0) << 256 - length; // TODO Mask should not be needed.
+        if (diff == 0) {
+            return length;
+        }
+        return 255 - Bits.highestBitSet(diff);
+    }
+
+    // Returns the result of removing a prefix of length `prefix` bits from the
+    // given label (shifting its data to the left).
+    function removePrefix(Label memory self, uint prefix) internal pure returns (Label memory r) {
+        require(prefix <= self.length);
+        r.length = self.length - prefix;
+        r.data = self.data << prefix;
+    }
+
+    // Removes the first bit from a label and returns the bit and a
+    // label containing the rest of the label (shifted to the left).
+    function chopFirstBit(Label memory self) internal pure returns (uint firstBit, Label memory tail) {
+        require(self.length > 0);
+        return (uint(self.data >> 255), Label(self.data << 1, self.length - 1));
+    }
+
+    function edgeHash(Data.Edge memory self) internal pure returns (bytes32) {
+        return keccak256(self.node, self.label.length, self.label.data);
+    }
+
+    // Returns the hash of the encoding of a node.
+    function hash(Data.Node memory self) internal pure returns (bytes32) {
+        return keccak256(edgeHash(self.children[0]), edgeHash(self.children[1]));
+    }
+
+    function insertNode(Data.Tree storage tree, Data.Node memory n) internal returns (bytes32 newHash) {
+        bytes32 h = hash(n);
+        tree.nodes[h].children[0] = n.children[0];
+        tree.nodes[h].children[1] = n.children[1];
+        return h;
+    }
+
+    function replaceNode(Data.Tree storage self, bytes32 oldHash, Data.Node memory n) internal returns (bytes32 newHash) {
+        delete self.nodes[oldHash];
+        return insertNode(self, n);
+    }
+
+    function insertAtEdge(Tree storage self, Edge e, Label key, bytes32 value) internal returns (Edge) {
+        assert(key.length >= e.label.length);
+        var (prefix, suffix) = splitCommonPrefix(key, e.label);
+        bytes32 newNodeHash;
+        if (suffix.length == 0) {
+            // Full match with the key, update operation
+            newNodeHash = value;
+        } else if (prefix.length >= e.label.length) {
+            // Partial match, just follow the path
+            assert(suffix.length > 1);
+            Node memory n = self.nodes[e.node];
+            var (head, tail) = chopFirstBit(suffix);
+            n.children[head] = insertAtEdge(self, n.children[head], tail, value);
+            delete self.nodes[e.node];
+            newNodeHash = insertNode(self, n);
+        } else {
+            // Mismatch, so let us create a new branch node.
+            (head, tail) = chopFirstBit(suffix);
+            Node memory branchNode;
+            branchNode.children[head] = Edge(value, tail);
+            branchNode.children[1 - head] = Edge(e.node, removePrefix(e.label, prefix.length + 1));
+            newNodeHash = insertNode(self, branchNode);
+        }
+        return Edge(newNodeHash, prefix);
+    }
+
+    function insert(Tree storage self, bytes key, bytes value) internal {
+        Label memory k = Label(keccak256(key), 256);
+        bytes32 valueHash = keccak256(value);
+        Edge memory e;
+        if (self.root == 0) {
+            // Empty Trie
+            e.label = k;
+            e.node = valueHash;
+        } else {
+            e = insertAtEdge(self, self.rootEdge, k, valueHash);
+        }
+        self.root = edgeHash(e);
+        self.rootEdge = e;
+    }
+}
+
+--- SOURCE: src/patricia_tree/PatriciaTree.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Data} from "./Data.sol";
+import {Bits} from "../bits/Bits.sol";
+import {PatriciaTreeFace} from "./PatriciaTreeFace.sol";
+
+
+/*
+ * Patricia tree implementation.
+ *
+ * More info at: https://github.com/chriseth/patricia-trie
+ */
+contract PatriciaTree is PatriciaTreeFace {
+
+    using Data for Data.Tree;
+    using Data for Data.Node;
+    using Data for Data.Edge;
+    using Data for Data.Label;
+    using Bits for uint;
+
+    Data.Tree internal tree;
+
+    // Get the root hash.
+    function getRootHash() public view returns (bytes32) {
+        return tree.root;
+    }
+
+    // Get the root edge.
+    function getRootEdge() public view returns (Data.Edge e) {
+        e = tree.rootEdge;
+    }
+
+    // Get the node with the given key. The key needs to be
+    // the keccak256 hash of the actual key.
+    function getNode(bytes32 hash) public view returns (Data.Node n) {
+        n = tree.nodes[hash];
+    }
+
+    // Returns the Merkle-proof for the given key
+    // Proof format should be:
+    //  - uint branchMask - bitmask with high bits at the positions in the key
+    //                    where we have branch nodes (bit in key denotes direction)
+    //  - bytes32[] _siblings - hashes of sibling edges
+    function getProof(bytes key) public view returns (uint branchMask, bytes32[] _siblings) {
+        require(tree.root != 0);
+        Data.Label memory k = Data.Label(keccak256(key), 256);
+        Data.Edge memory e = tree.rootEdge;
+        bytes32[256] memory siblings;
+        uint length;
+        uint numSiblings;
+        while (true) {
+            var (prefix, suffix) = k.splitCommonPrefix(e.label);
+            assert(prefix.length == e.label.length);
+            if (suffix.length == 0) {
+                // Found it
+                break;
+            }
+            length += prefix.length;
+            branchMask |= uint(1) << 255 - length;
+            length += 1;
+            var (head, tail) = suffix.chopFirstBit();
+            siblings[numSiblings++] = tree.nodes[e.node].children[1 - head].edgeHash();
+            e = tree.nodes[e.node].children[head];
+            k = tail;
+        }
+        if (numSiblings > 0) {
+            _siblings = new bytes32[](numSiblings);
+            for (uint i = 0; i < numSiblings; i++) {
+                _siblings[i] = siblings[i];
+            }
+        }
+    }
+
+    function verifyProof(bytes32 rootHash, bytes key, bytes value, uint branchMask, bytes32[] siblings) public view returns (bool) {
+        Data.Label memory k = Data.Label(keccak256(key), 256);
+        Data.Edge memory e;
+        e.node = keccak256(value);
+        for (uint i = 0; branchMask != 0; i++) {
+            uint bitSet = branchMask.lowestBitSet();
+            branchMask &= ~(uint(1) << bitSet);
+            (k, e.label) = k.splitAt(255 - bitSet);
+            uint bit;
+            (bit, e.label) = e.label.chopFirstBit();
+            bytes32[2] memory edgeHashes;
+            edgeHashes[bit] = e.edgeHash();
+            edgeHashes[1 - bit] = siblings[siblings.length - i - 1];
+            e.node = keccak256(edgeHashes);
+        }
+        e.label = k;
+        require(rootHash == e.edgeHash());
+        return true;
+    }
+
+    function insert(bytes key, bytes value) public {
+        tree.insert(key, value);
+    }
+
+}
+
+--- SOURCE: src/patricia_tree/PatriciaTreeFace.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Data} from "./Data.sol";
+
+
+/*
+ * Interface for patricia trees.
+ *
+ * More info at: https://github.com/chriseth/patricia-trie
+ */
+contract PatriciaTreeFace {
+    function getRootHash() public view returns (bytes32);
+    function getRootEdge() public view returns (Data.Edge e);
+    function getNode(bytes32 hash) public view returns (Data.Node n);
+    function getProof(bytes key) public view returns (uint branchMask, bytes32[] _siblings);
+    function verifyProof(bytes32 rootHash, bytes key, bytes value, uint branchMask, bytes32[] siblings) public view returns (bool);
+    function insert(bytes key, bytes value) public;
+}
+
+--- SOURCE: src/strings/Strings.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Memory} from "../unsafe/Memory.sol";
+
+
+library Strings {
+
+    // Key bytes.
+    // http://www.unicode.org/versions/Unicode10.0.0/UnicodeStandard-10.0.pdf
+    // Table 3-7, p 126, Well-Formed UTF-8 Byte Sequences
+
+    // Default 80..BF range
+    uint constant internal DL = 0x80;
+    uint constant internal DH = 0xBF;
+
+    // Row - number of bytes
+
+    // R1 - 1
+    uint constant internal B11L = 0x00;
+    uint constant internal B11H = 0x7F;
+
+    // R2 - 2
+    uint constant internal B21L = 0xC2;
+    uint constant internal B21H = 0xDF;
+
+    // R3 - 3
+    uint constant internal B31 = 0xE0;
+    uint constant internal B32L = 0xA0;
+    uint constant internal B32H = 0xBF;
+
+    // R4 - 3
+    uint constant internal B41L = 0xE1;
+    uint constant internal B41H = 0xEC;
+
+    // R5 - 3
+    uint constant internal B51 = 0xED;
+    uint constant internal B52L = 0x80;
+    uint constant internal B52H = 0x9F;
+
+    // R6 - 3
+    uint constant internal B61L = 0xEE;
+    uint constant internal B61H = 0xEF;
+
+    // R7 - 4
+    uint constant internal B71 = 0xF0;
+    uint constant internal B72L = 0x90;
+    uint constant internal B72H = 0xBF;
+
+    // R8 - 4
+    uint constant internal B81L = 0xF1;
+    uint constant internal B81H = 0xF3;
+
+    // R9 - 4
+    uint constant internal B91 = 0xF4;
+    uint constant internal B92L = 0x80;
+    uint constant internal B92H = 0x8F;
+
+    // Checks whether a string is valid UTF-8.
+    // If the string is not valid, the function will throw.
+    function validate(string memory self) internal pure {
+        uint addr;
+        uint len;
+        assembly {
+            addr := add(self, 0x20)
+            len := mload(self)
+        }
+        if (len == 0) {
+            return;
+        }
+        uint bytePos = 0;
+        while (bytePos < len) {
+            bytePos += parseRune(addr + bytePos);
+        }
+        require(bytePos == len);
+    }
+
+    // Parses a single character, or "rune" stored at address 'bytePos'
+    // in memory.
+    // Returns the length of the character in bytes.
+    // solhint-disable-next-line code-complexity
+    function parseRune(uint bytePos) internal pure returns (uint len) {
+        uint val;
+        assembly {
+            val := mload(bytePos)
+        }
+        val >>= 224; // Remove all but the first four bytes.
+        uint v0 = val >> 24; // Get first byte.
+        if (v0 <= B11H) { // Check a 1 byte character.
+            len = 1;
+        } else if (B21L <= v0 && v0 <= B21H) { // Check a 2 byte character.
+            var v1 = (val & 0x00FF0000) >> 16;
+            require(DL <= v1 && v1 <= DH);
+            len = 2;
+        } else if (v0 == B31) { // Check a 3 byte character in the following three.
+            validateWithNextDefault((val & 0x00FFFF00) >> 8, B32L, B32H);
+            len = 3;
+        } else if (v0 == B51) {
+            validateWithNextDefault((val & 0x00FFFF00) >> 8, B52L, B52H);
+            len = 3;
+        } else if ((B41L <= v0 && v0 <= B41H) || v0 == B61L || v0 == B61H) {
+            validateWithNextDefault((val & 0x00FFFF00) >> 8, DL, DH);
+            len = 3;
+        } else if (v0 == B71) { // Check a 4 byte character in the following three.
+            validateWithNextTwoDefault(val & 0x00FFFFFF, B72L, B72H);
+            len = 4;
+        } else if (B81L <= v0 && v0 <= B81H) {
+            validateWithNextTwoDefault(val & 0x00FFFFFF, DL, DH);
+            len = 4;
+        } else if (v0 == B91) {
+            validateWithNextTwoDefault(val & 0x00FFFFFF, B92L, B92H);
+            len = 4;
+        } else { // If we reach this point, the character is not valid UTF-8
+            revert();
+        }
+    }
+
+    function validateWithNextDefault(uint val, uint low, uint high) private pure {
+        uint b = (val & 0xFF00) >> 8;
+        require(low <= b && b <= high);
+        b = val & 0x00FF;
+        require(DL <= b && b <= DH);
+    }
+
+    function validateWithNextTwoDefault(uint val, uint low, uint high) private pure {
+        uint b = (val & 0xFF0000) >> 16;
+        require(low <= b && b <= high);
+        b = (val & 0x00FF00) >> 8;
+        require(DL <= b && b <= DH);
+        b = val & 0x0000FF;
+        require(DL <= b && b <= DH);
+    }
+
+}
+
+--- SOURCE: src/tokens/ERC20TokenFace.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+
+contract ERC20TokenFace {
+    event Transfer(address indexed _from, address indexed _to, uint256 _value);
+    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
+
+    function totalSupply() public constant returns (uint256 totalSupply);
+    function balanceOf(address _owner) public constant returns (uint256 balance);
+    // solhint-disable-next-line no-simple-event-func-name
+    function transfer(address _to, uint256 _value) public returns (bool success);
+    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success);
+    function approve(address _spender, uint256 _value) public returns (bool success);
+    function allowance(address _owner, address _spender) public constant returns (uint256 remaining);
+}
+
+--- SOURCE: src/unsafe/Memory.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+
+library Memory {
+
+    // Size of a word, in bytes.
+    uint internal constant WORD_SIZE = 32;
+    // Size of the header of a 'bytes' array.
+    uint internal constant BYTES_HEADER_SIZE = 32;
+    // Address of the free memory pointer.
+    uint internal constant FREE_MEM_PTR = 0x40;
+
+    // Compares the 'len' bytes starting at address 'addr' in memory with the 'len'
+    // bytes starting at 'addr2'.
+    // Returns 'true' if the bytes are the same, otherwise 'false'.
+    function equals(uint addr, uint addr2, uint len) internal pure returns (bool equal) {
+        assembly {
+            equal := eq(keccak256(addr, len), keccak256(addr2, len))
+        }
+    }
+
+    // Compares the 'len' bytes starting at address 'addr' in memory with the bytes stored in
+    // 'bts'. It is allowed to set 'len' to a lower value then 'bts.length', in which case only
+    // the first 'len' bytes will be compared.
+    // Requires that 'bts.length >= len'
+    function equals(uint addr, uint len, bytes memory bts) internal pure returns (bool equal) {
+        require(bts.length >= len);
+        uint addr2;
+        assembly {
+            addr2 := add(bts, /*BYTES_HEADER_SIZE*/32)
+        }
+        return equals(addr, addr2, len);
+    }
+
+    // Allocates 'numBytes' bytes in memory. This will prevent the Solidity compiler
+    // from using this area of memory. It will also initialize the area by setting
+    // each byte to '0'.
+    function allocate(uint numBytes) internal pure returns (uint addr) {
+        // Take the current value of the free memory pointer, and update.
+        assembly {
+            addr := mload(/*FREE_MEM_PTR*/0x40)
+            mstore(/*FREE_MEM_PTR*/0x40, add(addr, numBytes))
+        }
+        uint words = (numBytes + WORD_SIZE - 1) / WORD_SIZE;
+        for (uint i = 0; i < words; i++) {
+            assembly {
+                mstore(add(addr, mul(i, /*WORD_SIZE*/32)), 0)
+            }
+        }
+    }
+
+    // Copy 'len' bytes from memory address 'src', to address 'dest'.
+    // This function does not check the or destination, it only copies
+    // the bytes.
+    function copy(uint src, uint dest, uint len) internal pure {
+        // Copy word-length chunks while possible
+        for (; len >= WORD_SIZE; len -= WORD_SIZE) {
+            assembly {
+                mstore(dest, mload(src))
+            }
+            dest += WORD_SIZE;
+            src += WORD_SIZE;
+        }
+
+        if (len == 0) return;
+
+        // Copy remaining bytes
+        uint mask = 256 ** (WORD_SIZE - len) - 1;
+        assembly {
+            let srcpart := and(mload(src), not(mask))
+            let destpart := and(mload(dest), mask)
+            mstore(dest, or(destpart, srcpart))
+        }
+    }
+
+    // Returns a memory pointer to the provided bytes array.
+    function ptr(bytes memory bts) internal pure returns (uint addr) {
+        assembly {
+            addr := bts
+        }
+    }
+
+    // Returns a memory pointer to the data portion of the provided bytes array.
+    function dataPtr(bytes memory bts) internal pure returns (uint addr) {
+        assembly {
+            addr := add(bts, /*BYTES_HEADER_SIZE*/32)
+        }
+    }
+
+    // This function does the same as 'dataPtr(bytes memory)', but will also return the
+    // length of the provided bytes array.
+    function fromBytes(bytes memory bts) internal pure returns (uint addr, uint len) {
+        len = bts.length;
+        assembly {
+            addr := add(bts, /*BYTES_HEADER_SIZE*/32)
+        }
+    }
+
+    // Creates a 'bytes memory' variable from the memory address 'addr', with the
+    // length 'len'. The function will allocate new memory for the bytes array, and
+    // the 'len bytes starting at 'addr' will be copied into that new memory.
+    function toBytes(uint addr, uint len) internal pure returns (bytes memory bts) {
+        bts = new bytes(len);
+        uint btsptr;
+        assembly {
+            btsptr := add(bts, /*BYTES_HEADER_SIZE*/32)
+        }
+        copy(addr, btsptr, len);
+    }
+
+    // Get the word stored at memory address 'addr' as a 'uint'.
+    function toUint(uint addr) internal pure returns (uint n) {
+        assembly {
+            n := mload(addr)
+        }
+    }
+
+    // Get the word stored at memory address 'addr' as a 'bytes32'.
+    function toBytes32(uint addr) internal pure returns (bytes32 bts) {
+        assembly {
+            bts := mload(addr)
+        }
+    }
+
+    /*
+    // Get the byte stored at memory address 'addr' as a 'byte'.
+    function toByte(uint addr, uint8 index) internal pure returns (byte b) {
+        require(index < WORD_SIZE);
+        uint8 n;
+        assembly {
+            n := byte(index, mload(addr))
+        }
+        b = byte(n);
+    }
+    */
+}
+
+--- SOURCE: test/STLTest.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+
+contract STLTest {
+
+    function test() public payable returns (bool ret) {
+        ret = true;
+        testImpl();
+    }
+
+    function testImpl() internal;
+
+}
+
+--- SOURCE: test/bits/bits.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Bits} from "../../src/bits/Bits.sol";
+import {STLTest} from "../STLTest.sol";
+
+/*******************************************************/
+
+contract BitsTest is STLTest {
+    using Bits for uint;
+
+    uint internal constant ZERO = uint(0);
+    uint internal constant ONE = uint(1);
+    uint internal constant ONES = uint(~0);
+}
+
+/*******************************************************/
+
+contract TestBitsBitAnd is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i++) {
+            assert(ONES.bitAnd(ONES, i*20) == 1);
+            assert(ONES.bitAnd(ZERO, i*20) == 0);
+            assert(ZERO.bitAnd(ONES, i*20) == 0);
+            assert(ZERO.bitAnd(ZERO, i*20) == 0);
+        }
+    }
+}
+
+
+contract TestBitsBitEqual is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i++) {
+            assert(ONES.bitEqual(ONES, i*20));
+            assert(!ONES.bitEqual(ZERO, i*20));
+        }
+    }
+}
+
+
+contract TestBitsBitNotSet is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i++) {
+            assert(ONES.bitSet(i*20));
+        }
+    }
+}
+
+
+contract TestBitsBitOr is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i++) {
+            assert(ONES.bitOr(ONES, i*20) == 1);
+            assert(ONES.bitOr(ZERO, i*20) == 1);
+            assert(ZERO.bitOr(ONES, i*20) == 1);
+            assert(ZERO.bitOr(ZERO, i*20) == 0);
+        }
+    }
+}
+
+
+contract TestBitsBitSet is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i++) {
+            assert(ONES.bitSet(i*20));
+        }
+    }
+}
+
+
+contract TestBitsBitsWithDifferentIndices is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i++) {
+            assert(ONES.bits(i*20, 5) == 31);
+        }
+    }
+}
+
+
+contract TestBitsBitsWithDifferentNumBits is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 1; i < 12; i++) {
+            assert(ONES.bits(0, i) == ONES >> (256 - i));
+        }
+    }
+}
+
+
+contract TestBitsBitsGetAll is BitsTest {
+    function testImpl() internal {
+        assert(ONES.bits(0, 256) == ONES);
+    }
+}
+
+
+contract TestBitsBitsGetUpperHalf is BitsTest {
+    function testImpl() internal {
+        assert(ONES.bits(128, 128) == ONES >> 128);
+    }
+}
+
+
+contract TestBitsBitsGetLowerHalf is BitsTest {
+    function testImpl() internal {
+        assert(ONES.bits(0, 128) == ONES >> 128);
+    }
+}
+
+
+contract TestBitsBitsThrowsNumBitsZero is BitsTest {
+    function testImpl() internal {
+        ONES.bits(0, 0);
+    }
+}
+
+
+contract TestBitsBitsThrowsIndexAndLengthOOB is BitsTest {
+    function testImpl() internal {
+        ONES.bits(5, 252);
+    }
+}
+
+
+contract TestBitsBitXor is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i++) {
+            assert(ONES.bitXor(ONES, i*20) == 0);
+            assert(ONES.bitXor(ZERO, i*20) == 1);
+            assert(ZERO.bitXor(ONES, i*20) == 1);
+            assert(ZERO.bitXor(ZERO, i*20) == 0);
+        }
+    }
+}
+
+
+contract TestBitsClearBit is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i++) {
+            assert(ONES.clearBit(i*20).bit(i*20) == 0);
+        }
+    }
+}
+
+
+contract TestBitsBit is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i++) {
+            uint v = (ONE << i*20) * (i % 2);
+            assert(v.bit(i*20) == i % 2);
+        }
+    }
+}
+
+
+contract TestBitsBitNot is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i++) {
+            uint v = (ONE << i*20) * (i % 2);
+            assert(v.bitNot(i*20) == 1 - i % 2);
+        }
+    }
+}
+
+
+contract TestBitsHighestBitSetAllLowerSet is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i += 20) {
+            assert((ONES >> i).highestBitSet() == (255 - i));
+        }
+    }
+}
+
+
+contract TestBitsHighestBitSetSingleBit is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i += 20) {
+            assert((ONE << i).highestBitSet() == i);
+        }
+    }
+}
+
+
+contract TestBitsHighestBitSetThrowsBitFieldIsZero is BitsTest {
+    function testImpl() internal {
+        ZERO.highestBitSet();
+    }
+}
+
+
+contract TestBitsLowestBitSetAllHigherSet is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i += 20) {
+            assert((ONES << i).lowestBitSet() == i);
+        }
+    }
+}
+
+
+contract TestBitsLowestBitSetSingleBit is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i += 20) {
+            assert((ONE << i).lowestBitSet() == i);
+        }
+    }
+}
+
+
+contract TestBitsLowestBitSetThrowsBitFieldIsZero is BitsTest {
+    function testImpl() internal {
+        ZERO.lowestBitSet();
+    }
+}
+
+
+contract TestBitsSetBit is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i++) {
+            assert(ZERO.setBit(i*20) == ONE << i*20);
+        }
+    }
+}
+
+
+contract TestBitsToggleBit is BitsTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 12; i++) {
+            var v = ZERO.toggleBit(i*20);
+            assert(v == ONE << i*20);
+            assert(v.toggleBit(i*20) == 0);
+        }
+    }
+}
+
+--- SOURCE: test/bytes/bytes.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Bytes} from "../../src/bytes/Bytes.sol";
+import {Memory} from "../../src/unsafe/Memory.sol";
+import {STLTest} from "../STLTest.sol";
+
+/* solhint-disable max-line-length */
+/*******************************************************/
+
+contract BytesTest is STLTest {
+    using Bytes for *;
+
+    uint internal constant ZERO = uint(0);
+    uint internal constant ONE = uint(1);
+    uint internal constant ONES = uint(~0);
+
+    bytes32 internal constant B32_ZERO = bytes32(0);
+}
+
+/************************** Equals ***************************/
+
+contract TestBytesEqualsItselfWhenNull is BytesTest {
+    function testImpl() internal {
+        bytes memory btsNull = new bytes(0);
+        assert(btsNull.equals(btsNull));
+    }
+}
+
+
+contract TestBytesEqualsItself is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        assert(bts.equals(bts));
+    }
+}
+
+
+contract TestBytesEqualsCommutative is BytesTest {
+    function testImpl() internal {
+        bytes memory bts1 = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        bytes memory bts2 = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        assert(bts1.equals(bts2) && bts2.equals(bts1));
+    }
+}
+
+
+contract TestBytesEqualsNotEqualData is BytesTest {
+    function testImpl() internal {
+        bytes memory bts1 = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        bytes memory bts2 = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddee8899aabbccddeeffaabbff";
+        assert(!bts1.equals(bts2));
+    }
+}
+
+
+contract TestBytesEqualsNotEqualLength is BytesTest {
+    function testImpl() internal {
+        bytes memory bts1 = hex"8899aabbccddeeff8899";
+        bytes memory bts2 = hex"8899aabbccddeeff88";
+        assert(!bts1.equals(bts2));
+    }
+}
+
+
+contract TestBytesEqualsNotEqualCommutative is BytesTest {
+    function testImpl() internal {
+        bytes memory bts1 = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        bytes memory bts2 = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddee8899aabbccddeeffaabbff";
+        assert(!bts1.equals(bts2) && !bts2.equals(bts1));
+    }
+}
+
+/************************** EqualsRef ***************************/
+
+contract TestBytesEqualsRef is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabb";
+        assert(bts.equalsRef(bts));
+    }
+}
+
+
+contract TestBytesEqualsRefNotEqual is BytesTest {
+    function testImpl() internal {
+        bytes memory bts1 = hex"8899aabb";
+        bytes memory bts2 = hex"8899aabb";
+        assert(!bts1.equalsRef(bts2));
+    }
+}
+
+
+contract TestBytesEqualsRefFailNotEqualCommutative is BytesTest {
+    function testImpl() internal {
+        bytes memory bts1 = hex"8899aabb";
+        bytes memory bts2 = hex"8899aabb";
+        assert(!bts1.equalsRef(bts2) && !bts2.equalsRef(bts1));
+    }
+}
+
+/************************** Copy ***************************/
+
+contract TestBytesCopyNull is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = new bytes(0);
+        var cpy = bts.copy();
+        assert(cpy.length == 0);
+    }
+}
+
+
+contract TestBytesCopy is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        var cpy = bts.copy();
+        assert(bts.equals(cpy));
+    }
+}
+
+
+contract TestBytesCopyCreatesNew is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        var cpy = bts.copy();
+        assert(Memory.ptr(bts) != Memory.ptr(cpy));
+    }
+}
+
+
+contract TestBytesCopyDoesNotMutate is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        bytes memory btsEq = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        var btsLen = bts.length;
+        var btsAddr = Memory.ptr(bts);
+        bts.copy();
+        assert(Memory.ptr(bts) == btsAddr);
+        assert(bts.length == btsLen);
+        assert(bts.equals(btsEq));
+    }
+}
+
+/************************** substr ***************************/
+
+contract TestBytesSubstr is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        var cpy = bts.substr(1);
+        var sdp = Memory.dataPtr(bts);
+        var cdp = Memory.dataPtr(cpy);
+        assert(bts.length == cpy.length + 1);
+        assert(Memory.equals(sdp + 1, cdp, cpy.length));
+    }
+}
+
+
+contract TestBytesSubstrDoesNotMutate is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        bytes memory btsEq = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        var btsAddr = Memory.ptr(bts);
+        bts.substr(4);
+        assert(Memory.ptr(bts) == btsAddr);
+        assert(bts.equals(btsEq));
+    }
+}
+
+
+contract TestBytesSubstrThrowsIndexOOB is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = new bytes(0);
+        bts.substr(1);
+    }
+}
+
+/************************** substr with length ***************************/
+
+contract TestBytesSubstrWithLen is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        var cpy = bts.substr(7, 12);
+        var sdp = Memory.dataPtr(bts);
+        var cdp = Memory.dataPtr(cpy);
+        assert(cpy.length == 12);
+        assert(Memory.equals(sdp + 7, cdp, 12));
+    }
+}
+
+
+contract TestBytesSubstrWithLenFull is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        var cpy = bts.substr(0, bts.length);
+        var sdp = Memory.dataPtr(bts);
+        var cdp = Memory.dataPtr(cpy);
+        assert(cpy.length == bts.length);
+        assert(Memory.equals(sdp, cdp, bts.length));
+    }
+}
+
+
+contract TestBytesSubstrWithLenEmptyBytes is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        var cpy = bts.substr(0, 0);
+        assert(cpy.length == 0);
+    }
+}
+
+
+contract TestBytesSubstrWithLenDoesNotMutate is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        bytes memory btsEq = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        var btsAddr = Memory.ptr(bts);
+        bts.substr(4, 21);
+        assert(Memory.ptr(bts) == btsAddr);
+        assert(bts.equals(btsEq));
+    }
+}
+
+
+contract TestBytesSubstrWithLenThrowsIndexOOB is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = new bytes(0);
+        bts.substr(1, 0);
+    }
+}
+
+
+contract TestBytesSubstrWithLenThrowsIndexPlusLengthOOB is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = new bytes(1);
+        bts.substr(0, 2);
+    }
+}
+
+/************************** Concat ***************************/
+
+contract TestBytesConcatNull is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = new bytes(0);
+        var cnct = bts.concat(bts);
+        assert(cnct.length == 0);
+        assert(!bts.equalsRef(cnct));
+    }
+}
+
+
+contract TestBytesConcatSelf is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = hex"aabbccdd";
+        var cnct = bts.concat(bts);
+        var btsLen = bts.length;
+        assert(cnct.length == 2*btsLen);
+        for (uint i = 0; i < btsLen; i++) {
+            cnct[i] == bts[i];
+            cnct[i + btsLen] == bts[i];
+        }
+    }
+}
+
+
+contract TestBytesConcat is BytesTest {
+    function testImpl() internal {
+        bytes memory bts1 = hex"aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899";
+        bytes memory bts2 = hex"aabbccddeeffaabbccddeeffaabbcc";
+
+        var cnct = bts1.concat(bts2);
+        var bts1Len = bts1.length;
+        var bts2Len = bts2.length;
+        assert(cnct.length == bts1Len + bts2Len);
+        for (uint i = 0; i < bts1Len; i++) {
+            cnct[i] == bts1[i];
+        }
+        for (i = 0; i < bts2Len; i++) {
+            cnct[i + bts1Len] == bts2[i];
+        }
+    }
+}
+
+
+contract TestBytesConcatCreatesNew is BytesTest {
+    function testImpl() internal {
+        bytes memory bts = new bytes(0);
+        var cnct = bts.concat(bts);
+        assert(!bts.equalsRef(cnct));
+    }
+}
+
+
+contract TestBytesConcatDoesNotMutate is BytesTest {
+    function testImpl() internal {
+        bytes memory bts1 = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        bytes memory bts1Eq = hex"8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeff8899aabbccddeeffaabb";
+        bytes memory bts2 = hex"ddeeff8899aabbccddeeff8899aabbccaabbccddeeff8899aabbccddeeff8899aa";
+        bytes memory bts2Eq = hex"ddeeff8899aabbccddeeff8899aabbccaabbccddeeff8899aabbccddeeff8899aa";
+        var bts1Len = bts1.length;
+        var bts2Len = bts2.length;
+        var bts1Addr = Memory.ptr(bts1);
+        var bts2Addr = Memory.ptr(bts2);
+        bts1.concat(bts2);
+        assert(bts1.length == bts1Len);
+        assert(bts2.length == bts2Len);
+        assert(Memory.ptr(bts1) == bts1Addr);
+        assert(Memory.ptr(bts2) == bts2Addr);
+        assert(bts1.equals(bts1Eq));
+        assert(bts2.equals(bts2Eq));
+    }
+}
+
+/************************** bytes32 substr ***************************/
+
+contract TestBytesBytes32Substr is BytesTest {
+    function testImpl() internal {
+        bytes32 b = 0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef;
+        bytes32 b4 = 0x89abcdef0123456789abcdef0123456789abcdef0123456789abcdef00000000;
+        bytes32 b11 = 0x6789abcdef0123456789abcdef0123456789abcdef0000000000000000000000;
+        bytes32 b23 = 0xef0123456789abcdef0000000000000000000000000000000000000000000000;
+        bytes32 b31 = 0xef00000000000000000000000000000000000000000000000000000000000000;
+        assert(b.substr(0) == b);
+        assert(b.substr(4) == b4);
+        assert(b.substr(11) == b11);
+        assert(b.substr(23) == b23);
+        assert(b.substr(31) == b31);
+    }
+}
+
+
+contract TestBytesBytes32SubstrThrowsIndexOOB is BytesTest {
+    function testImpl() internal {
+        bytes32(0).substr(32);
+    }
+}
+
+/************************** substr with length ***************************/
+
+contract TestBytesBytes32SubstrWithLen is BytesTest {
+    function testImpl() internal {
+        bytes32 b = 0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef;
+        bytes32 b4L5 = 0x89abcdef01000000000000000000000000000000000000000000000000000000;
+        bytes32 b11L12 = 0x6789abcdef0123456789abcd0000000000000000000000000000000000000000;
+        bytes32 b23L2 = 0xef01000000000000000000000000000000000000000000000000000000000000;
+        bytes32 b31L1 = 0xef00000000000000000000000000000000000000000000000000000000000000;
+        assert(b.substr(0, 32) == b);
+        assert(b.substr(4, 5) == b4L5);
+        assert(b.substr(11, 12) == b11L12);
+        assert(b.substr(23, 2) == b23L2);
+        assert(b.substr(31, 1) == b31L1);
+    }
+}
+
+
+contract TestBytesBytes32SubstrWithLenThrowsIndexOOB is BytesTest {
+    function testImpl() internal {
+        bytes32(0).substr(32, 0);
+    }
+}
+
+
+contract TestBytesBytes32SubstrWithLenThrowsIndexPlusLengthOOB is BytesTest {
+    function testImpl() internal {
+        /* solhint-disable no-unused-vars */
+        bytes memory bts = new bytes(1);
+        bytes32(0).substr(4, 29);
+        /* solhint-enable no-unused-vars */
+    }
+}
+
+/******************* bytes32 toBytes ******************/
+
+contract TestBytesBytes32ToBytesHighOrder is BytesTest {
+    function testImpl() internal {
+        var bts = bytes32("abc").toBytes();
+        bytes memory btsExpctd = hex"6162630000000000000000000000000000000000000000000000000000000000";
+        assert(bts.equals(btsExpctd));
+    }
+}
+
+
+contract TestBytesBytes32ToBytesLowOrder is BytesTest {
+    function testImpl() internal {
+        var bts = bytes32(0x112233).toBytes();
+        bytes memory btsExpctd = hex"0000000000000000000000000000000000000000000000000000000000112233";
+        assert(bts.equals(btsExpctd));
+    }
+}
+
+
+contract TestBytesBytes32ToBytesZero is BytesTest {
+    function testImpl() internal {
+        var bts = B32_ZERO.toBytes();
+        bytes memory btsExp = new bytes(32);
+        assert(bts.equals(btsExp));
+    }
+}
+
+/******************* bytes32 toBytes with length ******************/
+
+contract TestBytesBytes32ToBytesWithLenHighOrder is BytesTest {
+    function testImpl() internal {
+        var bts = bytes32("abc").toBytes(2);
+        string memory str = "ab";
+        assert(bts.equals(bytes(str)));
+    }
+}
+
+
+contract TestBytesBytes32ToBytesWithLenLowOrder is BytesTest {
+    function testImpl() internal {
+        var bts = bytes32(0x112233).toBytes(31);
+        bytes memory btsExpctd = hex"00000000000000000000000000000000000000000000000000000000001122";
+        assert(bts.equals(btsExpctd));
+    }
+}
+
+
+contract TestBytesBytes32ToBytesWithLenThrowsLenOOB is BytesTest {
+    function testImpl() internal {
+        bytes32(0).toBytes(33);
+    }
+}
+
+/******************* address toBytes ******************/
+
+contract TestBytesAddressToBytes is BytesTest {
+    function testImpl() internal {
+        var bts = address(0x0123456789012345678901234567890123456789).toBytes();
+        bytes memory btsExpctd = hex"0123456789012345678901234567890123456789";
+        assert(bts.equals(btsExpctd));
+    }
+}
+
+/******************* uint toBytes ******************/
+
+contract TestBytesUintToBytes is BytesTest {
+    function testImpl() internal {
+        uint n = 0x12345678;
+        var bts = n.toBytes();
+        bytes memory btsExpctd = hex"0000000000000000000000000000000000000000000000000000000012345678";
+        assert(bts.equals(btsExpctd));
+    }
+}
+
+/******************* uint toBytes with bitsize ******************/
+
+contract TestBytesUintToBytesWithBitsizeZero is BytesTest {
+    function testImpl() internal {
+        var bts = uint(0).toBytes(256);
+        bytes memory btsExpctd = new bytes(32);
+        assert(bts.equals(btsExpctd));
+    }
+}
+
+
+contract TestBytesUintToBytesWithBitsize is BytesTest {
+    function testImpl() internal {
+        uint n = 0x12345678;
+        var bts = n.toBytes(32);
+        bytes memory btsExpctd = hex"12345678";
+        assert(bts.equals(btsExpctd));
+    }
+}
+
+
+contract TestBytesUintToBytesWithBitsizeThrowsBitsizeLow is BytesTest {
+    function testImpl() internal {
+        uint(0).toBytes(0);
+    }
+}
+
+
+contract TestBytesUintToBytesWithBitsizeThrowsBitsizeHigh is BytesTest {
+    function testImpl() internal {
+        uint(0).toBytes(264);
+    }
+}
+
+
+contract TestBytesUintToBytesWithBitsizeThrowsBitsizeNotMultipleOf8 is BytesTest {
+    function testImpl() internal {
+        uint(0).toBytes(15);
+    }
+}
+
+/******************* boolean toBytes ******************/
+
+contract TestBytesBooleanToBytes is BytesTest {
+    function testImpl() internal {
+        bytes memory btsTrue = hex"01";
+        bytes memory btsFalse = hex"00";
+        assert(true.toBytes().equals(btsTrue));
+        assert(false.toBytes().equals(btsFalse));
+    }
+}
+
+/******************* bytes32 highest/lowest byte set ******************/
+
+contract TestBytesBytes32HighestByteSetWithAllLowerSet is BytesTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 32; i++) {
+            assert(bytes32(ONES << 8*i).highestByteSet() == 31 - i);
+        }
+    }
+}
+
+
+contract TestBytesBytes32HighestByteSetWithSingleByte is BytesTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 32; i++) {
+            assert(bytes32(ONE << 8*i).highestByteSet() == 31 - i);
+        }
+    }
+}
+
+
+contract TestBytesBytes32HighestByteSetThrowsBytes32IsZero is BytesTest {
+    function testImpl() internal {
+        B32_ZERO.highestByteSet();
+    }
+}
+
+
+contract TestBytesBytes32LowestByteSetWithAllHigherSet is BytesTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 31; i++) {
+            assert(bytes32(ONES >> 8*i).lowestByteSet() == i);
+        }
+    }
+}
+
+
+contract TestBytesBytes32LowestByteSetWithSingleByte is BytesTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 32; i++) {
+            assert(bytes32(ONE << 8*i).lowestByteSet() == 31 - i);
+        }
+    }
+}
+
+
+contract TestBytesBytes32LowestByteSetThrowsBytes32IsZero is BytesTest {
+    function testImpl() internal {
+        B32_ZERO.lowestByteSet();
+    }
+}
+
+/******************* uint highest/lowest byte set ******************/
+
+contract TestBytesUintHighestByteSetWithAllLowerSet is BytesTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 31; i++) {
+            assert((ONES >> 8*i).highestByteSet() == (31 - i));
+        }
+    }
+}
+
+
+contract TestBytesUintHighestByteSetWithSingleByte is BytesTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 32; i++) {
+            assert((ONE << 8*i).highestByteSet() == i);
+        }
+    }
+}
+
+
+contract TestBytesUintHighestByteSetThrowsBytes32IsZero is BytesTest {
+    function testImpl() internal {
+        ZERO.highestByteSet();
+    }
+}
+
+
+contract TestBytesUintLowestByteSetWithAllHigherSet is BytesTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 32; i++) {
+            assert((ONES << 8*i).lowestByteSet() == i);
+        }
+    }
+}
+
+
+contract TestBytesUintLowestByteSetWithSingleByte is BytesTest {
+    function testImpl() internal {
+        for (uint8 i = 0; i < 32; i++) {
+            assert((ONE << 8*i).lowestByteSet() == i);
+        }
+    }
+}
+
+
+contract TestBytesUintLowestByteSetThrowsBytes32IsZero is BytesTest {
+    function testImpl() internal {
+        ZERO.lowestByteSet();
+    }
+}
+/* solhint-enable max-line-length */
+
+--- SOURCE: test/math/exact_math.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {ExactMath} from "../../src/math/ExactMath.sol";
+import {STLTest} from "../STLTest.sol";
+
+
+contract ExactMathTest is STLTest {
+    using ExactMath for *;
+
+    uint internal constant UINT_ZERO = 0;
+    uint internal constant UINT_ONE = 1;
+    uint internal constant UINT_TWO = 2;
+    uint internal constant UINT_ONES = ~uint(0);
+
+    int internal constant INT_ZERO = 0;
+    int internal constant INT_ONE = 1;
+    int internal constant INT_TWO = 2;
+    int internal constant INT_MINUS_ONE = -1;
+    int internal constant INT_MAX = int(2**255 - 1);
+    int internal constant INT_MIN = int(2**255);
+}
+
+
+contract TestMathExactAddUint is ExactMathTest {
+
+    uint internal constant TEST_VAL_1 = 937659378456935;
+    uint internal constant TEST_VAL_2 = 23457722001;
+
+    function testImpl() internal {
+        uint x = UINT_ZERO;
+        uint y = UINT_ZERO;
+        assert(x.exactAdd(y) == UINT_ZERO);
+        x = UINT_ZERO;
+        y = TEST_VAL_1;
+        assert(x.exactAdd(y) == y);
+        x = TEST_VAL_1;
+        y = UINT_ZERO;
+        assert(x.exactAdd(y) == x);
+        x = TEST_VAL_1;
+        y = TEST_VAL_2;
+        assert(x.exactAdd(y) == y.exactAdd(x));
+        assert(x.exactAdd(y) == x + y);
+    }
+}
+
+
+contract TestMathExactAddUintThrowsOverflow is ExactMathTest {
+    function testImpl() internal {
+        uint x = UINT_ONES;
+        uint y = UINT_ONE;
+        x.exactAdd(y);
+    }
+}
+
+
+contract TestMathExactSubUint is ExactMathTest {
+
+    uint internal constant TEST_VAL_1 = 937659378456935;
+    uint internal constant TEST_VAL_2 = 23457722001;
+
+    function testImpl() internal {
+        uint x = UINT_ZERO;
+        uint y = UINT_ZERO;
+        assert(x.exactSub(y) == UINT_ZERO);
+        x = TEST_VAL_1;
+        y = UINT_ZERO;
+        assert(x.exactSub(y) == x);
+        x = TEST_VAL_1;
+        y = TEST_VAL_2;
+        assert(x.exactSub(y) == x - y);
+    }
+}
+
+
+contract TestMathExactSubUintThrowsUnderflow is ExactMathTest {
+    function testImpl() internal {
+        uint x = 3;
+        uint y = 5;
+        x.exactSub(y);
+    }
+}
+
+
+contract TestMathExactMulUint is ExactMathTest {
+
+    uint internal constant TEST_VAL_1 = 937659378456935;
+    uint internal constant TEST_VAL_2 = 23457722001;
+
+    function testImpl() internal {
+        uint x = UINT_ZERO;
+        uint y = UINT_ZERO;
+        assert(x.exactMul(y) == UINT_ZERO);
+        x = UINT_ZERO;
+        y = TEST_VAL_1;
+        assert(x.exactMul(y) == UINT_ZERO);
+        x = TEST_VAL_1;
+        y = UINT_ZERO;
+        assert(x.exactMul(y) == UINT_ZERO);
+        x = UINT_ONE;
+        y = UINT_ONE;
+        assert(x.exactMul(y) == UINT_ONE);
+        x = UINT_ONE;
+        y = TEST_VAL_1;
+        assert(x.exactMul(y) == y);
+        x = TEST_VAL_1;
+        y = UINT_ONE;
+        assert(x.exactMul(y) == x);
+        x = TEST_VAL_1;
+        y = TEST_VAL_2;
+        assert(x.exactMul(y) == y.exactMul(x));
+        assert(x.exactMul(y) == x * y);
+    }
+}
+
+
+contract TestMathExactMulUintThrowsOverflow is ExactMathTest {
+    function testImpl() internal {
+        uint x = UINT_ONES;
+        uint y = UINT_TWO;
+        x.exactMul(y);
+    }
+}
+
+
+contract TestMathExactAddInt is ExactMathTest {
+
+    int internal constant TEST_VAL_1 = 937659378456935;
+    int internal constant TEST_VAL_2 = 23457722001;
+    int internal constant TEST_VAL_1N = -937659378456935;
+    int internal constant TEST_VAL_2N = -23457722001;
+
+    function testImpl() internal {
+        int x = INT_ZERO;
+        int y = INT_ZERO;
+        assert(x.exactAdd(y) == INT_ZERO);
+        x = INT_ZERO;
+        y = TEST_VAL_1;
+        assert(x.exactAdd(y) == y);
+        x = INT_ZERO;
+        y = TEST_VAL_1N;
+        assert(x.exactAdd(y) == y);
+        x = TEST_VAL_1;
+        y = INT_ZERO;
+        assert(x.exactAdd(y) == x);
+        x = TEST_VAL_1N;
+        y = INT_ZERO;
+        assert(x.exactAdd(y) == x);
+        x = TEST_VAL_1;
+        y = TEST_VAL_2;
+        assert(x.exactAdd(y) == y.exactAdd(x));
+        assert(x.exactAdd(y) == x + y);
+        x = TEST_VAL_1;
+        y = TEST_VAL_1N;
+        assert(x.exactAdd(y) == y.exactAdd(x));
+        assert(x.exactAdd(y) == INT_ZERO);
+        x = INT_MIN;
+        y = INT_MAX;
+        assert(x.exactAdd(y) == INT_MINUS_ONE);
+    }
+}
+
+
+contract TestMathExactAddIntThrowsOverflow is ExactMathTest {
+    function testImpl() internal {
+        int x = INT_MAX;
+        int y = INT_ONE;
+        x.exactAdd(y);
+    }
+}
+
+
+contract TestMathExactAddIntThrowsUnderflow is ExactMathTest {
+    function testImpl() internal {
+        int x = INT_MIN;
+        int y = INT_MINUS_ONE;
+        x.exactAdd(y);
+    }
+}
+
+
+contract TestMathExactSubInt is ExactMathTest {
+
+    int internal constant TEST_VAL_1 = 937659378456935;
+    int internal constant TEST_VAL_2 = 23457722001;
+    int internal constant TEST_VAL_1N = -937659378456935;
+    int internal constant TEST_VAL_2N = -23457722001;
+
+    function testImpl() internal {
+        int x = INT_ZERO;
+        int y = INT_ZERO;
+        assert(x.exactSub(y) == INT_ZERO);
+        x = TEST_VAL_1;
+        y = INT_ZERO;
+        assert(x.exactSub(y) == x);
+        x = TEST_VAL_1N;
+        y = INT_ZERO;
+        assert(x.exactSub(y) == x);
+        x = INT_ZERO;
+        y = TEST_VAL_1;
+        assert(x.exactSub(y) == -y);
+        x = INT_ZERO;
+        y = TEST_VAL_1N;
+        assert(x.exactSub(y) == -y);
+        x = TEST_VAL_1;
+        y = TEST_VAL_2;
+        assert(x.exactSub(y) == -y.exactSub(x));
+        assert(x.exactSub(y) == x - y);
+        x = TEST_VAL_1;
+        y = TEST_VAL_1N;
+        assert(x.exactSub(y) == x + x);
+    }
+}
+
+
+contract TestMathExactSubIntThrowsOverflow is ExactMathTest {
+    function testImpl() internal {
+        int x = INT_MAX;
+        int y = INT_MINUS_ONE;
+        x.exactSub(y);
+    }
+}
+
+
+contract TestMathExactSubIntThrowsUnderflow is ExactMathTest {
+    function testImpl() internal {
+        int x = INT_MIN;
+        int y = INT_ONE;
+        x.exactSub(y);
+    }
+}
+
+
+contract TestMathExactMulInt is ExactMathTest {
+
+    int internal constant TEST_VAL_1 = 937659378456935;
+    int internal constant TEST_VAL_2 = 23457722001;
+    int internal constant TEST_VAL_1N = -937659378456935;
+    int internal constant TEST_VAL_2N = -23457722001;
+
+    function testImpl() internal {
+        int x = INT_ZERO;
+        int y = INT_ZERO;
+        assert(x.exactMul(y) == INT_ZERO);
+        x = INT_ZERO;
+        y = TEST_VAL_1;
+        assert(x.exactMul(y) == INT_ZERO);
+        x = TEST_VAL_1;
+        y = INT_ZERO;
+        assert(x.exactMul(y) == INT_ZERO);
+        x = INT_ONE;
+        y = INT_ONE;
+        assert(x.exactMul(y) == INT_ONE);
+        x = INT_ONE;
+        y = TEST_VAL_1;
+        assert(x.exactMul(y) == y);
+        x = TEST_VAL_1;
+        y = INT_ONE;
+        assert(x.exactMul(y) == x);
+        x = TEST_VAL_1;
+        y = TEST_VAL_2;
+        assert(x.exactMul(y) == y.exactMul(x));
+        assert(x.exactMul(y) == x * y);
+        x = TEST_VAL_1;
+        y = INT_MINUS_ONE;
+        assert(x.exactMul(y) == TEST_VAL_1N);
+        x = TEST_VAL_1N;
+        y = INT_MINUS_ONE;
+        assert(x.exactMul(y) == TEST_VAL_1);
+        x = INT_MINUS_ONE;
+        y = TEST_VAL_1N;
+        assert(x.exactMul(y) == TEST_VAL_1);
+    }
+
+}
+
+
+contract TestMathExactMulIntThrowsOverflow is ExactMathTest {
+    function testImpl() internal {
+        int x = INT_MAX;
+        int y = INT_TWO;
+        x.exactMul(y);
+    }
+}
+
+
+contract TestMathExactMulIntThrowsUnderflow is ExactMathTest {
+    function testImpl() internal {
+        int x = INT_MIN;
+        int y = INT_TWO;
+        x.exactMul(y);
+    }
+}
+
+
+contract TestMathExactMulIntThrowsIntMinAndMinusOne is ExactMathTest {
+    function testImpl() internal {
+        int x = INT_MIN;
+        int y = INT_MINUS_ONE;
+        x.exactMul(y);
+    }
+}
+
+
+contract TestMathExactMulIntThrowsMinusOneAndIntMin is ExactMathTest {
+    function testImpl() internal {
+        int x = INT_MINUS_ONE;
+        int y = INT_MIN;
+        x.exactMul(y);
+    }
+}
+
+
+contract TestMathExactDivInt is ExactMathTest {
+
+    int internal constant TEST_VAL_1 = 937659378456935;
+    int internal constant TEST_VAL_2 = 23457722001;
+    int internal constant TEST_VAL_1N = -937659378456935;
+    int internal constant TEST_VAL_2N = -23457722001;
+
+    function testImpl() internal {
+        int x = INT_ONE;
+        int y = INT_ONE;
+        assert(x.exactDiv(y) == INT_ONE);
+        x = TEST_VAL_1;
+        y = INT_ONE;
+        assert(x.exactDiv(y) == TEST_VAL_1);
+        x = TEST_VAL_1;
+        y = INT_MINUS_ONE;
+        assert(x.exactDiv(y) == TEST_VAL_1N);
+        x = TEST_VAL_1;
+        y = TEST_VAL_2;
+        assert(x.exactDiv(y) == x / y);
+        x = TEST_VAL_2;
+        y = TEST_VAL_1;
+        assert(x.exactDiv(y) == INT_ZERO);
+        x = TEST_VAL_1N;
+        y = INT_MINUS_ONE;
+        assert(x.exactDiv(y) == TEST_VAL_1);
+    }
+
+}
+
+
+contract TestMathExactDivIntThrowsIntMinAndMinusOne is ExactMathTest {
+    function testImpl() internal {
+        int x = INT_MIN;
+        int y = INT_MINUS_ONE;
+        x.exactMul(y);
+    }
+}
+
+--- SOURCE: test/math/math_consistency.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {STLTest} from "../STLTest.sol";
+
+
+contract TestMathUint256Overflow is STLTest {
+
+    uint internal constant ZERO = 0;
+    uint internal constant ONE = 1;
+    uint internal constant TWO = 2;
+    uint internal constant ONES = ~uint(0);
+    uint internal constant HALF = uint(1) << 128;
+
+    function testImpl() internal {
+        uint n;
+        // +
+        assert(ONES + ONE == ZERO);
+        // ++
+        n = ONES;
+        n++;
+        assert(n == ZERO);
+        n = ONES;
+        ++n;
+        assert(n == ZERO);
+        // +=
+        n = ONES;
+        n += ONE;
+        assert(n == ZERO);
+
+        // -
+        assert(ZERO - ONE == ONES);
+        // --
+        n = ZERO;
+        n--;
+        assert(n == ONES);
+        n = ZERO;
+        --n;
+        assert(n == ONES);
+        // -=
+        n = ZERO;
+        n -= ONE;
+        assert(n == ONES);
+        // - (unary)
+        assert(-ONE == ONES);
+
+        // *
+        assert(HALF * HALF == ZERO);
+        // *=
+        n = HALF;
+        n *= HALF;
+        assert(n == ZERO);
+        assert(TWO ** 256 == ZERO);
+
+    }
+}
+
+
+contract TestMathInt256Overflow is STLTest {
+
+    int internal constant ZERO = 0;
+    int internal constant ONE = 1;
+    int internal constant TWO = 2;
+    int internal constant MINUS_ONE = -1;
+    int internal constant HALF = int(1) << 128;
+    int internal constant INT_MAX = int(2**255 - 1);
+    int internal constant INT_MIN = int(-(2**255));
+
+    function testImpl() internal {
+        int n;
+
+        // +
+        assert(INT_MAX + ONE == INT_MIN);
+
+        // ++
+        n = INT_MAX;
+        n++;
+        assert(n == INT_MIN);
+        n = INT_MAX;
+        ++n;
+        assert(n == INT_MIN);
+        // +=
+        n = INT_MAX;
+        n += ONE;
+        assert(n == INT_MIN);
+
+        // -
+        assert(INT_MIN - ONE == INT_MAX);
+        // --
+        n = INT_MIN;
+        n--;
+        assert(n == INT_MAX);
+        n = INT_MIN;
+        --n;
+        assert(n == INT_MAX);
+        // -=
+        n = INT_MIN;
+        n -= ONE;
+        assert(n == INT_MAX);
+        // - (unary)
+        assert(-INT_MIN == INT_MIN);
+
+        // *
+        assert(INT_MIN*MINUS_ONE == INT_MIN);
+        assert(MINUS_ONE*INT_MIN == INT_MIN);
+        // *=
+        n = INT_MIN;
+        n *= MINUS_ONE;
+        assert(n == INT_MIN);
+
+        // /
+        assert(INT_MIN / MINUS_ONE == INT_MIN);
+        // /=
+        n = INT_MIN;
+        n /= MINUS_ONE;
+        assert(n == INT_MIN);
+
+        // << TODO
+
+    }
+}
+
+
+contract TestMathUint256DivWithZeroThrows is STLTest {
+
+    function testImpl() internal {
+        uint x = 5;
+        uint y = 0;
+        x / y;
+    }
+
+}
+
+
+contract TestMathUint256RemainderWithZeroThrows is STLTest {
+
+    function testImpl() internal {
+        uint x = 5;
+        uint y = 0;
+        x % y;
+    }
+
+}
+
+
+contract TestMathInt256DivWithZeroThrows is STLTest {
+
+    function testImpl() internal {
+        int x = 5;
+        int y = 0;
+        x / y;
+    }
+
+}
+
+
+contract TestMathInt256RemainderWithZeroThrows is STLTest {
+
+    function testImpl() internal {
+        int x = 5;
+        int y = 0;
+        x % y;
+    }
+
+}
+
+--- SOURCE: test/patricia_tree/data.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+//import {Bits} from "../../bits/Bits.sol";
+import {Data} from "../../src/patricia_tree/Data.sol";
+import {STLTest} from "../STLTest.sol";
+
+// TODO seems testing here is a bit over the top.
+/*******************************************************/
+
+contract PatriciaTreeDataTest is STLTest {
+
+    using Data for Data.Node;
+    using Data for Data.Edge;
+    using Data for Data.Label;
+    
+    uint internal constant MAX_LENGTH = 256;
+    uint internal constant UINT256_ZEROES = 0;
+    uint internal constant UINT256_ONES = ~uint(0);
+
+    bytes32 internal constant B32_ZEROES = bytes32(UINT256_ZEROES);
+    bytes32 internal constant B32_ONES = bytes32(UINT256_ONES);
+}
+
+/*******************************************************/
+
+contract TestPatriciaTreeDataChopFirstBitThrowsLengthIsZero is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl;
+        lbl.chopFirstBit();
+    }
+}
+
+
+contract TestPatriciaTreeDataChopFirstBitZeroes is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(B32_ZEROES, 256);
+        uint bit;
+        for (uint i = 1; i <= 256; i++) {
+            (bit, lbl) = lbl.chopFirstBit();
+            require(bit == 0);
+            require(lbl.data == B32_ZEROES);
+            require(lbl.length == MAX_LENGTH - i);
+        }
+    }
+}
+
+
+contract TestPatriciaTreeDataChopFirstBitOnes is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(B32_ONES, 256);
+        uint bit;
+        for (uint i = 1; i <= 256; i++) {
+            (bit, lbl) = lbl.chopFirstBit();
+            require(bit == 1);
+            require(lbl.data == B32_ONES << i);
+            require(lbl.length == MAX_LENGTH - i);
+        }
+    }
+}
+
+
+contract TestPatriciaTreeDataChopFirstBitDoesNotMutate is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(B32_ONES, 256);
+        lbl.chopFirstBit();
+        require(lbl.data == B32_ONES);
+        require(lbl.length == 256);
+    }
+}
+
+
+contract TestPatriciaTreeDataRemovePrefixThrowsLessLengthZero is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl;
+        lbl.removePrefix(1);
+    }
+}
+
+
+contract TestPatriciaTreeDataRemovePrefixThrowsLessLengthNonZero is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(B32_ZEROES, 5);
+        lbl.removePrefix(6);
+    }
+}
+
+
+contract TestPatriciaTreeDataRemoveZeroPrefixLengthZero is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(B32_ONES, 0);
+        lbl = lbl.removePrefix(0);
+        require(lbl.data == B32_ONES);
+        require(lbl.length == 0);
+    }
+}
+
+
+contract TestPatriciaTreeDataRemoveZeroPrefixLength256 is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(B32_ONES, 256);
+        lbl = lbl.removePrefix(0);
+        require(lbl.data == B32_ONES);
+        require(lbl.length == 256);
+    }
+}
+
+
+contract TestPatriciaTreeDataRemoveFullPrefixLength256 is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(B32_ONES, 256);
+        lbl = lbl.removePrefix(256);
+        require(lbl.data == B32_ZEROES);
+        require(lbl.length == 0);
+    }
+}
+
+
+contract TestPatriciaTreeDataRemovePrefix is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(hex"ef1230", 20);
+        lbl = lbl.removePrefix(4);
+        require(lbl.length == 16);
+        require(lbl.data == hex"f123");
+        lbl = lbl.removePrefix(15);
+        require(lbl.length == 1);
+        require(lbl.data == hex"80");
+        lbl = lbl.removePrefix(1);
+        require(lbl.length == 0);
+        require(lbl.data == 0);
+    }
+}
+
+
+contract TestPatriciaTreeDataRemovePrefixOnes is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(B32_ONES, 256);
+        for (uint i = 1; i <= 256; i++) {
+            lbl = lbl.removePrefix(1);
+            require(lbl.data == B32_ONES << i);
+            require(lbl.length == MAX_LENGTH - i);
+        }
+    }
+}
+
+
+contract TestPatriciaTreeDataRemovePrefixDoesNotMutate is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(hex"ef1230", 20);
+        lbl.removePrefix(4);
+        require(lbl.data == hex"ef1230");
+        require(lbl.length == 20);
+    }
+}
+
+
+contract TestPatriciaTreeDataCommonPrefixOfZeroLengthLabelsIsZero is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory a;
+        Data.Label memory b;
+        require(a.commonPrefix(b) == 0);
+    }
+}
+
+
+contract TestPatriciaTreeDataCommonPrefixOfNonZeroAndZeroLabelIsZero is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory a = Data.Label(B32_ONES, 256);
+        Data.Label memory b;
+        require(a.commonPrefix(b) == 0);
+    }
+}
+
+
+contract TestPatriciaTreeDataCommonPrefixOfLabelWithItselfIsLabelLength is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory a = Data.Label(B32_ONES, 0);
+        require(a.commonPrefix(a) == 0);
+
+        a = Data.Label(B32_ONES, 164);
+        require(a.commonPrefix(a) == 164);
+
+        a = Data.Label(B32_ONES, 256);
+        require(a.commonPrefix(a) == 256);
+    }
+}
+
+
+contract TestPatriciaTreeDataSplitAtThrowsPosGreaterThanLength is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(B32_ZEROES, 0);
+        lbl.splitAt(1);
+    }
+}
+
+
+contract TestPatriciaTreeDataSplitAtThrowsPosGreaterThan256 is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(B32_ZEROES, 0);
+        lbl.splitAt(257);
+    }
+}
+
+
+contract TestPatriciaTreeDataSplitAtPosEqualToLengthDoesntFail is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(B32_ZEROES, 2);
+        lbl.splitAt(2);
+    }
+}
+
+
+contract TestPatriciaTreeDataSplitAtPosEqualTo256DoesntFail is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(B32_ZEROES, 256);
+        lbl.splitAt(256);
+    }
+}
+
+
+contract TestPatriciaTreeDataSplitAtDoesntMutate is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(B32_ONES, 55);
+        lbl.splitAt(43);
+        require(lbl.data == B32_ONES);
+        require(lbl.length == 55);
+    }
+}
+
+
+contract TestPatriciaTreeDataSplitAtZero is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory lbl = Data.Label(B32_ONES, 55);
+        var (pre, suf) = lbl.splitAt(0);
+        require(pre.data == B32_ZEROES);
+        require(pre.length == 0);
+        require(suf.data == B32_ONES);
+        require(suf.length == 55);
+    }
+}
+
+
+contract TestPatriciaTreeDataSplitAt is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory a = Data.Label(hex"abcd", 16);
+
+        var (x, y) = a.splitAt(0);
+        require(x.length == 0);
+        require(y.length == a.length);
+        require(y.data == a.data);
+
+        (x, y) = a.splitAt(4);
+        require(x.length == 4);
+        require(x.data == hex"a0");
+        require(y.length == 12);
+        require(y.data == hex"bcd0");
+
+        (x, y) = a.splitAt(16);
+        require(y.length == 0);
+        require(x.length == a.length);
+        require(x.data == a.data);
+    }
+}
+
+
+contract TestPatriciaTreeDataSplitCommonPrefixDoesNotMutate is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory a = Data.Label(hex"abcd", 16);
+        Data.Label memory b = Data.Label(hex"a0f570", 20);
+        a.splitCommonPrefix(b);
+
+        require(a.data == hex"abcd");
+        require(a.length == 16);
+        require(b.data == hex"a0f570");
+        require(b.length == 20);
+    }
+}
+
+
+contract TestPatriciaTreeDataSplitCommonPrefixWithItself is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory a = Data.Label(hex"abcd", 16);
+        var (pre, suf) = a.splitCommonPrefix(a);
+        require(pre.data == a.data);
+        require(pre.length == a.length);
+
+        require(suf.data == B32_ZEROES);
+        require(suf.length == 0);
+    }
+}
+
+
+contract TestPatriciaTreeDataSplitCommonPrefixWithZeroLabel is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory a = Data.Label(B32_ZEROES, 0);
+        Data.Label memory b = Data.Label(hex"a0f570", 20);
+        var (pre, suf) = a.splitCommonPrefix(b);
+
+        require(pre.data == B32_ZEROES);
+        require(pre.length == 0);
+        require(suf.data == a.data);
+        require(suf.length == a.length);
+    }
+}
+
+
+contract TestPatriciaTreeDataSplitCommonPrefixWithZeroCheck is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory a = Data.Label(B32_ZEROES, 0);
+        Data.Label memory b = Data.Label(hex"a0f570", 20);
+        var (pre, suf) = b.splitCommonPrefix(a);
+
+        require(pre.data == B32_ZEROES);
+        require(pre.length == 0);
+        require(suf.data == b.data);
+        require(suf.length == b.length);
+    }
+}
+
+
+contract TestPatriciaTreeDataSplitCommonPrefix is PatriciaTreeDataTest {
+    function testImpl() internal {
+        Data.Label memory a = Data.Label(hex"abcd", 16);
+        Data.Label memory b = Data.Label(hex"a0f570", 20);
+
+        var (prefix, suffix) = b.splitCommonPrefix(a);
+        require(prefix.length == 4);
+        require(prefix.data == hex"a0");
+        require(suffix.length == 16);
+        require(suffix.data == hex"0f57");
+    }
+}
+
+--- SOURCE: test/patricia_tree/patricia_tree.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Data} from "../../src/patricia_tree/Data.sol";
+import {PatriciaTree} from "../../src/patricia_tree/PatriciaTree.sol";
+import {STLTest} from "../STLTest.sol";
+
+
+/* solhint-disable no-empty-blocks */
+contract PatriciaTreeTest is STLTest, PatriciaTree {}
+/* solhint-enable no-empty-blocks */
+
+
+contract TestPatriciaTreeInsert is PatriciaTreeTest {
+    function testImpl() internal {
+
+        bytes memory keyBts = "val";
+        bytes memory valBts = "VAL";
+        bytes32 keyHash = keccak256(keyBts); // 749eb9a32604a1e3d5563e475f22a54221a22999f274fb5acd84a00d16053a11
+        bytes32 valHash = keccak256(valBts); // 6a96595ccfcb78ff3e886e67a3c94a0c6c8fe147c51512c4f9b5e8aa8d636f07
+
+        insert("val", "VAL");
+
+        assert(tree.rootEdge.node == valHash);
+        assert(tree.rootEdge.label.data == keyHash);
+        assert(tree.rootEdge.label.length == 256);
+    }
+}
+
+
+contract TestPatriciaTreeInsertTwo is PatriciaTreeTest {
+    function testImpl() internal {
+        bytes memory valBts = "VAL";
+        bytes memory val2Bts = "VAL2";
+
+        bytes32 valHash = keccak256(valBts); // 6a96595ccfcb78ff3e886e67a3c94a0c6c8fe147c51512c4f9b5e8aa8d636f07
+        bytes32 val2Hash = keccak256(val2Bts); // 780f7d9be6b7b221c27f7d5e84ff9ff220b60283dd7d012fbd9195bb6bb472aa
+
+        insert("val", "VAL");
+        insert("val2", "VAL2");
+
+        var node = tree.nodes[tree.rootEdge.node];
+        var c0 = node.children[0];
+        var c1 = node.children[1];
+
+        assert(tree.rootEdge.label.length == 1);
+        assert(c0.node == val2Hash);
+        assert(c0.label.length == 254);
+        assert(c1.node == valHash);
+        assert(c1.label.length == 254);
+    }
+}
+
+
+contract TestPatriciaTreeInsertOrderDoesNotMatter is STLTest {
+    function testImpl() internal {
+        var pt1 = new PatriciaTree();
+        var pt2 = new PatriciaTree();
+        pt1.insert("testkey", "testval");
+        pt1.insert("testkey2", "testval2");
+        pt1.insert("testkey3", "testval3");
+        pt1.insert("testkey4", "testval4");
+        pt1.insert("testkey5", "testval5");
+
+        pt2.insert("testkey2", "testval2");
+        pt2.insert("testkey", "testval");
+        pt2.insert("testkey5", "testval5");
+        pt2.insert("testkey3", "testval3");
+        pt2.insert("testkey4", "testval4");
+
+        assert(pt1.getRootHash() == pt2.getRootHash());
+    }
+}
+
+--- SOURCE: test/strings/strings.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {Strings} from "../../src/strings/Strings.sol";
+import {Memory} from "../../src/unsafe/Memory.sol";
+import {STLTest} from "../STLTest.sol";
+
+
+contract StringsTest is STLTest {
+    using Strings for string;
+    using Strings for uint;
+}
+
+/* solhint-disable max-line-length */
+/************************ Parsing - success *************************/
+// Size one
+
+contract TestStringsParseRuneSizeOne is StringsTest {
+    function testImpl() internal {
+        bytes memory bts1 = hex"00";
+        bytes memory bts2 = hex"7F";
+        var addr1 = Memory.dataPtr(bts1);
+        var addr2 = Memory.dataPtr(bts2);
+        assert(addr1.parseRune() == 1);
+        assert(addr2.parseRune() == 1);
+    }
+}
+
+
+contract TestStringsParseRuneSizeOneSeveral is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"11007F22";
+        var addr1 = Memory.dataPtr(bts);
+        var addr2 = Memory.dataPtr(bts) + 1;
+        var addr3 = Memory.dataPtr(bts) + 2;
+        var addr4 = Memory.dataPtr(bts) + 3;
+        assert(addr1.parseRune() == 1);
+        assert(addr2.parseRune() == 1);
+        assert(addr3.parseRune() == 1);
+        assert(addr4.parseRune() == 1);
+    }
+}
+
+// Size two
+
+contract TestStringsParseRuneSizeTwo is StringsTest {
+    function testImpl() internal {
+        bytes memory bts1 = hex"C280";
+        bytes memory bts2 = hex"C2BF";
+        bytes memory bts3 = hex"DF80";
+        bytes memory bts4 = hex"DFBF";
+        var addr1 = Memory.dataPtr(bts1);
+        var addr2 = Memory.dataPtr(bts2);
+        var addr3 = Memory.dataPtr(bts3);
+        var addr4 = Memory.dataPtr(bts4);
+        assert(addr1.parseRune() == 2);
+        assert(addr2.parseRune() == 2);
+        assert(addr3.parseRune() == 2);
+        assert(addr4.parseRune() == 2);
+    }
+}
+
+
+contract TestStringsParseRuneSizeTwoSeveral is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"DF8045C2BF22";
+        var addr = Memory.dataPtr(bts);
+        assert(addr.parseRune() == 2);
+        assert((addr + 2).parseRune() == 1);
+        assert((addr + 3).parseRune() == 2);
+        assert((addr + 5).parseRune() == 1);
+    }
+}
+
+// Size three
+
+contract TestStringsParseRuneSizeThreeE0 is StringsTest {
+    function testImpl() internal {
+        bytes memory bts1 = hex"E0A080";
+        bytes memory bts2 = hex"E0A0BF";
+        bytes memory bts3 = hex"E0BF80";
+        bytes memory bts4 = hex"E0BFBF";
+        var addr1 = Memory.dataPtr(bts1);
+        var addr2 = Memory.dataPtr(bts2);
+        var addr3 = Memory.dataPtr(bts3);
+        var addr4 = Memory.dataPtr(bts4);
+        assert(addr1.parseRune() == 3);
+        assert(addr2.parseRune() == 3);
+        assert(addr3.parseRune() == 3);
+        assert(addr4.parseRune() == 3);
+    }
+}
+
+
+contract TestStringsParseRuneSizeThreeE0Several is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"E0A08024E0A0BFC2BFE0BF80E0BFBF";
+        var addr = Memory.dataPtr(bts);
+        assert(addr.parseRune() == 3);
+        assert((addr + 3).parseRune() == 1);
+        assert((addr + 4).parseRune() == 3);
+        assert((addr + 7).parseRune() == 2);
+        assert((addr + 9).parseRune() == 3);
+        assert((addr + 12).parseRune() == 3);
+
+    }
+}
+
+
+contract TestStringsParseRuneSizeThreeE1toEC is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"E18080";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+
+        bts = hex"E180BF";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+
+        bts = hex"E1BF80";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+
+        bts = hex"E1BFBF";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+
+        bts = hex"EC8080";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+
+        bts = hex"EC80BF";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+
+        bts = hex"ECBF80";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+
+        bts = hex"ECBFBF";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+    }
+}
+
+
+contract TestStringsParseRuneSizeThreeE1toECSeveral is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"E1BF80E4A088E9BF80EC9491";
+        var addr = Memory.dataPtr(bts);
+        assert(addr.parseRune() == 3);
+        assert((addr + 3).parseRune() == 3);
+        assert((addr + 6).parseRune() == 3);
+        assert((addr + 9).parseRune() == 3);
+    }
+}
+
+
+contract TestStringsParseRuneSizeThreeED is StringsTest {
+    function testImpl() internal {
+        bytes memory bts1 = hex"ED8080";
+        bytes memory bts2 = hex"ED80BF";
+        bytes memory bts3 = hex"ED9F80";
+        bytes memory bts4 = hex"ED9FBF";
+        var addr1 = Memory.dataPtr(bts1);
+        var addr2 = Memory.dataPtr(bts2);
+        var addr3 = Memory.dataPtr(bts3);
+        var addr4 = Memory.dataPtr(bts4);
+        assert(addr1.parseRune() == 3);
+        assert(addr2.parseRune() == 3);
+        assert(addr3.parseRune() == 3);
+        assert(addr4.parseRune() == 3);
+    }
+}
+
+
+contract TestStringsParseRuneSizeThreeEDSeveral is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"ED87A0ED90AFED9EBBED8A9A";
+        var addr = Memory.dataPtr(bts);
+        assert(addr.parseRune() == 3);
+        assert((addr + 3).parseRune() == 3);
+        assert((addr + 6).parseRune() == 3);
+        assert((addr + 9).parseRune() == 3);
+    }
+}
+
+
+contract TestStringsParseRuneSizeThreeEEtoEF is StringsTest {
+    function testImpl() internal {
+
+        bytes memory bts = hex"EE8080";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+
+        bts = hex"EE80BF";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+
+        bts = hex"EEBF80";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+
+        bts = hex"EEBFBF";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+
+        bts = hex"EF8080";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+
+        bts = hex"EF80BF";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+
+        bts = hex"EFBF80";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+
+        bts = hex"EFBFBF";
+        assert(Memory.dataPtr(bts).parseRune() == 3);
+    }
+}
+
+
+contract TestStringsParseRuneSizeThreeEEtoEFSeveral is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"EEBF80EFA088EFBF80EE9491";
+        var addr = Memory.dataPtr(bts);
+        assert(addr.parseRune() == 3);
+        assert((addr + 3).parseRune() == 3);
+        assert((addr + 6).parseRune() == 3);
+        assert((addr + 9).parseRune() == 3);
+    }
+}
+
+
+contract TestStringsParseRuneSizeFourF0 is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F0908080";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F09080BF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F090BF80";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F090BFBF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F0BF8080";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F0BF80BF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F0BFBF80";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F0BFBFBF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+    }
+}
+
+
+contract TestStringsParseRuneSizeThreeF0Several is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F09FA680F09FA780F09FA68BF09FA691";
+        var addr = Memory.dataPtr(bts);
+        assert(addr.parseRune() == 4);
+        assert((addr + 4).parseRune() == 4);
+        assert((addr + 8).parseRune() == 4);
+        assert((addr + 12).parseRune() == 4);
+    }
+}
+
+
+contract TestStringsParseRuneSizeFourF1 is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F1808080";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F18080BF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F180BF80";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F180BFBF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F1BF8080";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F1BF80BF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F1BFBF80";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F1BFBFBF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+    }
+}
+
+
+contract TestStringsParseRuneSizeFourF3 is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F3808080";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F38080BF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F380BF80";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F380BFBF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F3BF8080";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F3BF80BF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F3BFBF80";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F3BFBFBF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+    }
+}
+
+
+contract TestStringsParseRuneSizeThreeF1toF3Several is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F3808080F2BF80BFF1BF8080F1BFBFBF";
+        var addr = Memory.dataPtr(bts);
+        assert(addr.parseRune() == 4);
+        assert((addr + 4).parseRune() == 4);
+        assert((addr + 8).parseRune() == 4);
+        assert((addr + 12).parseRune() == 4);
+    }
+}
+
+
+contract TestStringsParseRuneSizeFourF4 is StringsTest {
+    function testImpl() internal {
+
+        bytes memory bts = hex"F4808080";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F48080BF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F4808F80";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F4808FBF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F48F8080";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F48F80BF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F48F8F80";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+
+        bts = hex"F48F8FBF";
+        assert(Memory.dataPtr(bts).parseRune() == 4);
+    }
+}
+
+
+contract TestStringsParseRuneSizeThreeF4Several is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F48080BFF4808F80F48F80BFF48F8FBF";
+        var addr = Memory.dataPtr(bts);
+        assert(addr.parseRune() == 4);
+        assert((addr + 4).parseRune() == 4);
+        assert((addr + 8).parseRune() == 4);
+        assert((addr + 12).parseRune() == 4);
+    }
+}
+
+/************************ Parsing - fails *************************/
+// 1 byte characters
+
+contract TestStringsParseRuneThrows1FBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"80";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+// 2 byte characters
+
+contract TestStringsParseRuneThrows2FBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"C180";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows2SBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"C479";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows2FBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"C1C0";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+// 3 byte characters
+
+contract TestStringsParseRuneThrows3E0SBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"E09980";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows3E0SBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"E0C080";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows3E0TBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"E0A17F";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows3E0TBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"E0A1C0";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows3E1toECSBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"E37F80";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows3E1toECSBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"E3C080";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows3E1toECTBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"E3BF7F";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows3E1toECTBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"E3BFC0";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows3EDSBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"ED7F80";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows3EDSBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"EDA080";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows3EDTBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"ED9F7F";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows3EDTBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"ED9FC0";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows3EEtoEFSBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"EE7F80";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows3EEtoEFSBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"EEC080";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows3EEtoEFTBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"EEBF7F";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows3EEtoEFTBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"EEBFC0";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+// 4 byte characters
+
+contract TestStringsParseRuneThrows4F0SBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F08F80BF";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F0SBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F0C080BF";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F0TBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F0807FBF";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F0TBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F080C0BF";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F0FBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F080BF7F";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F0FBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F080BFC0";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F1toF3SBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F27F80BF";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F1toF3SBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F2C080BF";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F1toF3TBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F2807FBF";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F1toF3TBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F280C0BF";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F1toF3FBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F280BF7F";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F1toF3FBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F280BFC0";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F4SBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F47F80BF";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F4SBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F49080BF";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F4TBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F4807FBF";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F4TBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F480C0BF";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F4FBLow is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F480BF7F";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+
+contract TestStringsParseRuneThrows4F4FBHigh is StringsTest {
+    function testImpl() internal {
+        bytes memory bts = hex"F480BFC0";
+        Memory.dataPtr(bts).parseRune();
+    }
+}
+
+/************************* Validate ***************************/
+
+contract TestStringsValidateNull is StringsTest {
+    function testImpl() internal {
+        string memory str = "";
+        str.validate();
+    }
+}
+
+
+contract TestStringsValidateRunePoem is StringsTest {
+    function testImpl() internal {
+        string memory str = "ᚠᛇᚻ᛫ᛒᛦᚦ᛫ᚠᚱᚩᚠᚢᚱ᛫ᚠᛁᚱᚪ᛫ᚷᛖᚻᚹᛦᛚᚳᚢᛗ ᛋᚳᛖᚪᛚ᛫ᚦᛖᚪᚻ᛫ᛗᚪᚾᚾᚪ᛫ᚷᛖᚻᚹᛦᛚᚳ᛫ᛗᛁᚳᛚᚢᚾ᛫ᚻᛦᛏ᛫ᛞᚫᛚᚪᚾ ᚷᛁᚠ᛫ᚻᛖ᛫ᚹᛁᛚᛖ᛫ᚠᚩᚱ᛫ᛞᚱᛁᚻᛏᚾᛖ᛫ᛞᚩᛗᛖᛋ᛫ᚻᛚᛇᛏᚪᚾ";
+        str.validate();
+    }
+}
+
+
+contract TestStringsValidateBrut is StringsTest {
+    function testImpl() internal {
+        string memory str = "An preost wes on leoden, Laȝamon was ihoten He wes Leovenaðes sone -- liðe him be Drihten. He wonede at Ernleȝe at æðelen are chirechen, Uppen Sevarne staþe, sel þar him þuhte, Onfest Radestone, þer he bock radde.";
+        str.validate();
+    }
+}
+
+
+contract TestStringsValidateOdysseusElytis is StringsTest {
+    function testImpl() internal {
+        string memory str = "Τη γλώσσα μου έδωσαν ελληνική το σπίτι φτωχικό στις αμμουδιές του Ομήρου. Μονάχη έγνοια η γλώσσα μου στις αμμουδιές του Ομήρου. από το Άξιον Εστί του Οδυσσέα Ελύτη";
+        str.validate();
+    }
+}
+
+
+contract TestStringsValidatePushkinsHorseman is StringsTest {
+    function testImpl() internal {
+        string memory str = "На берегу пустынных волн Стоял он, дум великих полн, И вдаль глядел. Пред ним широко Река неслася; бедный чёлн По ней стремился одиноко. По мшистым, топким берегам Чернели избы здесь и там, Приют убогого чухонца; И лес, неведомый лучам В тумане спрятанного солнца, Кругом шумел.";
+        str.validate();
+    }
+}
+
+
+contract TestStringsValidateKnightInTigerSkin is StringsTest {
+    function testImpl() internal {
+        string memory str = "ვეპხის ტყაოსანი შოთა რუსთაველი ღმერთსი შემვედრე, ნუთუ კვლა დამხსნას სოფლისა შრომასა, ცეცხლს, წყალსა და მიწასა, ჰაერთა თანა მრომასა; მომცნეს ფრთენი და აღვფრინდე, მივჰხვდე მას ჩემსა ნდომასა, დღისით და ღამით ვჰხედვიდე მზისა ელვათა კრთომაასა.";
+        str.validate();
+    }
+}
+
+
+contract TestStringsValidateQuickBrownFoxHebrew is StringsTest {
+    function testImpl() internal {
+        string memory str = "זה כיף סתם לשמוע איך תנצח קרפד עץ טוב בגן";
+        str.validate();
+    }
+}
+
+
+contract TestStringsValidateQuickBrownFoxHiragana is StringsTest {
+    function testImpl() internal {
+        string memory str = "いろはにほへど　ちりぬるを わがよたれぞ　つねならむ うゐのおくやま　けふこえて あさきゆめみじ　ゑひもせず";
+        str.validate();
+    }
+}
+/* solhint-enable max-line-length */
+
+--- SOURCE: test/unsafe/memory.sol ---
+
+pragma solidity ^0.4.16;
+pragma experimental "v0.5.0";
+pragma experimental "ABIEncoderV2";
+
+import {STLTest} from "../STLTest.sol";
+import {Memory} from "../../src/unsafe/Memory.sol";
+
+/* solhint-disable max-line-length */
+/* solhint-disable no-unused-vars */
+/*********************** Base test contract ************************/
+
+/* solhint-disable no-empty-blocks */
+contract MemoryTest is STLTest {}
+/* solhint-disable no-empty-blocks */
+
+/*********************** Equality **************************/
+
+contract TestMemoryEqualsZeroLength is MemoryTest {
+    function testImpl() internal {
+        assert(Memory.equals(0, 0, 0));
+    }
+}
+
+
+contract TestMemoryEqualsItselfDifferentAddresses is MemoryTest {
+    function testImpl() internal {
+        /* solhint-disable no-unused-vars */
+        bytes memory bts = hex"0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f";
+        for (uint i = 0; i < 10; i++) {
+            assert(Memory.equals(0x15*i, 0x15*i, 50));
+        }
+    }
+}
+
+
+contract TestMemoryEqualsItselfDifferentLengths is MemoryTest {
+    function testImpl() internal {
+        bytes memory bts = hex"0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f0102030405060708090a0b0c0d0e0f";
+        for (uint i = 0; i < 10; i++) {
+            assert(Memory.equals(0x40, 0x40, 30*i));
+        }
+    }
+}
+
+
+contract TestMemoryNotEqual is MemoryTest {
+    function testImpl() internal {
+        bytes memory bts = hex"0102030405060708090a0b";
+        uint btsAddr;
+        assembly {
+            btsAddr := bts
+        }
+        assert(!Memory.equals(btsAddr, btsAddr + 0x20, 10));
+    }
+}
+
+
+contract TestMemoryNotEqualCommutative is MemoryTest {
+    function testImpl() internal {
+        bytes memory bts = hex"0102030405060708090a0b";
+        uint btsAddr;
+        assembly {
+            btsAddr := bts
+        }
+        assert(!Memory.equals(btsAddr, btsAddr + 0x20, 10) && !Memory.equals(btsAddr + 0x20, btsAddr, 10));
+    }
+}
+
+
+contract TestMemoryEqualsBytesZeroLength is MemoryTest {
+    function testImpl() internal {
+        assert(Memory.equals(0, 0, new bytes(0)));
+    }
+}
+
+
+contract TestMemoryEqualsThrowsBytesTooShort is MemoryTest {
+    function testImpl() internal {
+        bytes memory bts = new bytes(2);
+        Memory.equals(0, 3, bts);
+    }
+}
+
+/********************* Allocation and creating references **************************/
+
+contract TestMemoryAllocate is MemoryTest {
+    function testImpl() internal {
+        uint cur;
+        assembly {
+            cur := mload(0x40)
+        }
+        var mem = Memory.allocate(45);
+        assert(mem == cur);
+        uint newCur;
+        assembly {
+            newCur := mload(0x40)
+        }
+        assert(newCur == cur + 45);
+    }
+}
+
+
+contract TestMemoryAllocateZeroLength is MemoryTest {
+    function testImpl() internal {
+        uint cur;
+        assembly {
+            cur := mload(0x40)
+        }
+        var mem = Memory.allocate(0);
+        assert(mem == cur);
+        uint newCur;
+        assembly {
+            newCur := mload(0x40)
+        }
+        assert(newCur == cur);
+    }
+}
+
+
+contract TestMemoryPtrBytes is MemoryTest {
+    function testImpl() internal {
+        bytes memory bts = hex"0102030405060708090a0b";
+        var addr = Memory.ptr(bts);
+        uint btsAddr;
+        assembly {
+            btsAddr := bts
+        }
+        assert(addr == btsAddr);
+    }
+}
+
+
+contract TestMemoryDataPtrBytes is MemoryTest {
+    function testImpl() internal {
+        bytes memory bts = hex"0102030405060708090a0b";
+        var addr = Memory.dataPtr(bts);
+        uint btsDataAddr;
+        assembly {
+            btsDataAddr := add(bts, 0x20)
+        }
+        assert(addr == btsDataAddr);
+    }
+}
+
+
+contract TestMemoryFromBytes is MemoryTest {
+    function testImpl() internal {
+        bytes memory bts = hex"0102030405060708090a0b";
+        var (addr, len) = Memory.fromBytes(bts);
+        assert(len == bts.length);
+        uint btsDataAddr;
+        assembly {
+            btsDataAddr := add(bts, 0x20)
+        }
+        assert(addr == btsDataAddr);
+    }
+}
+
+/********************* Copying **************************/
+
+contract TestMemoryCopy is MemoryTest {
+    function testImpl() internal {
+        bytes memory bts = hex"ffaaffaaffaaffaaffaaffaaffaaffffaaffaaffaaffaaffaaffaaffaaffffaaffaaffaaffaaffaaffaaffaaff";
+        var (src, len) = Memory.fromBytes(bts);
+        var dest = Memory.allocate(len);
+        Memory.copy(src, dest, len);
+        assert(Memory.equals(dest, len, bts));
+    }
+}
+
+
+contract TestMemoryCopyLengthZero is MemoryTest {
+    function testImpl() internal {
+        bytes memory bts = new bytes(0);
+        bytes memory bts2 = hex"ffaa";
+        var (src, ) = Memory.fromBytes(bts);
+        var (dest, ) = Memory.fromBytes(bts2);
+        Memory.copy(src, dest, 0);
+        // Check that bts2 is still intact.
+        assert(bts2[0] == hex"ff");
+        assert(bts2[1] == hex"aa");
+    }
+}
+
+
+contract TestMemoryCopyDoesNotChangeSrc is MemoryTest {
+    function testImpl() internal {
+        bytes memory bts = hex"ffaaffaaffaaffaaffaaffaaffaaffffaaffaaffaaffaaffaaffaaffaaffffaaffaaffaaffaaffaaffaaffaaff";
+        var (src, len) = Memory.fromBytes(bts);
+        var dest = Memory.allocate(len);
+        Memory.copy(src, dest, len);
+        assert(Memory.equals(src, len, bts));
+    }
+}
+
+/********************* To types **************************/
+
+contract TestMemoryToBytes is MemoryTest {
+    function testImpl() internal {
+        bytes memory bts = hex"ffaaffaaffaaffaaffaaffaaffaaff";
+        var (addr, len) = Memory.fromBytes(bts);
+        var bts2 = Memory.toBytes(addr, len);
+        assert(bts2.length == bts.length);
+        for (uint i = 0; i < bts.length; i++) {
+            assert(bts[i] == bts2[i]);
+        }
+    }
+}
+
+
+contract TestMemoryToUint is MemoryTest {
+    function testImpl() internal {
+        uint n = 12345;
+        var addr = Memory.allocate(32);
+        assembly {
+            mstore(addr, n)
+        }
+        var n2 = Memory.toUint(addr);
+        assert(n == n2);
+    }
+}
+
+
+contract TestMemoryToBytes32 is MemoryTest {
+    function testImpl() internal {
+        bytes32 b32 = 0x112233;
+        var addr = Memory.allocate(32);
+        assembly {
+            mstore(addr, b32)
+        }
+        var res = Memory.toBytes32(addr);
+        assert(res == b32);
+    }
+}
+
+/*
+contract TestMemoryToByte is MemoryTest {
+    function testImpl() internal {
+        bytes32 b32 = "abcdefghijklmnopabcdefghijklmnop";
+        var addr = Memory.allocate(32);
+        assembly {
+            mstore(addr, b32)
+        }
+        for (uint8 i = 0; i < 32; i++) {
+            var res = Memory.toByte(addr, i);
+            assert(res == b32[i]);
+        }
+    }
+}
+*/
+/* solhint-enable max-line-length */
+/* solhint-enable no-unused-vars */
+

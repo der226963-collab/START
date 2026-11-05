@@ -1,0 +1,36 @@
+{
+  "title": "Think Data Structures: Algorithms and Information Retrieval in Java",
+  "authors": [
+    "Allen B. Downey"
+  ],
+  "source": "AllenDowney/ThinkDataStructures, branch master, commit f197bff649f8f45fcb47f50897c8c6503fa074de (2026-10-10), book/book.tex",
+  "edition": "Version 1.1.0",
+  "licence": "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported (CC BY-NC-SA 3.0) for the book text, from book/book.tex header; the repo LICENSE file is the MIT License, which covers the repo's code",
+  "licence_verified_from": "AllenDowney/ThinkDataStructures book/book.tex header (lines 164-167) and LICENSE, read via git clone",
+  "files": [
+    "Interfaces",
+    "Analysis of Algorithms",
+    "ArrayList",
+    "LinkedList",
+    "Doubly-linked list",
+    "Tree traversal",
+    "Getting to Philosophy",
+    "Indexer",
+    "The Map interface",
+    "Hashing",
+    "HashMap",
+    "TreeMap",
+    "Binary search tree",
+    "Persistence",
+    "Crawling Wikipedia",
+    "Boolean search",
+    "Sorting"
+  ],
+  "file_count": 17,
+  "failed": [],
+  "failed_count": 0,
+  "notes": "Single LaTeX file split by \\chapter (17 chapters). LaTeX stripped, code kept verbatim. Preface/front matter before the first chapter was not included as a separate section. The book's Java example code (repo code/ and solutions/, MIT) was not assembled separately.",
+  "chars": 220711,
+  "sha256": "b9995dbd9bba92b745efc4cfc1674b0339582863c9674c724abe4cc574832996",
+  "status": "proposed"
+}

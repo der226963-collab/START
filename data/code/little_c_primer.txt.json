@@ -1,0 +1,142 @@
+{
+  "title": "A Little C Primer",
+  "authors": [
+    "Greg Goebel"
+  ],
+  "source": "en.wikibooks.org/wiki/A_Little_C_Primer/Print_version (Wikibooks print version, whole book on one page, via browser.open page text)",
+  "licence": "CC BY-SA 4.0 / GFDL 1.2+",
+  "licence_detail": "Wikibooks version released under the GNU Free Documentation License, Version 1.2 or any later version (no Invariant Sections, no Front-Cover Texts, no Back-Cover Texts) and, since the update to the Terms of Use on June 7, 2023, under the Creative Commons Attribution-ShareAlike 4.0 license, as stated on the book's own Wikibooks Licensing page (en.wikibooks.org/wiki/A_Little_C_Primer/Licensing). The original text was released into the public domain by its author Greg Goebel, but the original site http://www.vectorsite.net/tscpp.html is no longer reachable (domain parked/for sale as of 2026-11-05), so the Wikibooks version was assembled instead.",
+  "status": "proposed",
+  "approved": false,
+  "pushed": false,
+  "file": "little_c_primer.txt",
+  "chars": 110524,
+  "sha256": "b4f957379dcde5adcfa4cb2784f14dca7c16487b0670d057f6219feeb0fa9c0a",
+  "chapters_assembled": 20,
+  "chapter_files": [
+    "An Introductory C Program",
+    "C Functions in Detail",
+    "C Control Constructs",
+    "C Variables, Declarations and Constants",
+    "C Operators",
+    "C Preprocessor Directives",
+    "C Console IO",
+    "C File-IO Through Library Functions",
+    "C File-IO Through System Calls",
+    "C Math Library",
+    "C Standard Utility Library & Time Library",
+    "The C sprintf Function",
+    "C String Function Library",
+    "C Character Class Test Library",
+    "C Command Line Arguments",
+    "Pointers to C Functions",
+    "C Dynamic Memory Allocation & Deallocation",
+    "Common Programming Problems in C",
+    "C Quick Reference",
+    "Comments and Revision History"
+  ],
+  "per_chapter": [
+    {
+      "file": "A Little C Primer/An Introductory C Program",
+      "chapter": "An Introductory C Program",
+      "chars": 9756
+    },
+    {
+      "file": "A Little C Primer/C Functions in Detail",
+      "chapter": "C Functions in Detail",
+      "chars": 6773
+    },
+    {
+      "file": "A Little C Primer/C Control Constructs",
+      "chapter": "C Control Constructs",
+      "chars": 6592
+    },
+    {
+      "file": "A Little C Primer/C Variables, Declarations and Constants",
+      "chapter": "C Variables, Declarations and Constants",
+      "chars": 17911
+    },
+    {
+      "file": "A Little C Primer/C Operators",
+      "chapter": "C Operators",
+      "chars": 4137
+    },
+    {
+      "file": "A Little C Primer/C Preprocessor Directives",
+      "chapter": "C Preprocessor Directives",
+      "chars": 2986
+    },
+    {
+      "file": "A Little C Primer/C Console IO",
+      "chapter": "C Console IO",
+      "chars": 10911
+    },
+    {
+      "file": "A Little C Primer/C File-IO Through Library Functions",
+      "chapter": "C File-IO Through Library Functions",
+      "chars": 10193
+    },
+    {
+      "file": "A Little C Primer/C File-IO Through System Calls",
+      "chapter": "C File-IO Through System Calls",
+      "chars": 5539
+    },
+    {
+      "file": "A Little C Primer/C Math Library",
+      "chapter": "C Math Library",
+      "chars": 1298
+    },
+    {
+      "file": "A Little C Primer/C Standard Utility Library & Time Library",
+      "chapter": "C Standard Utility Library & Time Library",
+      "chars": 2264
+    },
+    {
+      "file": "A Little C Primer/The C sprintf Function",
+      "chapter": "The C sprintf Function",
+      "chars": 1000
+    },
+    {
+      "file": "A Little C Primer/C String Function Library",
+      "chapter": "C String Function Library",
+      "chars": 5394
+    },
+    {
+      "file": "A Little C Primer/C Character Class Test Library",
+      "chapter": "C Character Class Test Library",
+      "chars": 1120
+    },
+    {
+      "file": "A Little C Primer/C Command Line Arguments",
+      "chapter": "C Command Line Arguments",
+      "chars": 5453
+    },
+    {
+      "file": "A Little C Primer/Pointers to C Functions",
+      "chapter": "Pointers to C Functions",
+      "chars": 1720
+    },
+    {
+      "file": "A Little C Primer/C Dynamic Memory Allocation & Deallocation",
+      "chapter": "C Dynamic Memory Allocation & Deallocation",
+      "chars": 2822
+    },
+    {
+      "file": "A Little C Primer/Common Programming Problems in C",
+      "chapter": "Common Programming Problems in C",
+      "chars": 4894
+    },
+    {
+      "file": "A Little C Primer/C Quick Reference",
+      "chapter": "C Quick Reference",
+      "chars": 8241
+    },
+    {
+      "file": "A Little C Primer/Comments and Revision History",
+      "chapter": "Comments and Revision History",
+      "chars": 1463
+    }
+  ],
+  "chapters_failed": [],
+  "note": "Assembled locally 2026-11-05 from the Wikibooks print version (page crawled 2026-10-25). The print page's trailing 'Resources' (cross-links) and 'Licensing' (licence notice) sections were excluded as page chrome; the licence is recorded here instead. Minor fixes: 3 spots where the page-text rendering had swallowed '*' characters were restored from context ('p : p * p', 'g * g' in the Quick Reference sample program, '/*Define file descriptor. */' in the System Calls chapter); non-breaking spaces normalized to regular spaces; 3+ blank lines collapsed. No chapters failed; all 20 print-version chapters are included."
+}

@@ -1,0 +1,3648 @@
+cppreference.com C reference (C language and C standard library), assembled 2026-11-05 from en.cppreference.com page text.
+Licence: CC BY-SA 3.0 Unported and GFDL (unversioned, no invariant sections, front-cover texts, or back-cover texts), per https://en.cppreference.com/Cppreference:FAQ . Attribution: cppreference.com; see the FAQ for the link-back request.
+Scope: C reference index, C language index, standard library headers index, the core C language topic pages, and one page per C standard library header. Individual function/type/macro pages are NOT included (see provenance file for the full subset list and omissions).
+
+--- SOURCE: https://en.cppreference.com/c ---
+# C reference
+
+C
+
+| C89, C95, C99, C11, C17, C23 | Compiler support C99, C23 | | |
+
+| **Language**   Basic concepts   Keywords   Preprocessor   Expressions   Declaration   Initialization   Functions
+Statements   **Headers**
+**Type support** |
+**Program utilities**
+**Variadic functions**
+**Diagnostics library**
+**Dynamic memory management**
+**Strings library**
+Null-terminated strings:   byte − multibyte −
+wide
+**Date and time library**
+**Localization library**
+**Input/output library** |
+**Algorithms library**
+**Numerics library**
+Common mathematical functions   Floating-point environment (C99)
+Pseudo-random number generation   Complex number arithmetic (C99)   Type-generic math (C99)   Bit manipulation (C23)
+Checked integer arithmetic (C23)
+**Concurrency support library** (C11) |
+
+| **Technical specifications**
+   **Dynamic memory extensions** (dynamic memory TR)   **Floating-point extensions, Part 1** (FP Ext 1 TS)
+   **Floating-point extensions, Part 4** (FP Ext 4 TS) | | |
+
+| External Links − Non-ANSI/ISO Libraries − Index − Symbol Index | | |
+
+--- SOURCE: https://en.cppreference.com/c/language ---
+# C language - cppreference.com
+
+| Compiler support | | | | |
+
+| Language | | | | |
+
+| Headers | | | | |
+
+| Type support | | | | |
+
+| Program utilities | | | | |
+
+| Variadic function support | | | | |
+
+| Error handling | | | | |
+
+| Dynamic memory management | | | | |
+
+| Strings library | | | | |
+
+| Algorithms | | | | |
+
+| Numerics | | | | |
+
+| Date and time utilities | | | | |
+
+| Input/output support | | | | |
+
+| Localization support | | | | |
+
+| Concurrency support (C11) | | | | |
+
+| Technical Specifications | | | | |
+
+| Symbol index | | | | |
+
+C language
+
+| Basic concepts | | | | |
+
+| Keywords | | | | |
+
+| Preprocessor | | | | |
+
+| Statements | | | | |
+
+| Expressions | | | | |
+
+| Initialization | | | | |
+
+| Declarations | | | | |
+
+| Functions | | | | |
+
+| Miscellaneous | | | | |
+
+| History of C | | | | |
+
+| Technical Specifications | | | | |
+
+This is a reference of the core C language constructs.
+
+--- SOURCE: https://en.cppreference.com/c/language/basic_concepts ---
+# Basic concepts - cppreference.com
+
+This section provides definitions for the specific terminology and the concepts used when describing the C programming language.
+
+A C program is a sequence of text files (typically header and source files) that contain declarations. They undergo translation to become an executable
+program, which is executed when the OS calls its main function (unless it is itself the OS or another *freestanding* program, in which case the entry point
+is implementation-defined).
+
+Certain words in a C program have special meaning, they are keywords. Others can be used as identifiers, which may be used to identify objects,
+functions, struct, union, or enumeration tags, their members, typedef names, labels, or macros.
+
+Each identifier (other than macro) is only valid within a part of the program called its scope and belongs to one of four kinds of name spaces. Some
+identifiers have linkage which makes them refer to the same entities when they appear in different scopes or translation units.
+
+Definitions of functions include sequences of statements and declarations, some of which include expressions, which specify the computations to be
+performed by the program.
+
+Declarations and expressions create, destroy, access, and manipulate objects. Each object, function, and expression in C is associated
+with a type.
+
+--- SOURCE: https://en.cppreference.com/c/keyword ---
+# C keywords - cppreference.com
+
+This is a list of reserved keywords in C. Since they are used by the language, these keywords are not available for re-definition. As an exception, they are not
+considered reserved in attribute-tokens (since C23)
+
+The most common keywords that begin with an underscore are generally used through their convenience macros:
+
+| Keyword | Used as | Defined in |
+| --- | --- | --- |
+| `_Alignas` (C11) (deprecated in C23) | alignas (removed in C23) | `stdalign.h` |
+| `_Alignof` (C11) (deprecated in C23) | alignof (removed in C23) | `stdalign.h` |
+| `_Atomic` (C11) | atomic_bool, atomic_int, ... | `stdatomic.h` |
+| `_BitInt` (C23) | (no macro) |  |
+| `_Bool` (C99) (deprecated in C23) | bool (removed in C23) | `stdbool.h` |
+| `_Complex` (C99) | complex | `complex.h` |
+| `_Decimal128` (C23) | (no macro) |  |
+| `_Decimal32` (C23) | (no macro) |  |
+| `_Decimal64` (C23) | (no macro) |  |
+| `_Generic` (C11) | (no macro) |  |
+| `_Imaginary` (C99) | imaginary | `complex.h` |
+| `_Noreturn` (C11) (deprecated in C23) | noreturn | `stdnoreturn.h` |
+| `_Static_assert` (C11) (deprecated in C23) | static_assert (removed in C23) | `assert.h` |
+| `_Thread_local` (C11) (deprecated in C23) | thread_local (removed in C23) | `threads.h` |
+
+Some keywords are deprecated and retained as alternative spellings for compatibility purposes. These can be used wherever the keyword can.
+
+| Keyword | Alternative spelling |
+| --- | --- |
+| `alignas` (C23) | `_Alignas` (C11) (deprecated in C23) |
+| `alignof` (C23) | `_Alignof` (C11) (deprecated in C23) |
+| `bool` (C23) | `_Bool` (C99) (deprecated in C23) |
+| `static_assert` (C23) | `_Static_assert` (C11) (deprecated in C23) |
+| `thread_local` (C23) | `_Thread_local` (C11) (deprecated in C23) |
+
+It is unspecified whether any of the spellings of these keywords, their alternate forms, or `true` and `false` is implemented as a predefined macro.
+
+Each name that begins with a double underscore `__` or an underscore `_` followed by an uppercase letter is reserved: see identifier for details.
+
+Note that digraphs `<%`, `%>`, `<:`, `:>`, `%:`, and `%:%:` provide an alternative way to represent standard tokens.
+
+The following tokens are recognized by the preprocessor when they are used *within* the context of a preprocessor directive:
+
+The following tokens are recognized by the preprocessor when they are used *outside* the context of a preprocessor directive:
+
+The following additional keywords are classified as extensions and conditionally-supported:
+
+### References
+- C23 standard (ISO/IEC 9899:2024):
+- 6.4.1 Keywords (p: 53)
+- J.5.9 The fortran keyword (p: 601)
+- J.5.10 The asm keyword (p: 601)
+- C17 standard (ISO/IEC 9899:2018):
+- 6.4.1 Keywords (p: 42-43)
+- J.5.9 The fortran keyword (p: 422)
+- J.5.10 The asm keyword (p: 422)
+- C11 standard (ISO/IEC 9899:2011):
+- 6.4.1 Keywords (p: 58-59)
+- J.5.9 The fortran keyword (p: 580)
+- J.5.10 The asm keyword (p: 580)
+- C99 standard (ISO/IEC 9899:1999):
+- 6.4.1 Keywords (p: 50)
+- J.5.9 The fortran keyword (p: 514)
+- J.5.10 The asm keyword (p: 514)
+- C89/C90 standard (ISO/IEC 9899:1990):
+- 3.1.1 Keywords
+- G.5.9 The fortran keyword
+- G.5.10 The asm keyword
+
+--- SOURCE: https://en.cppreference.com/c/preprocessor ---
+# Preprocessor - cppreference.com
+
+The preprocessor is executed at translation phase 4, before the compilation. The result of preprocessing is a single file which is then passed to the actual
+compiler.
+
+### Directives
+
+The preprocessing directives control the behavior of the preprocessor. Each directive occupies one line and has the following format:
+
+- `#` character
+- preprocessing instruction (one of `define`, `undef`, `include`, `if`, `ifdef`, `ifndef`, `else`, `elif`, `elifdef`, `elifndef` (since C23), `endif`, `line`,
+`embed` (since C23), `error`, `warning` (since C23), `pragma`) 1
+- arguments (depends on the instruction)
+- line break.
+
+The null directive (`#` followed by a line break) is allowed and has no effect.
+
+### Capabilities
+
+The preprocessor has the source file translation capabilities:
+
+- **conditionally** compile of parts of source file (controlled by directive `#if`, `#ifdef`, `#ifndef`, `#else`, `#elif`, `#elifdef`, `#elifndef` (since C23)
+and `#endif`).
+- **replace** text macros while possibly concatenating or quoting identifiers (controlled by directives `#define` and `#undef`, and operators `#` and `##`)
+- **include** other files (controlled by directive `#include` and checked with `__has_include` (since C23))
+- cause an **error** or **warning** (since C23) (controlled by directive `#error` or `#warning` respectively (since C23))
+
+The following aspects of the preprocessor can be controlled:
+
+- **implementation defined** behavior (controlled by directive `#pragma` and operator `_Pragma` (since C99))
+- **file name and line information** available to the preprocessor (controlled by directives `#line`)
+
+### References
+- C23 standard (ISO/IEC 9899:2024):
+- 6.10 Preprocessing directives (p: TBD)
+- C17 standard (ISO/IEC 9899:2018):
+- 6.10 Preprocessing directives (p: 117-129)
+- C11 standard (ISO/IEC 9899:2011):
+- 6.10 Preprocessing directives (p: 160-178)
+- C99 standard (ISO/IEC 9899:1999):
+- 6.10 Preprocessing directives (p: 145-162)
+- C89/C90 standard (ISO/IEC 9899:1990):
+- 3.8 Preprocessing directives
+
+--- SOURCE: https://en.cppreference.com/c/language/statements ---
+# Statements - cppreference.com
+
+Statements are fragments of the C program that are executed in sequence. The body of any function is a compound statement, which, in turn is a sequence of
+statements and declarations:
+
+```
+int main(void)
+{ // start of a compound statement
+    int n = 1; // declaration (not a statement)
+    n = n+1; // expression statement
+    printf("n = %d\n", n); // expression statement
+    return 0; // return statement
+} // end of compound statement, end of function body
+```
+
+There are five types of statements:
+
+| An attribute specifier sequence (attr-spec-seq) can be applied to an unlabeled statement, in which case (except for an expression statement) the
+attributes are applied to the respective statement. | (since C23) |
+| --- | --- |
+
+### Labels
+
+Any statement can be *labeled*, by providing a name followed by a colon before the statement itself.
+
+- attr-spec-seq (optional) (since C23) identifier `:` (1)
+- attr-spec-seq (optional) (since C23) `case` constant-expression `:` (2)
+- attr-spec-seq (optional) (since C23) `default` `:` (3)
+
+1) Target for goto.
+2) Case label in a switch statement.
+3) Default label in a switch statement.
+
+Any statement (but not a declaration) may be preceded by any number of *labels*, each of which declares identifier to be a label name, which must be unique
+within the enclosing function (in other words, label names have function scope).
+
+Label declaration has no effect on its own, does not alter the flow of control, or modify the behavior of the statement that follows in any way.
+
+| A label shall be followed by a statement. | (until C23) |
+| --- | --- |
+
+| A label can appear without its following statement. If a label appears alone in a block, it behaves as if it is followed by a null statement.
+The optional attr-spec-seq is applied to the label. | (since C23) |
+
+### Compound statements
+
+A compound statement, or *block*, is a brace-enclosed sequence of statements and declarations.
+
+- `{` statement `|` declaration...(optional) `} ` (until C23)
+- attr-spec-seq (optional) `{` unlabeled-statement `|` label `|` declaration...(optional) `} ` (since C23)
+
+The compound statement allows a set of declarations and statements to be grouped into one unit that can be used anywhere a single statement is expected (for
+example, in an if statement or an iteration statement):
+
+```
+if (expr) // start of if-statement
+{  // start of block
+   int n = 1; // declaration
+   printf("%d\n", n); // expression statement
+}  // end of block, end of if-statement
+```
+
+Each compound statement introduces its own block scope.
+
+The initializers of the variables with automatic storage duration declared inside a block and the VLA declarators are executed when flow of control passes
+over these declarations in order, as if they were statements:
+
+```
+int main(void)
+{ // start of block
+    { // start of block
+         puts("hello"); // expression statement
+         int n = printf("abc\n"); // declaration, prints "abc", stores 4 in n
+         int a[n*printf("1\n")]; // declaration, prints "1", allocates 8*sizeof(int)
+         printf("%zu\n", sizeof(a)); // expression statement
+    } // end of block, scope of n and a ends
+    int n = 7; // n can be reused
+}
+```
+
+### Expression statements
+
+An expression followed by a semicolon is a statement.
+
+- expression (optional) `;` (1)
+- attr-spec-seq expression `;` (2) (since C23)
+
+Most statements in a typical C program are expression statements, such as assignments or function calls.
+
+An expression statement without an expression is called a *null statement*. It is often used to provide an empty body to a for or while loop. It can
+also be used to carry a label in the end of a compound statement or before a declaration:
+
+```
+puts("hello"); // expression statement
+char *s;
+while (*s++ != '\0')
+    ; // null statement
+```
+
+| The optional attr-spec-seq is applied to the expression.
+An attr-spec-seq followed by `;` does not form an expression statement. It forms an attribute declaration instead. | (since C23) |
+| --- | --- |
+
+### Selection statements
+
+The selection statements choose between one of several statements depending on the value of an expression.
+
+- attr-spec-seq (optional) (since C23) `if` `(` expression `)` statement (1)
+- attr-spec-seq (optional) (since C23) `if` `(` expression `)` statement `else` statement (2)
+- attr-spec-seq (optional) (since C23) `switch` `(` expression `)` statement (3)
+
+1) if statement
+2) if statement with an else clause
+
+### Iteration statements
+
+The iteration statements repeatedly execute a statement.
+
+- attr-spec-seq (optional) (since C23) `while` `(` expression `)` statement (1)
+- attr-spec-seq (optional) (since C23) `do` statement `while` `(` expression `)` `;` (2)
+- attr-spec-seq (optional) (since C23) `for` `(` init-clause `;` expression (optional) `;` expression (optional) `)` statement (3)
+
+### Jump statements
+
+The jump statements unconditionally transfer flow control.
+
+- attr-spec-seq (optional) (since C23) `break` `;` (1)
+- attr-spec-seq (optional) (since C23) `continue` `;` (2)
+- attr-spec-seq (optional) (since C23) `return` expression (optional) `;` (3)
+- attr-spec-seq (optional) (since C23) `goto` identifier `;` (4)
+
+3) return statement with an optional expression
+4) goto statement
+
+### References
+- C23 standard (ISO/IEC 9899:2024):
+- 6.8 Statements and blocks (p: TBD)
+- C17 standard (ISO/IEC 9899:2018):
+- 6.8 Statements and blocks (p: 106-112)
+- C11 standard (ISO/IEC 9899:2011):
+- 6.8 Statements and blocks (p: 146-154)
+- C99 standard (ISO/IEC 9899:1999):
+- 6.8 Statements and blocks (p: 131-139)
+- C89/C90 standard (ISO/IEC 9899:1990):
+- 3.6 STATEMENTS
+
+--- SOURCE: https://en.cppreference.com/c/language/expressions ---
+# Expressions - cppreference.com
+
+An expression is a sequence of *operators* and their *operands*, that specifies a computation.
+
+Expression evaluation may produce a result (e.g., evaluation of `2 + 2` produces the result `4`), may generate side-effects (e.g. evaluation of `printf("%d",
+4)` sends the character `'4'` to the standard output stream), and may designate objects or functions.
+
+#### General
+
+- value categories (lvalue, non-lvalue object, function designator) classify expressions by their values
+- order of evaluation of arguments and subexpressions specifies the order in which intermediate results are obtained
+
+### Operators
+
+| Common operators | | | | | | |
+| --- | --- | --- | --- | --- | --- | --- |
+| Assignment | Increment, decrement | Arithmetic | Logical | Comparison | Member access | Other |
+| ``` a = b a += b a -= b a *= b a /= b a %= b a &= b a |= b a ^= b a <<= b a >>= b  ``` | ``` ++a --a a++ a--  ``` | ``` +a -a a + b a - b a * b a / b a % b ~a
+ a & b a | b a ^ b a << b a >> b  ``` | ``` !a a && b a || b  ``` | ``` a == b a != b a < b a > b a <= b a >= b  ``` | ``` a[b] *a &a a->b a.b  ``` | ``` a(...)
+ a, b (type) a a ? b : c sizeof  ```    `_Alignof`   (since C11)   (until C23) `alignof`   (since C23) |
+
+- operator precedence defines the order in which operators are bound to their arguments
+- alternative representations are alternative spellings for some operators
+
+#### Conversions
+
+- Implicit conversions take place when types of operands do not match the expectations of operators
+- Casts may be used to explicitly convert values from one type to another.
+
+#### Other
+
+- constant expressions can be evaluated at compile time and used in compile-time context (non-VLA (since C99) array sizes, static initializers, etc)
+- generic selections can execute different expressions depending on the types of the arguments | (since C11) |
+
+- Floating-point arithmetic may raise exceptions and report errors as specified in math_errhandling
+- The standard #pragmas `FENV_ACCESS`, `FP_CONTRACT`, and `CX_LIMITED_RANGE` as well as the floating-point evaluation precision and
+rounding direction control the way floating-point arithmetic are executed. (since C99)
+
+### Primary expressions
+
+The operands of any operator may be other expressions or they may be *primary expressions* (e.g. in `1 + 2 * 3`, the operands of operator+ are the subexpression
+`2 * 3` and the primary expression `1`).
+
+Primary expressions are any of the following:
+
+1) Constants and literals (e.g. `2` or `"Hello, world"`)
+2) Suitably declared identifiers (e.g. `n` or `printf`)
+|  | (since C11) |
+
+Any expression in parentheses is also classified as a primary expression: this guarantees that the parentheses have higher precedence than any operator.
+
+#### Constants and literals
+
+Constant values of certain types may be embedded in the source code of a C program using specialized expressions known as literals (for lvalue expressions) and
+constants (for non-lvalue expressions)
+
+- integer constants are decimal, octal, or hexadecimal numbers of integer type.
+- character constants are individual characters of type `int` suitable for conversion to a character type or of type `char8_t`, (since C23) `char16_t`,
+`char32_t`, or (since C11) `wchar_t`
+- floating constants are values of type `float`, `double`, or `long double`
+- predefined constants `true`/`false` are values of type `bool`
+- predefined constant nullptr is a value of type nullptr_t (since C23)
+- string literals are sequences of characters of type `char[]` , `char8_t[]` (since C23) , `char16_t[]`, `char32_t[]`, (since C11) or `wchar_t[]` that
+represent null-terminated strings
+- compound literals are values of struct, union, or array type directly embedded in program code | (since C99) |
+
+### Unevaluated expressions
+
+The operands of the `sizeof` operator are expressions that are not evaluated (unless they are VLAs) (since C99). Thus, `size_t n = sizeof(printf("%d",
+4));` does not perform console output.
+
+- The operands of the _Alignof (until C23) alignof (since C23) operator, the controlling expression of a generic selection, and size expressions
+of VLAs that are operands of `_Alignof` (until C23) `alignof` (since C23) are also expressions that are not evaluated. (since C11)
+
+### References
+- C23 standard (ISO/IEC 9899:2024):
+- 6.5 Expressions (p: TBD)
+- 6.6 Constant expressions (p: TBD)
+- C17 standard (ISO/IEC 9899:2018):
+- 6.5 Expressions (p: 55-75)
+- 6.6 Constant expressions (p: 76-77)
+- C11 standard (ISO/IEC 9899:2011):
+- 6.5 Expressions (p: 76-105)
+- 6.6 Constant expressions (p: 106-107)
+- C99 standard (ISO/IEC 9899:1999):
+- 6.5 Expressions (p: 67-94)
+- 6.6 Constant expressions (p: 95-96)
+- C89/C90 standard (ISO/IEC 9899:1990):
+- 3.3 EXPRESSIONS
+- 3.4 CONSTANT EXPRESSIONS
+
+--- SOURCE: https://en.cppreference.com/c/language/initialization ---
+# Initialization - cppreference.com
+
+A declaration of an object may provide its initial value through the process known as *initialization*.
+
+For each declarator, the initializer, if not omitted, may be one of the following:
+
+- `=` expression (1)
+- `=` `{` initializer-list `}` (2)
+- `=` `{` `}` (3) (since C23)
+
+where initializer-list is a non-empty comma-separated list of initializer s (with an optional trailing comma), where each initializer has one of three possible
+forms:
+
+- expression (1)
+- `{` initializer-list `}` (2)
+- `{` `}` (3) (since C23)
+- designator-list `=` initializer (4) (since C99)
+- where designator-list is a list of either array designators of the form `[` constant-expression `]` or struct/union member designators of the form `.`
+identifier ; see array initialization and struct initialization. Note: besides initializers, brace-enclosed initializer-list may appear in
+compound literals, which are expressions of the form:
+- `(` type `)` `{` initializer-list `}`
+- `(` type `)` `{` `}` (since C23) (since C99)
+
+### Explanation
+
+The initializer specifies the initial value stored in an object.
+
+#### Explicit initialization
+
+If an initializer is provided, see
+
+- scalar initialization for the initialization of scalar types
+- array initialization for the initialization of array types
+- struct initialization for the initialization of struct and union types.
+
+#### Implicit initialization
+
+If an initializer is not provided:
+
+- objects with automatic storage duration are initialized to indeterminate values (which may be trap representations)
+- objects with static and thread-local storage duration are empty-initialized
+
+#### Empty initialization
+
+| An object is empty-initialized if it is explicitly initialized from initializer `= {}`. | (since C23) |
+
+In some cases, an object is empty-initialized if it is not initialized explicitly, that is:
+
+- pointers are initialized to null pointer values of their types
+- objects of integral types are initialized to unsigned zero
+- objects of floating types are initialized to positive zero
+- all elements of arrays, all members of structs, and the first members of unions are empty-initialized, recursively, plus all padding bits are initialized to
+zero
+
+(on platforms where null pointer values and floating zeroes have all-bit-zero representations, this form of initialization for statics is normally implemented
+by allocating them in the .bss section of the program image)
+
+### Notes
+
+When initializing an object of static or thread-local storage duration, every expression in the initializer must be a constant expression or
+string literal.
+
+Initializers cannot be used in declarations of objects of incomplete type, VLAs, and block-scope objects with linkage.
+
+The initial values of function parameters are established as if by assignment from the arguments of a function call, rather than by initialization.
+
+If an indeterminate value is used as an argument to any standard library call, the behavior is undefined. Otherwise, the result of any expression involving
+indeterminate values is an indeterminate value (e.g. `int n;`, `n` may not compare equal to itself and it may appear to change its value on subsequent reads)
+
+| There is no special construct in C corresponding to value initialization in C++; however, `= {0}`  (or `(T){0}` in compound literals) (since C99) can be
+used instead, as the C standard does not allow empty structs, empty unions, or arrays of zero length. | (until C23) |
+
+| The empty initializer `= {}` (or `(T){}` in compound literals) can be used to achieve the same semantics as value initialization in C++. | (since C23) |
+
+### Example
+
+```
+#include <stdlib.h>
+
+int a[2]; // initializes a to {0, 0}
+
+int main(void)
+{
+    int i;          // initializes i to an indeterminate value
+    static int j;   // initializes j to 0
+    int k = 1;      // initializes k to 1
+
+    // initializes int x[3] to 1,3,5
+    // initializes int* p to &x[0]
+    int x[] = { 1, 3, 5 }, *p = x;
+
+    // initializes w (an array of two structs) to
+    // { { {1,0,0}, 0}, { {2,0,0}, 0} }
+    struct {int a[3], b;} w[] = {[0].a = {1}, [1].a[0] = 2};
+
+    // function call expression can be used for a local variable
+    char* ptr = malloc(10);
+
+    free(ptr);
+
+//  Error: objects with static storage duration require constant initializers
+//  static char* ptr = malloc(10);
+
+//  Error: VLA cannot be initialized
+//  int vla[n] = {0};
+}
+```
+
+### References
+- C17 standard (ISO/IEC 9899:2018):
+- 6.7.9 Initialization (p: 100-105)
+- C11 standard (ISO/IEC 9899:2011):
+- 6.7.9 Initialization (p: 139-144)
+- C99 standard (ISO/IEC 9899:1999):
+- 6.7.8 Initialization (p: 125-130)
+- C89/C90 standard (ISO/IEC 9899:1990):
+- 6.5.7 Initialization
+
+--- SOURCE: https://en.cppreference.com/c/language/declarations ---
+# Declarations - cppreference.com
+
+A *declaration* is a C language construct that introduces one or more identifiers into the program and specifies their meaning and properties.
+
+Declarations may appear in any scope. Each declaration ends with a semicolon (just like a statement) and consists of two (until C23) three (since C23)
+distinct parts:
+
+- specifiers-and-qualifiers declarators-and-initializers (optional) `;` (1)
+- attr-spec-seq specifiers-and-qualifiers declarators-and-initializers `;` (2) (since C23)
+- attr-spec-seq `;` (3) (since C23)
+
+where
+
+| specifiers-and-qualifiers | - | whitespace-separated list of, in any order, type specifiers: `void`, the name of an arithmetic type, the name of an atomic type, a name earlier introduced by a typedef declaration, struct, union, or enum specifier, a typeof specifier (since C23); zero or one storage-class specifiers: typedef, constexpr (since C23), auto, `register`, `static`, `extern`, `_Thread_local` (since C11); `_Thread_local` can be combined with `static` or `extern`; auto can be combined with every specifier except typedef (since C23); constexpr can be combined with auto, `register` or `static`; zero or more type qualifiers: const, volatile, restrict, _Atomic (only when declaring functions), zero or more function specifiers: inline, _Noreturn; zero or more alignment specifiers: _Alignas (since C11) (until C23) alignas (since C23) |
+| --- | --- | --- |
+| declarators-and-initializers | - | comma-separated list of declarators (each declarator provides additional type information and/or the identifier to declare). Declarators may be accompanied by initializers. The enum, struct, and union declarations may omit declarators, in which case they only introduce the enumeration constants and/or tags. |
+| attr-spec-seq | - | (C23) optional list of attributes, applied to the declared entities, or forms an attribute declaration if appears alone. |
+
+1,2) Simple declaration. Introduces one or more identifiers which denotes objects, functions, struct/union/enum tags, typedefs, or enumeration constants.
+3) Attribute declaration. Does not declares any identifier, and has implementation-defined meaning if the meaning is not specified by the standard.
+
+For example,
+
+```
+int a, *b = NULL; // “int” is the type specifier,
+                  // “a” is a declarator
+                  // “*b” is a declarator and NULL is its initializer
+const int *f(void); // “int” is the type specifier
+                    // “const” is the type qualifier
+                    // “*f(void)” is the declarator
+enum COLOR {RED, GREEN, BLUE} c; // “enum COLOR {RED, GREEN, BLUE}” is the type specifier
+                                 // “c” is the declarator
+```
+
+The type of each identifier introduced in a declaration is determined by a combination of the type specified by the type specifier and the type modifications
+applied by its declarator. The type of a variable might also be inferred if `auto` specifier is used. (since C23)
+
+Attributes (since C23) may appear in specifiers-and-qualifiers, in which case they apply to the type determined by the preceding specifiers.
+
+### Declarators
+
+Each declarator is one of the following:
+
+- identifier attr-spec-seq (optional) (1)
+- `(` declarator `)` (2)
+- `*` attr-spec-seq (optional) qualifiers (optional) declarator (3)
+- noptr-declarator `[` `static`(optional) qualifiers (optional) expression `]` noptr-declarator `[` qualifiers (optional) `*` `]` (4)
+- noptr-declarator `(` parameters-or-identifiers `)` (5)
+
+1) the identifier that this declarator introduces.
+2) any declarator may be enclosed in parentheses; this is required to introduce pointers to arrays and pointers to functions.
+3) pointer declarator: the declaration `S * cvr D`; declares `D` as a cvr-qualified pointer to the type determined by `S`.
+4) array declarator: the declaration `S D[N]` declares `D` as an array of `N` objects of the type determined by `S`. noptr-declarator is any other declarator except unparenthesized pointer declarator.
+5) function declarator: the declaration `S D(params)` declared `D` as a function taking the parameters `params` and returning `S`. noptr-declarator is any other declarator except unparenthesized pointer declarator.
+
+The reasoning behind this syntax is that when the identifier declared by the declarator appears in an expression of the same form as the declarator, it would
+have the type specified by the type specifier sequence.
+
+```
+struct C
+{
+    int member; // “int” is the type specifier
+                // “member” is the declarator
+} obj, *pObj = &obj;
+
+// “struct C { int member; }” is the type specifier
+// declarator “obj” defines an object of type struct C
+// declarator “*pObj” declares a pointer to C,
+// initializer “= &obj” provides the initial value for that pointer
+
+int a = 1, *p = NULL, f(void), (*pf)(double);
+
+// the type specifier is “int”
+// declarator “a” defines an object of type int
+//   initializer “=1” provides its initial value
+// declarator “*p” defines an object of type pointer to int
+//   initializer “=NULL” provides its initial value
+// declarator “f(void)” declares a function taking void and returning int
+// declarator “(*pf)(double)” defines an object of type pointer
+//   to function taking double and returning int
+
+int (*(*foo)(double))[3] = NULL;
+
+// the type specifier is int
+// 1. declarator “(*(*foo)(double))[3]” is an array declarator:
+//    the type declared is “/nested declarator/ array of 3 int”
+// 2. the nested declarator is “*(*foo)(double))”, which is a pointer declarator
+//    the type declared is “/nested declarator/ pointer to array of 3 int”
+// 3. the nested declarator is “(*foo)(double)”, which is a function declarator
+//    the type declared is “/nested declarator/ function taking double and returning
+//        pointer to array of 3 int”
+// 4. the nested declarator is “(*foo)” which is a (parenthesized, as required by
+//        function declarator syntax) pointer declarator.
+//    the type declared is “/nested declarator/ pointer to function taking double
+//        and returning pointer to array of 3 int”
+// 5. the nested declarator is “foo”, which is an identifier.
+// The declaration introduces the identifier “foo” to refer to an object of type
+// “pointer to function taking double and returning pointer to array of 3 int”
+// The initializer “= NULL” provides the initial value of this pointer.
+// If “foo” is used in an expression of the form of the declarator, its type would be
+// int.
+
+int x = (*(*foo)(1.2))[0];
+```
+
+The end of every declarator that is not part of another declarator is a sequence point.
+
+In all cases, attr-spec-seq is an optional sequence of attributes (since C23). When appearing immediately after the identifier, it applies to the object or
+function being declared.
+
+### Definitions
+
+A *definition* is a declaration that provides all information about the identifiers it declares.
+
+Every declaration of an enum or a typedef is a definition.
+
+For functions, a declaration that includes the function body is a function definition:
+
+```
+int foo(double); // declaration
+int foo(double x) { return x; } // definition
+```
+
+For objects, a declaration that allocates storage (automatic or static, but not extern) is a definition, while a declaration that does not allocate storage
+(external declaration) is not.
+
+```
+extern int n; // declaration
+int n = 10; // definition
+```
+
+For structs and unions, declarations that specify the list of members are definitions:
+
+```
+struct X; // declaration
+struct X { int n; }; // definition
+```
+
+### Redeclaration
+
+A declaration cannot introduce an identifier if another declaration for the same identifier in the same scope appears earlier, except that
+
+- Declarations of objects with linkage (external or internal) can be repeated:
+
+```
+extern int x;
+int x = 10; // OK
+extern int x; // OK
+static int n;
+static int n = 10; // OK
+static int n; // OK
+```
+
+- Non-VLA typedef can be repeated as long as it names the same type:
+
+```
+typedef int int_t;
+typedef int int_t; // OK
+```
+
+- struct and union declarations can be repeated:
+
+```
+struct X;
+struct X { int n; };
+struct X;
+```
+
+These rules simplify the use of header files.
+
+### Notes
+
+Empty declarators are prohibited; a simple declaration must have at least one declarator or declare at least one struct/union/enum tag, or introduce at least
+one enumeration constant.
+
+- If any part of a declarator is a variable-length array (VLA) declarator, the entire declarator's type is known as “variably-modified type”. Types defined
+from variably-modified types are also variably modified (VM). Declarations of any variably-modified types may appear only at block scope or function
+prototype scope and cannot be members of structs or unions. Although VLA can only have automatic or allocated storage duration, a VM type such as a pointer
+to a VLA may be static. There are other restrictions on the use of VM types, see goto, switch, longjmp (since C99)
+
+| static_asserts are considered to be declarations from the point of view of the C grammar (so that they may appear anywhere a declaration may appear), but
+they do not introduce any identifiers and do not follow the declaration syntax. | (since C11) |
+
+| Attribute declarations are also considered to be declarations (so that they may appear anywhere a declaration may appear), but they do not introduce any
+identifiers. A single `;` without attr-spec-seq is not an attribute declaration, but a statement. | (since C23) |
+
+### References
+- C23 standard (ISO/IEC 9899:2024):
+- 6.7 Declarations (p: TBD)
+- C17 standard (ISO/IEC 9899:2018):
+- 6.7 Declarations (p: 78-105)
+- C11 standard (ISO/IEC 9899:2011):
+- 6.7 Declarations (p: 108-145)
+- C99 standard (ISO/IEC 9899:1999):
+- 6.7 Declarations (p: 97-130)
+- C89/C90 standard (ISO/IEC 9899:1990):
+- 3.5 Declarations
+
+--- SOURCE: https://en.cppreference.com/c/language/functions ---
+# Functions - cppreference.com
+
+A function is a C language construct that associates a compound statement (the function body) with an identifier (the function name). Every C program
+begins execution from the main function, which either terminates, or invokes other, user-defined or library functions.
+
+```
+// function definition.
+// defines a function with the name "sum" and with the body "{ return x+y; }"
+int sum(int x, int y)
+{
+    return x + y;
+}
+```
+
+A function is introduced by a function declaration or a function definition.
+
+Functions may accept zero or more *parameters*, which are initialized from the *arguments* of a function call operator, and may return a value to its caller
+by means of the return statement.
+
+```
+int n = sum(1, 2); // parameters x and y are initialized with the arguments 1 and 2
+```
+
+The body of a function is provided in a function definition. Each non-inline (since C99) function that is used in an expression (unless unevaluated)
+must be defined only once in a program.
+
+There are no nested functions (except where allowed through non-standard compiler extensions): each function definition must appear at file scope, and functions
+have no access to the local variables from the caller:
+
+```
+int main(void) // the main function definition
+{
+    int sum(int, int); // function declaration (may appear at any scope)
+    int x = 1;  // local variable in main
+    sum(1, 2); // function call
+//    int sum(int a, int b) // error: no nested functions
+//    {
+//        return  a + b;
+//    }
+}
+
+int sum(int a, int b) // function definition
+{
+//    return x + a + b; //  error: main's x is not accessible within sum
+    return a + b;
+}
+```
+
+### References
+- C23 standard (ISO/IEC 9899:2024):
+- 6.7.7.4 Function declarators (including prototypes) (p: TBD)
+- 6.9.2 Function definitions (p: TBD)
+- C17 standard (ISO/IEC 9899:2018):
+- 6.7.6.3 Function declarators (including prototypes) (p: 96-98)
+- 6.9.1 Function definitions (p: 113-115)
+- C11 standard (ISO/IEC 9899:2011):
+- 6.7.6.3 Function declarators (including prototypes) (p: 133-136)
+- 6.9.1 Function definitions (p: 156-158)
+- C99 standard (ISO/IEC 9899:1999):
+- 6.7.5.3 Function declarators (including prototypes) (p: 118-121)
+- 6.9.1 Function definitions (p: 141-143)
+- C89/C90 standard (ISO/IEC 9899:1990):
+- 3.5.4.3 Function declarators (including prototypes)
+- 3.7.1 Function definitions
+
+--- SOURCE: https://en.cppreference.com/c/language/history ---
+# History of C - cppreference.com
+
+## Early C
+
+- 1969: B created, based on BCPL, to replace PDP-7 assembler as the system programming language for Unix
+- added operators `++`, `--`, compound assignment, remained a typeless language like BCPL
+- 1971: NB ("new B") created when porting B to PDP-11
+- types (`int`, `char`, arrays and pointers), array-to-pointer conversion, compilation to machine code
+- 1972: Language renamed to C
+- `struct`, operators `&&` and `||`, preprocessor, portable I/O
+- 1973: Unix re-written in C
+- `unsigned`, `long`, `union`, enumerations, increased type safety
+- 1978: The C Programming Language, 1st edition
+
+## Standard C
+
+- 1983: ANSI established X3J11 committee
+- 1988: The C Programming Language, 2nd edition
+- 1989: **C89**, the ANSI C standard published
+1. codified existing practices
+2. new features: `volatile`, `enum`, `signed`, `void`, locales
+3. From C++: `const`, function prototypes
+- 1990: **C90**, the ANSI C standard accepted as ISO/IEC 9899:1990
+- 1994: Technical corrigendum 1 (ISO/IEC 9899:1990/Cor.1:1994)
+- 44 small changes
+- 1995: **C95** (ISO/IEC 9899:1990/Amd.1:1995)
+1. greatly expanded wide and multibyte character support (`<wctype.h>`, `<wchar.h>`, additions and changes to stream I/O, etc)
+2. digraphs, `<iso646.h>`,
+- 1996: Technical corrigendum 2 (ISO/IEC 9899:1990/Cor.2:1996)
+- 24 small changes
+- 1999: **C99** (ISO/IEC 9899:1999)
+1. new features: `bool`, `long long`, `<stdint.h>`, `<inttypes.h>`, `restrict`, compound literals, variable length arrays, flexible array members, designated initializers, `<fenv.h>`, variadic macros, complex numbers, `__func__`, hexadecimal floating-point format (`%a`), monetary formatting in lconv, isblank, concatenation of narrow and wide string literals, trailing comma in enumerations, empty arguments in function-like macros, `STDC_*` pragmas, va_copy, null return of tmpnam, null pointer in setvbuf, `hh` and `ll` length-specifiers in printf, snprintf, _Exit, `<tgmath.h>`, POSIX-like strftime specifiers
+2. from C++: `inline`, mix declarations and code, declarations in the init-clause of the for loop, `//` comments, universal character names in source code
+3. removed implicit functions and implicit `int`
+- 2001: Technical corrigendum 1 (ISO/IEC 9899:1999/Cor.1:2001)
+- 11 defects fixed
+- 2004: Technical corrigendum 2 (ISO/IEC 9899:1999/Cor.2:2004)
+- 2004: Unicode TR (ISO/IEC TR 19769:2004) (N1040 November 7, 2003 draft)
+- 2007: Technical corrigendum 3 (ISO/IEC 9899:1999/Cor.3:2007) (N1256 September 7, 2007 draft)
+- deprecated gets
+- 2007: Bounds-checking interfaces TR (ISO/IEC TR 24731-1:2007) (N1225 March 28, 2007 draft)
+- 2008: Embedded TR (ISO/IEC TR 18037:2008) (N1021 September 24, 2003 draft)
+- 2009: Decimal floating-point TR (ISO/IEC TR 24732:2009) (N1241 July 5, 2007 draft)
+- 2009: Mathematical special functions TR (ISO/IEC TR 24747:2009) (N1182 August 2, 2006 draft)
+- 2010: Dynamic allocations functions TR (ISO/IEC TR 24731-2:2010) (N1388 June 1, 2009 draft)
+- 2011: **C11** (ISO/IEC 9899:2011) (N1570 April 12, 2011 draft)
+1. thread-aware memory model, `<stdatomic.h>`, `<threads.h>`, type-generic functions, `alignas`/`alignof`, `noreturn`, `static_assert`, analyzability extensions, extensions to complex and imaginary types, anonymous structures and unions, exclusive file open mode, quick_exit
+2. removed gets
+3. from Bounds-checking interfaces TR: bounds-checking interfaces,
+4. from Unicode TR: `char16_t`, `char32_t`, and `<uchar.h>`
+- 2012: Technical corrigendum 1 (ISO/IEC 9899:2011/Cor 1:2012)
+- Fixes DR 411
+- 2013: Secure Coding Rules TS (ISO/IEC TS 17961:2013) (N1718 May 30, 2013)
+- 2014: FP TS part 1: Binary floating-point arithmetic (ISO/IEC TS 18661-1:2014) (N1778 2013 draft)
+1. provides changes to C11 (mostly to Annex F) that cover all basic requirements and some recommendations of IEC 60559:2011 (C11 was built on IEC 60559:1989)
+- 2015: FP TS part 2: Decimal floating-point arithmetic (ISO/IEC TS 18661-2:2015) (N1912 2015 draft)
+1. provides changes to C11 to support all the requirements, plus some basic recommendations, of IEC 60559:2011 for decimal floating-point arithmetic. This supersedes ISO/IEC TR 24732:2009.
+- 2015: FP TS part 3: Interchange and extended types (ISO/IEC TS 18661-3:2015) (N1945 2015 draft)
+1. provides changes to C11 to support the recommendations of IEC 60559:2011 for extended floating‐point formats and the interchange formats, both arithmetic and non-arithmetic.
+- 2015: FP TS part 4: Supplementary functions (ISO/IEC TS 18661-4:2015) (N1950 2015 draft)
+1. provides changes to C11 to support all mathematical operations recommended by IEC 60559:2011, including trigonometry in π units, inverse square root, compounded interest, etc.
+- 2016: FP TS part 5: Supplementary attributes (ISO/IEC TS 18661-5:2016) (N2004 2016 draft)
+1. provides changes to C11 to support all supplementary attributes (evaluation model, exception handling, reproducibility, etc) recommended by IEC 60559:2011
+- 2018: **C17** (ISO/IEC 9899:2018) (Final draft)
+- Defect Reports fixed in C17 (54 defects): DR 400, DR 401, DR 402, DR 403, DR 404, DR 405, DR 406, DR 407, DR 410, DR 412, DR 414, DR 415, DR 416, DR 417, DR 419, DR 423, DR 426, DR 428, DR 429, DR 430, DR 431, DR 433, DR 434, DR 436, DR 437, DR 438, DR 439, DR 441, DR 444, DR 445, DR 447, DR 448, DR 450, DR 452, DR 453, DR 457, DR 458, DR 459, DR 460, DR 462, DR 464, DR 465, DR 468, DR 470, DR 471, DR 472, DR 473, DR 475, DR 477, DR 480, DR 481, DR 485, DR 487, DR 491
+- 2023 **C23** (ISO/IEC 9899:2024). C23 is the current revision of the C standard.
+- Defect Reports fixed in C23: DR 440, DR 432, DR 467, DR 476, DR 482, DR 488, DR 489, DR 494, DR 496, DR 497, DR 499, DR 500, DR 501
+
+### Future development
+
+- Parallelism TS (Draft N2017 2016-03-10)
+- Transactional Memory TS (Draft N1961 2015-09-23)
+- **C** (Latest draft n3998 2026-10-21)
+1. List of issues that were not granted DR status: (N2556 2020-08-02)
+- Main Article: C29 ?
+- Next major C language standard revision
+
+--- SOURCE: https://en.cppreference.com/c/header ---
+# C Standard Library headers - cppreference.com
+
+The interface of C standard library is defined by the following collection of headers.
+
+| `<assert.h>` | Conditionally compiled macro that compares its argument to zero |
+| `<complex.h>` (since C99) | Complex number arithmetic |
+| `<ctype.h>` | Functions to determine the type contained in character data |
+| `<errno.h>` | Macros reporting error conditions |
+| `<fenv.h>` (since C99) | Floating-point environment |
+| `<float.h>` | Limits of floating-point types |
+| `<inttypes.h>` (since C99) | Format conversion of integer types |
+| `<iso646.h>` (since C95) | Alternative operator spellings |
+| `<limits.h>` | Ranges of integer types |
+| `<locale.h>` | Localization utilities |
+| `<math.h>` | Common mathematics functions |
+| `<setjmp.h>` | Nonlocal jumps |
+| `<signal.h>` | Signal handling |
+| `<stdalign.h>` (since C11) (deprecated in C23) | `alignas` and `alignof` convenience macros |
+| `<stdarg.h>` | Variable arguments |
+| `<stdatomic.h>` (since C11) | Atomic operations |
+| `<stdbit.h>` (since C23) | Macros to work with the byte and bit representations of types |
+| `<stdbool.h>` (since C99) (deprecated in C23) | Macros for boolean type |
+| `<stdckdint.h>` (since C23) | Macros for performing checked integer arithmetic |
+| `<stddef.h>` | Common macro definitions |
+| `<stdint.h>` (since C99) | Fixed-width integer types |
+| `<stdio.h>` | Input/output |
+| `<stdlib.h>` | General utilities: memory management, program utilities, string conversions, random numbers, algorithms |
+| `<stdmchar.h>` (since C29) | Text transcode |
+| `<stdnoreturn.h>` (since C11) (deprecated in C23) | noreturn convenience macro |
+| `<string.h>` | String handling |
+| `<tgmath.h>` (since C99) | Type-generic math (macros wrapping math.h and complex.h) |
+| `<threads.h>` (since C11) | Thread library |
+| `<time.h>` | Time/date utilities |
+| `<uchar.h>` (since C11) | UTF-16 and UTF-32 character utilities |
+| `<wchar.h>` (since C95) | Extended multibyte and wide character utilities |
+| `<wctype.h>` (since C95) | Functions to determine the type contained in wide character data |
+
+### Feature test macros (since C23)
+
+Feature test macros are defined in corresponding headers respectively since C23. Note that not all headers contain such a macro.
+
+| # | Header | Macro name | Value |
+| --- | --- | --- | --- |
+| 1 | `<assert.h>` | `__STDC_VERSION_ASSERT_H__` | `202311L` |
+| 2 | `<complex.h>` | `__STDC_VERSION_COMPLEX_H__` | `202311L` |
+| 3 | `<ctype.h>` | N/A | |
+| 4 | `<errno.h>` | N/A | |
+| 5 | `<fenv.h>` | `__STDC_VERSION_FENV_H__` | `202311L` |
+| 6 | `<float.h>` | `__STDC_VERSION_FLOAT_H__` | `202311L` |
+| 7 | `<inttypes.h>` | `__STDC_VERSION_INTTYPES_H__` | `202311L` |
+| 8 | `<iso646.h>` | N/A | |
+| 9 | `<limits.h>` | `__STDC_VERSION_LIMITS_H__` | `202311L` |
+| 10 | `<locale.h>` | N/A | |
+| 11 | `<math.h>` | `__STDC_VERSION_MATH_H__` | `202311L` |
+| 12 | `<setjmp.h>` | `__STDC_VERSION_SETJMP_H__` | `202311L` |
+| 13 | `<signal.h>` | N/A | |
+| 14 | `<stdalign.h>` | N/A | |
+| 15 | `<stdarg.h>` | `__STDC_VERSION_STDARG_H__` | `202311L` |
+| 16 | `<stdatomic.h>` | `__STDC_VERSION_STDATOMIC_H__` | `202311L` |
+| 17 | `<stdbit.h>` | `__STDC_VERSION_STDBIT_H__` | `202311L` |
+| 18 | `<stdbool.h>` | N/A | |
+| 19 | `<stdckdint.h>` | `__STDC_VERSION_STDCKDINT_H__` | `202311L` |
+| 20 | `<stddef.h>` | `__STDC_VERSION_STDDEF_H__` | `202311L` |
+| 21 | `<stdint.h>` | `__STDC_VERSION_STDINT_H__` | `202311L` |
+| 22 | `<stdio.h>` | `__STDC_VERSION_STDIO_H__` | `202311L` |
+| 23 | `<stdlib.h>` | `__STDC_VERSION_STDLIB_H__` | `202311L` |
+| 24 | `<stdmchar.h>` | `__STDC_VERSION_STDMCHAR_H__` | `2029??L` |
+| 25 | `<stdnoreturn.h>` | N/A | |
+| 26 | `<string.h>` | `__STDC_VERSION_STRING_H__` | `202311L` |
+| 27 | `<tgmath.h>` | `__STDC_VERSION_TGMATH_H__` | `202311L` |
+| 28 | `<threads.h>` | N/A | |
+| 29 | `<time.h>` | `__STDC_VERSION_TIME_H__` | `202311L` |
+| 30 | `<uchar.h>` | `__STDC_VERSION_UCHAR_H__` | `202311L` |
+| 31 | `<wchar.h>` | `__STDC_VERSION_WCHAR_H__` | `202311L` |
+| 32 | `<wctype.h>` | N/A | |
+
+### References
+- C23 standard (ISO/IEC 9899:2024):
+- 7.1.2 Standard headers
+- C17 standard (ISO/IEC 9899:2018):
+- 7.1.2 Standard headers (p: 131-132)
+- C11 standard (ISO/IEC 9899:2011):
+- 7.1.2 Standard headers (p: 181-182)
+- C99 standard (ISO/IEC 9899:1999):
+- 7.1.2 Standard headers (p: 165)
+- C89/C90 standard (ISO/IEC 9899:1990):
+- 4.1.2 Standard headers
+
+--- SOURCE: https://en.cppreference.com/c/header/assert ---
+# Standard library header <assert.h> - cppreference.com
+
+This header is part of the error handling library.
+
+| Macros | |
+| --- | --- |
+| assert | aborts the program if the user-specified condition is not `true`. May be disabled for release builds (function macro) |
+
+### Synopsis
+
+```
+#if __STDC_VERSION__ >= 202311L
+
+#   define __STDC_VERSION_ASSERT_H__ 202311L
+
+#   ifdef NDEBUG
+#       define assert(...) ((void)0)
+#   else
+#       define assert(...) /* implementation-defined */
+#   endif
+
+#else
+
+#   ifdef NDEBUG
+#       define assert(condition) ((void)0)
+#   else
+#       define assert(condition) /* implementation-defined */
+#   endif
+
+#endif
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/complex ---
+# Standard library header <complex.h> (C99) - cppreference.com
+
+This header is part of the complex number arithmetic library.
+
+| Types | |
+| --- | --- |
+| imaginary (C99) | imaginary type macro (keyword macro) |
+| complex (C99) | complex type macro (keyword macro) |
+| The imaginary constant | |
+| _Imaginary_I (C99) | the imaginary unit constant i (macro constant) |
+| _Complex_I (C99) | the complex unit constant i (macro constant) |
+| I (C99) | the complex or imaginary unit constant i (macro constant) |
+| Manipulation | |
+| CMPLX CMPLXF CMPLXL (C11) | constructs a complex number from real and imaginary parts (function macro) |
+| creal crealf creall (C99) | computes the real part of a complex number (function) |
+| cimag cimagf cimagl (C99) | computes the imaginary part a complex number (function) |
+| cabs cabsf cabsl (C99) | computes the magnitude of a complex number (function) |
+| carg cargf cargl (C99) | computes the phase angle of a complex number (function) |
+| conj conjf conjl (C99) | computes the complex conjugate (function) |
+| cproj cprojf cprojl (C99) | computes the projection on Riemann sphere (function) |
+| Exponential functions | |
+| cexp cexpf cexpl (C99) | computes the complex base-e exponential (function) |
+| clog clogf clogl (C99) | computes the complex natural logarithm (function) |
+| Power functions | |
+| cpow cpowf cpowl (C99) | computes the complex power function (function) |
+| csqrt csqrtf csqrtl (C99) | computes the complex square root (function) |
+| Trigonometric functions | |
+| csin csinf csinl (C99) | computes the complex sine (function) |
+| ccos ccosf ccosl (C99) | computes the complex cosine (function) |
+| ctan ctanf ctanl (C99) | computes the complex tangent (function) |
+| casin casinf casinl (C99) | computes the complex arc sine (function) |
+| cacos cacosf cacosl (C99) | computes the complex arc cosine (function) |
+| catan catanf catanl (C99) | computes the complex arc tangent (function) |
+| Hyperbolic functions | |
+| csinh csinhf csinhl (C99) | computes the complex hyperbolic sine (function) |
+| ccosh ccoshf ccoshl (C99) | computes the complex hyperbolic cosine (function) |
+| ctanh ctanhf ctanhl (C99) | computes the complex hyperbolic tangent (function) |
+| casinh casinhf casinhl (C99) | computes the complex arc hyperbolic sine (function) |
+| cacosh cacoshf cacoshl (C99) | computes the complex arc hyperbolic cosine (function) |
+| catanh catanhf catanhl (C99) | computes the complex arc hyperbolic tangent (function) |
+
+### Synopsis
+
+```
+#define __STDC_VERSION_COMPLEX_H__ 202311L
+
+#define complex       _Complex
+
+#define imaginary     /* implementation-defined */
+
+#define _Imaginary_I  /* implementation-defined */
+
+#define _Complex_I    /* implementation-defined */
+
+#define I             _Complex_I
+
+#pragma STDC CX_LIMITED_RANGE /*on-off-switch*/
+
+double complex cacos(double complex z);
+float complex cacosf(float complex z);
+long double complex cacosl(long double complex z);
+
+double complex casin(double complex z);
+float complex casinf(float complex z);
+long double complex casinl(long double complex z);
+
+double complex catan(double complex z);
+float complex catanf(float complex z);
+long double complex catanl(long double complex z);
+
+double complex ccos(double complex z);
+float complex ccosf(float complex z);
+long double complex ccosl(long double complex z);
+
+double complex csin(double complex z);
+float complex csinf(float complex z);
+long double complex csinl(long double complex z);
+
+double complex ctan(double complex z);
+float complex ctanf(float complex z);
+long double complex ctanl(long double complex z);
+
+double complex cacosh(double complex z);
+float complex cacoshf(float complex z);
+long double complex cacoshl(long double complex z);
+
+double complex casinh(double complex z);
+float complex casinhf(float complex z);
+long double complex casinhl(long double complex z);
+
+double complex catanh(double complex z);
+float complex catanhf(float complex z);
+long double complex catanhl(long double complex z);
+
+double complex ccosh(double complex z);
+float complex ccoshf(float complex z);
+long double complex ccoshl(long double complex z);
+
+double complex csinh(double complex z);
+float complex csinhf(float complex z);
+long double complex csinhl(long double complex z);
+
+double complex ctanh(double complex z);
+float complex ctanhf(float complex z);
+long double complex ctanhl(long double complex z);
+
+double complex cexp(double complex z);
+float complex cexpf(float complex z);
+long double complex cexpl(long double complex z);
+
+double complex clog(double complex z);
+float complex clogf(float complex z);
+long double complex clogl(long double complex z);
+
+double cabs(double complex z);
+float cabsf(float complex z);
+long double cabsl(long double complex z);
+
+double complex cpow(double complex x, double complex y);
+float complex cpowf(float complex x, float complex y);
+long double complex cpowl(long double complex x, long double complex y);
+
+double complex csqrt(double complex z);
+float complex csqrtf(float complex z);
+long double complex csqrtl(long double complex z);
+
+double carg(double complex z);
+float cargf(float complex z);
+long double cargl(long double complex z);
+
+double cimag(double complex z);
+float cimagf(float complex z);
+long double cimagl(long double complex z);
+
+double complex CMPLX(double x, double y);
+float complex CMPLXF(float x, float y);
+long double complex CMPLXL(long double x, long double y);
+
+double complex conj(double complex z);
+float complex conjf(float complex z);
+long double complex conjl(long double complex z);
+
+double complex cproj(double complex z);
+float complex cprojf(float complex z);
+long double complex cprojl(long double complex z);
+
+double creal(double complex z);
+float crealf(float complex z);
+long double creall(long double complex z);
+
+// Only if the implementation defines __STDC_IEC_60559_TYPES__ and additionally the user
+// code defines __STDC_WANT_IEC_60559_TYPES_EXT__ before any inclusion of <complex.h>:
+#ifdef __STDC_WANT_IEC_60559_TYPES_EXT__
+
+/*_FloatN*/ complex /*cacosfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*cacosfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*casinfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*casinfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*catanfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*catanfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*ccosfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*ccosfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*csinfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*csinfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*ctanfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*ctanfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*cacoshfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*cacoshfNx*/( /*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*casinhfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*casinhfNx*/( /*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*catanhfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*catanhfNx*/( /*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*ccoshfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*ccoshfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*csinhfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*csinhfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*ctanhfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*ctanhfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*cexpfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*cexpfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*clogfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*clogfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ /*cabsfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ /*cabsfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*cpowfN*/(/*_FloatN*/ complex x, /*_FloatN*/ complex y);
+/*_FloatNx*/ complex /*cpowfNx*/(/*_FloatNx*/ complex x, /*_FloatNx*/ complex y);
+/*_FloatN*/ complex /*csqrtfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*csqrtfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ /*cargfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ /*cargfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ /*cimagfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ /*cimagfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*CMPLXFN*/(/*_FloatN*/ x, /*_FloatN*/ y);
+/*_FloatNx*/ complex /*CMPLXFNX*/(/*_FloatNx*/ x, /*_FloatNx*/ y);
+/*_FloatN*/ complex /*conjfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*conjfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ complex /*cprojfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ complex /*cprojfNx*/(/*_FloatNx*/ complex z);
+/*_FloatN*/ /*crealfN*/(/*_FloatN*/ complex z);
+/*_FloatNx*/ /*crealfNx*/(/*_FloatNx*/ complex z);
+
+#endif
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/ctype ---
+# Standard library header <ctype.h> - cppreference.com
+
+This header is part of the null-terminated byte strings library.
+
+| Functions | |
+| --- | --- |
+| isalnum | checks if a character is alphanumeric (function) |
+| isalpha | checks if a character is alphabetic (function) |
+| islower | checks if a character is lowercase (function) |
+| isupper | checks if a character is an uppercase character (function) |
+| isdigit | checks if a character is a digit (function) |
+| isxdigit | checks if a character is a hexadecimal character (function) |
+| iscntrl | checks if a character is a control character (function) |
+| isgraph | checks if a character is a graphical character (function) |
+| isspace | checks if a character is a space character (function) |
+| isblank (C99) | checks if a character is a blank character (function) |
+| isprint | checks if a character is a printing character (function) |
+| ispunct | checks if a character is a punctuation character (function) |
+| tolower | converts a character to lowercase (function) |
+| toupper | converts a character to uppercase (function) |
+
+### Synopsis
+
+```
+int isalnum(int c);
+
+int isalpha(int c);
+
+int isblank(int c);
+
+int iscntrl(int c);
+
+int isdigit(int c);
+
+int isgraph(int c);
+
+int islower(int c);
+
+int isprint(int c);
+
+int ispunct(int c);
+
+int isspace(int c);
+
+int isupper(int c);
+
+int isxdigit(int c);
+
+int tolower(int c);
+
+int toupper(int c);
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/errno ---
+# Standard library header <errno.h> - cppreference.com
+
+This header is part of the error handling library.
+
+### Error numbers
+
+| errno | macro which expands to POSIX-compatible thread-local error number variable (macro variable) |
+| --- | --- |
+| EDOM, EILSEQ, ERANGE (and other implementation-defined error macros) | macros for standard POSIX-compatible error conditions (macro constant) |
+
+### Synopsis
+
+```
+#define EDOM   /* implementation-defined */
+
+#define EILSEQ /* implementation-defined */
+
+#define ERANGE /* implementation-defined */
+
+#define errno  /* implementation-defined */
+
+// Only if the implementation defines __STDC_LIB_EXT1__ and additionally the user code
+// defines __STDC_WANT_LIB_EXT1__ before any inclusion of <errno.h>:
+#ifdef __STDC_WANT_LIB_EXT1__
+
+#define __STDC_LIB_EXT1__  /* implementation-defined */
+
+#define errno_t            /* implementation-defined */
+
+#endif
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/fenv ---
+# Standard library header <fenv.h> (C99) - cppreference.com
+
+This header is part of the floating-point environment library.
+
+### Types
+
+| Defined in header `<fenv.h>` | |
+| --- | --- |
+| `fenv_t` | The type representing the entire floating-point environment |
+| `fexcept_t` | The type representing all floating-point status flags collectively |
+
+### Functions
+
+| feclearexcept (C99) | clears the specified floating-point status flags (function) |
+| --- | --- |
+| fetestexcept (C99) | determines which of the specified floating-point status flags are set (function) |
+| feraiseexcept (C99) | raises the specified floating-point exceptions (function) |
+| fegetexceptflag fesetexceptflag (C99) | copies the state of the specified floating-point status flags from or to the floating-point environment (function) |
+| fegetround fesetround (C99) | gets or sets rounding direction (function) |
+| fegetenv fesetenv (C99) | saves or restores the current floating-point environment (function) |
+| feholdexcept (C99) | saves the environment, clears all status flags and ignores all future errors (function) |
+| feupdateenv (C99) | restores the floating-point environment and raises the previously raise exceptions (function) |
+
+### Macros
+
+| FE_DIVBYZERO FE_INEXACT FE_INVALID FE_OVERFLOW FE_UNDERFLOW FE_ALL_EXCEPT (C99) | floating-point exceptions (macro constant) |
+| FE_DOWNWARD FE_TONEAREST FE_TOWARDZERO FE_UPWARD FE_TONEARESTFROMZERO (C99) | floating-point rounding direction (macro constant) |
+| FE_DFL_ENV FE_DFL_MODE (C99) | default floating-point environment (macro constant) |
+
+### Synopsis
+
+```
+#define __STDC_VERSION_FENV_H__ 202311L
+
+#define FE_ALL_EXCEPT         /* see description */
+
+#define FE_DIVBYZERO          /* see description */
+
+#define FE_INEXACT            /* see description */
+
+#define FE_INVALID            /* see description */
+
+#define FE_OVERFLOW           /* see description */
+
+#define FE_UNDERFLOW          /* see description */
+
+#define FE_DOWNWARD           /* see description */
+
+#define FE_TONEARESTFROMZERO  /* see description */
+
+#define FE_TONEAREST          /* see description */
+
+#define FE_TOWARDZERO         /* see description */
+
+#define FE_UPWARD             /* see description */
+
+#define FE_DFL_ENV            /* see description */
+
+#define FE_DFL_MODE           /* see description */
+
+#define fenv_t                /* see description */
+
+#define fexcept_t             /* see description */
+
+#define femode_t              /* see description */
+
+#pragma STDC FENV_ACCESS      /*on-off-switch*/
+
+#pragma STDC FENV_ROUND       direction
+
+#pragma STDC FENV_ROUND       FE_DYNAMIC
+
+// functions
+
+int feclearexcept(int excepts);
+
+int fegetexceptflag(fexcept_t* flagp, int excepts);
+
+int feraiseexcept(int excepts);
+
+int fesetexcept(int excepts);
+
+int fesetexceptflag(const fexcept_t* flagp, int excepts);
+
+int fetestexceptflag(const fexcept_t* flagp, int excepts);
+
+int fetestexcept(int excepts);
+
+int fegetmode(femode_t* modep);
+
+int fegetround(void);
+
+int fesetmode(const femode_t* modep);
+
+int fesetround(int rnd);
+
+int fegetenv(fenv_t* envp);
+
+int feholdexcept(fenv_t* envp);
+
+int fesetenv(const fenv_t* envp);
+
+int feupdateenv(const fenv_t* envp);
+
+// Only if the implementation defines __STDC_IEC_60559_DFP__:
+
+#define FE_DEC_DOWNWARD            /* implementation-defined */
+
+#define FE_DEC_TONEARESTFROMZERO   /* implementation-defined */
+
+#define FE_DEC_TONEAREST           /* implementation-defined */
+
+#define FE_DEC_TOWARDZERO          /* implementation-defined */
+
+#define FE_DEC_UPWARD              /* implementation-defined */
+
+#pragma STDC FENV_DEC_ROUND /*dec-direction*/
+
+int fe_dec_getround(void);
+
+int fe_dec_setround(int rnd);
+
+// Only if the implementation follows the recommended practice from F.2.2:
+
+#define FE_SNANS_ALWAYS_SIGNAL /* implementation-defined */
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/float ---
+# Standard library header <float.h> - cppreference.com
+
+This header is part of the type support library, in particular its numeric limits interface.
+
+### Macros
+
+| Characteristics | |
+| --- | --- |
+| __STDC_VERSION_FLOAT_H__ (C23) | expands to `202311L` (macro constant) |
+| FLT_ROUNDS | default rounding mode of floating-point arithmetic (macro) |
+| FLT_EVAL_METHOD (C99) | specifies in what precision all arithmetic operations are done (macro constant) |
+| FLT_HAS_SUBNORM DBL_HAS_SUBNORM LDBL_HAS_SUBNORM (C11) (deprecated in C23) | specifies whether the type supports subnormal (denormal) numbers: `-1` – indeterminable, `0` – absent, `1` – present (macro constant) |
+| FLT_RADIX | the radix (integer base) used by the representation of all three floating-point types (macro constant) |
+| FLT_MANT_DIG DBL_MANT_DIG LDBL_MANT_DIG | number of base `FLT_RADIX` digits that can be represented without losing precision for `float`, `double` and `long double` respectively (macro constant) |
+| FLT_DECIMAL_DIG DBL_DECIMAL_DIG LDBL_DECIMAL_DIG (C11) | conversion from `float`/`double`/`long double` to decimal with at least `FLT_DECIMAL_DIG`/`DBL_DECIMAL_DIG`/`LDBL_DECIMAL_DIG` digits and back is the identity conversion: this is the decimal precision required to serialize/deserialize a floating-point value (macro constant) |
+| DECIMAL_DIG (C99) (deprecated in C23) | conversion from `long double` to decimal with at least `DECIMAL_DIG` digits and back to `long double` is the identity conversion: this is the decimal precision required to serialize/deserialize a `long double` (macro constant) |
+| CR_DECIMAL_DIG (C23) | conversions between all supported ISO/IEC 60559 binary floating-point types and character sequences with at most `CR_DECIMAL_DIG` significant decimal digits are correctly rounded (macro constant) |
+| FLT_IS_IEC_60559 DBL_IS_IEC_60559 LDBL_IS_IEC_60559 (C23) | specifies if the type has the precision and exponent range of an ISO/IEC 60559 format (macro constant) |
+| FLT_DIG DBL_DIG LDBL_DIG | number of decimal digits that are guaranteed to be preserved in text → `float`/`double`/`long double` → text roundtrip without change due to rounding or overflow (macro constant) |
+| FLT_MIN_EXP DBL_MIN_EXP LDBL_MIN_EXP | minimum negative integer such that `FLT_RADIX` raised by power one less than that integer is a normalized `float`, `double` and `long double` respectively (macro constant) |
+| FLT_MIN_10_EXP DBL_MIN_10_EXP LDBL_MIN_10_EXP | minimum negative integer such that `10` raised to that power is a normalized `float`, `double` and `long double` respectively (macro constant) |
+| FLT_MAX_EXP DBL_MAX_EXP LDBL_MAX_EXP | maximum positive integer such that `FLT_RADIX` raised by power one less than that integer is a representable finite `float`, `double` and `long double` respectively (macro constant) |
+| FLT_MAX_10_EXP DBL_MAX_10_EXP LDBL_MAX_10_EXP | maximum positive integer such that `10` raised to that power is a representable finite `float`, `double` and `long double` respectively (macro constant) |
+| FLT_MAX DBL_MAX LDBL_MAX | maximum finite value of `float`, `double` and `long double` respectively (macro constant) |
+| FLT_NORM_MAX DBL_NORM_MAX LDBL_NORM_MAX (C23) | maximum normalized value of `float`, `double` and `long double` respectively (macro constant) |
+| FLT_EPSILON DBL_EPSILON LDBL_EPSILON | difference between `1.0` and the next representable value for `float`, `double` and `long double` respectively (macro constant) |
+| FLT_MIN DBL_MIN LDBL_MIN | minimum normalized positive value of `float`, `double` and `long double` respectively (macro constant) |
+| FLT_TRUE_MIN DBL_TRUE_MIN LDBL_TRUE_MIN (C11) | minimum positive value of `float`, `double` and `long double` respectively (macro constant) |
+| Special values (since C23) | |
+| INFINITY (C99) | evaluates to positive infinity (if exists) (macro constant) |
+| NAN (C99) | evaluates to a quiet NaN of type `float` (if exists) (macro constant) |
+| FLT_SNAN DBL_SNAN LDBL_SNAN (C23) | evaluates to a signaling NaN of `float`, `double` and `long double` respectively (if exists) (macro constant) |
+
+### Synopsis
+
+```
+#define FLT_ROUNDS           /* see definition */
+
+#define FLT_EVAL_METHOD      /* see definition */
+
+#define FLT_HAS_SUBNORM      /* see definition */
+
+#define DBL_HAS_SUBNORM      /* see definition */
+
+#define LDBL_HAS_SUBNORM     /* see definition */
+
+#define FLT_RADIX            /* see definition */
+
+#define FLT_MANT_DIG         /* see definition */
+
+#define DBL_MANT_DIG         /* see definition */
+
+#define LDBL_MANT_DIG        /* see definition */
+
+#define FLT_DECIMAL_DIG      /* see definition */
+
+#define DBL_DECIMAL_DIG      /* see definition */
+
+#define LDBL_DECIMAL_DIG     /* see definition */
+
+#define DECIMAL_DIG          /* see definition */
+
+#define FLT_DIG              /* see definition */
+
+#define DBL_DIG              /* see definition */
+
+#define LDBL_DIG             /* see definition */
+
+#define FLT_MIN_EXP          /* see definition */
+
+#define DBL_MIN_EXP          /* see definition */
+
+#define LDBL_MIN_EXP         /* see definition */
+
+#define FLT_MIN_10_EXP       /* see definition */
+
+#define DBL_MIN_10_EXP       /* see definition */
+
+#define LDBL_MIN_10_EXP      /* see definition */
+
+#define FLT_MAX_EXP          /* see definition */
+
+#define DBL_MAX_EXP          /* see definition */
+
+#define LDBL_MAX_EXP         /* see definition */
+
+#define FLT_MAX_10_EXP       /* see definition */
+
+#define DBL_MAX_10_EXP       /* see definition */
+
+#define LDBL_MAX_10_EXP      /* see definition */
+
+#define FLT_MAX              /* see definition */
+
+#define DBL_MAX              /* see definition */
+
+#define LDBL_MAX             /* see definition */
+
+#define FLT_EPSILON          /* see definition */
+
+#define DBL_EPSILON          /* see definition */
+
+#define LDBL_EPSILON         /* see definition */
+
+#define FLT_MIN              /* see definition */
+
+#define DBL_MIN              /* see definition */
+
+#define LDBL_MIN             /* see definition */
+
+#define FLT_TRUE_MIN         /* see definition */
+
+#define DBL_TRUE_MIN         /* see definition */
+
+#define LDBL_TRUE_MIN        /* see definition */
+
+#define INFINITY             /* see definition */
+
+#define NAN                  /* see definition */
+
+#define FLT_SNAN             /* see definition */
+
+#define DBL_SNAN             /* see definition */
+
+#define LDBL_SNAN            /* see definition */
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/inttypes ---
+# Standard library header <inttypes.h> (C99) - cppreference.com
+
+This header is part of the type support library, in particular, it is a part of format conversion of integer types interface.
+
+Note: the page text extraction for this header captured only the synopsis below; the PRI/SCN printf/scanf format macro tables (PRId8, PRIu64, SCNd32, etc.) and the imaxabs/imaxdiv descriptions are documented on the individual pages linked from the header index and are not included here.
+
+### Synopsis
+
+```
+intmax_t imaxabs(intmax_t j);
+
+imaxdiv_t imaxdiv(intmax_t numer, intmax_t denom);
+
+intmax_t strtoimax(const char* restrict nptr, char** restrict endptr, int base);
+
+uintmax_t strtoumax(const char* restrict nptr, char** restrict endptr, int base);
+
+intmax_t wcstoimax(const wchar_t* restrict nptr, wchar_t** restrict endptr, int base);
+
+uintmax_t wcstoumax(const wchar_t* restrict nptr, wchar_t** restrict endptr, int base);
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/iso646 ---
+# Standard library header <iso646.h> (C95) - cppreference.com
+
+This header defines macros for alternative operator spellings.
+
+### Synopsis
+
+```
+#define and     &&
+
+#define and_eq  &=
+
+#define bitand  &
+
+#define bitor   |
+
+#define compl   ~
+
+#define not     !
+
+#define not_eq  !=
+
+#define or      ||
+
+#define or_eq   |=
+
+#define xor     ^
+
+#define xor_eq  ^=
+```
+
+### Notes
+
+This header is meaningless in C++ because these macro names exist as keywords in C++ and are unconditionally available.
+
+--- SOURCE: https://en.cppreference.com/c/header/limits ---
+# Standard library header <limits.h> - cppreference.com
+
+This header is part of the type support library, in particular it's part of the C numeric limits interface.
+
+| Limits of core language integer types | |
+| --- | --- |
+| BOOL_WIDTH (C23) | bit width of `bool` (macro constant) |
+| BOOL_MAX (C29) | maximum value of `_Bool` (macro constant) |
+| CHAR_BIT | bit width of byte (macro constant) |
+| MB_LEN_MAX | maximum number of bytes in a multibyte character (macro constant) |
+| CHAR_WIDTH (C23) | bit width of `char` (macro constant) |
+| CHAR_MIN | minimum value of `char` (macro constant) |
+| CHAR_MAX | maximum value of `char` (macro constant) |
+| SCHAR_WIDTH SHRT_WIDTH INT_WIDTH LONG_WIDTH LLONG_WIDTH (C23) | bit width of `signed char`, `short`, `int`, `long`, and `long long` respectively (macro constant) |
+| SCHAR_MIN SHRT_MIN INT_MIN LONG_MIN LLONG_MIN (C99) | minimum value of `signed char`, `short`, `int`, `long` and `long long` respectively (macro constant) |
+| SCHAR_MAX SHRT_MAX INT_MAX LONG_MAX LLONG_MAX (C99) | maximum value of `signed char`, `short`, `int`, `long` and `long long` respectively (macro constant) |
+| UCHAR_WIDTH USHRT_WIDTH UINT_WIDTH ULONG_WIDTH ULLONG_WIDTH (C23) | bit width of `unsigned char`, `unsigned short`, `unsigned int`, `unsigned long`, and `unsigned long long` respectively (macro constant) |
+| UCHAR_MAX USHRT_MAX UINT_MAX ULONG_MAX ULLONG_MAX (C99) | maximum value of `unsigned char`, `unsigned short`, `unsigned int`, `unsigned long` and `unsigned long long` respectively (macro constant) |
+| BITINT_MAXWIDTH (C23) | maximum width `N` supported by the declaration of a bit-precise integer in the type specifier `_BitInt(N)`, greater than or equal to `ULLONG_WIDTH` (macro constant) |
+
+### Synopsis
+
+```
+#define __STDC_VERSION_LIMITS_H__ 202311L
+
+#define BITINT_MAXWIDTH  /* see description */
+
+#define BOOL_MAX         /* see description */
+
+#define BOOL_WIDTH       /* see description */
+
+#define CHAR_BIT         /* see description */
+
+#define CHAR_MAX         /* see description */
+
+#define CHAR_MIN         /* see description */
+
+#define CHAR_WIDTH       /* see description */
+
+#define INT_MAX          /* see description */
+
+#define INT_MIN          /* see description */
+
+#define INT_WIDTH        /* see description */
+
+#define LLONG_MAX        /* see description */
+
+#define LLONG_MIN        /* see description */
+
+#define LLONG_WIDTH      /* see description */
+
+#define LONG_MAX         /* see description */
+
+#define LONG_MIN         /* see description */
+
+#define LONG_WIDTH       /* see description */
+
+#define MB_LEN_MAX       /* see description */
+
+#define SCHAR_MAX        /* see description */
+
+#define SCHAR_MIN        /* see description */
+
+#define SCHAR_WIDTH      /* see description */
+
+#define SHRT_MAX         /* see description */
+
+#define SHRT_MIN         /* see description */
+
+#define SHRT_WIDTH       /* see description */
+
+#define UCHAR_MAX        /* see description */
+
+#define UCHAR_WIDTH      /* see description */
+
+#define UINT_MAX         /* see description */
+
+#define UINT_WIDTH       /* see description */
+
+#define ULLONG_MAX       /* see description */
+
+#define ULLONG_WIDTH     /* see description */
+
+#define ULONG_MAX        /* see description */
+
+#define ULONG_WIDTH      /* see description */
+
+#define USHRT_MAX        /* see description */
+
+#define USHRT_WIDTH      /* see description */
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/locale ---
+# Standard library header <locale.h> - cppreference.com
+
+This header is part of the localization library.
+
+| Types | |
+| --- | --- |
+| lconv | formatting details, returned by localeconv (struct) |
+| Constants | |
+| NULL | implementation-defined null pointer constant (macro constant) |
+| LC_ALL LC_COLLATE LC_CTYPE LC_MONETARY LC_NUMERIC LC_TIME | locale categories for setlocale (macro constant) |
+| Functions | |
+| setlocale | gets and sets the current C locale (function) |
+| localeconv | queries numeric and monetary formatting details of the current locale (function) |
+
+### Synopsis
+
+```
+// In the "C" locale, the members shall have the values specified in the comments:
+struct lconv
+{
+    char* decimal_point;        // "."
+    char* thousands_sep;        // ""
+    char* grouping;             // ""
+    char* mon_decimal_point;    // ""
+    char* mon_thousands_sep;    // ""
+    char* mon_grouping;         // ""
+    char* positive_sign;        // ""
+    char* negative_sign;        // ""
+    char* currency_symbol;      // ""
+    char  frac_digits;          // CHAR_MAX
+    char  p_cs_precedes;        // CHAR_MAX
+    char  n_cs_precedes;        // CHAR_MAX
+    char  p_sep_by_space;       // CHAR_MAX
+    char  n_sep_by_space;       // CHAR_MAX
+    char  p_sign_posn;          // CHAR_MAX
+    char  n_sign_posn;          // CHAR_MAX
+    char* int_curr_symbol;      // ""
+    char  int_frac_digits;      // CHAR_MAX
+    char  int_p_cs_precedes;    // CHAR_MAX
+    char  int_n_cs_precedes;    // CHAR_MAX
+    char  int_p_sep_by_space;   // CHAR_MAX
+    char  int_n_sep_by_space;   // CHAR_MAX
+    char  int_p_sign_posn;      // CHAR_MAX
+    char  int_n_sign_posn;      // CHAR_MAX
+};
+
+char* setlocale(int category, const char* locale);
+
+lconv* localeconv();
+
+#define NULL        /* see description */
+
+#define LC_ALL      /* see description */
+
+#define LC_COLLATE  /* see description */
+
+#define LC_CTYPE    /* see description */
+
+#define LC_MONETARY /* see description */
+
+#define LC_NUMERIC  /* see description */
+
+#define LC_TIME     /* see description */
+```
+
+### Notes
+
+- NULL is also defined in the following headers:
+  - <string.h>
+  - <time.h>
+  - <stddef.h>
+  - <stdio.h>
+  - <wchar.h>
+
+--- SOURCE: https://en.cppreference.com/c/header/math ---
+# Standard library header <math.h> - cppreference.com
+
+This header is part of the mathematics library.
+
+### Types
+
+| float_t (C99) | most efficient floating-point type at least as wide as `float` (typedef) |
+| double_t (C99) | most efficient floating-point type at least as wide as `double` (typedef) |
+
+### Constants
+
+| HUGE_VALF HUGE_VAL HUGE_VALL (C99) | indicates value too big to be representable (infinity) by `float`, `double` and `long double` respectively (macro constant) |
+| INFINITY (C99) | evaluates to positive infinity (if exists) (macro constant) |
+| NAN (C99) | evaluates to a quiet NaN of type `float` (if exists) (macro constant) |
+| FP_FAST_FMAF FP_FAST_FMA FP_FAST_FMAL (C99) | indicates that the fma function generally executes about as fast as, or faster than, a multiply and an add of double operands (macro constant) |
+| FP_ILOGB0 FP_ILOGBNAN (C99) | evaluates to `ilogb(x)` if x is zero or NaN, respectively (macro constant) |
+| math_errhandling MATH_ERRNO MATH_ERREXCEPT (C99) | defines the error handling mechanism used by the common mathematical functions (macro constant) |
+| Classification | |
+| FP_NORMAL FP_SUBNORMAL FP_ZERO FP_INFINITE FP_NAN (C99) | indicates a floating-point category (macro constant) |
+
+### Functions
+
+| Basic operations | |
+| fabs fabsf fabsl (C99) | computes absolute value of a floating-point value (|x|) (function) |
+| fmod fmodf fmodl (C99) | computes remainder of the floating-point division operation (function) |
+| remainder remainderf remainderl (C99) | computes signed remainder of the floating-point division operation (function) |
+| remquo remquof remquol (C99) | computes signed remainder as well as the three last bits of the division operation (function) |
+| fma fmaf fmal (C99) | computes fused multiply-add operation (function) |
+| fmax fmaxf fmaxl (C99) | determines larger of two floating-point values (function) |
+| fmin fminf fminl (C99) | determines smaller of two floating-point values (function) |
+| fdim fdimf fdiml (C99) | determines positive difference of two floating-point values (max(0, x-y)) (function) |
+| nan nanf nanl (C99) | returns a NaN (not-a-number) (function) |
+| Exponential functions | |
+| exp expf expl (C99) | computes e raised to the given power (e^x) (function) |
+| exp2 exp2f exp2l (C99) | computes 2 raised to the given power (2^x) (function) |
+| expm1 expm1f expm1l (C99) | computes e raised to the given power, minus one (e^x-1) (function) |
+| log logf logl (C99) | computes natural (base-e) logarithm (ln(x)) (function) |
+| log10 log10f log10l (C99) | computes common (base-10) logarithm (log10(x)) (function) |
+| log2 log2f log2l (C99) | computes base-2 logarithm (log2(x)) (function) |
+| log1p log1pf log1pl (C99) | computes natural (base-e) logarithm of 1 plus the given number (ln(1+x)) (function) |
+| Power functions | |
+| pow powf powl (C99) | computes a number raised to the given power (x^y) (function) |
+| sqrt sqrtf sqrtl (C99) | computes square root (function) |
+| cbrt cbrtf cbrtl (C99) | computes cube root (function) |
+| hypot hypotf hypotl (C99) | computes square root of the sum of the squares of two given numbers (function) |
+| Trigonometric functions | |
+| sin sinf sinl (C99) | computes sine (sin(x)) (function) |
+| cos cosf cosl (C99) | computes cosine (cos(x)) (function) |
+| tan tanf tanl (C99) | computes tangent (tan(x)) (function) |
+| asin asinf asinl (C99) | computes arc sine (arcsin(x)) (function) |
+| acos acosf acosl (C99) | computes arc cosine (arccos(x)) (function) |
+| atan atanf atanl (C99) | computes arc tangent (arctan(x)) (function) |
+| atan2 atan2f atan2l (C99) | computes arc tangent, using signs to determine quadrants (function) |
+| Hyperbolic functions | |
+| sinh sinhf sinhl (C99) | computes hyperbolic sine (sinh(x)) (function) |
+| cosh coshf coshl (C99) | computes hyperbolic cosine (cosh(x)) (function) |
+| tanh tanhf tanhl (C99) | computes hyperbolic tangent (tanh(x)) (function) |
+| asinh asinhf asinhl (C99) | computes inverse hyperbolic sine (arsinh(x)) (function) |
+| acosh acoshf acoshl (C99) | computes inverse hyperbolic cosine (arcosh(x)) (function) |
+| atanh atanhf atanhl (C99) | computes inverse hyperbolic tangent (artanh(x)) (function) |
+| Error and gamma functions | |
+| erf erff erfl (C99) | computes error function (function) |
+| erfc erfcf erfcl (C99) | computes complementary error function (function) |
+| tgamma tgammaf tgammal (C99) | computes gamma function (function) |
+| lgamma lgammaf lgammal (C99) | computes natural (base-e) logarithm of the gamma function (function) |
+| Nearest integer floating-point operations | |
+| ceil ceilf ceill (C99) | computes smallest integer not less than the given value (function) |
+| floor floorf floorl (C99) | computes largest integer not greater than the given value (function) |
+| trunc truncf truncl (C99) | rounds to nearest integer not greater in magnitude than the given value (function) |
+| round roundf roundl lround lroundf lroundl llround llroundf llroundl (C99) | rounds to nearest integer, rounding away from zero in halfway cases (function) |
+| nearbyint nearbyintf nearbyintl (C99) | rounds to an integer using current rounding mode (function) |
+| rint rintf rintl lrint lrintf lrintl llrint llrintf llrintl (C99) | rounds to an integer using current rounding mode with exception if the result differs (function) |
+| Floating-point manipulation functions | |
+| frexp frexpf frexpl (C99) | breaks a number into significand and a power of 2 (function) |
+| ldexp ldexpf ldexpl (C99) | multiplies a number by 2 raised to a power (function) |
+| modf modff modfl (C99) | breaks a number into integer and fractional parts (function) |
+| scalbn scalbnf scalbnl scalbln scalblnf scalblnl (C99) | computes efficiently a number times FLT_RADIX raised to a power (function) |
+| ilogb ilogbf ilogbl (C99) | extracts exponent of the given number (function) |
+| logb logbf logbl (C99) | extracts exponent of the given number (function) |
+| nextafter nextafterf nextafterl nexttoward nexttowardf nexttowardl (C99) | determines next representable floating-point value towards the given value (function) |
+| nextup nextupf nextupl nextdown nextdownf nextdownl (C23) | determines next representable floating-point value greater or less than the given value (function) |
+| copysign copysignf copysignl (C99) | produces a value with the magnitude of a given value and the sign of another given value (function) |
+| Classification and comparison | |
+| fpclassify (C99) | classifies the given floating-point value (function macro) |
+| isfinite (C99) | checks if the given number has finite value (function macro) |
+| isinf (C99) | checks if the given number is infinite (function macro) |
+| isnan (C99) | checks if the given number is NaN (function macro) |
+| isnormal (C99) | checks if the given number is normal (function macro) |
+| signbit (C99) | checks if the given number is negative (function macro) |
+| isgreater (C99) | checks if the first floating-point argument is greater than the second (function macro) |
+| isgreaterequal (C99) | checks if the first floating-point argument is greater or equal than the second (function macro) |
+| isless (C99) | checks if the first floating-point argument is less than the second (function macro) |
+| islessequal (C99) | checks if the first floating-point argument is less or equal than the second (function macro) |
+| islessgreater (C99) | checks if the first floating-point argument is less or greater than the second (function macro) |
+| isunordered (C99) | checks if two floating-point values are unordered (function macro) |
+
+### Synopsis
+
+Note: at fetch time (2026-11-05) the synopsis section of the <math.h> header page on cppreference.com contained only a placeholder:
+
+```
+#define __STDC_VERSION_MATH_H__ 202311L
+
+// TODO: ...
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/setjmp ---
+# Standard library header <setjmp.h> - cppreference.com
+
+This header is part of the program support utilities library.
+
+| Types | |
+| --- | --- |
+| jmp_buf | execution context type (typedef) |
+| Macros | |
+| setjmp | saves the context (function macro) |
+| Functions | |
+| longjmp | jumps to specified location (function) |
+
+### Synopsis
+
+```
+#define __STDC_VERSION_SETJMP_H__ 202311L
+
+typedef /* unspecified */ jmp_buf;
+
+int setjmp(jmp_buf env);
+
+[[noreturn]] void longjmp(jmp_buf env, int val);
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/signal ---
+# Standard library header <signal.h> - cppreference.com
+
+This header is part of the program support library.
+
+| Types | |
+| --- | --- |
+| sig_atomic_t | the integer type that can be accessed as an atomic entity from an asynchronous signal handler (typedef) |
+| Macros | |
+| SIGABRT SIGFPE SIGILL SIGINT SIGSEGV SIGTERM | defines signal types (macro constant) |
+| SIG_DFL SIG_IGN | defines signal handling strategies (macro constant) |
+| SIG_ERR | error was encountered (macro constant) |
+| Functions | |
+| signal | sets a signal handler for particular signal (function) |
+| raise | runs the signal handler for particular signal (function) |
+
+### Synopsis
+
+```
+typedef sig_atomic_t /* see description */;
+
+void (*signal(int sig, void (*func)(int)))(int);
+
+int raise(int sig);
+
+#define SIG_DFL  /* see description */
+
+#define SIG_ERR  /* see description */
+
+#define SIG_IGN  /* see description */
+
+#define SIGABRT  /* see description */
+
+#define SIGFPE   /* see description */
+
+#define SIGILL   /* see description */
+
+#define SIGINT   /* see description */
+
+#define SIGSEGV  /* see description */
+
+#define SIGTERM  /* see description */
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/stdalign ---
+# Standard library header <stdalign.h> (C11)(deprecated in C23) - cppreference.com
+
+This header is part of the types support library.
+
+| Macros | |
+| --- | --- |
+| alignas (C11) (removed in C23) | convenience macro, expands to keyword _Alignas (keyword macro) |
+| alignof (C11) (removed in C23) | convenience macro, expands to keyword _Alignof (keyword macro) |
+| Constants | |
+| __alignas_is_defined (C11) (removed in C23) | expands to integer constant `1` (macro constant) |
+| __alignof_is_defined (C11) (removed in C23) | expands to integer constant `1` (macro constant) |
+
+### Synopsis
+
+```
+#if __STDC_VERSION__ < 202311L
+
+#define alignas _Alignas
+
+#define alignof _Alignof
+
+#define __alignas_is_defined 1
+
+#define __alignof_is_defined 1
+
+#endif
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/stdarg ---
+# Standard library header <stdarg.h> - cppreference.com
+
+This header provides support for varying arguments.
+
+| Types | |
+| --- | --- |
+| va_list | holds the information needed by va_start, va_arg, va_end, and va_copy (typedef) |
+| Macros | |
+| va_start | enables access to variadic function arguments (function macro) |
+| va_arg | accesses the next variadic function argument (function macro) |
+| va_copy (C99) | makes a copy of the variadic function arguments (function macro) |
+| va_end | ends traversal of the variadic function arguments (function macro) |
+
+### Synopsis
+
+```
+#define __STDC_VERSION_STDARG_H__ 202311L
+
+typedef /*unspecified*/ va_list;
+
+/*type*/ va_arg(va_list ap, /*type*/);
+
+void va_copy(va_list dest, va_list src);
+
+void va_end(va_list ap);
+
+void va_start(va_list ap, ...);
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/stdatomic ---
+# Standard library header <stdatomic.h> (C11) - cppreference.com
+
+This header provides atomic operations, in particular, it's a part of the concurrency support library.
+
+### Atomic operations
+
+| Operations on atomic types | |
+| --- | --- |
+| ATOMIC_BOOL_LOCK_FREE ATOMIC_CHAR_LOCK_FREE ATOMIC_CHAR8_T_LOCK_FREE ATOMIC_CHAR16_T_LOCK_FREE ATOMIC_CHAR32_T_LOCK_FREE ATOMIC_WCHAR_T_LOCK_FREE ATOMIC_SHORT_LOCK_FREE ATOMIC_INT_LOCK_FREE ATOMIC_LONG_LOCK_FREE ATOMIC_LLONG_LOCK_FREE ATOMIC_POINTER_LOCK_FREE (C11) | indicates that the given atomic type is lock-free (macro constant) |
+| atomic_is_lock_free (C11) | indicates whether the atomic object is lock-free (function) |
+| atomic_store atomic_store_explicit (C11) | stores a value in an atomic object (function) |
+| atomic_load atomic_load_explicit (C11) | reads a value from an atomic object (function) |
+| atomic_exchange atomic_exchange_explicit (C11) | swaps a value with the value of an atomic object (function) |
+| atomic_compare_exchange_strong atomic_compare_exchange_strong_explicit atomic_compare_exchange_weak atomic_compare_exchange_weak_explicit (C11) | swaps a value with an atomic object if the old value is what is expected, otherwise reads the old value (function) |
+| atomic_fetch_add atomic_fetch_add_explicit (C11) | atomic addition (function) |
+| atomic_fetch_sub atomic_fetch_sub_explicit (C11) | atomic subtraction (function) |
+| atomic_fetch_or atomic_fetch_or_explicit (C11) | atomic bitwise OR (function) |
+| atomic_fetch_xor atomic_fetch_xor_explicit (C11) | atomic bitwise exclusive OR (function) |
+| atomic_fetch_and atomic_fetch_and_explicit (C11) | atomic bitwise AND (function) |
+| Flag type and operations | |
+| atomic_flag (C11) | lock-free atomic boolean flag (struct) |
+| atomic_flag_test_and_set atomic_flag_test_and_set_explicit (C11) | sets an atomic_flag to true and returns the old value (function) |
+| atomic_flag_clear atomic_flag_clear_explicit (C11) | sets an atomic_flag to false (function) |
+| Initialization | |
+| atomic_init (C11) | initializes an existing atomic object (function) |
+| ATOMIC_VAR_INIT (C11) (deprecated in C17) (removed in C23) | initializes a new atomic object (function macro) |
+| ATOMIC_FLAG_INIT (C11) | initializes a new `atomic_flag` (macro constant) |
+| Memory synchronization ordering | |
+| memory_order (C11) | defines memory ordering constraints (enum) |
+| kill_dependency (C11) | breaks a dependency chain for `memory_order_consume` (function macro) |
+| atomic_thread_fence (C11) | generic memory order-dependent fence synchronization primitive (function) |
+| atomic_signal_fence (C11) | fence between a thread and a signal handler executed in the same thread (function) |
+
+| Convenience type aliases | |
+| --- | --- |
+| Typedef name | Full type name |
+| `atomic_bool` (C11) | `_Atomic _Bool` |
+| `atomic_char` (C11) | `_Atomic char` |
+| `atomic_schar` (C11) | `_Atomic signed char` |
+| `atomic_uchar` (C11) | `_Atomic unsigned char` |
+| `atomic_short` (C11) | `_Atomic short` |
+| `atomic_ushort` (C11) | `_Atomic unsigned short` |
+| `atomic_int` (C11) | `_Atomic int` |
+| `atomic_uint` (C11) | `_Atomic unsigned int` |
+| `atomic_long` (C11) | `_Atomic long` |
+| `atomic_ulong` (C11) | `_Atomic unsigned long` |
+| `atomic_llong` (C11) | `_Atomic long long` |
+| `atomic_ullong` (C11) | `_Atomic unsigned long long` |
+| `atomic_char8_t` (C23) | `_Atomic char8_t` |
+| `atomic_char16_t` (C11) | `_Atomic char16_t` |
+| `atomic_char32_t` (C11) | `_Atomic char32_t` |
+| `atomic_wchar_t` (C11) | `_Atomic wchar_t` |
+| `atomic_int_least8_t` (C11) | `_Atomic int_least8_t` |
+| `atomic_uint_least8_t` (C11) | `_Atomic uint_least8_t` |
+| `atomic_int_least16_t` (C11) | `_Atomic int_least16_t` |
+| `atomic_uint_least16_t` (C11) | `_Atomic uint_least16_t` |
+| `atomic_int_least32_t` (C11) | `_Atomic int_least32_t` |
+| `atomic_uint_least32_t` (C11) | `_Atomic uint_least32_t` |
+| `atomic_int_least64_t` (C11) | `_Atomic int_least64_t` |
+| `atomic_uint_least64_t` (C11) | `_Atomic uint_least64_t` |
+| `atomic_int_fast8_t` (C11) | `_Atomic int_fast8_t` |
+| `atomic_uint_fast8_t` (C11) | `_Atomic uint_fast8_t` |
+| `atomic_int_fast16_t` (C11) | `_Atomic int_fast16_t` |
+| `atomic_uint_fast16_t` (C11) | `_Atomic uint_fast16_t` |
+| `atomic_int_fast32_t` (C11) | `_Atomic int_fast32_t` |
+| `atomic_uint_fast32_t` (C11) | `_Atomic uint_fast32_t` |
+| `atomic_int_fast64_t` (C11) | `_Atomic int_fast64_t` |
+| `atomic_uint_fast64_t` (C11) | `_Atomic uint_fast64_t` |
+| `atomic_intptr_t` (C11) | `_Atomic intptr_t` |
+| `atomic_uintptr_t` (C11) | `_Atomic uintptr_t` |
+| `atomic_size_t` (C11) | `_Atomic size_t` |
+| `atomic_ptrdiff_t` (C11) | `_Atomic ptrdiff_t` |
+| `atomic_intmax_t` (C11) | `_Atomic intmax_t` |
+| `atomic_uintmax_t` (C11) | `_Atomic uintmax_t` |
+
+### Synopsis
+
+```
+#define __STDC_VERSION_STDATOMIC_H__ 202311L
+
+void atomic_init(volatile A* obj, /*C*/ value);
+
+/*type*/ kill_dependency(/*type*/ y);
+
+void atomic_thread_fence(memory_order order);
+
+void atomic_signal_fence(memory_order order);
+
+bool atomic_is_lock_free(const volatile A* obj);
+
+void atomic_store(volatile A* object, /*C*/ desired);
+
+void atomic_store_explicit(volatile A* object, /*C*/ desired, memory_order order);
+
+/*C*/ atomic_load(const volatile A* object);
+
+/*C*/ atomic_load_explicit(const volatile A* object, memory_order order);
+
+/*C*/ atomic_exchange(volatile A* object, /*C*/ desired);
+
+/*C*/ atomic_exchange_explicit(volatile A* object, /*C*/ desired, memory_order order);
+
+bool atomic_compare_exchange_strong(volatile A* object, /*C*/* expected, /*C*/ desired);
+
+bool atomic_compare_exchange_strong_explicit(volatile A* object, /*C*/* expected,
+/*C*/ desired, memory_order success, memory_order failure);
+
+bool atomic_compare_exchange_weak(volatile A* object, /*C*/* expected, /*C*/ desired);
+
+bool atomic_compare_exchange_weak_explicit(volatile A* object, /*C*/* expected,
+/*C*/ desired, memory_order success, memory_order failure);
+
+/*C*/ /*atomic_fetch_key*/(volatile A* object, M operand);
+
+/*C*/ /*atomic_fetch_key_explicit*/(volatile A* object, M operand, memory_order order);
+
+bool atomic_flag_test_and_set(volatile atomic_flag* object);
+
+bool atomic_flag_test_and_set_explicit(volatile atomic_flag* object,
+                                       memory_order order);
+
+void atomic_flag_clear(volatile atomic_flag* object);
+
+void atomic_flag_clear_explicit(volatile atomic_flag* object,
+                                memory_order order);
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/stdbit ---
+# Standard library header <stdbit.h> (C23) - cppreference.com
+
+This header is part of the numeric library, in particular, it provides macros and functions to work with the byte ordering and byte and bit representation
+of C objects.
+
+| Functions | |
+| --- | --- |
+| stdc_leading_zeros (C23) | counts the number of consecutive `0` bits, starting from the most significant bit (type-generic function macro) |
+| stdc_leading_ones (C23) | counts the number of consecutive `1` bits, starting from the most significant bit (type-generic function macro) |
+| stdc_trailing_zeros (C23) | counts the number of consecutive `0` bits, starting from the least significant bit (type-generic function macro) |
+| stdc_trailing_ones (C23) | counts the number of consecutive `1` bits, starting from the least significant bit (type-generic function macro) |
+| stdc_first_leading_zero (C23) | finds the first position of `0` bit, starting from the most significant bit (type-generic function macro) |
+| stdc_first_leading_one (C23) | finds the first position of `1` bit, starting from the most significant bit (type-generic function macro) |
+| stdc_first_trailing_zero (C23) | finds the first position of `0` bit, starting from the least significant bit (type-generic function macro) |
+| stdc_first_trailing_one (C23) | finds the first position of `1` bit, starting from the least significant bit (type-generic function macro) |
+| stdc_count_zeros (C23) | counts the number of `0` bits in an unsigned integer (type-generic function macro) |
+| stdc_count_ones (C23) | counts the number of `1` bits in an unsigned integer (type-generic function macro) |
+| stdc_has_single_bit (C23) | checks if a number is an integral power of 2 (type-generic function macro) |
+| stdc_bit_width (C23) | finds the smallest number of bits needed to represent the given value (type-generic function macro) |
+| stdc_bit_floor (C23) | finds the largest integral power of 2 not greater than the given value (type-generic function macro) |
+| stdc_bit_ceil (C23) | finds the smallest integral power of 2 not less than the given value (type-generic function macro) |
+| Macro constants | |
+| __STDC_ENDIAN_LITTLE__ __STDC_ENDIAN_BIG__ __STDC_ENDIAN_NATIVE__ (C23) | indicates the endianness of scalar types (macro constant) |
+
+### Synopsis
+
+```
+#define __STDC_VERSION_STDBIT_H__ 202311L
+
+#define __STDC_ENDIAN_LITTLE__ /* implementation-defined */
+
+#define __STDC_ENDIAN_BIG__    /* implementation-defined */
+
+#define __STDC_ENDIAN_NATIVE__ /* implementation-defined */
+
+unsigned int stdc_leading_zeros_uc(unsigned char value) [[unsequenced]];
+unsigned int stdc_leading_zeros_us(unsigned short value) [[unsequenced]];
+unsigned int stdc_leading_zeros_ui(unsigned int value) [[unsequenced]];
+unsigned int stdc_leading_zeros_ul(unsigned long int value) [[unsequenced]];
+unsigned int stdc_leading_zeros_ull(unsigned long long int value) [[unsequenced]];
+/*generic_return_type*/
+stdc_leading_zeros(/*generic_value_type*/ value) [[unsequenced]];
+
+unsigned int stdc_leading_ones_uc(unsigned char value) [[unsequenced]];
+unsigned int stdc_leading_ones_us(unsigned short value) [[unsequenced]];
+unsigned int stdc_leading_ones_ui(unsigned int value) [[unsequenced]];
+unsigned int stdc_leading_ones_ul(unsigned long int value) [[unsequenced]];
+unsigned int stdc_leading_ones_ull(unsigned long long int value) [[unsequenced]];
+/*generic_return_type*/
+stdc_leading_ones(/*generic_value_type*/ value) [[unsequenced]];
+
+unsigned int stdc_trailing_zeros_uc(unsigned char value) [[unsequenced]];
+unsigned int stdc_trailing_zeros_us(unsigned short value) [[unsequenced]];
+unsigned int stdc_trailing_zeros_ui(unsigned int value) [[unsequenced]];
+unsigned int stdc_trailing_zeros_ul(unsigned long int value) [[unsequenced]];
+unsigned int stdc_trailing_zeros_ull(unsigned long long int value) [[unsequenced]];
+/*generic_return_type*/
+stdc_trailing_zeros(/*generic_value_type*/ value) [[unsequenced]];
+
+unsigned int stdc_trailing_ones_uc(unsigned char value) [[unsequenced]];
+unsigned int stdc_trailing_ones_us(unsigned short value) [[unsequenced]];
+unsigned int stdc_trailing_ones_ui(unsigned int value) [[unsequenced]];
+unsigned int stdc_trailing_ones_ul(unsigned long int value) [[unsequenced]];
+unsigned int stdc_trailing_ones_ull(unsigned long long int value) [[unsequenced]];
+/*generic_return_type*/
+stdc_trailing_ones(/*generic_value_type*/ value) [[unsequenced]];
+
+unsigned int stdc_first_leading_zero_uc(unsigned char value) [[unsequenced]];
+unsigned int stdc_first_leading_zero_us(unsigned short value) [[unsequenced]];
+unsigned int stdc_first_leading_zero_ui(unsigned int value) [[unsequenced]];
+unsigned int stdc_first_leading_zero_ul(unsigned long int value) [[unsequenced]];
+unsigned int stdc_first_leading_zero_ull(unsigned long long int value) [[unsequenced]];
+/*generic_return_type*/
+stdc_first_leading_zero(/*generic_value_type*/ value) [[unsequenced]];
+
+unsigned int stdc_first_leading_one_uc(unsigned char value) [[unsequenced]];
+unsigned int stdc_first_leading_one_us(unsigned short value) [[unsequenced]];
+unsigned int stdc_first_leading_one_ui(unsigned int value) [[unsequenced]];
+unsigned int stdc_first_leading_one_ul(unsigned long int value) [[unsequenced]];
+unsigned int stdc_first_leading_one_ull(unsigned long long int value) [[unsequenced]];
+/*generic_return_type*/
+stdc_first_leading_one(/*generic_value_type*/ value) [[unsequenced]];
+
+unsigned int stdc_first_trailing_zero_uc(unsigned char value) [[unsequenced]];
+unsigned int stdc_first_trailing_zero_us(unsigned short value) [[unsequenced]];
+unsigned int stdc_first_trailing_zero_ui(unsigned int value) [[unsequenced]];
+unsigned int stdc_first_trailing_zero_ul(unsigned long int value) [[unsequenced]];
+unsigned int stdc_first_trailing_zero_ull(unsigned long long int value) [[unsequenced]];
+/*generic_return_type*/
+stdc_first_trailing_zero(/*generic_value_type*/ value) [[unsequenced]];
+
+unsigned int stdc_first_trailing_one_uc(unsigned char value) [[unsequenced]];
+unsigned int stdc_first_trailing_one_us(unsigned short value) [[unsequenced]];
+unsigned int stdc_first_trailing_one_ui(unsigned int value) [[unsequenced]];
+unsigned int stdc_first_trailing_one_ul(unsigned long int value) [[unsequenced]];
+unsigned int stdc_first_trailing_one_ull(unsigned long long int value) [[unsequenced]];
+/*generic_return_type*/
+stdc_first_trailing_one(/*generic_value_type*/ value) [[unsequenced]];
+
+unsigned int stdc_count_zeros_uc(unsigned char value) [[unsequenced]];
+unsigned int stdc_count_zeros_us(unsigned short value) [[unsequenced]];
+unsigned int stdc_count_zeros_ui(unsigned int value) [[unsequenced]];
+unsigned int stdc_count_zeros_ul(unsigned long int value) [[unsequenced]];
+unsigned int stdc_count_zeros_ull(unsigned long long int value) [[unsequenced]];
+/*generic_return_type*/
+stdc_count_zeros(/*generic_value_type*/ value) [[unsequenced]];
+
+unsigned int stdc_count_ones_uc(unsigned char value) [[unsequenced]];
+unsigned int stdc_count_ones_us(unsigned short value) [[unsequenced]];
+unsigned int stdc_count_ones_ui(unsigned int value) [[unsequenced]];
+unsigned int stdc_count_ones_ul(unsigned long int value) [[unsequenced]];
+unsigned int stdc_count_ones_ull(unsigned long long int value) [[unsequenced]];
+/*generic_return_type*/
+stdc_count_ones(/*generic_value_type*/ value) [[unsequenced]];
+
+bool stdc_has_single_bit_uc(unsigned char value) [[unsequenced]];
+bool stdc_has_single_bit_us(unsigned short value) [[unsequenced]];
+bool stdc_has_single_bit_ui(unsigned int value) [[unsequenced]];
+bool stdc_has_single_bit_ul(unsigned long int value) [[unsequenced]];
+bool stdc_has_single_bit_ull(unsigned long long int value) [[unsequenced]];
+bool stdc_has_single_bit(/*generic_value_type*/ value) [[unsequenced]];
+
+unsigned int stdc_bit_width_uc(unsigned char value) [[unsequenced]];
+unsigned int stdc_bit_width_us(unsigned short value) [[unsequenced]];
+unsigned int stdc_bit_width_ui(unsigned int value) [[unsequenced]];
+unsigned int stdc_bit_width_ul(unsigned long int value) [[unsequenced]];
+unsigned int stdc_bit_width_ull(unsigned long long int value) [[unsequenced]];
+/*generic_return_type*/
+stdc_bit_width(/*generic_value_type*/ value) [[unsequenced]];
+
+unsigned char stdc_bit_floor_uc(unsigned char value) [[unsequenced]];
+unsigned short stdc_bit_floor_us(unsigned short value) [[unsequenced]];
+unsigned int stdc_bit_floor_ui(unsigned int value) [[unsequenced]];
+unsigned long int stdc_bit_floor_ul(unsigned long int value) [[unsequenced]];
+unsigned long long int stdc_bit_floor_ull(unsigned long long int value) [[unsequenced]];
+/*generic_value_type*/
+stdc_bit_floor(/*generic_value_type*/ value) [[unsequenced]];
+
+unsigned char stdc_bit_ceil_uc(unsigned char value) [[unsequenced]];
+unsigned short stdc_bit_ceil_us(unsigned short value) [[unsequenced]];
+unsigned int stdc_bit_ceil_ui(unsigned int value) [[unsequenced]];
+unsigned long int stdc_bit_ceil_ul(unsigned long int value) [[unsequenced]];
+unsigned long long int stdc_bit_ceil_ull(unsigned long long int value) [[unsequenced]];
+/*generic_value_type*/
+stdc_bit_ceil(/*generic_value_type*/ value) [[unsequenced]];
+
+unsigned char stdc_rotate_left_uc(unsigned char value, unsigned int count);
+unsigned short stdc_rotate_left_us(unsigned short value, unsigned int count);
+unsigned int stdc_rotate_left_ui(unsigned int value, unsigned int count);
+unsigned long stdc_rotate_left_ul(unsigned long value, unsigned int count);
+unsigned long long stdc_rotate_left_ull(unsigned long long value, unsigned int count);
+/*generic_value_type*/
+stdc_rotate_left(/*generic_value_type*/ value, generic_count_type count);
+
+unsigned char stdc_rotate_right_uc(unsigned char value, unsigned int count);
+unsigned short stdc_rotate_right_us(unsigned short value, unsigned int count);
+unsigned int stdc_rotate_right_ui(unsigned int value, unsigned int count);
+unsigned long stdc_rotate_right_ul(unsigned long value, unsigned int count);
+unsigned long long stdc_rotate_right_ull(unsigned long long value, unsigned int count);
+/*generic_value_type*/
+stdc_rotate_right(/*generic_value_type*/ value, generic_count_type count);
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/stdbool ---
+# Standard library header <stdbool.h> (C99)(deprecated in C23) - cppreference.com
+
+This header provides macros for boolean type.
+
+| Macros | |
+| --- | --- |
+| bool (C99) (removed in C23) | convenience macro, expands to _Bool (keyword macro) |
+| Macro constants | |
+| true (C99) (removed in C23) | expands to integer constant `1` (macro constant) |
+| false (C99) (removed in C23) | expands to integer constant `0` (macro constant) |
+| __bool_true_false_are_defined (C99) (deprecated in C23) | expands to integer constant `1` (macro constant) |
+
+### Synopsis
+
+```
+#if __STDC_VERSION__ < 202311l
+
+#define bool _Bool
+
+#define true 1
+
+#define false 0
+
+#endif
+
+#define __bool_true_false_are_defined 1
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/stdckdint ---
+# Standard library header <stdckdint.h> (C23) - cppreference.com
+
+This header is part of numeric library, in particular, it provides type-generic macros for checked integer arithmetic.
+
+| Functions | |
+| --- | --- |
+| ckd_add (C23) | checked addition operation on two integers (type-generic function macro) |
+| ckd_sub (C23) | checked subtraction operation on two integers (type-generic function macro) |
+| ckd_mul (C23) | checked multiplication operation on two integers (type-generic function macro) |
+
+### Synopsis
+
+```
+#define __STDC_VERSION_STDCKDINT_H__ 202311L
+
+bool ckd_add(/*type1*/* result, /*type2*/ a, /*type3*/ b);
+
+bool ckd_sub(/*type1*/* result, /*type2*/ a, /*type3*/ b);
+
+bool ckd_mul(/*type1*/* result, /*type2*/ a, /*type3*/ b);
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/stddef ---
+# Standard library header <stddef.h> - cppreference.com
+
+This header is part of types support library, in particular, it provides additional basic types and convenience macros.
+
+| Types | |
+| --- | --- |
+| ptrdiff_t | signed integer type returned when subtracting two pointers (typedef) |
+| nullptr_t (C23) | the type of the predefined null pointer constant nullptr (typedef) |
+| max_align_t (C11) | a type with alignment requirement as great as any other scalar type (typedef) |
+| size_t | unsigned integer type returned by the sizeof operator (typedef) |
+| Constants | |
+| NULL | implementation-defined null pointer constant (macro constant) |
+| Macros | |
+| offsetof | byte offset from the beginning of a struct type to specified member (function macro) |
+
+### Synopsis
+
+```
+#define __STDC_VERSION_STDDEF_H__ 202311L
+
+typedef /* see description */ ptrdiff_t;
+
+typedef /* see description */ nullptr_t;
+
+typedef /* see description */ max_align_t;
+
+typedef /* see description */ wchar_t;
+
+typedef /* see description */ size_t;
+
+#define NULL /* see description */
+
+#define unreachable() /* see description */
+
+#define offsetof(P, D) /* see description */
+```
+
+Only if the implementation defines `__STDC_LIB_EXT1__` and additionally the user code
+defines `__STDC_WANT_LIB_EXT1__` before any inclusion of `<stddef.h>`:
+
+```
+#if defined(__STDC_WANT_LIB_EXT1__)
+
+typedef /* see description */ rsize_t;
+
+#endif
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/stdint ---
+# Standard library header <stdint.h> (C99) - cppreference.com
+
+This header is part of types support library, providing fixed width integer types and a part of numeric limits interface.
+
+### Types
+
+For each of the following typedef names marked (optional), an implementation defines it if and only if the implementation provides a corresponding type.
+
+| int8_t int16_t int32_t int64_t int*N*_t (optional) | signed integer type with width of exactly *N* (typically 8, 16, 32 or 64) bits and no padding bits (typedef) |
+| int_fast8_t int_fast16_t int_fast32_t int_fast64_t int_fast*N*_t (optional) | fastest signed integer type with width of at least *N* (typically 8, 16, 32 or 64) bits (typedef) |
+| int_least8_t int_least16_t int_least32_t int_least64_t int_least*N*_t (optional) | smallest signed integer type with width of at least *N* (typically 8, 16, 32 or 64) bits (if `intN_t` is defined, `int_leastN_t` designates the same type) (typedef) |
+| intmax_t | maximum-width signed integer type other than a bit-precise integer type (since C23) (typedef) |
+| intptr_t (optional) | signed integer type other than a bit-precise integer type (since C23) capable of holding a pointer to `void` (typedef) |
+| uint8_t uint16_t uint32_t uint64_t uint*N*_t (optional) | unsigned integer type with width of exactly *N* (typically 8, 16, 32 or 64) bits and no padding bits (typedef) |
+| uint_fast8_t uint_fast16_t uint_fast32_t uint_fast64_t uint_fast*N*_t (optional) | fastest unsigned integer type with width of at least *N* (typically 8, 16, 32 or 64) bits (typedef) |
+| uint_least8_t uint_least16_t uint_least32_t uint_least64_t uint_least*N*_t (optional) | smallest unsigned integer type with width of at least *N* (typically 8, 16, 32 or 64) bits (if `uintN_t` is defined, `uint_leastN_t` designates the same type) (typedef) |
+| uintmax_t | maximum-width unsigned integer type other than a bit-precise integer type (since C23) (typedef) |
+| uintptr_t (optional) | unsigned integer type other than a bit-precise integer type (since C23) capable of holding a pointer to `void` (typedef) |
+
+### Macro constants
+
+For each of the following macros marked (conditionally present), an implementation defines it if and only if the implementation defines the corresponding
+typedef name.
+
+| Signed integers : bit width | |
+| INT*N*_WIDTH (C23) (conditionally present) | bit width of `intN_t` (*N* is typically 8, 16, 32 or 64) (macro constant) |
+| INT_FAST*N*_WIDTH (C23) (conditionally present) | bit width of `int_fastN_t` (*N* is typically 8, 16, 32 or 64) (macro constant) |
+| INT_LEAST*N*_WIDTH (C23) (conditionally present) | bit width of `int_leastN_t` (*N* is typically 8, 16, 32 or 64) (macro constant) |
+| INTMAX_WIDTH (C23) | bit width of `intmax_t` (macro constant) |
+| INTPTR_WIDTH (C23) (conditionally present) | bit width of `intptr_t` (macro constant) |
+| Signed integers : minimum value | |
+| INT*N*_MIN (conditionally present) | minimum value of `intN_t` (*N* is typically 8, 16, 32 or 64) (macro constant) |
+| INT_FAST*N*_MIN (conditionally present) | minimum value of `int_fastN_t` (*N* is typically 8, 16, 32 or 64) (macro constant) |
+| INT_LEAST*N*_MIN (conditionally present) | minimum value of `int_leastN_t` (*N* is typically 8, 16, 32 or 64) (macro constant) |
+| INTMAX_MIN | minimum value of `intmax_t` (macro constant) |
+| INTPTR_MIN (conditionally present) | minimum value of `intptr_t` (macro constant) |
+| Signed integers : maximum value | |
+| INT*N*_MAX (conditionally present) | maximum value of `intN_t` (*N* is typically 8, 16, 32 or 64) (macro constant) |
+| INT_FAST*N*_MAX (conditionally present) | maximum value of `int_fastN_t` (*N* is typically 8, 16, 32 or 64) (macro constant) |
+| INT_LEAST*N*_MAX (conditionally present) | maximum value of `int_leastN_t` (*N* is typically 8, 16, 32 or 64) (macro constant) |
+| INTMAX_MAX | maximum value of `intmax_t` (macro constant) |
+| INTPTR_MAX (conditionally present) | maximum value of `intptr_t` (macro constant) |
+| Unsigned integers : bit width | |
+| UINT*N*_WIDTH (C23) (conditionally present) | bit width of `uintN_t` (*N* is typically 8, 16, 32 or 64) (macro constant) |
+| UINT_FAST*N*_WIDTH (C23) (conditionally present) | bit width of `uint_fastN_t` (*N* is typically 8, 16, 32 or 64) (macro constant) |
+| UINT_LEAST*N*_WIDTH (C23) (conditionally present) | bit width of `uint_leastN_t` (*N* is typically 8, 16, 32 or 64) (macro constant) |
+| UINTMAX_WIDTH (C23) | bit width of `uintmax_t` (macro constant) |
+| UINTPTR_WIDTH (C23) (conditionally present) | bit width of `uintptr_t` (macro constant) |
+| Unsigned integers : maximum value | |
+| UINT*N*_MAX (conditionally present) | maximum value of `uintN_t` (*N* is typically 8, 16, 32 or 64) (macro constant) |
+| UINT_FAST*N*_MAX (conditionally present) | maximum value of `uint_fastN_t` (*N* is typically 8, 16, 32 or 64) (macro constant) |
+| UINT_LEAST*N*_MAX (conditionally present) | maximum value of `uint_leastN_t` (*N* is typically 8, 16, 32 or 64) (macro constant) |
+| UINTMAX_MAX | maximum value of `uintmax_t` (macro constant) |
+| UINTPTR_MAX (conditionally present) | maximum value of `uintptr_t` (macro constant) |
+| Characteristics of other integer types | |
+| PTRDIFF_WIDTH (C23) | bit width of ptrdiff_t (macro constant) |
+| PTRDIFF_MIN | minimum value of ptrdiff_t (macro constant) |
+| PTRDIFF_MAX | maximum value of ptrdiff_t (macro constant) |
+| SIZE_WIDTH (C23) | bit width of size_t (macro constant) |
+| SIZE_MAX | maximum value of size_t (macro constant) |
+| SIG_ATOMIC_WIDTH (C23) | bit width of sig_atomic_t (macro constant) |
+| SIG_ATOMIC_MIN | minimum value of sig_atomic_t (macro constant) |
+| SIG_ATOMIC_MAX | maximum value of sig_atomic_t (macro constant) |
+| WINT_WIDTH (C23) | bit width of `wint_t` (macro constant) |
+| WINT_MIN | minimum value of `wint_t` (macro constant) |
+| WINT_MAX | maximum value of `wint_t` (macro constant) |
+| WCHAR_WIDTH (C23) | bit width of `wchar_t` (macro constant) |
+| WCHAR_MIN | minimum value of `wchar_t` (macro constant) |
+| WCHAR_MAX | maximum value of `wchar_t` (macro constant) |
+
+### Function macros
+
+For each of the following macros marked (conditionally present), an implementation defines it if and only if the implementation defines the corresponding
+typedef name.
+
+| INT*N*_C (conditionally present) | expands to an integer constant expression of type `int_leastN_t`, its value is specified by the argument (function macro) |
+| INTMAX_C | expands to an integer constant expression of type `intmax_t`, its value is specified by the argument (function macro) |
+| UINT*N*_C (conditionally present) | expands to an integer constant expression of type `uint_leastN_t`, its value is specified by the argument (function macro) |
+| UINTMAX_C | expands to an integer constant expression of type `uintmax_t`, its value is specified by the argument (function macro) |
+
+### Synopsis
+
+```
+#define __STDC_VERSION_STDINT_H__ 202311L
+// see description of intN_t
+typedef /* see description */ int8_t;        // optional
+typedef /* see description */ int16_t;       // optional
+typedef /* see description */ int32_t;       // optional
+typedef /* see description */ int64_t;       // optional
+typedef /* see description */ intN_t;        // optional
+// see description of int_fastN_t
+typedef /* see description */ int_fast8_t;
+typedef /* see description */ int_fast16_t;
+typedef /* see description */ int_fast32_t;
+typedef /* see description */ int_fast64_t;
+typedef /* see description */ int_fastN_t;   // optional
+// see description of int_leastN_t
+typedef /* see description */ int_least8_t;
+typedef /* see description */ int_least16_t;
+typedef /* see description */ int_least32_t;
+typedef /* see description */ int_least64_t;
+typedef /* see description */ int_leastN_t;  // optional
+typedef /* see description */ intmax_t;
+typedef /* see description */ intptr_t;      // optional
+// see description of uintN_t
+typedef /* see description */ uint8_t;       // optional
+typedef /* see description */ uint16_t;      // optional
+typedef /* see description */ uint32_t;      // optional
+typedef /* see description */ uint64_t;      // optional
+typedef /* see description */ uintN_t;       // optional
+// see description of uint_fastN_t
+typedef /* see description */ uint_fast8_t;
+typedef /* see description */ uint_fast16_t;
+typedef /* see description */ uint_fast32_t;
+typedef /* see description */ uint_fast64_t;
+typedef /* see description */ uint_fastN_t;  // optional
+// see description of uint_leastN_t
+typedef /* see description */ uint_least8_t;
+typedef /* see description */ uint_least16_t;
+typedef /* see description */ uint_least32_t;
+typedef /* see description */ uint_least64_t;
+typedef /* see description */ uint_leastN_t; // optional
+typedef /* see description */ uintmax_t;
+typedef /* see description */ uintptr_t;     // optional
+#define INTN_MIN          /* see description */
+#define INTN_MAX          /* see description */
+#define UINTN_MAX         /* see description */
+#define INTN_WIDTH        /* see description */
+#define UINTN_WIDTH       /* see description */
+#define INT_FASTN_MIN     /* see description */
+#define INT_FASTN_MAX     /* see description */
+#define UINT_FASTN_MAX    /* see description */
+#define INT_FASTN_WIDTH   /* see description */
+#define UINT_FASTN_WIDTH  /* see description */
+#define INT_LEASTN_MIN    /* see description */
+#define INT_LEASTN_MAX    /* see description */
+#define UINT_LEASTN_MAX   /* see description */
+#define INT_LEASTN_WIDTH  /* see description */
+#define UINT_LEASTN_WIDTH /* see description */
+#define INTMAX_MIN        /* see description */
+#define INTMAX_MAX        /* see description */
+#define UINTMAX_MAX       /* see description */
+#define INTMAX_WIDTH      /* see description */
+#define UINTMAX_WIDTH     /* see description */
+#define INTPTR_MIN        /* see description */ // optional
+#define INTPTR_MAX        /* see description */ // optional
+#define UINTPTR_MAX       /* see description */ // optional
+#define INTPTR_WIDTH      /* see description */ // optional
+#define UINTPTR_WIDTH     /* see description */ // optional
+#define PTRDIFF_MIN       /* see description */
+#define PTRDIFF_MAX       /* see description */
+#define PTRDIFF_WIDTH     /* see description */
+#define SIZE_MAX          /* see description */
+#define SIZE_WIDTH        /* see description */
+#define SIG_ATOMIC_MIN    /* see description */
+#define SIG_ATOMIC_MAX    /* see description */
+#define SIG_ATOMIC_WIDTH  /* see description */
+#define WCHAR_MIN         /* see description */
+#define WCHAR_MAX         /* see description */
+#define WCHAR_WIDTH       /* see description */
+#define WINT_MIN          /* see description */
+#define WINT_MAX          /* see description */
+#define WINT_WIDTH        /* see description */
+#define INTN_C(value)     /* see description */
+#define UINTN_C(value)    /* see description */
+#define INTMAX_C(value)   /* see description */
+#define UINTMAX_C(value)  /* see description */
+```
+
+Only if the implementation defines `__STDC_LIB_EXT1__` and additionally the user
+code defines `__STDC_WANT_LIB_EXT1__` before any inclusion of `<stdint.h>`:
+
+```
+#if defined(__STDC_WANT_LIB_EXT1__)
+#define RSIZE_MAX /* see description */
+#endif
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/stdio ---
+# Standard library header <stdio.h> - cppreference.com
+
+This header is part of input/output library, providing generic file operation support and supplies I/O functions that work with narrow characters.
+
+### Types
+
+| FILE | object type, capable of holding all information needed to control a C I/O stream (typedef) |
+| fpos_t | non-array complete object type, capable of uniquely specifying a position and multibyte parser state in a file (typedef) |
+
+### Predefined standard streams
+
+| stdin stdout stderr | expression of type `FILE*` associated with the input stream, the output stream, the error output stream (macro constant) |
+
+### Functions
+
+| File access | |
+| fopen fopen_s (C11) | opens a file (function) |
+| freopen freopen_s (C11) | open an existing stream with a different name (function) |
+| fclose | closes a file (function) |
+| fflush | synchronizes an output stream with the actual file (function) |
+| setbuf | sets the buffer for a file stream (function) |
+| setvbuf | sets the buffer and its size for a file stream (function) |
+| Direct input/output | |
+| fread | reads from a file (function) |
+| fwrite | writes to a file (function) |
+| Unformatted input/output | |
+| Narrow character | |
+| fgetc getc | gets a character from a file stream (function) |
+| fgets | gets a character string from a file stream (function) |
+| fputc putc | writes a character to a file stream (function) |
+| fputs | writes a character string to a file stream (function) |
+| getchar | reads a character from stdin (function) |
+| gets gets_s (removed in C11) (C11) | reads a character string from stdin (function) |
+| putchar | writes a character to stdout (function) |
+| puts | writes a character string to stdout (function) |
+| ungetc | puts a character back into a file stream (function) |
+| Formatted input/output | |
+| Narrow character | |
+| scanf fscanf sscanf scanf_s fscanf_s sscanf_s (C11) | reads formatted input from stdin, a file stream or a buffer (function) |
+| vscanf vfscanf vsscanf vscanf_s vfscanf_s vsscanf_s (C99) (C11) | reads formatted input from stdin, a file stream or a buffer using variable argument list (function) |
+| printf fprintf sprintf snprintf printf_s fprintf_s sprintf_s snprintf_s (C99) (C11) | prints formatted output to stdout, a file stream or a buffer (function) |
+| vprintf vfprintf vsprintf vsnprintf vprintf_s vfprintf_s vsprintf_s vsnprintf_s (C99) (C11) | prints formatted output to stdout, a file stream or a buffer using variable argument list (function) |
+| File positioning | |
+| ftell | returns the current file position indicator (function) |
+| fgetpos | gets the file position indicator (function) |
+| fseek | moves the file position indicator to a specific location in a file (function) |
+| fsetpos | moves the file position indicator to a specific location in a file (function) |
+| rewind | moves the file position indicator to the beginning in a file (function) |
+| Error handling | |
+| clearerr | clears errors (function) |
+| feof | checks for the end-of-file (function) |
+| ferror | checks for a file error (function) |
+| perror | displays a character string corresponding of the current error to stderr (function) |
+| Operations on files | |
+| remove | erases a file (function) |
+| rename | renames a file (function) |
+| tmpfile tmpfile_s (C11) | returns a pointer to a temporary file (function) |
+| tmpnam tmpnam_s (C11) | returns a unique filename (function) |
+
+### Macro constants
+
+| EOF | integer constant expression of type `int` and negative value (macro constant) |
+| FOPEN_MAX | maximum number of files that can be open simultaneously (macro constant) |
+| FILENAME_MAX | size needed for an array of `char` to hold the longest supported file name (macro constant) |
+| _PRINTF_NAN_LEN_MAX (C23) | the maximum number of characters output for any (possibly negated) NaN value (macro constant) |
+| BUFSIZ | size of the buffer used by setbuf (macro constant) |
+| _IOFBF _IOLBF _IONBF | indicates the buffering mode (fully buffered / line buffered / unbuffered) to be set by setvbuf (macro constant) |
+| SEEK_SET SEEK_CUR SEEK_END | indicates the offset origin (beginning / current position / end) to be used by fseek (macro constant) |
+| TMP_MAX TMP_MAX_S (C11) | maximum number of unique filenames that can be generated by tmpnam / tmpnam_s (macro constant) |
+| L_tmpnam L_tmpnam_s (C11) | size needed for an array of `char` to hold the result of tmpnam / tmpnam_s (macro constant) |
+
+### Synopsis
+
+```
+#define __STDC_VERSION_STDIO_H__ 202311L
+typedef /* see description */ FILE;
+typedef /* see description */ size_t;
+typedef /* see description */ FILE;
+typedef /* see description */ fpos_t;
+#define NULL         /* see description */
+#define _IOFBF       /* see description */
+#define _IOLBF       /* see description */
+#define _IONBF       /* see description */
+#define BUFSIZ       /* see description */
+#define EOF          /* see description */
+#define FOPEN_MAX    /* see description */
+#define FILENAME_MAX /* see description */
+#define L_tmpnam     /* see description */
+#define SEEK_CUR     /* see description */
+#define SEEK_END     /* see description */
+#define SEEK_SET     /* see description */
+#define TMP_MAX      /* see description */
+#define stdin        /* see description */
+#define stdout       /* see description */
+#define stderr       /* see description */
+#define _PRINTF_NAN_LEN_MAX /* see description */
+int remove(const char* filename);
+int rename(const char* old, const char* new);
+FILE* tmpfile(void);
+char* tmpnam(char* s);
+int fclose(FILE* stream);
+int fflush(FILE* stream);
+FILE* fopen(const char* restrict filename, const char* restrict mode);
+FILE* freopen(const char* restrict filename, const char* restrict mode, FILE* restrict stream);
+void setbuf(FILE* restrict stream, char* restrict buf);
+int setvbuf(FILE* restrict stream, char* restrict buf, int mode, size_t size);
+int printf(const char* restrict format, ...);
+int scanf(const char* restrict format, ...);
+int snprintf(char* restrict s, size_t n, const char* restrict format, ...);
+int sprintf(char* restrict s, const char* restrict format, ...);
+int sscanf(const char* restrict s, const char* restrict format, ...);
+int vfprintf(FILE* restrict stream, const char* restrict format, va_list arg);
+int vfscanf(FILE* restrict stream, const char* restrict format, va_list arg);
+int vprintf(const char* restrict format, va_list arg);
+int vscanf(const char* restrict format, va_list arg);
+int vsnprintf(char* restrict s, size_t n, const char* restrict format, va_list arg);
+int vsprintf(char* restrict s, const char* restrict format, va_list arg);
+int vsscanf(const char* restrict s, const char* restrict format, va_list arg);
+int fgetc(FILE* stream);
+char* fgets(char* restrict s, int n, FILE* restrict stream);
+int fputc(int c, FILE* stream);
+int fputs(const char* restrict s, FILE* stream);
+int getc(FILE* stream);
+int getchar(void);
+int putc(int c, FILE* stream);
+int putchar(int c);
+int puts(const char* s);
+int ungetc(int c, FILE* stream);
+size_t fread(void* restrict ptr, size_t size, size_t nmemb, FILE* restrict stream);
+size_t fwrite(const void* restrict ptr, size_t size, size_t nmemb, FILE* restrict stream);
+int fgetpos(FILE* restrict stream, fpos_t* restrict pos);
+int fseek(FILE* stream, long int offset, int whence);
+int fsetpos(FILE* stream, const fpos_t* pos);
+long int ftell(FILE* stream);
+void rewind(FILE* stream);
+void clearerr(FILE* stream);
+int feof(FILE* stream);
+int ferror(FILE* stream);
+void perror(const char* s);
+int fprintf(FILE* restrict stream, const char* restrict format, ...);
+int fscanf(FILE* restrict stream, const char* restrict format, ...);
+```
+
+Only if the implementation defines `__STDC_LIB_EXT1__` and additionally the user
+code defines `__STDC_WANT_LIB_EXT1__` before any inclusion of `<stdio.h>`:
+
+```
+#if defined(__STDC_WANT_LIB_EXT1__)
+#define L_tmpnam_s /* see description */
+#define TMP_MAX_S  /* see description */
+typedef /* see description */ errno_t;
+typedef /* see description */ rsize_t;
+errno_t tmpfile_s(FILE* restrict* restrict streamptr);
+errno_t tmpnam_s(char* s, rsize_t maxsize);
+errno_t fopen_s(FILE* restrict* restrict streamptr, const char* restrict filename, const char* restrict mode);
+errno_t freopen_s(FILE* restrict* restrict newstreamptr, const char* restrict filename, const char* restrict mode, FILE* restrict stream);
+int fprintf_s(FILE* restrict stream, const char* restrict format, ...);
+int fscanf_s(FILE* restrict stream, const char* restrict format, ...);
+int printf_s(const char* restrict format, ...);
+int scanf_s(const char* restrict format, ...);
+int snprintf_s(char* restrict s, rsize_t n, const char* restrict format, ...);
+int sprintf_s(char* restrict s, rsize_t n, const char* restrict format, ...);
+int sscanf_s(const char* restrict s, const char* restrict format, ...);
+int vfprintf_s(FILE* restrict stream, const char* restrict format, va_list arg);
+int vfscanf_s(FILE* restrict stream, const char* restrict format, va_list arg);
+int vprintf_s(const char* restrict format, va_list arg);
+int vscanf_s(const char* restrict format, va_list arg);
+int vsnprintf_s(char* restrict s, rsize_t n, const char* restrict format, va_list arg);
+int vsprintf_s(char* restrict s, rsize_t n, const char* restrict format, va_list arg);
+int vsscanf_s(const char* restrict s, const char* restrict format, va_list arg);
+char* gets_s(char* s, rsize_t n);
+#endif
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/stdlib ---
+# Standard library header <stdlib.h> - cppreference.com
+
+This header is a part of program support utilities library, in particular, it provides functions for program termination, memory management,
+string conversions, random numbers generation. The header also provides some algorithms.
+
+| Functions | |
+| --- | --- |
+| abort | causes abnormal program termination (without cleaning up) (function) |
+| exit | causes normal program termination with cleaning up (function) |
+| quick_exit (C11) | causes normal program termination without completely cleaning up (function) |
+| _Exit (C99) | causes normal program termination without cleaning up (function) |
+| atexit | registers a function to be called on exit() invocation (function) |
+| at_quick_exit (C11) | registers a function to be called on quick_exit invocation (function) |
+| EXIT_SUCCESS EXIT_FAILURE | indicates program execution execution status (macro constant) |
+
+Note: the <stdlib.h> header page on the site lists only the program-termination functions in its table at fetch time; the remaining functions
+(memory management, string conversion, random numbers, algorithms, multibyte conversion) appear in the synopsis below. The synopsis also
+contains a stray `call_once` declaration (which belongs to <threads.h>) as it appears on the site page.
+
+### Synopsis
+
+```
+#define __STDC_VERSION_STDLIB_H__ 202311L
+// TODO: types and macros
+void call_once(once_flag* flag, void (*func)(void));
+double atof(const char* nptr);
+int atoi(const char* nptr);
+long int atol(const char* nptr);
+long long int atoll(const char* nptr);
+int strfromd(char* restrict s, size_t n, const char* restrict format, double fp);
+int strfromf(char* restrict s, size_t n, const char* restrict format, float fp);
+int strfroml(char* restrict s, size_t n, const char* restrict format, long double fp);
+double strtod(const char* restrict nptr, char** restrict endptr);
+float strtof(const char* restrict nptr, char** restrict endptr);
+long double strtold(const char* restrict nptr, char** restrict endptr);
+long int strtol(const char* restrict nptr, char** restrict endptr, int base);
+long long int strtoll(const char* restrict nptr, char** restrict endptr, int base);
+unsigned long int strtoul(const char* restrict nptr, char** restrict endptr, int base);
+unsigned long long int strtoull(const char* restrict nptr, char** restrict endptr, int base);
+int rand(void);
+void srand(unsigned int seed);
+void* aligned_alloc(size_t alignment, size_t size);
+void* calloc(size_t nmemb, size_t size);
+void free(void* ptr);
+void free_sized(void* ptr, size_t size);
+void free_aligned_sized(void* ptr, size_t alignment, size_t size);
+void* malloc(size_t size);
+void* realloc(void* ptr, size_t size);
+[[noreturn]] void abort(void);
+int atexit(void (*func)(void));
+int at_quick_exit(void (*func)(void));
+[[noreturn]] void exit(int status);
+[[noreturn]] void _Exit(int status);
+char* getenv(const char* name);
+[[noreturn]] void quick_exit(int status);
+int system(const char* string);
+QVoid* bsearch(const void* key, QVoid* base, size_t nmemb, size_t size, int (*compar)(const void* , const void* ));
+void qsort(void* base, size_t nmemb, size_t size, int (*compar)(const void* , const void* ));
+int abs(int j);
+long int labs(long int j);
+long long int llabs(long long int j);
+div_t div(int numer, int denom);
+ldiv_t ldiv(long int numer, long int denom);
+lldiv_t lldiv(long long int numer, long long int denom);
+int mblen(const char* s, size_t n);
+int mbtowc(wchar_t* restrict pwc, const char* restrict s, size_t n);
+int wctomb(char* s, wchar_t wc);
+size_t mbstowcs(wchar_t* restrict pwcs, const char* restrict s, size_t n);
+size_t wcstombs(char* restrict s, const wchar_t* restrict pwcs, size_t n);
+size_t memalignment(const void* p);
+```
+
+Only if the implementation defines `__STDC_IEC_60559_DFP__`:
+
+```
+int strfromd32(char* restrict s, size_t n, const char* restrict format, _Decimal32 fp);
+int strfromd64(char* restrict s, size_t n, const char* restrict format, _Decimal64 fp);
+int strfromd128(char* restrict s, size_t n, const char* restrict format, _Decimal128 fp);
+_Decimal32 strtod32(const char* restrict nptr, char** restrict endptr);
+_Decimal64 strtod64(const char* restrict nptr, char** restrict endptr);
+_Decimal128 strtod128(const char* restrict nptr, char** restrict endptr);
+```
+
+Only if the implementation defines `__STDC_IEC_60559_TYPES__` and additionally the user code
+defines `__STDC_WANT_IEC_60559_TYPES_EXT__` before any inclusion of `<stdlib.h>`:
+
+```
+#ifdef __STDC_WANT_IEC_60559_TYPES_EXT__
+int strfromfN(char* restrict s, size_t n, const char* restrict format, _FloatN fp);
+int strfromfNx(char* restrict s, size_t n, const char* restrict format, _FloatNx fp);
+int strfromdN(char* restrict s, size_t n, const char* restrict format, _DecimalN fp);
+int strfromdNx(char* restrict s, size_t n, const char* restrict format, _DecimalNx fp);
+_FloatN strtofN(const char* restrict nptr, char** restrict endptr);
+_FloatNx strtofNx(const char* restrict nptr, char** restrict endptr);
+_DecimalN strtodN(const char* restrict nptr, char** restrict endptr);
+_DecimalNx strtodNx(const char* restrict nptr, char** restrict endptr);
+int strfromencfN(char* restrict s, size_t n, const char* restrict format, const unsigned char encptr[restrict static N/8]);
+int strfromencdecdN(char* restrict s, size_t n, const char* restrict format, const unsigned char encptr[restrict static N/8]);
+int strfromencbindN(char* restrict s, size_t n, const char* restrict format, const unsigned char encptr[restrict static N/8]);
+void strtoencfN(unsigned char encptr[restrict static N/8], const char* restrict nptr, char** restrict endptr);
+void strtoencdecdN(unsigned char encptr[restrict static N/8], const char* restrict nptr, char** restrict endptr);
+void strtoencbindN(unsigned char encptr[restrict static N/8], const char* restrict nptr, char** restrict endptr);
+#endif
+```
+
+Only if the implementation defines `__STDC_LIB_EXT1__` and additionally the user
+code defines `__STDC_WANT_LIB_EXT1__` before any inclusion of `<stdlib.h>`:
+
+```
+#if defined(__STDC_WANT_LIB_EXT1__)
+constraint_handler_t set_constraint_handler_s(constraint_handler_t handler);
+void abort_handler_s(const char* restrict msg, void* restrict ptr, errno_t error);
+void ignore_handler_s(const char* restrict msg, void* restrict ptr, errno_t error);
+errno_t getenv_s(size_t* restrict len, char* restrict value, rsize_t maxsize, const char* restrict name);
+QVoid* bsearch_s(const void* key, QVoid* base, rsize_t nmemb, rsize_t size, int (*compar)(const void* k, const void* y, void* context), void* context);
+errno_t qsort_s(void* base, rsize_t nmemb, rsize_t size, int (*compar)(const void* x, const void* y, void* context), void* context);
+errno_t wctomb_s(int* restrict status, char* restrict s, rsize_t smax, wchar_t wc);
+errno_t mbstowcs_s(size_t* restrict retval, wchar_t* restrict dst, rsize_t dstmax, const char* restrict src, rsize_t len);
+errno_t wcstombs_s(size_t* restrict retval, char* restrict dst, rsize_t dstmax, const wchar_t* restrict src, rsize_t len);
+#endif
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/stdmchar ---
+# Standard library header <stdmchar.h> (C29) - cppreference.com
+
+Note: <stdmchar.h> is a draft C29 (C2y) header for text transcoding. The site page at fetch time (2026-11-05) consists
+essentially of a single large synopsis. The synopsis below is reflowed: each declaration is on one line (multi-line
+declarations in the page text are joined), with no content removed. All 50 transcode functions follow the same
+signature pattern:
+stdc_mcerr stdc_<from>to<to>(size_t* restrict output_size, <ToChar>* restrict* restrict output, size_t* restrict input_size, const <FromChar>* restrict* restrict input, mbstate_t* restrict state);
+where the "rt" (restartable, with mbstate_t) family uses infixes mcn/mwcn/c8n/c16n/c32n and the "sn" family uses
+mcsn/mwcsn/c8sn/c16sn/c32sn. The from/to codes are: mc = multibyte char, wc = wide char, c8 = char8_t, c16 = char16_t, c32 = char32_t.
+
+```
+#define __STDC_VERSION_STDMCHAR_H__ 202900L // 202ymmL
+typedef /* see description */ char16_t;
+typedef /* see description */ char32_t;
+typedef /* see description */ char8_t;
+typedef /* see description */ mbstate_t;
+typedef /* see description */ size_t;
+typedef /* see description */ stdc_mcerr;
+typedef /* see description */ wchar_t;
+#define MB_UTF16     /* see description */
+#define MB_UTF32     /* see description */
+#define MB_UTF8      /* see description */
+#define STDC_C16_MAX /* see description */
+#define STDC_C32_MAX /* see description */
+#define STDC_C8_MAX  /* see description */
+#define STDC_MC_MAX  /* see description */
+#define STDC_MWC_MAX /* see description */
+#define WCHAR_MAX    /* see description */
+#define WCHAR_MIN    /* see description */
+#define WCHAR_UTF16  /* see description */
+#define WCHAR_UTF32  /* see description */
+#define WCHAR_UTF8   /* see description */
+#define WCHAR_WIDTH  /* see description */
+enum stdc_mcerr
+{
+    stdc_mcerr_ok = 0
+    stdc_mcerr_invalid = -1,
+    stdc_mcerr_incomplete_input = -2,
+    stdc_mcerr_insufficient_output = -3
+};
+stdc_mcerr stdc_mcnrtomcn(size_t* restrict output_size, char* restrict* restrict output, size_t* restrict input_size, const char* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mcnrtomwcn(size_t* restrict output_size, wchar_t* restrict* restrict output, size_t* restrict input_size, const char* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mcnrtoc8n(size_t* restrict output_size, char8_t* restrict* restrict output, size_t* restrict input_size, const char* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mcnrtoc16n(size_t* restrict output_size, char16_t* restrict* restrict output, size_t* restrict input_size, const char* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mcnrtoc32n(size_t* restrict output_size, char32_t* restrict* restrict output, size_t* restrict input_size, const char* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mwcnrtomcn(size_t* restrict output_size, char* restrict* restrict output, size_t* restrict input_size, const wchar_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mwcnrtomwcn(size_t* restrict output_size, wchar_t* restrict* restrict output, size_t* restrict input_size, const wchar_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mwcnrtoc8n(size_t* restrict output_size, char8_t* restrict* restrict output, size_t* restrict input_size, const wchar_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mwcnrtoc16n(size_t* restrict output_size, char16_t* restrict* restrict output, size_t* restrict input_size, const wchar_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mwcnrtoc32n(size_t* restrict output_size, char32_t* restrict* restrict output, size_t* restrict input_size, const wchar_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c8nrtomcn(size_t* restrict output_size, char* restrict* restrict output, size_t* restrict input_size, const char8_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c8nrtomwcn(size_t* restrict output_size, wchar_t* restrict* restrict output, size_t* restrict input_size, const char8_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c8nrtoc8n(size_t* restrict output_size, char8_t* restrict* restrict output, size_t* restrict input_size, const char8_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c8nrtoc16n(size_t* restrict output_size, char16_t* restrict* restrict output, size_t* restrict input_size, const char8_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c8nrtoc32n(size_t* restrict output_size, char32_t* restrict* restrict output, size_t* restrict input_size, const char8_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c16nrtomcn(size_t* restrict output_size, char* restrict* restrict output, size_t* restrict input_size, const char16_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c16nrtomwcn(size_t* restrict output_size, wchar_t* restrict* restrict output, size_t* restrict input_size, const char16_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c16nrtoc8n(size_t* restrict output_size, char8_t* restrict* restrict output, size_t* restrict input_size, const char16_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c16nrtoc16n(size_t* restrict output_size, char16_t* restrict* restrict output, size_t* restrict input_size, const char16_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c16nrtoc32n(size_t* restrict output_size, char32_t* restrict* restrict output, size_t* restrict input_size, const char16_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c32nrtomcn(size_t* restrict output_size, char* restrict* restrict output, size_t* restrict input_size, const char32_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c32nrtomwcn(size_t* restrict output_size, wchar_t* restrict* restrict output, size_t* restrict input_size, const char32_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c32nrtoc8n(size_t* restrict output_size, char8_t* restrict* restrict output, size_t* restrict input_size, const char32_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c32nrtoc16n(size_t* restrict output_size, char32_t* restrict* restrict output, size_t* restrict input_size, const char32_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c32nrtoc32n(size_t* restrict output_size, char32_t* restrict* restrict output, size_t* restrict input_size, const char32_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mcsnrtomcsn(size_t* restrict output_size, char* restrict* restrict output, size_t* restrict input_size, const char* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mcsnrtomwcsn(size_t* restrict output_size, wchar_t* restrict* restrict output, size_t* restrict input_size, const char* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mcsnrtoc8sn(size_t* restrict output_size, char8_t* restrict* restrict output, size_t* restrict input_size, const char* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mcsnrtoc16sn(size_t* restrict output_size, char16_t* restrict* restrict output, size_t* restrict input_size, const char* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mcsnrtoc32sn(size_t* restrict output_size, char32_t* restrict* restrict output, size_t* restrict input_size, const char32_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mwcsnrtomcsn(size_t* restrict output_size, char* restrict* restrict output, size_t* restrict input_size, const wchar_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mwcsnrtomwcsn(size_t* restrict output_size, wchar_t* restrict* restrict output, size_t* restrict input_size, const wchar_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mwcsnrtoc8sn(size_t* restrict output_size, char8_t* restrict* restrict output, size_t* restrict input_size, const wchar_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mwcsnrtoc16sn(size_t* restrict output_size, char16_t* restrict* restrict output, size_t* restrict input_size, const wchar_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_mwcsnrtoc32sn(size_t* restrict output_size, char32_t* restrict* restrict output, size_t* restrict input_size, const wchar_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c8snrtomwcsn(size_t* restrict output_size, wchar_t* restrict* restrict output, size_t* restrict input_size, const char8_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c8snrtomcsn(size_t* restrict output_size, char* restrict* restrict output, size_t* restrict input_size, const char8_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c8snrtoc8sn(size_t* restrict output_size, char8_t* restrict* restrict output, size_t* restrict input_size, const char8_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c8snrtoc16sn(size_t* restrict output_size, char16_t* restrict* restrict output, size_t* restrict input_size, const char8_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c8snrtoc32sn(size_t* restrict output_size, char8_t* restrict* restrict output, size_t* restrict input_size, const char8_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c16snrtomwcsn(size_t* restrict output_size, wchar_t* restrict* restrict output, size_t* restrict input_size, const char16_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c16snrtomcsn(size_t* restrict output_size, char* restrict* restrict output, size_t* restrict input_size, const char16_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c16snrtoc8sn(size_t* restrict output_size, char8_t* restrict* restrict output, size_t* restrict input_size, const char16_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c16snrtoc16sn(size_t* restrict output_size, char16_t* restrict* restrict output, size_t* restrict input_size, const char16_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c16snrtoc32sn(size_t* restrict output_size, char16_t* restrict* restrict output, size_t* restrict input_size, const char16_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c32snrtomcsn(size_t* restrict output_size, char* restrict* restrict output, size_t* restrict input_size, const char32_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c32snrtomwcsn(size_t* restrict output_size, wchar_t* restrict* restrict output, size_t* restrict input_size, const char32_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c32snrtoc8sn(size_t* restrict output_size, char8_t* restrict* restrict output, size_t* restrict input_size, const char32_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c32snrtoc16sn(size_t* restrict output_size, char16_t* restrict* restrict output, size_t* restrict input_size, const char32_t* restrict* restrict input, mbstate_t* restrict state);
+stdc_mcerr stdc_c32snrtoc32sn(size_t* restrict output_size, char32_t* restrict* restrict output, size_t* restrict input_size, const char32_t* restrict* restrict input, mbstate_t* restrict state);
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/stdnoreturn ---
+# Standard library header <stdnoreturn.h> (C11)(deprecated in C23) - cppreference.com
+
+This header provides a convenience macro noreturn, that specifies that the function does not return to its point of invocation.
+
+| Macro | |
+| --- | --- |
+| noreturn (C11) (deprecated in C23) | convenience macro, expands to _Noreturn (keyword macro) |
+
+### Synopsis
+
+```
+#define noreturn _Noreturn
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/string ---
+# Standard library header <string.h> - cppreference.com
+
+This header provides functions for handling null-terminated byte strings.
+
+| Macros | |
+| --- | --- |
+| NULL | implementation-defined null pointer constant (macro constant) |
+| Types | |
+| size_t | unsigned integer type returned by the sizeof operator (typedef) |
+| Functions | |
+| String manipulation | |
+| strcpy strcpy_s (C11) | copies one string to another (function) |
+| strncpy strncpy_s (C11) | copies a certain amount of characters from one string to another (function) |
+| strcat strcat_s (C11) | concatenates two strings (function) |
+| strncat strncat_s (C11) | concatenates a certain amount of characters of two strings (function) |
+| strxfrm | transform a string so that strcmp would produce the same result as strcoll (function) |
+| strdup (C23) | allocates a copy of a string (function) |
+| strndup (C23) | allocates a copy of a string of specified size (function) |
+| String examination | |
+| strlen strnlen_s (C11) | returns the length of a given string (function) |
+| strcmp | compares two strings (function) |
+| strncmp | compares a certain amount of characters of two strings (function) |
+| strcoll | compares two strings in accordance to the current locale (function) |
+| strchr | finds the first occurrence of a character (function) |
+| strrchr | finds the last occurrence of a character (function) |
+| strspn | returns the length of the maximum initial segment that consists of only the characters found in another byte string (function) |
+| strcspn | returns the length of the maximum initial segment that consists of only the characters not found in another byte string (function) |
+| strpbrk | finds the first location of any character in one string, in another string (function) |
+| strstr | finds the first occurrence of a substring of characters (function) |
+| strtok strtok_s (C11) | finds the next token in a byte string (function) |
+| Character array manipulation | |
+| memchr | searches an array for the first occurrence of a character (function) |
+| memcmp | compares two buffers (function) |
+| memset memset_explicit memset_s (C23) (C11) | fills a buffer with a character (function) |
+| memcpy memcpy_s (C11) | copies one buffer to another (function) |
+| memmove memmove_s (C11) | moves one buffer to another (function) |
+| memccpy (C23) | copies one buffer to another, stopping after the specified delimiter (function) |
+| Miscellaneous | |
+| strerror strerror_s strerrorlen_s (C11) (C11) | returns a text version of a given error code (function) |
+
+### Synopsis
+
+```
+#define __STDC_VERSION_STRING_H__ 202311L
+#define NULL /* see description */
+typedef /* see description */ size_t;
+void* memcpy(void* restrict s1, const void* restrict s2, size_t n);
+void* memccpy(void* restrict s1, const void* restrict s2, int c, size_t n);
+void* memmove(void* s1, const void* s2, size_t n);
+char* strcpy(char* restrict s1, const char* restrict s2);
+char* strncpy(char* restrict s1, const char* restrict s2, size_t n);
+char* strdup(const char* s);
+char* strndup(const char* s, size_t n);
+char* strcat(char* restrict s1, const char* restrict s2);
+char* strncat(char* restrict s1, const char* restrict s2, size_t n);
+int memcmp(const void* s1, const void* s2, size_t n);
+int strcmp(const char* s1, const char* s2);
+int strcoll(const char* s1, const char* s2);
+int strncmp(const char* s1, const char* s2, size_t n);
+size_t strxfrm(char* restrict s1, const char* restrict s2, size_t n);
+/*QVoid*/* memchr(/*QVoid*/* s, int c, size_t n);
+/*QChar*/* strchr(/*QChar*/* s, int c);
+size_t strcspn(const char* s1, const char* s2);
+/*QChar*/* strpbrk(/*QChar*/* s1, const char* s2);
+/*QChar*/* strrchr(/*QChar*/* s, int c);
+size_t strspn(const char* s1, const char* s2);
+/*QChar*/* strstr(/*QChar*/* s1, const char* s2);
+char* strtok(char* restrict s1, const char* restrict s2);
+void* memset(void* s, int c, size_t n);
+void* memset_explicit(void* s, int c, size_t n);
+char* strerror(int errnum);
+size_t strlen(const char* s);
+size_t strnlen(const char* s, size_t n);
+```
+
+Only if the implementation defines `__STDC_LIB_EXT1__` and additionally the user code defines `__STDC_WANT_LIB_EXT1__` before any inclusion of `<string.h>`:
+
+```
+#ifdef __STDC_WANT_LIB_EXT1__
+tyepdef /* see description */ errno_t;
+tyepdef /* see description */ rsize_t;
+errno_t memcpy_s(void* restrict s1, rsize_t s1max, const void* restrict s2, rsize_t n);
+errno_t memmove_s(void* s1, rsize_t s1max, const void* s2, rsize_t n);
+errno_t strcpy_s(char* restrict s1, rsize_t s1max, const char* restrict s2);
+errno_t strncpy_s(char* restrict s1, rsize_t s1max, const char* restrict s2, rsize_t n);
+errno_t strcat_s(char* restrict s1, rsize_t s1max, const char* restrict s2);
+errno_t strncat_s(char* restrict s1, rsize_t s1max, const char* restrict s2, rsize_t n);
+char* strtok_s(char* restrict s1, rsize_t* restrict s1max, const char* restrict s2, char** restrict ptr);
+errno_t memset_s(void* s, rsize_t smax, int c, rsize_t n)
+errno_t strerror_s(char* s, rsize_t maxsize, errno_t errnum);
+size_t strerrorlen_s(errno_t errnum);
+size_t strnlen_s(const char* s, size_t maxsize);
+#endif
+```
+
+Note: the site synopsis spells the two typedefs above as "tyepdef" (a typo on the cppreference page itself, preserved as fetched).
+
+--- SOURCE: https://en.cppreference.com/c/header/tgmath ---
+# Standard library header <tgmath.h> (C99) - cppreference.com
+
+This header is part of numeric library and provides type-generic macros that determine which real or, when applicable, complex function to call based on
+the types of the arguments.
+
+### Synopsis
+
+```
+#include <math.h>
+#include <complex.h>
+#define __STDC_VERSION_TGMATH_H__ 202311L
+```
+
+The synopsis defines a type-generic macro for each of the following names (each `#define <name> /* see description */` on the site page):
+acos, acosh, acospi, asin, asinh, asinpi, atan, atan2, atan2pi, atanh, atanpi, cbrt, ceil, compoundn, copysign, cos, cosh, cospi, dadd, ddiv, dfma, dmul, dsqrt, dsub, erf, erfc, exp, exp10, exp10m1, exp2, exp2m1, expm1, fabs, fadd, fdim, fdiv, ffma, floor, fma, fmax, fmaximum, fmaximum_mag, fmaximum_mag_num, fmaximum_num, fmin, fminimum, fminimum_mag, fminimum_mag_num, fminimum_num, fmod, fmul, frexp, fromfp, fromfpx, fsqrt, fsub, hypot, ilogb, ldexp, lgamma, llogb, llrint, llround, log, log10, log10p1, log1p, log2, log2p1, logb, logp1, lrint, lround, nearbyint, nextafter, nextdown, nexttoward, nextup, pow, pown, powr, remainder, remquo, rint, rootn, round, roundeven, rsqrt, scalbln, scalbn, sin, sinh, sinpi, sqrt, tan, tanh, tanpi, tgamma, trunc, ufromfp, ufromfpx.
+
+Only if the implementation does not define `__STDC_NO_COMPLEX__`:
+carg, cimag, conj, cproj, creal.
+
+Only if the implementation defines `__STDC_IEC_60559_DFP__`:
+d32add, d32div, d32fma, d32mul, d32sqrt, d32sub, d64add, d64div, d64fma, d64mul, d64sqrt, d64sub, llquantexp, quantize, quantum, samequantum.
+
+Only if the implementation defines `__STDC_IEC_60559_TYPES__` and the user code defines `__STDC_WANT_IEC_60559_TYPES_EXT__`:
+dMadd, dMdiv, dMfma, dMmul, dMsqrt, dMsub, dMxadd, dMxdiv, dMxfma, dMxmul, dMxsqrt, dMxsub, fMadd, fMdiv, fMfma, fMmul, fMsqrt, fMsub, fMxadd, fMxdiv, fMxfma, fMxmul, fMxsqrt, fMxsub.
+
+--- SOURCE: https://en.cppreference.com/c/header/threads ---
+# Standard library header <threads.h> (C11) - cppreference.com
+
+This header is part of concurrency support library and provides support for threads, mutual exclusion, condition variables, and thread-specific storages.
+
+### Threads
+
+| `thrd_t` | implementation-defined complete object type identifying a thread |
+| thrd_create (C11) | creates a thread (function) |
+| thrd_equal (C11) | checks if two identifiers refer to the same thread (function) |
+| thrd_current (C11) | obtains the current thread identifier (function) |
+| thrd_sleep (C11) | suspends execution of the calling thread for the given period of time (function) |
+| thrd_yield (C11) | yields the current time slice (function) |
+| thrd_exit (C11) | terminates the calling thread (function) |
+| thrd_detach (C11) | detaches a thread (function) |
+| thrd_join (C11) | blocks until a thread terminates (function) |
+| thrd_success thrd_timedout thrd_busy thrd_nomem thrd_error (C11) | indicates a thread error status (constant) |
+| thrd_start_t (C11) | a typedef of the function pointer type `int(*)(void*)`, used by `thrd_create` (typedef) |
+
+### Mutual exclusion
+
+| `mtx_t` | mutex identifier |
+| mtx_init (C11) | creates a mutex (function) |
+| mtx_lock (C11) | blocks until locks a mutex (function) |
+| mtx_timedlock (C11) | blocks until locks a mutex or times out (function) |
+| mtx_trylock (C11) | locks a mutex or returns without blocking if already locked (function) |
+| mtx_unlock (C11) | unlocks a mutex (function) |
+| mtx_destroy (C11) | destroys a mutex (function) |
+| mtx_plain mtx_recursive mtx_timed (C11) | defines the type of a mutex (enum) |
+| Call once | |
+| call_once (C11) | calls a function exactly once (function) |
+
+### Condition variables
+
+| `cnd_t` | condition variable identifier |
+| cnd_init (C11) | creates a condition variable (function) |
+| cnd_signal (C11) | unblocks one thread blocked on a condition variable (function) |
+| cnd_broadcast (C11) | unblocks all threads blocked on a condition variable (function) |
+| cnd_wait (C11) | blocks on a condition variable (function) |
+| cnd_timedwait (C11) | blocks on a condition variable, with a timeout (function) |
+| cnd_destroy (C11) | destroys a condition variable (function) |
+
+### Thread-local storage
+
+| thread_local (C11) (removed in C23) | convenience macro for storage-class specifier `_Thread_local` (keyword macro) |
+| `tss_t` | thread-specific storage pointer |
+| TSS_DTOR_ITERATIONS (C11) | maximum number of times destructors are called (macro constant) |
+| `tss_dtor_t` (C11) | function pointer type `void(*)(void*)`, used for TSS destructor (typedef) |
+| tss_create (C11) | creates thread-specific storage pointer with a given destructor (function) |
+| tss_get (C11) | reads from thread-specific storage (function) |
+| tss_set (C11) | write to thread-specific storage (function) |
+| tss_delete (C11) | releases the resources held by a given thread-specific pointer (function) |
+
+### Synopsis
+
+```
+#define __STDC_NO_THREADS__ 202311L
+#define ONCE_FLAG_INIT      /* see description */
+#define TSS_DTOR_ITERATIONS /* see description */
+typedef /* see description */ cnd_t;
+typedef /* see description */ thrd_t;
+typedef /* see description */ tss_t;
+typedef /* see description */ mtx_t;
+typedef /* see description */ tss_dtor_t;
+typedef /* see description */ thrd_start_t;
+#define mtx_plain     /* see description */
+#define mtx_recursive /* see description */
+#define mtx_timed     /* see description */
+#define once_flag     /* see description */
+#define thrd_busy     /* see description */
+#define thrd_error    /* see description */
+#define thrd_nomem    /* see description */
+#define thrd_success  /* see description */
+#define thrd_timedout /* see description */
+void call_once(once_flag* flag, void (*func)(void));
+int cnd_broadcast(cnd_t* cond);
+void cnd_destroy(cnd_t* cond);
+int cnd_init(cnd_t* cond);
+int cnd_signal(cnd_t* cond);
+int cnd_timedwait(cnd_t* restrict cond, mtx_t* restrict mtx, const struct timespec* restrict ts);
+int cnd_wait(cnd_t* cond, mtx_t* mtx);
+void mtx_destroy(mtx_t* mtx);
+int mtx_init(mtx_t* mtx, int type);
+int mtx_lock(mtx_t* mtx);
+int mtx_timedlock(mtx_t* restrict mtx, const struct timespec* restrict ts);
+int mtx_trylock(mtx_t* mtx);
+int mtx_unlock(mtx_t* mtx);
+int thrd_create(thrd_t* thr, thrd_start_t func, void* arg);
+thrd_t thrd_current(void);
+int thrd_detach(thrd_t thr);
+int thrd_equal(thrd_t thr0, thrd_t thr1);
+[[noreturn]] void thrd_exit(int res);
+int thrd_join(thrd_t thr, int* res);
+int thrd_sleep(const struct timespec* duration, struct timespec* remaining);
+void thrd_yield(void);
+int tss_create(tss_t* key, tss_dtor_t dtor);
+void tss_delete(tss_t key);
+void* tss_get(tss_t key);
+int tss_set(tss_t key, void* val);
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/time ---
+# Standard library header <time.h> - cppreference.com
+
+This header is part of date and time utilities library.
+
+### Functions
+
+| Time manipulation | |
+| difftime | computes the difference between times (function) |
+| time | returns the current calendar time of the system as time since epoch (function) |
+| clock | returns raw processor clock time since the program is started (function) |
+| timespec_get (C11) | returns the calendar time in seconds and nanoseconds based on a given time base (function) |
+| timespec_getres (C23) | returns the resolution of calendar time based on a given time base (function) |
+| Format conversions | |
+| asctime asctime_s (deprecated in C23) (C11) | converts a tm object to a textual representation (function) |
+| ctime ctime_s (deprecated in C23) (C11) | converts a time_t object to a textual representation (function) |
+| strftime | converts a tm object to custom textual representation (function) |
+| gmtime gmtime_r gmtime_s (C23) (C11) | converts time since epoch to calendar time expressed as Coordinated Universal Time (UTC) (function) |
+| localtime localtime_r localtime_s (C23) (C11) | converts time since epoch to calendar time expressed as local time (function) |
+| mktime | converts calendar time to time since epoch (function) |
+| timegm (C23) | converts calendar time to time since epoch, ignoring the Daylight Saving Time flag (function) |
+
+### Constants
+
+| CLOCKS_PER_SEC | number of processor clock ticks per second (macro constant) |
+
+### Types
+
+| tm | calendar time type (struct) |
+| time_t | calendar time since epoch type (typedef) |
+| clock_t | processor time since era type (typedef) |
+| timespec (C11) | time in seconds and nanoseconds (struct) |
+
+### Synopsis
+
+```
+#define __STDC_VERSION_TIME_H__ 202311L
+#define NULL           /* see description */
+#define CLOCKS_PER_SEC /* see description */
+#define TIME_UTC       /* see description */
+typedef /* see description */ clock_t;
+typedef /* see description */ size_t;
+typedef /* see description */ time_t;
+struct timespec { /* see description */ };
+struct tm { /* see description */ };
+clock_t clock(void);
+double difftime(time_t time1, time_t time0);
+time_t mktime(struct tm* timeptr);
+time_t timegm(struct tm* timeptr);
+time_t time(time_t* timer);
+int timespec_get(struct timespec* ts, int base);
+int timespec_getres(struct timespec* ts, int base);
+[[deprecated]] char* asctime(const struct tm* timeptr);
+[[deprecated]] char* ctime(const time_t* timer);
+struct tm* gmtime(const time_t* timer);
+struct tm* gmtime_r(const time_t* timer, struct tm* buf);
+struct tm* localtime(const time_t* timer);
+struct tm* localtime_r(const time_t* timer, struct tm* buf);
+size_t strftime(char* restrict s, size_t maxsize, const char* restrict format, const struct tm* restrict timeptr);
+```
+
+Only if supported by the implementation:
+
+```
+#define TIME_MONOTONIC /* see description */
+#define TIME_ACTIVE    /* see description */
+```
+
+Only if threads are supported and it is supported by the implementation:
+
+```
+#define TIME_THREAD_ACTIVE /* see description */
+```
+
+Only if the implementation defines `__STDC_LIB_EXT1__` and additionally the user code defines `__STDC_WANT_LIB_EXT1__` before any inclusion of `<time.h>`:
+
+```
+#ifdef __STDC_WANT_LIB_EXT1__
+typedef /* see description */ errno_t;
+typedef /* see description */ rsize_t;
+errno_t asctime_s(char* s, rsize_t maxsize, const struct tm* timeptr);
+errno_t ctime_s(char* s, rsize_t maxsize, const time_t* timer);
+struct tm* gmtime_s(const time_t* restrict timer, struct tm* restrict result);
+struct tm* localtime_s(const time_t* restrict timer, struct tm* restrict result);
+#endif
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/uchar ---
+# Standard library header <uchar.h> (C11) - cppreference.com
+
+This header is part of null-terminated multibyte strings library.
+
+### Functions
+
+| mbrtoc8 (C23) | converts a narrow multibyte character to UTF-8 encoding (function) |
+| c8rtomb (C23) | converts UTF-8 string to narrow multibyte encoding (function) |
+| mbrtoc16 (C11) | converts a narrow multibyte character to UTF-16 encoding (function) |
+| c16rtomb (C11) | converts a UTF-16 character to narrow multibyte encoding (function) |
+| mbrtoc32 (C11) | converts a narrow multibyte character to UTF-32 encoding (function) |
+| c32rtomb (C11) | converts a UTF-32 character to narrow multibyte encoding (function) |
+
+### Types
+
+| mbstate_t (C95) | conversion state information necessary to iterate multibyte character strings (class) |
+| char8_t (C23) | 8-bit character type (typedef) |
+| char16_t (C11) | 16-bit character type (typedef) |
+| char32_t (C11) | 32-bit character type (typedef) |
+
+### Synopsis
+
+```
+#define __STDC_VERSION_UCHAR_H__ 202311L
+typedef /* see description */ mbstate_t;
+typedef /* see description */ size_t;
+typedef /* see description */ char8_t;
+typedef /* see description */ char16_t;
+typedef /* see description */ char32_t;
+size_t mbrtoc8(char8_t* restrict pc8, const char* restrict s, size_t n, mbstate_t* restrict ps);
+size_t c8rtomb(char* restrict s, char8_t c8, mbstate_t* restrict ps);
+size_t mbrtoc16(char16_t* restrict pc16, const char* restrict s, size_t n, mbstate_t* restrict ps);
+size_t c16rtomb(char* restrict s, char16_t c16, mbstate_t* restrict ps);
+size_t mbrtoc32(char32_t* restrict pc32, const char* restrict s, size_t n, mbstate_t* restrict ps);
+size_t c32rtomb(char* restrict s, char32_t c32, mbstate_t* restrict ps);
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/wchar ---
+# Standard library header <wchar.h> (C95) - cppreference.com
+
+This header is part of null-terminated wide strings library.
+
+### Functions
+
+| Conversions to numeric formats | |
+| wcstol wcstoll (C95) (C99) | converts a wide string to an integer value (function) |
+| wcstoul wcstoull (C95) (C99) | converts a wide string to an unsigned integer value (function) |
+| wcstof wcstod wcstold (C99) (C95) (C99) | converts a wide string to a floating-point value (function) |
+| String manipulation | |
+| wcscpy wcscpy_s (C95) (C11) | copies one wide string to another (function) |
+| wcsncpy wcsncpy_s (C95) (C11) | copies a certain amount of wide characters from one string to another (function) |
+| wcscat wcscat_s (C95) (C11) | appends a copy of one wide string to another (function) |
+| wcsncat wcsncat_s (C95) (C11) | appends a certain amount of wide characters from one wide string to another (function) |
+| wcsxfrm (C95) | transform a wide string so that wcscmp would produce the same result as wcscoll (function) |
+| String examination | |
+| wcslen wcsnlen_s (C95) (C11) | returns the length of a wide string (function) |
+| wcscmp (C95) | compares two wide strings (function) |
+| wcsncmp (C95) | compares a certain amount of characters from two wide strings (function) |
+| wcscoll (C95) | compares two wide strings in accordance to the current locale (function) |
+| wcschr (C95) | finds the first occurrence of a wide character in a wide string (function) |
+| wcsrchr (C95) | finds the last occurrence of a wide character in a wide string (function) |
+| wcsspn (C95) | returns the length of the maximum initial segment that consists of only the wide characters found in another wide string (function) |
+| wcscspn (C95) | returns the length of the maximum initial segment that consists of only the wide chars *not* found in another wide string (function) |
+| wcspbrk (C95) | finds the first location of any wide character in one wide string, in another wide string (function) |
+| wcsstr (C95) | finds the first occurrence of a wide string within another wide string (function) |
+| wcstok wcstok_s (C95) (C11) | finds the next token in a wide string (function) |
+| Wide character array manipulation | |
+| wmemcpy wmemcpy_s (C95) (C11) | copies a certain amount of wide characters between two non-overlapping arrays (function) |
+| wmemmove wmemmove_s (C95) (C11) | copies a certain amount of wide characters between two, possibly overlapping, arrays (function) |
+| wmemcmp (C95) | compares a certain amount of wide characters from two arrays (function) |
+| wmemchr (C95) | finds the first occurrence of a wide character in a wide character array (function) |
+| wmemset (C95) | copies the given wide character to every position in a wide character array (function) |
+
+### Types
+
+| wchar_t | integer type that can hold any valid wide character (typedef) |
+| wint_t (C95) | integer type that can hold any valid wide character and at least one more value (typedef) |
+
+### Macros
+
+| WEOF (C95) | a non-character value of type wint_t used to indicate errors (macro constant) |
+| WCHAR_WIDTH (C23) | bit width of `wchar_t` (macro constant) |
+| WCHAR_MIN | minimum value of `wchar_t` (macro constant) |
+| WCHAR_MAX | maximum value of `wchar_t` (macro constant) |
+
+### Synopsis
+
+Note: multi-line declarations in the page synopsis are joined onto single lines here; no declarations removed.
+
+```
+#define __STDC_VERSION_WCHAR_H__ 202311L
+typedef /* see description */ wchar_t;
+typedef /* see description */ size_t;
+typedef /* see description */ mbstate_t;
+typedef /* see description */ wint_t;
+struct tm { /* see description */ };
+#define MB_UTF16    /* see description */
+#define MB_UTF32    /* see description */
+#define MB_UTF8     /* see description */
+#define NULL        /* see description */
+#define WCHAR_MAX   /* see description */
+#define WCHAR_MIN   /* see description */
+#define WCHAR_UTF16 /* see description */
+#define WCHAR_UTF32 /* see description */
+#define WCHAR_UTF8  /* see description */
+#define WCHAR_WIDTH /* see description */
+#define WEOF        /* see description */
+int fwprintf(FILE* restrict stream, const wchar_t* restrict format, ...);
+int fwscanf(FILE* restrict stream, const wchar_t* restrict format, ...);
+int swprintf(wchar_t* restrict s, size_t n, const wchar_t* restrict format, ...);
+int swscanf(const wchar_t* restrict s, const wchar_t* restrict format, ...);
+int vfwprintf(FILE* restrict stream, const wchar_t* restrict format, va_list arg);
+int vfwscanf(FILE* restrict stream, const wchar_t* restrict format, va_list arg);
+int vswprintf(wchar_t* restrict s, size_t n, const wchar_t* restrict format, va_list arg);
+int vswscanf(const wchar_t* restrict s, const wchar_t* restrict format, va_list arg);
+int vwprintf(const wchar_t* restrict format, va_list arg);
+int vwscanf(const wchar_t* restrict format, va_list arg);
+int wprintf(const wchar_t* restrict format, ...);
+int wscanf(const wchar_t* restrict format, ...);
+wint_t fgetwc(FILE* stream);
+wchar_t* fgetws(wchar_t* restrict s, int n, FILE* restrict stream);
+wint_t fputwc(wchar_t c, FILE* stream);
+int fputws(const wchar_t* restrict s, FILE* stream);
+int fwide(FILE* stream, int mode);
+wint_t getwc(FILE* stream);
+wint_t getwchar(void);
+wint_t putwc(wchar_t c, FILE* stream);
+wint_t putwchar(wchar_t c);
+wint_t ungetwc(wint_t c, FILE* stream);
+double wcstod(const wchar_t* restrict nptr, wchar_t** restrict endptr);
+float wcstof(const wchar_t* restrict nptr, wchar_t** restrict endptr);
+long double wcstold(const wchar_t* restrict nptr, wchar_t** restrict endptr);
+long int wcstol(const wchar_t* restrict nptr, wchar_t** restrict endptr, int base);
+long long int wcstoll(const wchar_t* restrict nptr, wchar_t** restrict endptr, int base);
+unsigned long int wcstoul(const wchar_t* restrict nptr, wchar_t** restrict endptr, int base);
+unsigned long long int wcstoull(const wchar_t* restrict nptr, wchar_t** restrict endptr, int base);
+wchar_t* wcscpy(wchar_t* restrict s1, const wchar_t* restrict s2);
+wchar_t* wcsncpy(wchar_t* restrict s1, const wchar_t* restrict s2, size_t n);
+wchar_t* wmemcpy(wchar_t* restrict s1, const wchar_t* restrict s2, size_t n);
+wchar_t* wmemmove(wchar_t* s1, const wchar_t* s2, size_t n);
+wchar_t* wcscat(wchar_t* restrict s1, const wchar_t* restrict s2);
+wchar_t* wcsncat(wchar_t* restrict s1, const wchar_t* restrict s2, size_t n);
+int wcscmp(const wchar_t* s1, const wchar_t* s2);
+int wcscoll(const wchar_t* s1, const wchar_t* s2);
+int wcsncmp(const wchar_t* s1, const wchar_t* s2, size_t n);
+size_t wcsxfrm(wchar_t* restrict s1, const wchar_t* restrict s2, size_t n);
+int wmemcmp(const wchar_t* s1, const wchar_t* s2, size_t n);
+/*QWchar_t*/* wcschr(/*QWchar_t*/* s, wchar_t c);
+size_t wcscspn(const wchar_t* s1, const wchar_t* s2);
+/*QWchar_t*/* wcspbrk(/*QWchar_t*/* s1, const wchar_t* s2);
+/*QWchar_t*/* wcsrchr(/*QWchar_t*/* s, wchar_t c);
+size_t wcsspn(const wchar_t* s1, const wchar_t* s2);
+/*QWchar_t*/* wcsstr(/*QWchar_t*/* s1, const wchar_t* s2);
+wchar_t* wcstok(wchar_t* restrict s1, const wchar_t* restrict s2, wchar_t** restrict ptr);
+/*QWchar_t*/* wmemchr(/*QWchar_t*/* s, wchar_t c, size_t n);
+size_t wcslen(const wchar_t* s);
+size_t wcsnlen(const wchar_t* s, size_t n);
+wchar_t* wmemset(wchar_t* s, wchar_t c, size_t n);
+size_t wcsftime(wchar_t* restrict s, size_t maxsize, const wchar_t* restrict format, const struct tm* restrict timeptr);
+wint_t btowc(int c);
+int wctob(wint_t c);
+int mbsinit(const mbstate_t* ps);
+size_t mbrlen(const char* restrict s, size_t n, mbstate_t* restrict ps);
+size_t mbrtowc(wchar_t* restrict pwc, const char* restrict s, size_t n, mbstate_t* restrict ps);
+size_t wcrtomb(char* restrict s, wchar_t wc, mbstate_t* restrict ps);
+size_t mbsrtowcs(wchar_t* restrict dst, const char** restrict src, size_t len, mbstate_t* restrict ps);
+size_t wcsrtombs(char* restrict dst, const wchar_t** restrict src, size_t len, mbstate_t* restrict ps);
+```
+
+Only if the implementation defines `__STDC_IEC_60559_DFP__`:
+
+```
+_Decimal32 wcstod32(const wchar_t* restrict nptr, wchar_t** restrict endptr);
+_Decimal64 wcstod64(const wchar_t* restrict nptr, wchar_t** restrict endptr);
+_Decimal128 wcstod128(const wchar_t* restrict nptr, wchar_t** restrict endptr);
+```
+
+Only if the implementation defines `__STDC_IEC_60559_TYPES__` and additionally the user code
+defines `__STDC_WANT_IEC_60559_TYPES_EXT__` before any inclusion of `<wchar.h>`:
+
+```
+#ifdef __STDC_WANT_IEC_60559_TYPES_EXT__
+/*_FloatN*/ /*wcstofN*/(const wchar_t* restrict nptr, wchar_t** restrict endptr);
+/*_FloatNx*/ /*wcstofNx*/(const wchar_t* restrict nptr, wchar_t** restrict endptr);
+/*_DecimalN*/ /*wcstodN*/(const wchar_t* restrict nptr, wchar_t** restrict endptr);
+/*_DecimalNx*/ /*wcstodNx*/(const wchar_t* restrict nptr, wchar_t** restrict endptr);
+void /*wcstoencfN*/(unsigned char encptr[restrict static N/8], const wchar_t* restrict nptr, wchar_t** restrict endptr);
+void /*wcstoencdecdN*/(unsigned char encptr[restrict static N/8], const wchar_t* restrict nptr, wchar_t** restrict endptr);
+void /*wcstoencbindN*/(unsigned char encptr[restrict static N/8], const wchar_t* restrict nptr, wchar_t** restrict endptr);
+#endif
+```
+
+Only if the implementation defines `__STDC_LIB_EXT1__` and additionally the user code defines `__STDC_WANT_LIB_EXT1__` before any inclusion of `<wchar.h>`:
+
+```
+#ifdef __STDC_WANT_LIB_EXT1__
+typedef /* see description */ errno_t;
+typedef /* see description */ rsize_t;
+int fwprintf_s(FILE* restrict stream, const wchar_t* restrict format, ...);
+int fwscanf_s(FILE* restrict stream, const wchar_t* restrict format, ...);
+int snwprintf_s(wchar_t* restrict s, rsize_t n, const wchar_t* restrict format, ...);
+int swprintf_s(wchar_t* restrict s, rsize_t n, const wchar_t* restrict format, ...);
+int swscanf_s(const wchar_t* restrict s, const wchar_t* restrict format, ...);
+int vfwprintf_s(FILE* restrict stream, const wchar_t* restrict format, va_list arg);
+int vfwscanf_s(FILE* restrict stream, const wchar_t* restrict format, va_list arg);
+int vsnwprintf_s(wchar_t* restrict s, rsize_t n, const wchar_t* restrict format, va_list arg);
+int vswprintf_s(wchar_t* restrict s, rsize_t n, const wchar_t* restrict format, va_list arg);
+int vswscanf_s(const wchar_t* restrict s, const wchar_t* restrict format, va_list arg);
+int vwprintf_s(const wchar_t* restrict format, va_list arg);
+int vwscanf_s(const wchar_t* restrict format, va_list arg);
+int wprintf_s(const wchar_t* restrict format, ...);
+int wscanf_s(const wchar_t* restrict format, ...);
+errno_t wcscpy_s(wchar_t* restrict s1, rsize_t s1max, const wchar_t* restrict s2);
+errno_t wcsncpy_s(wchar_t* restrict s1, rsize_t s1max, const wchar_t* restrict s2, rsize_t n);
+errno_t wmemcpy_s(wchar_t* restrict s1, rsize_t s1max, const wchar_t* restrict s2, rsize_t n);
+errno_t wmemmove_s(wchar_t* s1, rsize_t s1max, const wchar_t* s2, rsize_t n);
+errno_t wcscat_s(wchar_t* restrict s1, rsize_t s1max, const wchar_t* restrict s2);
+errno_t wcsncat_s(wchar_t* restrict s1, rsize_t s1max, const wchar_t* restrict s2, rsize_t n);
+wchar_t* wcstok_s(wchar_t* restrict s1, rsize_t* restrict s1max, const wchar_t* restrict s2, wchar_t** restrict ptr);
+size_t wcsnlen_s(const wchar_t* s, size_t maxsize);
+errno_t wcrtomb_s(size_t* restrict retval, char* restrict s, rsize_t smax, wchar_t wc, mbstate_t* restrict ps);
+errno_t mbsrtowcs_s(size_t* restrict retval, wchar_t* restrict dst, rsize_t dstmax, const char** restrict src, rsize_t len, mbstate_t* restrict ps);
+errno_t wcsrtombs_s(size_t* restrict retval, char* restrict dst, rsize_t dstmax, const wchar_t** restrict src, rsize_t len, mbstate_t* restrict ps);
+#endif
+```
+
+--- SOURCE: https://en.cppreference.com/c/header/wctype ---
+# Standard library header <wctype.h> (C95) - cppreference.com
+
+This header is part of wide character classification and mapping utilities library.
+
+### Functions
+
+| Character classification | |
+| iswalnum (C95) | checks if a wide character is alphanumeric (function) |
+| iswalpha (C95) | checks if a wide character is alphabetic (function) |
+| iswlower (C95) | checks if a wide character is an lowercase character (function) |
+| iswupper (C95) | checks if a wide character is an uppercase character (function) |
+| iswdigit (C95) | checks if a wide character is a digit (function) |
+| iswxdigit (C95) | checks if a wide character is a hexadecimal character (function) |
+| iswcntrl (C95) | checks if a wide character is a control character (function) |
+| iswgraph (C95) | checks if a wide character is a graphical character (function) |
+| iswspace (C95) | checks if a wide character is a space character (function) |
+| iswblank (C99) | checks if a wide character is a blank character (function) |
+| iswprint (C95) | checks if a wide character is a printing character (function) |
+| iswpunct (C95) | checks if a wide character is a punctuation character (function) |
+| iswctype (C95) | classifies a wide character according to the specified LC_CTYPE category (function) |
+| wctype (C95) | looks up a character classification category in the current C locale (function) |
+| Character manipulation | |
+| towlower (C95) | converts a wide character to lowercase (function) |
+| towupper (C95) | converts a wide character to uppercase (function) |
+| towctrans (C95) | performs character mapping according to the specified LC_CTYPE mapping category (function) |
+| wctrans (C95) | looks up a character mapping category in the current C locale (function) |
+
+### Types
+
+| wint_t (C95) | integer type that can hold any valid wide character and at least one more value (typedef) |
+| wctrans_t (C95) | scalar type that holds locale-specific character mapping (typedef) |
+| wctype_t (C95) | scalar type that holds locale-specific character classification (typedef) |
+
+### Macros
+
+| WEOF (C95) | a non-character value of type wint_t used to indicate errors (macro constant) |
+
+### Synopsis
+
+```
+typedef /* see description */ wctrans_t;
+typedef /* see description */ wctype_t;
+typedef /* see description */ wint_t;
+#define WEOF /* see description */
+int iswalnum(wint_t wc);
+int iswalpha(wint_t wc);
+int iswblank(wint_t wc);
+int iswcntrl(wint_t wc);
+int iswdigit(wint_t wc);
+int iswgraph(wint_t wc);
+int iswlower(wint_t wc);
+int iswprint(wint_t wc);
+int iswpunct(wint_t wc);
+int iswspace(wint_t wc);
+int iswupper(wint_t wc);
+int iswxdigit(wint_t wc);
+int iswctype(wint_t wc, wctype_t desc);
+wctype_t wctype(const char* property);
+wint_t towlower(wint_t wc);
+wint_t towupper(wint_t wc);
+wint_t towctrans(wint_t wc, wctrans_t desc);
+wctrans_t wctrans(const char* property);
+```

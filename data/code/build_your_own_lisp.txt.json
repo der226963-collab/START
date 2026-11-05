@@ -1,0 +1,132 @@
+{
+  "title": "Build Your Own Lisp",
+  "authors": [
+    "Daniel Holden"
+  ],
+  "source_repo": "orangeduck/BuildYourOwnLisp",
+  "source_branch": "master",
+  "source_commit": "01cb0705c5a8140cb94ae14d8bfb2806b3d4c401",
+  "licence": "CC BY-NC-SA 3.0",
+  "licence_detail": "Book contents licensed under Creative Commons Attribution-NonCommercial-ShareAlike 3.0, as verified from orangeduck/BuildYourOwnLisp README.md and LICENSE.md (both read via the GitHub connector). Source code in the repo is BSD-3, but no code from src/ was included in this assembly (book text only).",
+  "status": "proposed",
+  "approved": false,
+  "pushed": false,
+  "file": "build_your_own_lisp.txt",
+  "chars": 249444,
+  "sha256": "e3dc68bad3f116ab8b3e87e031df27df41624834be43bace147ffdd6f4db9205",
+  "chapters_assembled": 18,
+  "chapter_files": [
+    "chapter1_introduction.html",
+    "chapter2_installation.html",
+    "chapter3_basics.html",
+    "chapter4_interactive_prompt.html",
+    "chapter5_languages.html",
+    "chapter6_parsing.html",
+    "chapter7_evaluation.html",
+    "chapter8_error_handling.html",
+    "chapter9_s_expressions.html",
+    "chapter10_q_expressions.html",
+    "chapter11_variables.html",
+    "chapter12_functions.html",
+    "chapter13_conditionals.html",
+    "chapter14_strings.html",
+    "chapter15_standard_library.html",
+    "chapter16_bonus_projects.html",
+    "appendix_a_hand_rolled_parser.html",
+    "faq.html"
+  ],
+  "per_chapter": [
+    {
+      "file": "chapter1_introduction.html",
+      "chapter": "Chapter 1 - Introduction",
+      "chars": 9345
+    },
+    {
+      "file": "chapter2_installation.html",
+      "chapter": "Chapter 2 - Installation",
+      "chars": 9918
+    },
+    {
+      "file": "chapter3_basics.html",
+      "chapter": "Chapter 3 - Basics",
+      "chars": 8405
+    },
+    {
+      "file": "chapter4_interactive_prompt.html",
+      "chapter": "Chapter 4 - Interactive Prompt",
+      "chars": 13084
+    },
+    {
+      "file": "chapter5_languages.html",
+      "chapter": "Chapter 5 - Languages",
+      "chars": 11307
+    },
+    {
+      "file": "chapter6_parsing.html",
+      "chapter": "Chapter 6 - Parsing",
+      "chars": 8636
+    },
+    {
+      "file": "chapter7_evaluation.html",
+      "chapter": "Chapter 7 - Evaluation",
+      "chars": 10957
+    },
+    {
+      "file": "chapter8_error_handling.html",
+      "chapter": "Chapter 8 - Error Handling",
+      "chars": 10504
+    },
+    {
+      "file": "chapter9_s_expressions.html",
+      "chapter": "Chapter 9 - S-Expressions",
+      "chars": 27967
+    },
+    {
+      "file": "chapter10_q_expressions.html",
+      "chapter": "Chapter 10 - Q-Expressions",
+      "chars": 16221
+    },
+    {
+      "file": "chapter11_variables.html",
+      "chapter": "Chapter 11 - Variables",
+      "chars": 26263
+    },
+    {
+      "file": "chapter12_functions.html",
+      "chapter": "Chapter 12 - Functions",
+      "chars": 26524
+    },
+    {
+      "file": "chapter13_conditionals.html",
+      "chapter": "Chapter 13 - Conditionals",
+      "chars": 9248
+    },
+    {
+      "file": "chapter14_strings.html",
+      "chapter": "Chapter 14 - Strings",
+      "chars": 14393
+    },
+    {
+      "file": "chapter15_standard_library.html",
+      "chapter": "Chapter 15 - Standard Library",
+      "chars": 13301
+    },
+    {
+      "file": "chapter16_bonus_projects.html",
+      "chapter": "Chapter 16 - Bonus Projects",
+      "chars": 11027
+    },
+    {
+      "file": "appendix_a_hand_rolled_parser.html",
+      "chapter": "Appendix A - Hand Rolled Parser",
+      "chars": 16596
+    },
+    {
+      "file": "faq.html",
+      "chapter": "Frequently Asked Questions",
+      "chars": 4936
+    }
+  ],
+  "chapters_failed": [],
+  "note": "Assembled locally 2026-11-05 from the repo's HTML chapter files (shallow git clone of the same repo, read-only; licence verified first via the GitHub connector). Minimal cleaning: HTML stripped to plain text, trailing per-chapter Navigation tables removed, image tags dropped (captions kept), 3+ blank lines collapsed. Excluded: contents.html (table of contents), credits.html (acknowledgements), splash/download/purchase/404/invalid.html (site chrome), and src/ code (BSD-3, not book text)."
+}

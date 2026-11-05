@@ -1,0 +1,30 @@
+{
+  "title": "Linux Kernel C Source (curated teaching subset)",
+  "author": "Linus Torvalds and Linux kernel contributors",
+  "source": "torvalds/linux, branch master, lib/ and kernel/ (13 files listed in files)",
+  "licence": "GPL-2.0 WITH Linux-syscall-note",
+  "licence_verified_from": "torvalds/linux COPYING, read via GitHub connector (states kernel is under GPL v2 only, SPDX GPL-2.0 WITH Linux-syscall-note)",
+  "files": [
+    "lib/string.c",
+    "lib/vsprintf.c",
+    "lib/sort.c",
+    "lib/list_sort.c",
+    "lib/rbtree.c",
+    "lib/radix-tree.c",
+    "lib/ctype.c",
+    "lib/cmdline.c",
+    "lib/hexdump.c",
+    "lib/bsearch.c",
+    "lib/kstrtox.c",
+    "kernel/panic.c",
+    "kernel/printk/printk.c"
+  ],
+  "file_count": 13,
+  "failed": [],
+  "failed_count": 0,
+  "chars": 395109,
+  "sha256": "403b9ec6f0a76a4e2f75fc9353e366ffd596c2877681e20c7ba0343d1acc102e",
+  "status": "assembled, not pushed (push is parent's job)",
+  "approval_note": "Parent-assigned assembly task 2026-11-05 (Linux kernel C teaching subset for START code corpus)",
+  "notes": "Curated real-world C teaching subset: core lib utilities (string, vsprintf, sort, list_sort, rbtree, radix-tree, ctype, cmdline, hexdump, bsearch, kstrtox) plus kernel/panic.c and kernel/printk/printk.c. Whole tree, drivers/, arch/, fs/, net/, and sound/ excluded. No reformatting; code reproduced as fetched from master."
+}

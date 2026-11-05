@@ -263,6 +263,51 @@ Licences checked directly from each repo's LICENSE file:
   the same day once verified (see below).
   Pushed 2026-11-05, see commit(s) below.
 
+## 2026-11-05 — Six more languages: Java, Mojo, Julia, Erlang, Elixir, Solidity
+
+- Eric: extensive deep search for Java, Mojo,
+  Julia, Erlang, Elixir and Solidity, "work our
+  way down the list to find as many sources as
+  possible", and push. Assembled by a coordinator
+  with one worker per language, verified by the
+  assistant (chars + SHA-256 against provenance
+  for all 53 files, 0 mismatches). Total
+  27,831,082 chars, 53 files. Java 5,093,623
+  (Think Java, Think Data Structures Java ed.,
+  Javanotes 9, Wikibooks Java, OpenJDK java.lang
+  / java.util, Open Data Structures Java code,
+  Apache Commons Lang); Mojo 3,644,872 (Manual,
+  stdlib core/systems, examples — Apache 2.0 +
+  LLVM Exceptions, Mojo went fully open source
+  2026-08-18 with Mojo 1.0; community Dojo /
+  learning / Gym are MIT but pre-1.0 and stale,
+  e.g. DynamicVector renamed to List);
+  Julia 5,417,099 (Manual, base + stdlib source,
+  Think Julia, Julia Data Science, Julia by
+  Example, ENCCS intro — all MIT except Think
+  Julia CC BY-NC 3.0 and Julia Data Science
+  CC BY-NC-SA 4.0); Erlang 4,461,923 (Handbook,
+  Erlang in Anger, Adopting Erlang, BEAM Book,
+  OTP docs/design/stdlib/kernel — Apache 2.0
+  for OTP); Elixir 4,336,334 (stdlib core, OTP
+  core, guides, Elixir School, Joy of Elixir,
+  30 Days, Style Guide, UCLL materials, Phoenix
+  guides + source, Taxfix course); Solidity
+  4,877,231 decoded (official docs, solc core,
+  OpenZeppelin core/utils, Solidity by Example,
+  CryptoZombies Lesson 1 only, official
+  examples, WTF Solidity). Licence flags:
+  Solidity docs recorded as GPL-3.0, not CC BY
+  4.0 — the CC BY 4.0 statement applies to the
+  Solidity logo only. Excluded: Learn You Some
+  Erlang (CC BY-NC-ND 3.0, the main Erlang gap),
+  Mastering Ethereum (ND), Mojo Miji / Mojo By
+  Example (ND), Oracle Java tutorials (not
+  openly licensed), commercial books, unlicensed
+  sources. Combined code corpus after this
+  batch: 49,598,255 chars, 89 files. Pushed
+  2026-11-05.
+
 ## 2026-11-05 — Advanced Python batch (Library Reference + PEPs + DevGuide)
 
 - Eric approved the advanced Python batch on

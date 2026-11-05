@@ -40,6 +40,28 @@ import torch
 from mini_ai.gpt import MiniGPT, GPTConfig, CharTokenizer
 from mini_ai.gpt.bpe import BPETokenizer
 from mini_ai.gpt.model_modern import ModernGPT, ModernConfig
+from mini_ai.gpt.muon import Muon
+
+
+def lr_at(step, total, base_lr, schedule):
+    """Learning-rate schedule. Cosine is the old default.
+
+    Trapezoid: linear warmup (first 5%), a long stable plateau,
+    then linear decay to 10% of base over the last 20%. It is
+    one of the CPU-portable pieces from the modded-nanogpt
+    literature: it avoids the long high-LR tail of cosine
+    while keeping most of training at full rate, and it needs
+    no GPU-only code.
+    """
+    if schedule == "trapezoid":
+        progress = step / max(1, total - 1)
+        if progress < 0.05:
+            return base_lr * (progress / 0.05)
+        if progress < 0.80:
+            return base_lr
+        return base_lr * (1.0 - 0.9 * (progress - 0.80) / 0.20)
+    progress = step / max(1, total - 1)
+    return base_lr * (0.1 + 0.9 * 0.5 * (1 + math.cos(math.pi * progress)))
 
 SIZES = {
     "tiny": dict(n_layer=2, n_head=4, n_embd=64, block_size=64),
@@ -52,6 +74,29 @@ def get_batch(data, block_size, batch_size):
     x = torch.stack([data[s:s + block_size] for s in starts])
     y = torch.stack([data[s + 1:s + block_size + 1] for s in starts])
     return x, y
+
+
+class _MultiOptimizer:
+    """Wrap two optimizers (Muon + AdamW) so training code can
+    treat them as one: same param_groups, zero_grad and step."""
+
+    def __init__(self, optimizers):
+        self.optimizers = [opt for opt, _ in optimizers]
+
+    @property
+    def param_groups(self):
+        groups = []
+        for opt in self.optimizers:
+            groups.extend(opt.param_groups)
+        return groups
+
+    def zero_grad(self):
+        for opt in self.optimizers:
+            opt.zero_grad()
+
+    def step(self):
+        for opt in self.optimizers:
+            opt.step()
 
 
 @torch.no_grad()
@@ -80,6 +125,13 @@ def main():
                         help="Use the modern transformer (RMSNorm, RoPE, SwiGLU) instead of the 2017-style model.")
     parser.add_argument("--tokenizer", choices=["char", "bpe"], default="char")
     parser.add_argument("--bpe-merges", type=int, default=300)
+    parser.add_argument("--optimizer", choices=["adamw", "muon"], default="adamw",
+                        help="muon: Muon for hidden 2D weights, AdamW for the rest (modern model only).")
+    parser.add_argument("--lr-schedule", choices=["cosine", "trapezoid"], default="cosine")
+    parser.add_argument("--grad-accum", type=int, default=1,
+                        help="Micro-batches per optimizer step; effective batch = --batch * --grad-accum.")
+    parser.add_argument("--qk-norm", action="store_true",
+                        help="Enable QK-normalisation in the modern model (off by default).")
     parser.add_argument("--out", default="checkpoints/mini-gpt")
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
@@ -113,7 +165,8 @@ def main():
     split = int(0.9 * len(data))
     train_data, val_data = data[:split], data[split:]
     if args.modern:
-        cfg = ModernConfig(vocab_size=len(tokenizer), dropout=args.dropout, **SIZES[args.size])
+        cfg = ModernConfig(vocab_size=len(tokenizer), dropout=args.dropout,
+                           qk_norm=args.qk_norm, **SIZES[args.size])
         model = ModernGPT(cfg)
     else:
         cfg = GPTConfig(vocab_size=len(tokenizer), dropout=args.dropout, **SIZES[args.size])
@@ -122,29 +175,55 @@ def main():
           f"layers: {cfg.n_layer}  embd: {cfg.n_embd}  context: {cfg.block_size}")
     print(f"Train tokens: {len(train_data):,}  val tokens: {len(val_data):,}")
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=0.01)
+    if args.optimizer == "muon" and args.modern:
+        # Muon for hidden 2D matrices, AdamW for embeddings,
+        # the output head, biases and norms.
+        muon_params, adam_params = [], []
+        for name, p in model.named_parameters():
+            if p.ndim == 2 and "token_emb" not in name and "head" not in name:
+                muon_params.append(p)
+            else:
+                adam_params.append(p)
+        optimizer = _MultiOptimizer([
+            (Muon(muon_params, lr=args.lr, weight_decay=0.01), "muon"),
+            (torch.optim.AdamW(adam_params, lr=args.lr, weight_decay=0.01), "adamw"),
+        ])
+    else:
+        if args.optimizer == "muon" and not args.modern:
+            print("Note: --optimizer muon needs --modern; falling back to AdamW.")
+        optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=0.01)
     best_val = float("inf")
     best_state = None
     final_train_loss = None
+    accum = max(1, args.grad_accum)
     for step in range(args.steps):
-        # Cosine decay to 10% of the starting rate.
-        progress = step / max(1, args.steps - 1)
-        lr = args.lr * (0.1 + 0.9 * 0.5 * (1 + math.cos(math.pi * progress)))
+        lr = lr_at(step, args.steps, args.lr, args.lr_schedule)
         for group in optimizer.param_groups:
             group["lr"] = lr
-        x, y = get_batch(train_data, cfg.block_size, args.batch)
-        _, loss = model(x, y)
+        # Gradient accumulation: average the loss over micro-batches.
+        micro_loss = 0.0
         optimizer.zero_grad()
-        loss.backward()
+        for _ in range(accum):
+            x, y = get_batch(train_data, cfg.block_size, args.batch)
+            _, loss = model(x, y)
+            (loss / accum).backward()
+            micro_loss += loss.item() / accum
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
-        final_train_loss = loss.item()
+        final_train_loss = micro_loss
         if step % 50 == 0 or step == args.steps - 1:
             val_loss = evaluate(model, val_data, cfg.block_size)
             if val_loss < best_val:
                 best_val = val_loss
                 best_state = copy.deepcopy(model.state_dict())
-            print(f"step {step:5d}  train {loss.item():.4f}  val {val_loss:.4f}  lr {lr:.2e}")
+                # Save the best checkpoint immediately, not only at the end:
+                # a runtime restart used to lose a whole long run with
+                # nothing saved. This keeps the best-so-far on disk.
+                _out = Path(args.out)
+                _out.parent.mkdir(parents=True, exist_ok=True)
+                torch.save(best_state, _out.with_suffix(".pt"))
+                print(f"  (saved best checkpoint so far, val {best_val:.4f})")
+            print(f"step {step:5d}  train {micro_loss:.4f}  val {val_loss:.4f}  lr {lr:.2e}")
 
     if best_state is not None:
         model.load_state_dict(best_state)
@@ -165,6 +244,8 @@ def main():
         "data_files": provenance,
         "train_tokens": len(train_data), "val_tokens": len(val_data),
         "seed": args.seed, "steps": args.steps,
+        "optimizer": args.optimizer, "lr_schedule": args.lr_schedule,
+        "grad_accum": accum, "qk_norm": args.qk_norm,
         "final_train_loss": final_train_loss, "best_val_loss": best_val,
         "intended_use": "Language assistance only. Not a planner, allocator, or decider. "
                        "Human assemblies decide; a separate planning layer checks allocations.",

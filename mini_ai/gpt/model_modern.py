@@ -30,6 +30,11 @@ class ModernConfig:
     n_head: int = 4
     n_embd: int = 64
     dropout: float = 0.0
+    # QK-norm (off by default, so old checkpoints still load):
+    # RMSNorm on Q and K per head before attention scores.
+    # It keeps attention logits from growing with scale, which
+    # is why it helps larger / longer runs stay stable.
+    qk_norm: bool = False
 
 
 class RMSNorm(nn.Module):
@@ -72,6 +77,10 @@ class ModernAttention(nn.Module):
         self.head_dim = config.n_embd // config.n_head
         self.qkv = nn.Linear(config.n_embd, 3 * config.n_embd, bias=False)
         self.proj = nn.Linear(config.n_embd, config.n_embd, bias=False)
+        self.qk_norm = config.qk_norm
+        if self.qk_norm:
+            self.q_norm = RMSNorm(self.head_dim)
+            self.k_norm = RMSNorm(self.head_dim)
         self.dropout = nn.Dropout(config.dropout)
         self.register_buffer("mask", torch.tril(torch.ones(config.block_size, config.block_size)))
 
@@ -81,6 +90,9 @@ class ModernAttention(nn.Module):
         q = q.view(batch, seq, self.n_head, self.head_dim).transpose(1, 2)
         k = k.view(batch, seq, self.n_head, self.head_dim).transpose(1, 2)
         v = v.view(batch, seq, self.n_head, self.head_dim).transpose(1, 2)
+        if self.qk_norm:
+            q = self.q_norm(q)
+            k = self.k_norm(k)
         cos, sin = _rope_freqs(self.head_dim, seq, x.device)
         q = _apply_rope(q, cos, sin)
         k = _apply_rope(k, cos, sin)

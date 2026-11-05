@@ -1,0 +1,5708 @@
+--- SOURCE: README.md ---
+
+
+# 📖 Learning mojo language
+###  ⚠️  not affiliated with Modular or Mojo
+&nbsp; 
+
+### [🔍 Why](/why.md) 
+### [🔦 Introduction](/introduction.md)
+### [🫵 corrections and contributions](contribute.md) 
+&nbsp; 
+
+# [🟢 Let's ```mojo build -D your="own" -D version=1 app.🔥``` with ``` 🛡️Constrained```](./tutorials/use-parameters-to-create-or-integrate-workflow.md)
+Integrate apps with existing build scripts, for example
+
+# [`SIMD` is a type, with `methods` and `operators` !](./tutorials/simd-is-a-type-with-methods-and-operators.md)
+
+`SIMD` vectors are first-class citizens.
+
+# [🔁 Python land and mojo land, PythonObject](tutorials/python-world-mojo-world.md) 
+note: need revision for better accessibility
+
+
+# [🛣️ 🚌 multi-core (parallelize) with simd](tutorials/multi-core-parallelize-with-simd%20.md) 
+simd and parallelize.
+
+# [🪄 calling mojo functions from python ](tutorials/calling-mojo-functions-in-python.md)
+using pointers an ctype
+
+# [🐍 using python in mojo: a to z](tutorials/using-python-in-mojo.md)
+first steps and dancing
+
+# [🏚️🏗️🏠 Moving owned values](tutorials/moving-owned-values.md) 
+
+```__moveinit__``` ```__del__``` and many more !
+
+# [📋 Traits: accept any types that comply to requirements](tutorials/traits.md)
+accept types based on some requirements
+
+# [SIMD: 🔢✖️2️⃣🟰❪2️⃣,4️⃣,6️⃣,8️⃣❫](tutorials/simd.md)
+perform an operation on multiple numbers
+
+# [👜 Variant, a type that can hold values of different types](./tutorials/variant.md)
+The current type it holds can change and be checked
+
+# [🐍🔍 type-checking a PythonObject](./tutorials/type-check-class-of-pythonobject.md)
+For example, to iterate python arrays that might contains objects of various classes
+
+# [🧬 Parameters, Alias, Struct parameter deduction, more](tutorials/parameters-alias-struct-parameter-deduction.md)
+Parameterize! (compile time meta-programming) 
+
+# [🪄🔮 Autotuned parametrized tests](tutorials/autotuned-parametrized-tests.md)
+Testing for multiple ```SIMD``` sizes
+
+# [🔥 With blocks: with my_struct(1) as v](tutorials/with-blocks-for-struct-parametric-minimal-raise.md)
+with blocks from struct (parametric/minimal/raise)
+
+# [🏃 (SPEED) Parametric struct through CPU registers](tutorials/parametric-struct-trough-cpu-registers.md)
+the @register_passable decorator
+
+# [🏞️ getattr: dynamic and static struct members](tutorials/getattr-dynamic-and-static-struct-members.md)
+the_instance.method_not_defined() handled
+
+# [🤹 making lists of structs with magic operators](tutorials/lists-of-structs-magic-operators-pre-lifetimes.md)
+unsafe references abilities until lifetimes
+
+# 🫙 [struct as a namespace (@staticmethod)](tutorials/struct-as-namespace.md)
+example: wrap python functions
+
+# [🏳️ make test builds using a custom flag](tutorials/make-test-builds-using-a-custom-flag.md)
+mojo build program.mojo -D...
+
+# [🕯️ reader.read\[Int32,"swap"\](3) in 45 lines](tutorials/reader-in-few-lines-with-endian-ness.md)
+v0.4.0: powerfull magic 
+
+# [🔮 Autotune: optimization made easy](tutorials/autotune-optimize-by-search-and-benchmark.md)
+Easy to use
+
+
+# [🔥 making compile time functions](tutorials/compile-time-functions.md)
+Pointer[Int] of squared numbers
+
+# [🧹 ASAP: will call ```__del__``` when last used](tutorials/memory-asap-and-destructor-behaviours.md)
+when do del get called on instance
+
+# [🏗️ moveinit 💿💿 copyinit 🐿️ non-destructing move](tutorials/moveinit-copyinit-takeinit.md)
+implement in struct: copy of instance, move, taking move
+
+# 🤙 [callbacks trough parameters](tutorials/callbacks-trough-parameters.md)
+toy markdown generator as an example
+
+# [🌊 256Hz: simd cosine and plot it](tutorials/vectorise-simd-cosine.md)
+one cycle by vectorizing simd instructions, plot with python
+
+# [🦜 env, argv and param_env (for alias)](tutorials/env-argv-param_env-for-parameters.md)
+arguments: command-line, env, alias
+
+# [⌨️ introduction to types](tutorials/introduction-to-types.md)
+syntax and concepts: not complicated
+
+# [Try & Except: ✋->⚠️->⛑️->🩹->👍 ](tutorials/try-and-except-errors-handling.md)
+raise custom errors and recover (with example)
+
+# [📫 find out changes and improvements when there is a new update](tutorials/what-have-change-when-there-is-a-new-update.md)
+changelogs for new comers
+
+--- SOURCE: contribute.md ---
+
+# 🫵 Contribute
+#### using github (2 ways)
+- send a pull request
+- create a thread in the discussions with the markdown 
+    - ```[correction]``` 
+    - ```[tutorial]``` 
+
+#### without github
+- work in progress
+--- SOURCE: introduction.md ---
+
+# 🔦 Introduction
+### Modules: code reuse and organisation
+***mylib.mojo***
+```ruby
+struct something:
+    var x:Int
+    var y:Int
+    fn __init__(inout self a:Int,b:Int):
+        self.x = a
+        self.y = b
+fn myfunc(inout s:something):
+    s.y = s.x*2
+```
+***app.mojo***
+```python
+import mylib    #or from mylib import something
+fn myfunc():
+    print("hello world")
+fn main():
+    var x:mylib.something = mylib.something(0,0) 
+    mylib.myfunc(x)     #keep the scope clean
+    myfunc()
+```
+**It has great potential for web applications.**
+
+Trough the package modularity, it is possible to share data structures and logic between two apps, example: 
+
+- Front end
+- Back end
+
+Mojo could become the standard in making AI web services.
+
+As of today, mojo cannot produce web-assembly, but, probably will, in the future.
+
+*note: [Packaging]() is related to modules.*
+
+### import and use any python module or file
+***mylib.py***
+```python
+def print_from_mylib(arg):
+    print(arg)
+```
+***app.mojo***
+```python
+from python import Python
+fn main() raises:
+    let time = Python.import_module("time")
+    let mylib = Python.import_module("mylib")
+    print(time.monotonic_ns())
+    mylib.print_from_mylib(time.monotonic_ns())
+```
+### object with small footprint
+Object comparable to thoses of Python, Javascript, Ruby, Lua, out of the box.
+```python
+#Around 38kb
+fn take_object(o: object):
+    print(o)
+fn main() raises:
+    var obj = object("hello world")
+    obj = object([]) #change to a list
+    obj.append(object(123))
+    obj.append(object("hello world"))
+    take_object(obj)
+```
+Fits into tiny space, potentially WASM and microcontrollers.
+
+Huge demand (stats from today, the 29th September of 2023):
+- [tinygo](https://github.com/tinygo-org/tinygo) (13.5k stars)
+- [microptython](https://github.com/micropython/micropython) (17.3k stars)
+
+Note: Objects do have types and can be type-checked.
+
+
+### encapsulation with static methods
+```python
+struct helpers:
+    @staticmethod
+    fn is_even(value: Int) -> Bool:
+        return ((value&1)==0)
+
+fn main():
+    var x:Int = 2
+    print(helpers.is_even(x))   #keep the scope clean
+```
+### From prototype to production using the same language
+
+It can of great help to peoples that need to react to changes in their industry quickly.
+
+It is usefull to be able to explore new ideas without using a lot of time.
+
+Before:
+```python
+from python import PythonObject
+def create_list()->PythonObject:
+    return PythonObject([])
+
+def push_list(l:PythonObject ,o:PythonObject):
+    l.append(o)
+
+def main():
+    mylist = create_list()
+    push_list(mylist,123)
+    push_list(mylist,"hello world")
+    print(mylist)
+```
+After:
+```python
+struct myList[T:AnyType]:
+    var data: Pointer[T]
+    fn push(inout self, o: T):
+        ...
+```
+
+
+### use the hardware efficiently in a few lines of codes
+The amount of knowledge, and the lines of codes required to do this in other languages can be different:
+- SIMD operations
+- Use all cores in a safe manner
+- Optimisations
+
+
+```python
+var python_result = numpy.linspace(0, 255,256)          
+var simd_mojo_array = SIMD[DType.float64,256]()
+
+for x in range(256):
+    simd_mojo_array[x]=python_result[x].to_float64()
+simd_mojo_array = math.cos(simd_mojo_array*(3.14*2.0/256.0))
+
+print(simd_mojo_array)
+#could vectorize and run in parallel with more data, see mojo documentation and examples
+```
+see [Using the Mojo 🔥 Visual Studio Extension 🚀](https://www.youtube.com/watch?v=KYEAiTBbNT8) where Jack Clayton also shows the vectorize features provided by mojo
+### named arguments with default values
+
+```python
+fn print_times(t:Int= 1,text:String = "default"):
+    for i in range(t):
+        print(text)
+
+fn main():
+    print_times(text="hello world")
+    print_times()
+```
+### compile time logic
+```python
+alias debug_build = 0
+def main():
+    var x:Int = 0
+    @parameter
+    if debug_build == 1:
+        print(x)
+    #debug_build is 0, print(x) is not in the build!
+```
+### variadic arguments
+```python
+fn my_func(*args_w: String):
+    var args = VariadicList(args_w)
+    for i in range(len(args)):
+        print(__get_address_as_lvalue(args[i])) #it will get better
+
+fn main():
+    my_func("hello","world")
+```
+see [roadmap & sharp edges: no-safe-value-references](https://docs.modular.com/mojo/roadmap.html#no-safe-value-references) 
+### multiples functions with same name and different signatures
+```python
+fn my_func(o:String):
+    print("it is a string")
+
+fn my_func(o:Int):
+    print("it is an integer")
+
+fn main():
+    my_func(1)
+    my_func("hello world")
+```
+### different constructors with automatic resolve
+```python
+struct my_struct:
+    var x: Int
+    fn __init__(inout self, other: Int):
+        self.x = other
+    fn __init__(inout self, other: Float64):
+        self.x = other.to_int()
+   
+def main():
+    var i:Int = 123
+    var f:Float64 = 123.0
+    
+    var a:my_struct = i
+    var b:my_struct = f
+```
+### memory under control with the [ASAP](https://docs.modular.com/mojo/programming-manual.html#behavior-of-destructors)(as soon as possible) policy
+```python
+fn main():
+    var a:String = "hello"
+    print(a)
+    var x = 123
+    _ = a #arg's memory reclaimed(freed) after the last use (here)
+    print(x)
+```
+### ownership system
+```python
+fn take_ownership(owned arg: Int):
+    print(arg)
+
+fn change_value(inout arg: Int):
+    arg = 1 
+    
+fn main():
+    var data:Int = 0
+    take_ownership(data^)
+    change_value(data)               # error: use of uninitialized value 'data'
+```
+arg in take_ownership is owned, so the function is ready to take ownership of what is passed.
+
+the ownership of data is given/transfered using the ^ suffix
+
+### meta-programming, increased expressive power
+```python
+struct my_struct:
+    var x: Int
+    def __init__(inout self, value:Int):
+        self.x = value
+    def __call__(inout self):
+        print("my value is",String(self.x))
+    def __getitem__(inout self, key:String):
+        for i in range(self.x):
+            print(key)
+    def __getitem__(inout self, key:Int):
+        for i in range(key):
+            print("hello world")
+def main():
+    var x = my_struct(2)
+    x()         #print: my value is 2
+    x["hello"]  #print 2 times: "hello"
+    x[2]        #print 2 times: "hello world"
+```
+### generic types
+```python
+struct my_struct[T:AnyType]:
+    var data: T
+    fn __init__(inout self, value: T):
+        self.data = value
+    fn replace(inout self, new_value: T):
+        self.data = new_value
+
+fn main():
+    var x = my_struct[Int](1)
+    x.replace(2)
+```
+### protection, safety
+my_func_protected: *arg is borrowed(a copy), changes made won't affect "the original".*
+
+my_func: *arg is inout and changes will be reflected on "the original".*
+```python
+fn my_func_protected(borrowed arg: Int):
+    print(arg)
+
+fn my_func(inout arg: Int):     #inout
+    arg=2     #reflected on the original
+
+def main():
+    var x:Int = 1
+    my_func_protected(x)
+    my_func(x)
+    print(x)    #my_func changed x to 2
+```
+*Note: If not defined as inout or owned, values are borrowed by default in mojo 0.3.0, so borrowed can be omitted.*
+### performance: loop unrolling and inlining
+```python
+@always_inline
+fn print_and_increment(inout x: Int):
+    print(x)
+    x+=1
+
+fn main():
+    var i = 0
+    @unroll
+    while i<3:
+        print_and_increment(i)
+```
+*becomes*
+```python
+fn main():
+    var i = 0
+    print(i)
+    i+=1
+    print(i)
+    i+=1
+    print(i)
+    i+=1
+```    
+The program is faster by not doing ```if i<3``` on each iteration and by not having to jump into print_and_increment. 
+
+It also become bigger but the point is that this is a choice.
+
+
+
+
+
+### can be used with Jupyter notebook
+People use notebooks to do research, presentations, exploration and more.
+
+see [Mojo playground](https://playground.modular.com/)
+
+It is possible to use the notebook from vscode.
+
+--- SOURCE: why.md ---
+
+
+# 📖 Learning mojo language
+###  ⚠️  not affiliated with Modular or Mojo
+
+### [return to main page](README.md)
+
+## Why learning Mojo? 
+**Unifying** the **high level** world and the **low level** world into a **single language** provides many great things:
+- **choose how time is used on any part of the app** by switching from high level to low level (usefull when prototyping or exploring ideas).
+- **explore new lands/platforms** that were not steppable before (freedom, versatiliy and opportunities)
+- **a progressive path to learn and grow** (by choosing the current level of abstraction).
+
+
+There are three worlds at disposal:
+- statically typed (Int64..) (*builtin* and custom structs)
+- mojo's object *([Builtin.object](https://docs.modular.com/mojo/stdlib/builtin/object.html),used in the example:[Matrix multiplication](https://docs.modular.com/mojo/notebooks/Matmul.html#importing-the-python-implementation-to-mojo))*
+- python object *(require: from Python import [PythonObject](https://docs.modular.com/mojo/stdlib/python/object.html#pythonobject))*
+            
+Another is on it's way: [Roadmap: C/C++ Interop](https://docs.modular.com/mojo/roadmap.html#cc-interop) 
+- would increase productivity by an significant factor (spending less time writing bindings)
+
+Why learn it now?
+- the language is still small so it is easy to learn as it grows
+- by the time it is considered mature, being ready for action and already an experienced mojician.
+
+*Note: Python have many packages and an active community of general purpose programmers and experts.*
+
+## 🌅 A bright future ahead full of opportunities
+It is easy to imagine that one person knowing mojo could one day be able to do: 
+- 🌐 Web applications:
+    - front end
+      - potential for wasm: mojo apps have a small footprint
+    - back end 
+      - part of it being an ai running on a graphic card?
+      - filtering audio signals as a web service?
+      - provide to the front-end chart images?
+- 💻 Desktop softwares
+- 📱 Mobile apps
+- ⏧ Robotics and IOT using micro-controllers
+- 🤖 Performant A.I
+- 🎮 video games
+
+&nbsp; 
+
+
+### Let's take the time to say thank you to the modular/mojo team.
+### This repository is just a community effort, the ressources 
+### available on the official website of modular/mojo
+### are the best if you want to learn!
+### Here are some links to theses:
+&nbsp;
+
+---
+
+> ## 🔗 Links to official Mojo content
+
+#### [📗 The programming manual](https://docs.modular.com/mojo/programming-manual.html)
+
+#### [📑 The documentation](https://docs.modular.com/mojo/)
+#### 🗣 [Modular official discord chat channel](https://www.discord.gg/modular) Join it, really!
+  - have 21.8K members (as of the 29th of september 2023) 
+  - The mojo/modular staff is active.
+
+Getting started:
+- #### [Getting started with the Mojo SDK🔥](https://www.youtube.com/watch?v=knGTSXe7ytI)
+- #### [Using Mojo🔥 with Docker containers](https://www.youtube.com/watch?v=cHyYmF-RhUk)
+- #### [Using the Mojo 🔥 Visual Studio Extension 🚀](https://www.youtube.com/watch?v=KYEAiTBbNT8)
+
+---
+--- SOURCE: tutorials/README.md ---
+
+
+# 📖 Learning mojo language
+###  ⚠️  not affiliated with Modular or Mojo
+
+&nbsp; 
+
+### [🔍 Why](/why.md) 
+### [🔦 Introduction](/introduction.md)
+### [🫵 corrections and contributions](/contribute.md)
+
+
+&nbsp; 
+
+# [🟢 Let's ```mojo build -D your="own" -D version=1 app.🔥``` with ``` 🛡️Constrained```](./use-parameters-to-create-or-integrate-workflow.md)
+Integrate apps with existing build scripts, for example
+
+# [`SIMD` is a type, with `methods` and `operators` !](./simd-is-a-type-with-methods-and-operators.md)
+
+`SIMD` vectors are first-class citizens.
+
+# [🔁 Python land and mojo land, PythonObject](python-world-mojo-world.md) 
+note: need revision for better accessibility
+
+# [🛣️ 🚌 multi-core (parallelize) with simd](multi-core-parallelize-with-simd%20.md) 
+simd and parallelize.
+
+# [🪄 calling mojo functions from python ](calling-mojo-functions-in-python.md)
+using pointers an ctype
+
+# [🐍 using python in mojo: a to z](using-python-in-mojo.md)
+first steps and dancing
+
+# [🏚️🏗️🏠 Moving owned values](moving-owned-values.md) 
+
+```__moveinit__``` ```__del__``` and many more !
+
+# [📋 Traits: accept any types that comply to requirements](traits.md)
+accept types based on some requirements
+
+# [SIMD: 🔢✖️2️⃣🟰❪2️⃣,4️⃣,6️⃣,8️⃣❫](simd.md)
+perform an operation on multiple numbers
+
+# [👜 Variant, a type that can hold values of different types](./variant.md)
+The current type it holds can change and be checked 
+
+# [🐍🔍 type-checking a PythonObject](./type-check-class-of-pythonobject.md)
+For example, to iterate python arrays that might contains objects of various classes 
+
+
+# [🧬 Parameters, Alias, Struct parameter deduction, more](parameters-alias-struct-parameter-deduction.md)
+Parameterize! (compile time meta-programming) 
+
+# [🪄🔮 Autotuned parametrized tests](autotuned-parametrized-tests.md)
+Testing for multiple ```SIMD``` sizes
+
+# [🔥 With blocks: with my_struct(1) as v ](with-blocks-for-struct-parametric-minimal-raise.md)
+with blocks from struct (parametric/minimal/raise)
+
+# [🏃 (SPEED) Parametric struct through CPU registers](parametric-struct-trough-cpu-registers.md)
+the @register_passable decorator
+
+# [🏞️ getattr: dynamic and static struct members](getattr-dynamic-and-static-struct-members.md)
+
+the_instance.method_not_defined() handled
+
+# [🤹 making lists of structs with magic operators](lists-of-structs-magic-operators-pre-lifetimes.md)
+unsafe references abilities until lifetimes
+
+# 🫙 [struct as a namespace (@staticmethod)](struct-as-namespace.md)
+example: wrap python functions
+
+# [🏳️ make test builds using a custom flag](make-test-builds-using-a-custom-flag.md)
+mojo build program.mojo -D...
+
+# [🕯️ reader.read\[Int32,"swap"\](3) in 45 lines](reader-in-few-lines-with-endian-ness.md)
+v0.4.0: powerfull magic 
+
+# [🔮 Autotune: optimization made easy](autotune-optimize-by-search-and-benchmark.md)
+Easy to use
+
+# [🔥 making compile time functions](compile-time-functions.md)
+Pointer[Int] of squared numbers
+
+# [🧹 ASAP: will call ```__del__``` when last used](memory-asap-and-destructor-behaviours.md)
+when do del get called on instance
+
+# [🏗️ moveinit 💿💿 copyinit 🐿️ non-destructing move](moveinit-copyinit-takeinit.md)
+implement in struct: copy of instance, move, taking move
+
+# 🤙 [callbacks trough parameters](callbacks-trough-parameters.md)
+toy markdown generator as an example
+
+# [🌊 256Hz: simd cosine and plot it](vectorise-simd-cosine.md)
+one cycle by vectorizing simd instructions, plot with python
+
+# [🦜 env, argv and param_env (for alias)](env-argv-param_env-for-parameters.md)
+arguments: command-line, env, alias
+
+# [⌨️ introduction to types](introduction-to-types.md)
+syntax and concepts: not complicated
+
+# [Try & Except: ✋->⚠️->⛑️->🩹->👍 ](try-and-except-errors-handling.md)
+raise custom errors and recover (with example)
+
+# [📫 find out changes and improvements when there is a new update](what-have-change-when-there-is-a-new-update.md)
+changelogs for new comers
+
+
+--- SOURCE: tutorials/autotune-optimize-by-search-and-benchmark.md ---
+# 🔮 Autotune: optimization made easy
+> with 0.4.0
+#### ⚠️ untested code, there might be bugs
+
+### how it determine the optimal choice
+By passing an evaluator function.
+
+That function will determine if a choice is better or not.
+
+It is needed because someone might want to optimise for ram usage instead of speed for example, or for another array size.
+
+In that example, we are optimizing for speed, and will measure it using ```now()``` from time package.
+
+```python
+from autotune import autotune, search
+
+#let's grab it to demonstate the autotune
+from algorithm import vectorize
+
+#to determine the maximum value of an integer
+from math.limit import max_finite
+
+#to perform benchmarks (mojo also does provide a benchmark function if needed)
+from time import now
+
+#the signature of the function to optimize
+#(the_function_implementation)
+alias how_function_look_like = fn()->Int
+
+#use another type by making one modification here
+alias type_to_use = DType.int8
+alias simd_width_of_type = simdwidthof[type_to_use]()
+
+#optimize for 256 elements
+alias total_elements = 2**8
+
+#marked with adaptive
+@adaptive
+fn the_function_implementation()->Int:
+    
+    # use autotune: all potential values of width to test
+    alias width_to_use = autotune(1, 2, 4, 8, 16, 32, 64 , 128)
+    
+    #allocate total_elements of type_to_use
+    var elements = DTypePointer[type_to_use].alloc(total_elements)
+
+    @parameter
+    fn vectorization[group_size:Int](base_index:Int):
+        var numbers = elements.simd_load[group_size](base_index)
+        #simd squaring of group_size elements * group_size elements
+        numbers = numbers * numbers
+        elements.simd_store[group_size](base_index,numbers)
+    
+    #note the usage of width_to_use
+    #autotune help to determine the optimal value of it
+    vectorize[width_to_use,vectorization](total_elements)
+    
+    #deallocate
+    elements.free()
+
+    #just for printing later
+    return width_to_use
+
+#the function that gonna help determine what is the optimal choice
+fn the_performance_evaluator(funcs: Pointer[how_function_look_like], total_candidates: Int) -> Int:
+
+    #set the best performance(time spent) to the highest value
+    var best_performance:Int = max_finite[DType.int64]().__int__()
+    var best_candidate = 0
+    
+    print("start searching for best candidate")
+    
+    #loop over all candidate functions
+    for candidate_number in range(total_candidates):
+        #get the candidate function
+        let candidate_function = funcs.load(candidate_number)
+        var width_used = 0
+        
+        let start = now()
+        
+        #run the function 100000 times
+        for i in range(100000):
+            width_used = candidate_function()
+        
+        let time_it_took = now()-start
+
+        #if it is better, store the index of the candidate
+        if time_it_took<best_performance:
+            #here check if the width is not too big
+            #because we check for unusable values too in autotune() above
+            #the reason is to be able to test different types
+            if width_used <= simd_width_of_type:
+                best_candidate = candidate_number
+                best_performance = time_it_took
+        
+        #this is the width_to_use used in that benchmark:
+        print("\t width used:",width_used)
+        #how much time to run 100000 times the function
+        print("\t\t benchmark: ",time_it_took)
+    
+    print("search is done")
+    #return the index of the optimal candidate function
+    return best_candidate
+
+fn main():
+
+    #will store the optimal function based on the benchmark
+    alias most_performant_implementation: how_function_look_like
+
+    #run the performance evaluator to determine most_performant_implementation
+    search[
+        how_function_look_like,
+        VariadicList(the_function_implementation.__adaptive_set),
+        the_performance_evaluator -> most_performant_implementation
+    ]()
+
+    print("")
+    print("let's use the optimal function:")
+    
+    # call the best implementation
+    let width_used = most_performant_implementation()
+    
+    print("\tbest implementation simdwidth is",width_used)
+    
+    #what is the actual maximal width of that type
+    print("")
+    print("max simdwidth of type_to_use is",simd_width_of_type)
+```
+## output:
+```
+start searching for best candidate
+         width used: 1
+                 benchmark:  12326435
+         width used: 2
+                 benchmark:  15592902
+         width used: 4
+                 benchmark:  6721930
+         width used: 8
+                 benchmark:  3742553
+         width used: 16
+                 benchmark:  3113805
+         width used: 32
+                 benchmark:  2480954
+         width used: 64
+                 benchmark:  2342148
+         width used: 128
+                 benchmark:  2249421
+search is done
+
+let's use the optimal function:
+        best implementation simdwidth is 32
+
+max simdwidth of type_to_use is 32
+```
+##### *this page is a community effort and may contains errors. please contribute any corrections if needed.*
+For better examples, the official mojo website is the place to go:
+- see how [Matmul](https://docs.modular.com/mojo/notebooks/Matmul.html) determine the perfect tile size.
+--- SOURCE: tutorials/autotuned-parametrized-tests.md ---
+# 🪄🔮 Autotuned parametrized tests
+```Autotune``` is a feature related to ```alias```,
+
+aliases are used in parameters ```struct MyType[ParamSimdSize:Int]: ...```,
+
+they are used by mojo to provide more expressivity, versatility, safety and performance!
+
+Mojo have to process them before the program runs, so they cannot use dynamic values.
+
+It seem like a limiting thing, but it is quite the opposite!
+
+For example, by specifying a Movable parameter, any movable types can be passed as an argument.
+
+&nbsp;
+
+```SIMD``` is a type that can be parametrized over it's ```DTYPE``` and ```SIZE```,
+
+A type could be ```uint8```, ```float64```, and many more! The ```SIZE``` could be ```1,2,4,8,16,32,..```.
+
+So there are many combination of thoses parameters.
+
+This is just an example, aliases can be assigned many things, even pointers, types, floats..
+
+Additionally, it is possible to write usual mojo functions that returns a value, to both aliases and var.
+
+&nbsp;
+
+# ❤️‍🔥 Autotuning
+
+In order to select the values of aliases, auto-tuning can be used to do so by programming in mojo.
+
+The idea is to provide a set of valid options, and write some logic.
+
+That logic is then followed by mojo, and it will determine wich value should be assigned!
+
+And multiple parameters can be autotuned in the same ```@adaptive``` decorated function.
+
+Autotune allows to search in that big space and pick the values that are the most desired.
+
+
+ 
+
+
+
+&nbsp;
+
+
+# 🌌 The process of evaluation
+
+It is a function that receives all the versions of the ```@adaptive``` decorated one,
+
+this is where the logic can be written in order to "benchmark" each version.
+
+A common way is to measure time 🔥, it is up to the imagination too!
+
+For example, each version can be called: ```var f = functions[2](1,MyStruct(1.5))```
+
+The return value can be used, to "score" the performance for example.
+
+If the result of that version is "good", the index (```2```) can be saved in a variable. 
+
+Once "what is best" is determined, either by measuring time or another logic,
+
+the index of the final version is retured as an integer:
+
+```return 2```, for example.
+
+
+
+On the receiving hand, the chosen function is available in an alias for use !
+
+&nbsp;
+
+Autotune allow the programmer iterate that "big space" of potential alias values.
+
+Here is an example of using autotuning in order to perform tests on a parametrized type ⬇️
+
+&nbsp;
+
+# 🧶 Example: Testing with all the possible parameters
+
+The algorithmic part of the code is not quite user-friendly,
+
+theses operations can be replaced by a simple ones in an easy to understand way.
+
+The algorithm itself is simple, only the implementation looks difficult.
+
+This is a situation where testing is very usefull, especially testing for all the possible parameters.
+
+By having thoses kind of tests, it can be easier to progressively re-implement the algorithm,
+
+while having the tests there to check, if it still works like before or not! 
+
+
+
+```python
+from autotune import autotune, search
+
+@adaptive
+fn Tests():
+    alias width_to_use = autotune(1,2,4)
+    alias DT = autotune(DType.uint8,DType.uint16)
+    @parameter
+    if width_to_use > simdwidthof[DT](): ...#print("skip")
+    else:
+        var instance = Small[DT,SIZE=width_to_use]()
+        print("Simd DType:"+ str(DT) + "\twidth:"+ str(width_to_use))
+        instance.TestsBitSet()
+        print("")
+     
+
+fn evaluator(funcs: Pointer[fn()->None], total: Int) -> Int:
+    print("🪄🔮 Autotuned parametrized tests: "+str(total))
+    for t in range(total):
+        let current = funcs.load(t)
+        current()
+    return 0
+
+fn run_tests():
+    alias res: fn()->None
+    search[
+        fn()->None,
+        VariadicList(Tests.__adaptive_set),
+        evaluator -> res
+    ]()
+
+def main():
+    #var x = Small()
+    #x.ArrayBitSet[31](1)
+    #var res:Int = x.ArrayBit[31]()
+    run_tests()
+
+@register_passable
+struct Small[DT:DType=DType.uint8,SIZE:Int=SIMD[DT].size](Stringable):
+    alias StorageType = SIMD[Self.DT,Self.SIZE]
+    alias SizeOfArrayBits = Self.StorageType.size*sizeof[Self.DT]()*8
+    alias MostSignificantBitPosition = Self.SizeOfArrayBits -1
+    alias DT_SIZE = sizeof[DT]()*8
+    var data: Self.StorageType
+
+    fn __init__()-> Self: return Self{
+        data: Self.StorageType(0),
+    }
+
+    fn __str__(self)->String: return "todo"
+    
+    fn ArrayBit[index:Int](self)->Int:
+        alias constrained_ArrayBit_ArrayBit = index < Self.SizeOfArrayBits
+        constrained[constrained_ArrayBit_ArrayBit,"index too big"]()
+        constrained[index>=0,"index < 0"]()
+        alias tmp_index = index//Self.DT_SIZE
+        alias tmp_rem = index%Self.DT_SIZE
+        var tmp = self.data[self.data.size-1-tmp_index]
+        tmp = (tmp&(1<<tmp_rem)) 
+        return (tmp>0).cast[DType.bool]().to_int()
+    
+    fn ArrayBitSet[index:Int](inout self,value:Int):
+        alias constrained_ArrayBit_ArrayBit = index < Self.SizeOfArrayBits
+        constrained[constrained_ArrayBit_ArrayBit,"index too big"]()
+        constrained[index>=0,"index < 0"]()
+        alias tmp_index = index//Self.DT_SIZE
+        alias tmp_rem = index%Self.DT_SIZE
+        var b = self.data[self.data.size-1-tmp_index]
+        alias maxval = math.limit.max_finite[Self.DT]()
+        b&= (maxval^((SIMD[Self.DT,1](1)<<(tmp_rem))))
+        b|=(SIMD[Self.DT,1](value).cast[DType.bool]().cast[Self.DT]()<<tmp_rem)
+        self.data[self.data.size-1-tmp_index] = b
+    
+    fn TestsBitSet(self):
+        alias size_dt = math.bitwidthof[Self.DT]()
+        var tmp_result = SIMD[DType.bool,size_dt*SIZE].splat(False)
+        var instance = Self()
+        
+        @parameter
+        fn more_tests[B:Int]():
+            @parameter
+            fn fn_b[b:Int]():
+                var tmp_ = instance.data
+                instance.ArrayBitSet[B*size_dt+b](1)
+                var result = instance.ArrayBit[B*size_dt+b]()
+
+                var tmp2_ = instance.data
+                var tmp3 = (math.bit.ctpop(tmp2_)-math.bit.ctpop(tmp_)).reduce_add()
+                tmp_result[B*size_dt+b] = (result) and (tmp3 == 1)
+
+            unroll[size_dt,fn_b]()
+        unroll[SIZE,more_tests]()
+        
+        print_no_newline("\tSet,   unrolled tests(" + str(size_dt*SIZE) + "):")
+        if tmp_result.reduce_and():
+            print_no_newline("\t✅🔥")
+        else: print_no_newline("\t❌")
+        print_no_newline(instance.data)
+
+
+        @parameter
+        fn more_tests_2[B:Int]():
+            @parameter
+            fn fn_c[b:Int]():
+                var tmp_ = instance.data
+                var previous = instance.ArrayBit[B*size_dt+b]() == 1
+                instance.ArrayBitSet[B*size_dt+b](0)
+                var result = instance.ArrayBit[B*size_dt+b]()
+
+                var tmp2_ = instance.data
+                var tmp3 = (math.bit.ctpop(tmp_)-math.bit.ctpop(tmp2_)).reduce_add()
+                tmp_result[B*size_dt+b] = previous and (not result) and (tmp3 == 1)
+            
+            unroll[size_dt,fn_c]()
+        unroll[SIZE,more_tests_2]()
+        print("")
+        print_no_newline("\tUnset, unrolled tests(" + str(size_dt*SIZE) + "):")
+        if tmp_result.reduce_and():
+            print_no_newline("\t✅🔥")
+        else: print_no_newline("\t❌")
+        print_no_newline(instance.data)
+        print("")
+```
+#### output:
+```python
+🪄🔮 Autotuned parametrized tests: 6
+Simd DType:uint8	width:1
+	Set,   unrolled tests(8):	✅🔥255
+	Unset, unrolled tests(8):	✅🔥0
+
+Simd DType:uint8	width:2
+	Set,   unrolled tests(16):	✅🔥[255, 255]
+	Unset, unrolled tests(16):	✅🔥[0, 0]
+
+Simd DType:uint8	width:4
+	Set,   unrolled tests(32):	✅🔥[255, 255, 255, 255]
+	Unset, unrolled tests(32):	✅🔥[0, 0, 0, 0]
+
+Simd DType:uint16	width:2
+	Set,   unrolled tests(32):	✅🔥[65535, 65535]
+	Unset, unrolled tests(32):	✅🔥[0, 0]
+
+Simd DType:uint16	width:4
+	Set,   unrolled tests(64):	✅🔥[65535, 65535, 65535, 65535]
+	Unset, unrolled tests(64):	✅🔥[0, 0, 0, 0]
+
+Simd DType:uint16	width:1
+	Set,   unrolled tests(16):	✅🔥65535
+	Unset, unrolled tests(16):	✅🔥0
+```
+
+Theses tests are parametrized by:
+```python
+alias width_to_use = autotune(1,2,4) 
+alias DT = autotune(DType.uint8,DType.uint16) 
+```
+
+&nbsp;
+
+# 🪇 Explanation of the algorithm
+
+A ```SIMD``` vector of 16 ```uint8``` is created, for example. There are ```8*16=128``` bits available in total.
+
+Let's say that we want to set the bit number ```65``` to ```1```, and use ```65``` as an index.
+
+Each time a multiple of ```8``` is passed, the index of the ```uint8``` vector  is increased by one!
+
+**Until 64 is reached, then the remainder is ```1```.**
+
+So the bit to set is the first one of the vector number 8.
+
+```65 modulus 8```, the algorithmic part is that simple, but the implementation looked complicated.
+
+
+Example for position 17: 
+- index 2: ```floor(17.0 / 8.0)``` ➡️ ```17>>3```
+- remains 1: ```17%8``` ➡️ ```17&7``` 
+
+&nbsp;
+
+## 🩳 The ```Constrained``` function
+> Compile time checks that the condition is true.
+
+> see [Documentation: Constrained](https://docs.modular.com/mojo/stdlib/builtin/constrained.html)
+
+The index of the position is entered as a parameter, that way it is possible to raise compile time errors!
+
+Because the size of the ```SIMD``` was used as a parameter, 
+
+aswell as the ```type```, thoses safeguards can be implemented!
+
+&nbsp;
+
+## 🌗 ```@parameter if```
+> see [Documentation: Parametric if statement](https://docs.modular.com/mojo/manual/decorators/parameter.html#parametric-if-statement)
+
+It is like an if statement, but the assertion of the outcome is done during the compilation.
+
+```python
+@parameter
+if Self.StorageType.size > 2:
+    ...
+```
+```Self.StorageType``` is a parameter,
+
+if it's size is above ```2```, additional tests can be made!
+
+For example, a ```SIMD``` of size```2``` contains only index 0️⃣ and 1️⃣ to be tested, but not above.
+
+&nbsp;
+
+## 🌀 ```unroll```
+Similar to a while loop, but with parameters.
+
+That way, incrementing ```i``` is not required, because mojo just unroll every iteration.
+
+The iteration is faster that way!
+
+```python
+@parameter
+fn more_tests[B:Int]():
+    @parameter
+    fn fn_b[b:Int]():
+        instance.ArrayBitSet[B*size_dt+b](1)
+        var result = instance.ArrayBit[B*size_dt+b]()
+        tmp_result[B*size_dt+b]=result
+    unroll[size_dt,fn_b]()
+unroll[SIZE,more_tests]()
+```
+The equivalent for loop:
+
+```python
+for B in range(SIZE):
+    for b in range(size_dt):
+        instance.ArrayBitSet[B*size_dt+b](1)
+        var result = instance.ArrayBit[B*size_dt+b]()
+        tmp_result[B*size_dt+b]=result
+```
+
+&nbsp;
+
+## ```alias```
+
+They can be passed to parameters, note the reference to ```Self.DT```:
+```python
+struct Small[SIZE:Int=SIMD[DType.uint8].size](Stringable):
+    alias DT = DType.uint8
+    alias StorageType = SIMD[Self.DT,Self.SIZE]
+```
+Aliases are compile time constants, they can even receive the result of function!
+
+```python
+alias size_dt = math.bitwidthof[Self.DT]()
+```
+The parameters are really powerful, they make it possible to do all thoses expressive things.
+
+&nbsp;
+
+## ```@parameter``` functions
+> see [Documentation: Parametric closure](https://docs.modular.com/mojo/manual/decorators/parameter.html#parametric-closure)
+```python
+fn main():
+    var x=1
+    @parameter
+    fn increment[B:Int]():
+        x+=B
+    increment[1]()
+    print(x)
+```
+Output: ```2```
+
+This is a parametric capturing closure,
+
+variables used inside of it can be modified, even if they were declared outside of it.
+
+&nbsp;
+
+### 🔥 They can be passed as parameter to other functions
+
+```python
+fn Incrementor[f:fn()capturing->None]():
+    f()
+
+fn main():
+    var x=1
+    @parameter
+    fn increment():
+        x+=1
+    
+    Incrementor[increment]()
+    print(x)
+```
+
+&nbsp;
+
+&nbsp;
+
+# 🪄 Hope it was usefull ! ✨
+### Thanks to contributors and to people from the chat community for the support 👍
+
+This small tutorial can contains errors, feel free contribute corrections.
+
+Make sure to go to the official documentation website of mojo, this is where true magic is learned!
+--- SOURCE: tutorials/callbacks-trough-parameters.md ---
+# 🤙 callbacks trough parameters
+```python
+@value
+struct markdown:
+    var content: String
+
+    fn __init__(inout self):
+        self.content = ""
+
+    def render_page[f: def()->object](self,file="none"):
+        self.content = ""
+        f()
+
+    fn __ior__(inout self,t:String):
+        self.content+=t
+
+var md = markdown()
+
+def readme():
+    md |= '''
+    # hello mojo
+    this is markdown
+    ```python
+    fn main():
+        print("ok")
+    ```
+    '''
+    footer()
+
+def footer():
+    md |= '''
+    > Page generated
+    '''
+
+def main():
+    md = markdown()
+    md.render_page[readme](file="README.md")
+    print(md.content)
+```
+
+output:
+
+
+# hello mojo
+this is markdown
+```python
+fn main():
+    print("ok")
+```
+
+> Page generated
+
+--- SOURCE: tutorials/calling-mojo-functions-in-python.md ---
+# 🔥🐍 calling mojo functions from python
+> with 0.4.0
+
+> ⚠️ not ready for use as it is, not tested and have unfreed pointers
+
+
+
+
+
+Building a wrapper with all thoses features:
+- [VariadicList](https://docs.modular.com/mojo/stdlib/utils/list.html#variadiclist) for the arguments types
+- [@noncapturing](https://docs.modular.com/mojo/changelog.html#week-of-2023-04-10) to keep the global scope clean
+- [import_module](https://docs.modular.com/mojo/stdlib/python/python.html#import_module)
+- [PythonObject.\_\_getattr\_\_()](https://docs.modular.com/mojo/stdlib/python/object.html#getattr__)
+- [Parametrized function](https://docs.modular.com/mojo/programming-manual.html#defining-parameterized-types-and-functions)
+- struct parameter deduction
+
+
+The function is passed to python using a pointer, as an integer.
+
+*note: it is memory unsafe, not a feature*
+
+#### main.mojo
+```python
+from python import Python
+
+fn get_wrapper[fsig:AnyType](ret_type:StringLiteral,f:fsig,*args_types:StringLiteral) raises -> PythonObject:
+    let ctypes = Python.import_module("ctypes")
+    let tmp_ = Pointer[fsig].alloc(1)
+    tmp_.store(0,f)
+    let tmp = (ctypes.CFUNCTYPE(ctypes.c_void_p)).from_address(tmp_.__as_index())
+
+    let py_obj_argtypes = PythonObject([])
+
+    for i in range(args_types.__len__()):
+        py_obj_argtypes.append(ctypes.__getattr__(args_types[i]))
+    tmp.argtypes = py_obj_argtypes
+    tmp.restype = ctypes.__getattr__(ret_type)
+    #note: tmp_ is never freed
+    return tmp
+
+def main():
+
+    Python.add_to_path("./")
+    let py_mymodule = Python.import_module("python_custom_package")
+
+    @noncapturing
+    fn mojo_print(p:Int)->Int:
+        print(p)
+        return p+1
+    
+    w = get_wrapper("c_int",mojo_print,"c_int")
+    
+    py_mymodule.call_mojo_print(w)
+
+
+    @noncapturing
+    fn m_sum(arg:Pointer[Float64],size:Int)->Float64:
+        var total:Float64 = 0.0
+        for i in range(size):
+            total+=arg.load(i)
+        return total
+    
+    w2 = get_wrapper("c_double",m_sum,"c_void_p","c_int")
+    py_mymodule.call_sum(w2)
+```
+
+#### python_custom_package.py
+```python
+import numpy as np
+
+def call_mojo_print(mojo_print):
+    res = mojo_print(123)
+    for i in range(10):
+        res = mojo_print(res)
+
+
+def call_sum(sum):
+    elements = 100
+    array = np.random.random(elements)
+    
+    res = sum(array.ctypes.data,elements)
+    _ = array
+    
+    print(res)
+
+    #notes:
+    #print(array.dtype)   #float64
+    #print(array.strides) #8
+```
+
+
+
+#### Overview:
+- Create a pointer to the mojo function
+- Create a PythonObject with ctype imported_module
+- load the address as a CFUNCTYPE
+- assign the return type and argument types from variadic list
+- Pass the PythonObject into python land
+- Call the PythonObject from there
+- Pointer is left not freed, *need to be freed*
+
+--- SOURCE: tutorials/compile-time-functions.md ---
+# 🪄 making compile time functions: same as the runtime ones
+> with v0.4.0
+
+Execute a function at comptime
+```python
+#can be used both during comptime and runtime
+fn squared(n:Int)->Pointer[Int]:
+    var tmp = Pointer[Int].alloc(n)
+    for i in range(n):
+        tmp.store(i,i*i)
+    return tmp
+
+def main():
+
+    #alias: during comptime
+    alias n_numbers = 5
+    alias precaculated = squared(n_numbers)
+
+    for i in range(n_numbers):
+        print(precaculated.load(i))
+    
+    precaculated.free()
+```
+
+#### what is the code doing
+Returns a pointer with pre-calculated values during compilation and using it at runtime.
+#### how to call squared() during runtime
+By not using alias.
+```python
+# using var instead of alias
+var precaculated = squared(n_numbers)
+```
+--- SOURCE: tutorials/env-argv-param_env-for-parameters.md ---
+# 🦜 env, argv and param_env (for alias)
+> with v0.5.0
+## Overview
+```env```: defined in the os ENV
+
+```argv```: get command-line arguments
+
+```param_env```: for alias, available at compile time
+
+## param_env
+They are retreived when mojo build the program.
+
+So they can be used to do compile-time logic.
+
+```mojo build -D build_message="now faster with simd!" -D simd_width=8 app.mojo```
+```python
+from sys.param_env import is_defined,env_get_int,env_get_string
+
+fn get_width() -> Int:
+    @parameter
+    if is_defined["simd_width"]():
+        if env_get_int["simd_width"]() > simdwidthof[DType.uint8]():
+            # simd_width too big, default to max
+            return simdwidthof[DType.uint8]()
+        else:
+            return env_get_int["simd_width"]()
+    else:
+        return 1
+
+alias simd_width:Int = get_width()
+
+#shorter way for default value:
+alias build_message:StringLiteral = env_get_string["build_message","none"]()
+
+fn main():
+    @parameter
+    if build_message != "none":
+        print("build message:",build_message)
+
+    var v = SIMD[DType.uint8,simd_width]()
+    print(v)
+```
+Start the program:
+
+```./app```
+
+Output:
+
+    build message: now faster with simd!
+    [0, 0, 0, 0, 0, 0, 0, 0]
+## env
+It is not "only a mojo thing", it is widely used by operating systems and apps.
+
+##### Example:
+```python
+from os import getenv
+
+fn main():
+    var k = getenv(name= "ENV_VARIABLE_NAME", default= "none")
+    if k == "none":
+        print("it is default value")
+        return
+```
+
+
+## args
+> ⚠️ the example do not include error checking, so don't use it as it is
+
+Build the app: ```mojo build app.mojo```
+
+    ./app "The number is" 3
+    ./app "The number is" 4
+They are retrieved each time we run the program.
+
+```python
+from sys import argv
+
+fn main() raises:
+    var arguments = argv()
+    let size = len(arguments)
+
+    var message = arguments[1]
+    #convert to an integer
+    var the_number:Int = atol(arguments[2])
+
+    print(message,the_number)
+```
+--- SOURCE: tutorials/getattr-dynamic-and-static-struct-members.md ---
+
+
+# 🏞️ getattr: dynamic and static struct members
+
+
+> with v0.5.0
+
+```__getattr__()``` is a feature that makes it possible to design flexible and versatile structs in mojo (like other features too). 
+
+
+
+It feels like merging the static and the dynamic world.
+
+
+
+
+Theses features are just there when needed, no obligation to use them all the time!
+
+Here is an example, note that ```try:``` and ```except:``` blocks are available in mojo and python!
+
+### my_package.py
+```python
+def method_from_package():
+    return "Called on package"
+
+def package_double_the_value(arg):
+    return arg*2
+
+package_value = 123
+```
+
+### The struct (in a .mojo or .🔥 file)
+
+Let implement one that can refer to both static and dynamic struct members.
+
+That way, we can do both "mojo things" and "python things" in a seamless manner.
+
+
+```python
+from python import Python
+
+@value
+struct PackageHelper:
+
+    var my_package: PythonObject
+    var struct_value: Int
+    
+    def __init__(inout self):
+        Python.add_to_path(".")
+        self.my_package = Python.import_module("my_package")
+        
+        self.struct_value = 456
+
+    def method_from_struct(self) -> String:
+        return "called on struct"
+
+    def __getattr__(inout self,name:StringLiteral) ->PythonObject:
+        return self.my_package.__getattr__(name) 
+```
+The ```__getattr__()``` implementation is quite small, but is powerfull:
+
+If a struct do not define a requested attribute, it will call that function and pass the name of it.
+
+In this implementation, if the attribute is not in the struct, get it from the PythonObject.
+
+That way, it is possible to do ```the_struct_ìnstance.anything``` in a dynamic manner.
+
+Consider this example for more clarity:
+  - ```struct_instance.method_defined_in_the_struct()```
+    - It works as usual.
+  - ```struct_instance.method_not_defined_in_the_struct()```
+    - Let the```__getattr__(self, the_name)``` handle that!
+
+### The main function
+*(To place just below the mojo struct)*
+```python
+def main():
+    #create an instance
+    w = PackageHelper()
+    
+    #that attribute is defined in the struct
+    print(w.method_from_struct())
+
+    #that attribute comes from the PythonObject
+    print(w.method_from_package())
+
+    #that attribute is defined in the struct
+    print(w.struct_value)
+
+    #that attribute is defined in the PythonObject
+    print(w.package_value)
+
+    temp_value = PythonObject(1.0)
+    print(w.package_double_the_value(temp_value))
+    temp_value = 1.5
+    print(w.package_double_the_value(temp_value))
+``` 
+
+### Notes
+- inside ```def()``` function, ```let``` and ```var``` are optional.
+- struct can store PythonObject type instances.
+- implicit type
+  - temp_value = PythonObject(1.0)
+    - temp_value is of PythonObject type
+  - temp_value = 1.5
+    - instanciated by PythonObject again
+
+
+```try:``` and ```except:``` blocks can be placed in both ```def()``` and ```fn()``` functions
+
+```__getattr__()``` and ```__setattr()__``` were introduced in [Changelog: Week of 2023-04-03](https://docs.modular.com/mojo/changelog.html#week-of-2023-04-03)
+--- SOURCE: tutorials/introduction-to-types.md ---
+# ⌨️ introduction to types
+> with v0.5.0
+## Declaration of variables
+```let```: immutable, constant, cannot be changed
+
+```var```: variable, can re-assign it another value
+## Types
+defined after the semi column```:```
+```python
+def main():
+    let x:Int = 1
+    var y:Int = 1
+    y = 2
+```
+##### common types:
+- Int
+- Float
+- String
+- Bool
+
+##### important:
+- once defined, the type of the variable cannot be changed for another one
+## functions
+##### passing an argument
+```python
+def PrintNumber(Number:Int):
+    print(Number)
+```
+```python
+def main():
+    let TheNumber:Int = 1
+    PrintNumber(TheNumber)
+```
+##### returning a value
+the return type is written after the arrow ```->```
+```python
+def add(a,b):
+    return a+b
+
+def add(a:Int ,b: Int)->Int:
+    return a+b
+
+def add(a:Float64 ,b: Float64)->Float64:
+    return a+b
+```
+##### default arguments value and named arguments
+```python
+def greet(name:String="learner" ,message: String = "Hello "):
+    print(message+name)
+```
+```python
+def main():
+    greet() #Hello learner
+    greet(name="") #Hello
+    greet(message="Greetings ") #Greetings learner
+```
+##### modify an argument from within a function
+add ```inout``` before the argument name
+
+```python
+def increase(inout Number: Int):
+    Number+=1
+```
+```python
+def main():
+    var TheNumber:Int = 0
+    increase(TheNumber)
+    print(TheNumber) # 1
+```
+
+## Structures
+The ```@value``` for a short example, it simply adds a few methods for us.
+
+They can also be added manually as needed.
+```python
+@value
+struct Computer:
+    var cores: Int
+    var is_running: Bool
+    var ram_size: Int
+
+    fn __init__(inout self,cores:Int = 4,state:Bool = False):
+        self.cores = cores
+        self.is_running = state
+        self.ram_size = 1024
+
+    fn start(inout self):
+        self.is_running = True
+        print("ram size:", self.ram_size)
+
+def ImproveComputer(inout existing:Computer, improved: Computer):
+    existing.cores = improved.cores
+    existing.ram_size = improved.ram_size
+
+def main():
+    var MyComputer = Computer()
+
+    var NextComputer = Computer(cores=8)
+    NextComputer.ram_size *= 4
+
+    ImproveComputer(MyComputer,NextComputer)
+    
+    MyComputer.start() #ram size: 4096
+```
+--- SOURCE: tutorials/lists-of-structs-magic-operators-pre-lifetimes.md ---
+# 🤹 making lists of structs with magic operators (pre-lifetimes)
+
+
+> with v0.5
+
+*note: ⚠️ there could be bugs in the code or errors, please [contribute corrections](/contribute.md)*
+
+
+
+
+&nbsp;
+
+
+
+
+
+In mojo for now, there is something called *magic operators* .
+
+Theses are used for unsafe references until the day we gonna use lifetimes.
+
+
+There are a lot of conversation on the github repo of mojo about the lifetimes, proposals and a refinement process.
+
+More about it can be read on the website of mojo aswell.
+
+
+
+
+&nbsp;
+
+#### [Roadmap: ownership and lifetimes](https://docs.modular.com/mojo/roadmap.html#ownership-and-lifetimes) for more on lifetimes
+
+#### [Documentation: Pointer](https://docs.modular.com/mojo/stdlib/memory/unsafe.html#pointer) the tutorial uses pointers
+
+&nbsp;
+
+
+### ```__get_lvalue_as_address()``` 
+  - see [Roadmap: shap edges](https://docs.modular.com/mojo/roadmap.html#sharp-edges)
+  
+  -  returns the address of a instance
+  - ```
+    var x = 1
+    var pointer = __get_lvalue_as_address(x)
+    __get_address_as_lvalue(pointer)=2
+    var with_copyinit = __get_address_as_lvalue(pointer)
+    _ = x #extend lifetime
+    ```
+
+
+### ```__get_address_as_lvalue()```
+  - documentation in [Roadmap: shap edges](https://docs.modular.com/mojo/roadmap.html#sharp-edges)
+  - ```__get_address_as_lvalue(address) = other_instance ``` 
+    - will call ``` __del__()``` on existing value at the address (cannot contains nothing)
+  - get an copy instance trough ```__copyinit__```:
+    - ```var x = __get_address_as_lvalue(address)```
+
+
+
+### ```__get_address_as_owned_value()``` 
+  - introduced in [Week of 2023-04-17](https://docs.modular.com/mojo/changelog.html#week-of-2023-04-17)
+  -  return the "original" instance as owned
+  -  ```__del()__``` will be called on the "original" instance when last used
+  -  require extra attention for proper use! (unsafe)
+
+
+### ```__get_address_as_uninit_lvalue()``` 
+  - introduced in [Week of 2023-04-17](https://docs.modular.com/mojo/changelog.html#week-of-2023-04-17)
+  -  act like a placement new
+  -  ```__get_address_as_uninit_lvalue(address) = instance```
+     -  address should be allocated
+     -  address should not already contain a value
+     -  will **not** call ``` __del__()``` on value at the address 
+     
+
+&nbsp;
+#### Example: list of struct
+> ⚠️ this code have not been tested, require more work
+```python
+@value
+struct a_struct:
+    var x:Int
+    var y:Int
+
+struct storage:
+    var data: Pointer[a_struct]
+
+    fn __init__(inout self,capacity:Int):
+        self.data = self.data.alloc(capacity)
+
+    fn __moveinit__(inout self,owned other:Self):
+        #see tutorial on moveinit
+        #__del__() will not be called on "other"
+        #with takeinit, __del__() is called on it
+        self.data=other.data
+    
+    fn store(inout self, i:Int,value:a_struct):
+        #placement new on the offset
+        #will not call __del()__ if something was there
+        __get_address_as_uninit_lvalue(self.data.offset(i).address) = value
+    
+    fn get(inout self, i:Int)->a_struct:
+        #returns a __copyinit__() instance, not the original
+        return __get_address_as_lvalue(self.data.offset(i).address)
+    
+    fn replace(inout self, i:Int,value:a_struct):
+        #will call __del__() on the previous value
+        __get_address_as_lvalue(self.data.offset(i).address) = value
+        
+    fn __del__(owned self):
+        # not implemented in the example: placement delete on elements
+        # please contribute solutions, working on it
+        # see __get_address_as_owned_value()
+        # just free() is not enough to have no bugs.
+        self.data.free()
+
+def main():
+    var collection = storage(capacity=2)
+    
+    for i in range(10):
+        collection.store(0,a_struct(0,1))
+        collection.store(1,a_struct(2,3))
+
+    for i in range(2):
+        let res = collection.get(i)
+        print(res.x,res.y)
+        
+    collection.replace(0,a_struct(1,1))
+
+    for i in range(2):
+        let res = collection.get(i)
+        print(res.x,res.y)
+    
+```
+Lifetimes can be manually extended if needed:
+```
+var x = 1
+#unsafe reference code
+_ = x #extended lifetime
+```
+see the [ASAP](https://docs.modular.com/mojo/programming-manual.html#behavior-of-destructors). (call del on last use of the instance)
+
+> one revision on Nov 6 2023
+
+[contribute corrections](/contribute.md)
+--- SOURCE: tutorials/make-test-builds-using-a-custom-flag.md ---
+# 🏳️ make test builds using a custom flag
+In mojo, it is possible to do it trough programming!
+
+For serious testing, the assert functions provided mojo standard library should be used instead.
+
+*Note: testing is very important, and that code have not been tested. not ready for use*
+
+```python
+from sys.param_env import is_defined
+
+alias testing = is_defined["testing"]()
+
+#let's do colors for fun!
+@always_inline
+fn expect[message:StringLiteral ](cond:Bool):
+
+    if cond: 
+        #print in green
+        print(chr(27),end='')
+        print("[42m",end='')
+    else: 
+        #print in red
+        print(chr(27),end='')
+        print("[41m",end='')
+
+    print(message,end='')
+    
+    #reset to default colors
+    print(chr(27),end='')
+    print("[0m")
+
+fn main():
+    @parameter
+    if testing:
+        print("this is a test build, don't use in production")
+
+    @parameter
+    if testing:
+        expect["math check"](3==(1+2))
+        #should print "math check in green"
+```
+### pass testing "flag":
+```mojo build myfile.mojo -D testing```
+
+```-D customised=1234``` is also possible, 
+see [param_env](https://docs.modular.com/mojo/stdlib/sys/param_env.html)
+
+
+
+
+
+--- SOURCE: tutorials/memory-asap-and-destructor-behaviours.md ---
+# 🧹 ASAP: will call ```__del__``` when last used
+> with v0.4.0
+
+##### *this page is a community effort and may contains errors. please contribute any corrections if needed.*
+
+It's wonderfull because mojo free memory as soon as possible.
+
+Lifetimes is on the roadmap: [Ownership and Lifetimes](https://docs.modular.com/mojo/roadmap.html#ownership-and-lifetimes).
+
+source: [Behavior of destructors](https://docs.modular.com/mojo/programming-manual.html#behavior-of-destructors) 
+
+
+### using that struct as an example:
+```python
+@value
+struct ValuePointer:
+    
+    var pointer: Pointer[Int]
+
+    #instantiate
+    def __init__(inout self):
+        #allocate memory
+        self.pointer = Pointer[Int].alloc(1)
+        #store 123
+        self.pointer.store(0,123)
+
+    #delete
+    def __del__(owned self):
+        #free memory
+        self.pointer.free()
+```
+### the challenge:
+```python
+def main():
+
+    var original = ValuePointer()
+
+    #original is deleted here after last use/access:
+    var copy_of_pointer = original.pointer
+
+    #copy now point to freed memory
+    print(copy_of_pointer.load(0))
+```
+1. original will get deleted after it's last use, the pointer inside will be freed by
+our ```__del__``` function.
+2. copy_of_pointer now point to freed memory and unknown data is printed 
+
+
+### the solution:
+```python
+def main():
+
+    var original = ValuePointer()
+
+    var copy_of_pointer = original.pointer
+
+    print(copy_of_pointer.load(0))
+
+    #original is deleted here after last use/access:
+    _ = original
+```
+
+by assigning original to ```_``` , it's last use will be there.
+
+copy_of_pointer no will longer point to freed memory.
+
+123 got printed.
+
+--- SOURCE: tutorials/moveinit-copyinit-takeinit.md ---
+# 🏗️ moveinit 💿💿 copyinit 🐿️ non-destructing move
+> using v24.0.1
+
+Let's have a look at theses features trough an example,
+
+they looks like this :
+
+  - ```fn __copyinit__(inout self, borrowed original: Self)```
+    -  original is borrowed and cannot be modified
+    -  original live separately and can get deleted later in the program
+    -  it provides a way to create a copy of an instance
+  - ```fn __moveinit__(inout self, owned original: Self)```
+    -  original is owned, ```__del__``` will never be called on it
+    -  original can't be used in the program anymore 
+    -  **^ transfer suffix** is used to call moveinit
+    -  usefull for making sure an instance don't have copies thus is unique
+
+
+### The illustration:
+```python
+struct my_type:
+    var id:Int
+    
+    fn __init__(inout self,id:Int):
+        self.id=id
+        print("init "+String(self.id))
+
+    fn __moveinit__(inout self, owned existing: Self):
+        self.id = existing.id
+        print("moveinit "+ String(self.id))
+        
+    fn __copyinit__(inout self, existing: Self):
+        self.id = existing.id+1
+        print('copyinit '+String(+self.id))
+    
+    fn __del__(owned self):
+        print("del "+String(+self.id))
+
+fn separator():
+    print("-------------")
+
+fn main():
+    var original = my_type(id=0)    #init 0
+    
+    separator()
+
+    var copy = original             #copyinit 1
+    
+    separator()
+    
+    var still_original = original^  #moveinit 0
+
+    #cannot use original anymore, because moved
+    #var other = original
+    #would produce an error
+
+```
+
+### Complete output:
+    init 0
+    -------------
+    copyinit 1
+    del 1
+    -------------
+    moveinit 0
+    del 0
+
+*Note: del 0 comes from still_original and not original*
+
+&nbsp;
+
+### ```var original = my_type(id=0)```
+An instance of my_type is created,
+
+it calls ```fn __init__(inout self,id:Int)```
+
+    init 0
+### ```var copy = original```
+It will call ```fn __copyinit__(inout self, existing: Self)```
+
+We get a copy of it:
+
+    copyinit 1
+    del 1
+The copy get deleted when it is last used in the code.
+
+We dont use it so it later so it gets deleted here.
+
+### ```var still_original = original^```
+
+
+the **^ transfer suffix** will call ```__moveinit__(inout self, owned existing: Self)```
+
+we moved original to still_original and took original as ```owned```:
+- ```__del__()``` have never been called on original
+- del 0 is showed only once
+- it is showed whend still_original gets deleted
+
+&nbsp;
+
+## why moveinit is important and usefull
+We can make sure that an instance have no copies in the program,
+
+when we to pass it to a function, the function could return it:
+```python
+fn from_owned(owned source:my_type)->my_type:
+    #do things
+    return source
+```
+
+Or could assign it to an inout argument:
+```python
+fn move_to(owned source:my_type,inout to: my_type):
+    to = source^ #re transfer it
+    #var tmp = source would produce an error
+    #source can't be used anymore here
+```
+
+It could also be store inside another struct type passed as inout.
+```python
+fn change_owner(owned some_item:item_type,inout new_owner: owner_type):
+    new_owner.owned_item = some_item^
+```
+
+&nbsp;
+
+### Owned argument does get deleted if not used:
+```python
+fn from_owned(owned arg:my_type):
+    print("not used")
+```
+```in that case, we don't re-transfer arg, so arg will be deleted.```
+
+```__del__()``` is called at the moment of the last use of the instance.
+
+&nbsp;
+
+ # 🐿️ takeinit (non-destructing move)
+Takeinit has been depreciated with [Changelog: v0.7.0 (2024-01-25)](https://docs.modular.com/mojo/changelog#v070-2024-01-25).
+
+**Explanation**: traits got introduced into [Changelog v0.6.0 (2023-12-04)](https://docs.modular.com/mojo/changelog#v060-2023-12-04),
+
+It now makes it possible to give the user complete choice on whether a type should implement a "non-destructive move" or not.
+
+In consequence, the transfer suffix (```^```) is no longer shared between moveinit and takeinit.
+
+This reduce the the probability of a user being confused on wich one will be called.
+
+The transfer suffix is now used only with moveinit.
+
+Here is an example that illustrate how traits provides a better way to implement the "non-destructing move" ability.
+
+```python
+trait ValueMovable:
+    fn take_value_of(inout self:Self, inout other: Self): ...
+
+struct MyStruct(ValueMovable):
+    var value: String
+    fn take_value_of(inout self:Self, inout other: Self):
+        self.value = other.value
+        other.value = "none"
+    fn __init__(inout self,val:String): self.value=val
+
+def main():
+    var a = MyStruct("the value to take")
+    var b = MyStruct("empty value")
+    b.take_value_of(a)
+
+    print(a.value) #none
+    print(b.value) #the value to take
+```
+**B took the value of A**, and A still exist.
+
+
+The value of A had been moved, without destructing A.
+
+That operation can be refered to as a "non-destructing move".
+
+That is all there is to it! 
+
+
+
+
+&nbsp;
+
+--- SOURCE: tutorials/moving-owned-values.md ---
+# 🏚️🏗️🏠 Moving ```owned``` values 
+
+> Updated up to [Changelog v0.6.1 (2023-12-18)](https://docs.modular.com/mojo/changelog.html#v0.6.1-2023-12-18)
+
+⚠️ The small tutorial could contains errors, see documentation on the website and repo of mojo!
+
+
+&nbsp;
+
+### 🟢 Introduction, then an example with many comments and colors 🎨!
+
+```owned``` and ```inout``` are different:
+
+If the value passed is **not** owned, it is **not** possible to delete it🗑️,
+
+```MyType.__del__(owned self)``` require the argument passed as owned.
+
+If a value is passed as ```inout```, it is possible to assign it a new value ✍:
+
+```MyType.__init__(inout self)```.
+
+This is great because the function can modify it, so it is named a mutable reference.
+
+Additionally, the function could not free it, wich makes it safer🛡️. 
+
+Like ```🗑️del```, owned arguments are require to ```🏗️move values```: 
+- ```__del__(owned self)```
+- ```__moveinit__(inout self,owned other:Self)```
+
+Once the value got passed```^``` as owned to a function, we can't use it anymore !
+
+Unless the function returns it back or store it somewhere.
+
+
+
+```python
+struct MyType:
+    var value:Int
+    fn __init__(inout self, v:Int): self.value = v
+    fn __moveinit__(inout self, owned other: Self): #🏗️
+        self.value = other.value
+
+var BackupValue:MyType = 0
+
+fn MoveIn(owned v:MyType):
+    print(v.value)
+    v.value = 123456
+    BackupValue = v^
+    
+fn main():
+    BackupValue = 0
+    var a:MyType = 123
+    MoveIn(a^)
+    #print(a.value) # use of uninitialized value 'a'
+    print(BackupValue.value) #✅ 123456
+```
+*(Note that global variables need to be initialized)*
+
+>⚠️ If the type also implement ```copyinit``` , owned instances of a copy could be passed!
+
+&nbsp;
+
+### Here is a small example
+
+```python
+@value #⚠️ Synthesise also __copyinit__
+struct StackOfBricks:
+    var amount:Int
+    fn __moveinit__(inout self,owned other:Self):
+        self.amount = other.amount
+```
+
+```python
+struct Home(Movable):
+    var bricks:Int #🧱
+
+    #🏚️👷🧱
+    fn __init__(inout self, initialamount:Int=0):
+            self.bricks = initialamount
+    
+    #🏠🏗️🏚️ Move bricks in
+    fn __moveinit__(inout self,owned other:Self): #A_self=B_other^
+        self.bricks = other.bricks
+
+    #🏚️🏗️🏠 Move bricks out
+    fn MoveTo(owned self,inout other:Self):
+        other = self^ #Home.__moveinit__(other,self^)
+
+    #🏠🏗️📈🏗️❔
+    fn AddOneBrick(owned self)->Self:
+        self.bricks+=1   #ex: var A = Home.increment(A^)
+                        #ex: var B = A^.increment()
+        return self^
+
+    #🏠🏗️📈🏗️❔
+    fn AddOneBrickFromStackOfBricks(owned self,inout s:StackOfBricks)->Self:
+        if s.amount > 0:
+            s.amount-=1             #ex: var x:Int = 10
+            self.bricks+=1   #ex: var A = Home.increment(A^,x)
+        return self^
+    
+    fn AddAllBricksFromStackOfBricks(inout self,owned other:StackOfBricks):
+        self.bricks += other.amount
+        # other is not used after, automatically __del__() here.
+
+        #_ = other^ # manually
+        #similar to: StackOfBricks.__del__(other^) manually
+
+    fn AddBricksFrom(inout self,inout other:Self,amount: Int):
+        if amount<= other.bricks:
+            self.bricks+=amount
+            other.bricks -= amount
+
+    #🏠🏗️🗑️
+    fn __del__(owned self): #Home.__del__(A^)
+        #ex: self.somepointer.free()
+        ...  
+
+```
+```python
+#🏠🏗️📈🏗️❔    
+fn AddBrick(owned arg:Home)->Home:
+    arg.bricks+=1
+    return arg^ #➡️🏗️
+
+fn main():
+    var location_a = Home(initialamount=10) #🟦
+    var location_b = Home(initialamount=0)  #🟨
+
+    print(location_a.bricks)  #🟦1️⃣0️⃣
+    print(location_b.bricks)  #🟨0️⃣
+
+    location_b = location_a^  #🟦➡️🏗️🟨
+    print(location_b.bricks)  #🟨1️⃣0️⃣
+    #print(location_a.bricks) #🟦❌✋ use of uninitialized value 'location_a'
+                              
+                              #🟨🏠   #1️⃣0️⃣
+                              #🟦🏚️   #__del__() been called on it
+
+    location_b = AddBrick(location_b^)  #🟨🏗️📈🏗️🟨
+    print(location_b.bricks)  #🟨1️⃣1️⃣
+
+
+    location_a = Home(0)              #🟦0️⃣
+    var BrickStack = StackOfBricks(4) #🧱4️⃣
+    
+    #Bricks stack argument is inout:
+    location_a = location_a^.AddOneBrickFromStackOfBricks(BrickStack)
+    print(location_a.bricks)        #🟦1️⃣
+    print(BrickStack.amount)        #🧱3️⃣
+    
+    #Bricks stack argument is owned:
+    location_a.AddAllBricksFromStackOfBricks(BrickStack^)
+    print(location_a.bricks)        #🟦4️⃣
+    #print(BrickStack.amount)       #🧱❌✋ use of uninitialized value 'BrickStack'
+
+
+    location_a^.MoveTo(location_b)  #🟦➡️🏗️🟨
+    print(location_b.bricks)        #🟨4️⃣
+    #print(location_a.bricks)       #🟦❌✋
+    
+    location_a = Home(0)     #🟦0️⃣
+    location_b = Home(10)    #🟨1️⃣0️⃣
+    
+    #location a and b are inout argument:
+    location_a.AddBricksFrom(location_b,5)
+    location_a.AddBricksFrom(location_b,1)
+    
+    #inout arguments are not moved, only owned ones
+    print(location_a.bricks) #🟦6️⃣
+    print(location_b.bricks) #🟨4️⃣
+    
+    location_b.AddBricksFrom(location_a,6)
+    print(location_a.bricks) #🟦0️⃣
+    print(location_b.bricks) #🟨1️⃣0️⃣
+
+    var BrickStackOne = StackOfBricks(30)#🧱🔵3️⃣0️⃣
+    var BrickStackTwo = StackOfBricks(20)#🧱🟡2️⃣0️⃣
+    var BigStackOfBrick = JoinBrickStacks(BrickStackOne^,BrickStackTwo^)
+    print(BigStackOfBrick.amount)        #🧱🟢5️⃣0️⃣
+    
+    #print(BrickStackOne.amount)          #🧱🔵❌✋
+    #print(BrickStackTwo.amount)          #🧱🟡❌✋
+    
+    _ = BigStackOfBrick # ⚠️ will not delete it
+                        # @value generate __copyinit()__
+                        # so it will delete a copy
+
+    # Successful with the ^ suffix
+    BigStackOfBrick^.__del__() 
+    #similar to:
+    #   _ = BigStackOfBrick^
+    #   StackOfBricks.__del__(BigStackOfBrick^)           
+    #print(BigStackOfBrick.amount)        #🧱🟢❌✋
+    
+    #The ^suffix allow to treat the value as owned! 
+
+    # 🏗️ Movable trait (see 🔸function below):
+
+    var Val_C = StackOfBricks(10)
+    var Val_D = StackOfBricks(0)
+    MoveTo(Val_C^,Val_D)
+
+    #StackOfBricks also implement __moveinit__() (@value also make it!)
+
+    Val_C = StackOfBricks(10)
+    #T is passed explicitely, but mojo can deduce it(see above)
+    MoveTo[StackOfBricks](Val_C^,Val_D)
+
+#🔸
+fn MoveTo[T:Movable](owned a:T,inout b:T):
+    #The Movable trait means the type passed implement __moveinit__()
+    #similar to: T.__moveinit__(b,a^)
+    b=a^
+
+fn JoinBrickStacks(owned a:StackOfBricks, owned b:StackOfBricks) -> StackOfBricks:
+    var total = a.amount + b.amount
+    return StackOfBricks(total)
+```
+
+### 🎉 That is how to move```^``` owned values!
+
+&nbsp;
+
+> ⚠️ *Could contains errors, make sure to see mojo repo or documentation website for better materials*
+
+### Thanks to contributors, hope it is helpfull ❤️‍🔥
+--- SOURCE: tutorials/multi-core-parallelize-with-simd .md ---
+
+# 🛣️ 🚌 multi-core (parallelize) with simd
+### 🪮 parallel without simd
+
+```python
+from algorithm import parallelize
+fn main():
+
+    @parameter
+    fn compute_number(x:Int): 
+        print(x*x)
+        
+    var stop_at = 16
+    var cores = 4
+    
+    #start at 0, end at stop_at (non inclusive)
+    parallelize[compute_number](stop_at,cores)
+```
+
+
+# 🚍 simd
+To use an analogy, thanks to @PriNova for the inspiration,
+
+simd can be thought of as autobuses filled with numbers,
+
+with only one instruction, we can calculate the entire autobus. (in the same amount of time it would have taken to calculate a single number in a non-simd way)
+
+how much numbers can fit in one autobus depend on the type. (can fit more small types)
+
+```python
+import math
+fn main():
+    var numbers = SIMD[DType.uint8,8]()
+    
+    # simd instructions:
+
+    # a. fill them whith numbers from 0 to 7
+    numbers = math.iota[DType.uint8,8](0)
+    
+    # b. x*x for each numbers
+    numbers*=numbers
+
+    print(numbers)
+    
+    #[0, 1, 4, 9, 16, 25, 36, 49]
+```
+
+# 🚍 🚍 🛣️ simd in parallel 
+
+it is like 4 autobus advancing on 4 seperate highway lanes toward a destination. 
+
+they reach destination more or less at the same time and in the same amount of time it would have taken with only one autobus in a single highway lane. (single core, non multi-core)
+
+
+```python
+from algorithm import parallelize
+from memory.unsafe import DTypePointer
+from sys.info import simdwidthof
+import math
+
+fn main():
+
+    # how much highway lanes
+    var computer_cores = 4
+
+    alias element_type = DType.int32
+
+    #how much numbers in the autobus:
+    alias group_size = simdwidthof[element_type]()
+    
+    #how much autobus needs to travel:
+    alias groups = 16
+
+    #initialized array of numbers with random values
+    var array = DTypePointer[element_type]().alloc(groups*group_size)
+    
+    @parameter
+    fn compute_number(x:Int):
+        # one autobus:
+        var numbers: SIMD[element_type,group_size]
+        
+        # 3 simd instructions:
+        numbers = math.iota[element_type,group_size](x*group_size)
+        numbers *= numbers
+        array.simd_store[group_size](x*group_size,numbers)
+
+
+    # open the highway
+    parallelize[compute_number](groups,computer_cores)
+    
+    #   parallelize will call compute_number with argument
+    #       x= 0,1,2...groups (non-inclusive)
+
+    for i in range(groups*group_size):
+        var result = array.load(i)
+        print("Index:" , i, " = ",result)
+
+    array.free()
+```
+
+### [math.iota](https://docs.modular.com/mojo/stdlib/math/math.html#iota) fills an array with incrementing numbers.
+
+### DTypePointer: *simd_store*
+With an array of 256 elements:
+
+set the first 8 elements:
+- ```array.simd_store[DType.float32,8](0,simd_array_of_8_values)```
+
+set the second 8 elements:
+- ```array.simd_store[DType.float32,8](8,simd_array_of_8_values)```
+
+set the third 8 elements:
+- ```array.simd_store[DType.float32,8](16,simd_array_of_8_values)```
+
+> note: the offset argument is a **multiple of 8** when storing by groups of 8.
+--- SOURCE: tutorials/numpy-simd.md ---
+
+# simd cosine with np.linspace
+The simd part need revision,
+it is not good practice. update soon!
+```python
+from python import Python
+from python import PythonObject
+from math import math
+
+struct np_loader:
+    #Python.import_module("numpy") returns a PythonObject
+    var lib:PythonObject
+    var loaded: Bool
+    fn __init__(inout self):
+        try:        #let see if an error is produced
+            self.lib = Python.import_module("numpy")
+            self.loaded = True
+        except e:   #if there was an error,don't crash, do this
+            self.loaded = False
+    #np["linspace"], "linspace" is the key, a StringLiteral
+    fn __getitem__(inout self, key:StringLiteral)raises->PythonObject:
+        #get the attribute "linspace" from the python object, and return it
+        return self.lib.__getattr__(key)
+
+fn main() raises:
+    #get numpy from python
+    var np = np_loader()
+    #make sure there was no errors                                    
+    if np.loaded:
+        #get the linspace function from python and call it
+        var python_result = np["linspace"](0, 255,256)          
+        #prepare a simd array of 256 elements
+        var simd_mojo_array = SIMD[DType.float64,256]()         
+
+        # python returns PythonObject therefore they sometimes require
+        # conversion to mojo types in order to use some functions                                                   
+        var pi = np["pi"].to_float64()                          
+
+        #convert array size to mojo int
+        var size:Int=python_result.size.to_float64().to_int()
+        #mojo provide range just like python, that one is a mojo one
+        for x in range(size):
+            #from python float object to mojo float
+            simd_mojo_array[x]=python_result[x].to_float64()    
+
+        #perform the simd cos operation 
+        simd_mojo_array = math.cos(simd_mojo_array*(pi*2.0/256.0))
+
+        print(simd_mojo_array)
+```
+--- SOURCE: tutorials/parameters-alias-struct-parameter-deduction.md ---
+# 🧬 Parameters, Alias, Struct parameter deduction, more
+
+> with v0.5.0
+
+⚠️ Some examples are "minimal and simple", no safe checks are done.
+
+It is to better illustrate concepts and not clutter the mind, make sure follow good practices and safe coding in your implementations.
+
+Let's learn how to parametrize!
+
+
+
+
+# Start of the tutorial
+> Parameters are compile-time values.
+
+That example also covers "Struct parameters deduction". 
+
+It is very usefull, try to practice playing with it in order to remember and understand it.
+
+Notice how the deduction "works its way" up the struct and fill the blanks.
+
+It feels like the arguments types defines the parameters of the struct, and not the other way around.
+
+Increased productivity, less screen space used, less repetitive coding:
+
+```python
+@value
+struct Point3D[XT:AnyType,YT:AnyType,ZT:AnyType]:
+    var x:XT
+    var y:YT
+    var z:ZT
+
+    fn __init__(inout self, x:XT ,y:YT,z:ZT):
+        self.x = x
+        self.y = y
+        self.z = z
+
+# 4️⃣. use parameters of an argument inside the function signature:
+fn to_list_literal(arg:Point3D)-> ListLiteral[arg.XT,arg.YT,arg.ZT]:
+    return ListLiteral(arg.x,arg.y,arg.z)
+
+fn main():
+
+    #1️⃣ Explicit struct parameters:
+    var my_point_d = Point3D[Int64,Int64,Int64](1,2,3)
+    var my_point_e = Point3D[Int64,Float64,Int64](1,2.5,3)
+    
+    #2️⃣ Struct parameters deduction 
+        #XT, YT, ZT deduced from argument passed:
+
+    var my_point_a = Point3D(1, 2, 3)         #Int64, Int64, Int64
+
+    var my_point_b = Point3D(1.0, 2.0, 3.0)   #Float64, Float64, Float64
+    
+    var my_point_c = Point3D(1, 2.5, 3)       #Int64, Float64, Int64
+
+    #3️⃣ Re-use the parameters of an instance of Point3D
+    var some:my_point_c.YT = 1.0 #my_point_c.YT is a type (Float64)
+
+    print(to_list_literal(my_point_a)) # [1, 2, 3]
+    print(to_list_literal(my_point_c)) # [1, 2.5, 3]
+```
+#### see [Changelog: v0.5.0-2023-11-2](https://docs.modular.com/mojo/changelog.html#v0.5.0-2023-11-2)
+- Function argument input parameters can now be referenced within the signature of the function
+- Mojo now supports struct parameter deduction
+---
+
+### Automatic parameterization of functions
+see [Documentation](https://docs.modular.com/mojo/programming-manual.html?q=parameter#automatic-parameterization-of-functions)
+
+Our ```take_dynamic_vector()``` don't take parameters for arg, but DynamicVector is parametric.
+
+The long form version could look like this:
+```python
+fn take_dynamic_vector[T:AnyType](arg:DynamicVector[T]) -> T:
+```
+
+Mojo will create theses for us in order to be more productive.
+
+It is important to be aware of it in order to understand the language.
+
+```python
+fn take_dynamic_vector(arg:DynamicVector) -> arg.type:
+    let tmp: arg.type = arg[0] #first element of vector
+    return tmp
+
+fn main(): 
+    var tmp_a = DynamicVector[Int64]()
+    var tmp_b = DynamicVector[Float64]()
+    var tmp_c = DynamicVector[Bool]()
+
+    tmp_a.push_back(1)
+    tmp_b.push_back(1.5)
+    tmp_c.push_back(True)
+
+    let a:Int64 = take_dynamic_vector(tmp_a)
+    let b = take_dynamic_vector(tmp_b)
+
+    print(a,b)
+
+    #parameters are known at compile time
+    #type is a parameter of DynamicVector
+
+    let d:tmp_c.type = False #tmp_c.type == Bool
+    let e = take_dynamic_vector(tmp_c)
+    print(d==e)
+    
+```
+---
+### "Pulling" parameters when needed:
+Note that we refer to the parameter of arg, inside the function signature itself.
+```python
+fn simd_to_dtype_pointer(arg:SIMD)->DTypePointer[arg.type]:
+    var tmp = DTypePointer[arg.type].alloc(arg.size)
+    # just to demonstrate unroll, 
+    # simd_store is probably way faster:
+    @unroll
+    for i in range(arg.size):
+        tmp.store(i,arg[i])
+    return tmp
+
+fn simd_to_static_tuple(arg:SIMD)->StaticTuple[arg.size,SIMD[arg.type,1]]:
+    var tmp = StaticTuple[arg.size,SIMD[arg.type,1]]()
+    
+    #Can be unrolled, because arg.size is known at compile time.
+    #Parameters of simd: SIMD[TYPE,SIZE]
+    
+    @unroll
+    for i in range(arg.size):
+        tmp[i]=arg[i]
+    return tmp
+```
+see [Changelog: july-2023](https://docs.modular.com/mojo/changelog.html#july-2023) for more on ```@unroll```
+
+Compiler time constant value (alias or parameters for example) is required to unroll a loop.
+
+---
+### Capture dynamic value in function and pass it as a parameter
+It is unsafe for now (v0.5), until model the lifetime of captured value by reference.
+
+see [Documentation: parameter decorator](https://docs.modular.com/mojo/programming-manual.html#parameter-decorator)
+
+Here is an introduction in order to get familiar with it:
+```python
+fn take_parameter[f: fn() capturing -> Int]():
+    let val = f()
+    print(val)
+
+fn main():
+
+    #will be captured as a reference
+    var val = 0
+    
+    @parameter
+    fn closure()->Int:
+        return val #captured here
+    
+    for i in range(5):
+        val = i
+        take_parameter[closure]()
+
+    _ = val #extend lifetime manually
+    #if not extended, would be cleaned at last use.
+```
+---
+### Compile time if statement
+It is an if statement that runs at compile time.
+
+The benefit is that only the live branch is included into the final program.
+
+see [Documentation: parameter if](https://docs.modular.com/mojo/programming-manual.html#parameterization-compile-time-metaprogramming)
+
+
+
+```python
+alias use_simd:Bool = SIMD[DType.uint8].size > 1
+
+fn main():
+    @parameter
+    if use_simd == True:
+        print("This build uses simd")
+    else:
+        print("This build do not uses simd")
+```
+A traditional if statement that run at runtime is executed each time.
+
+That one is executed only one time during the compilation.
+
+What is inside the block of the if statement is included in the program if condition is met.
+
+It introduce a form of conditional compilation.
+
+Note that any "compile-time ready" function can be used in the if statement.
+
+---
+### alias
+For compile time constants, 
+
+they can be passed as parameters because they are compile-time known.
+
+```python
+fn main():
+    alias size = 4
+    alias DT = DType.uint8
+    var value = SIMD[DT,size](0)
+    print(value.size==size)
+
+    #create an alias to the print_no_newline function
+    alias say = print_no_newline
+
+    say("hello world")
+```
+They can also be used "like define in C"
+```python
+alias TYPE_OF_INT = Int64
+
+fn get_vector()->DynamicVector[TYPE_OF_INT]:
+    return DynamicVector[TYPE_OF_INT]()
+
+fn my_add(a:TYPE_OF_INT,b:TYPE_OF_INT)->TYPE_OF_INT:
+    return a+b
+```
+Because an alias is "compile-time", it can store the result of a compile time computation:
+```python
+fn squared(a:Int) -> Int:
+    return a*a
+
+fn main():
+    alias pre_calculated_during_compilation = squared(3)
+    var calculated_during_runtime = squared(3)
+    print(pre_calculated_during_compilation) #9
+
+    alias squared_again_during_compilation = squared(pre_calculated_during_compilation)
+    print(squared_again_during_compilation) #81
+```
+At compile time, it is possible to allocate heap memory and materialize it for runtime use.
+
+See [Changelog: august-2023](https://docs.modular.com/mojo/changelog.html#august-2023)
+
+```python
+fn get_squared[stop_at:Int=10]() -> DynamicVector[Int]:
+    var tmp = DynamicVector[Int]()
+    for i in range(stop_at):
+        tmp.push_back(i*i)
+    return tmp
+
+fn main():
+    alias the_compile_time_vector = get_vector[stop_at=100]()
+    var materialized_for_runtime_use = the_compile_time_vector
+```
+
+
+---
+#### Parameter default value and keyword
+Parameters can have default values and be refered by keyword.
+
+The ones that have default values need to be defined after the ones that don't (order).
+- ```example[no_default:Int, got_default:Int=1]```
+
+
+```python
+fn get_vector[VT:AnyType = Int64]()->DynamicVector[VT]:
+    return DynamicVector[VT]()
+
+fn main():
+    var vec = get_vector()
+    vec.push_back(1)
+
+    var vec2 = get_vector[VT=Int32]()
+    vec2.push_back(1)
+```
+---
+    
+
+### Overloading: same name, different types.
+Overloading can be done on parameters and functions/methods.
+```python
+fn take_arg[arg:Float64]():
+    print("float64", arg)
+
+fn take_arg[arg:Int64]():
+    print("Int64", arg)
+
+fn main():
+    alias a:Float64 = 1.0
+    alias b:Int64 = 1
+    take_arg[a]()
+    take_arg[b]()
+```
+
+See:
+- [Documentation: overloading on parameters](https://docs.modular.com/mojo/programming-manual.html#overloading-on-parameters)
+
+- [Documentation: overloading methods and functions](https://docs.modular.com/mojo/programming-manual.html#overloaded-functions-and-methods)
+
+
+---
+&nbsp;
+
+
+This is a work in progress and will get improved and expanded,
+
+
+[Corrections and contribution](/contribute.md)!
+
+
+--- SOURCE: tutorials/parametric-struct-trough-cpu-registers.md ---
+# 🏃 (SPEED) Parametric struct through CPU registers.
+
+> with v24.1.0
+
+Some types are store in the ram. each time we access the ram it takes time.
+
+The reason for accessing the ram is to retrieve a value, or change it, even makes a copy of it (example: pointers).
+
+Ram is slow compared to cpu registers.  (just like storage hard-drive is slower than ram).
+
+The speed to access a CPU register vs RAM is significantly higher,
+
+let's make a struct that is passed trough cpu-register for  higher speed!
+
+An example of such type is an Integer, but mojo pave the way for designing way more sophisticated types!
+
+
+
+Let's implement a naive parametric Tuple type that can be passed trough registers.
+
+Note: mojo comes with builtin register passables Tuple types already.
+
+# Naive tuple passed trough registers
+
+
+
+```python
+@register_passable("trivial")
+struct naive_register_tuple[T_FIRST:AnyRegType,T_SECOND:AnyRegType]:
+    var first:T_FIRST
+    var second:T_SECOND
+    
+    fn __init__(inout self, arg_one:T_FIRST,arg_two:T_SECOND):
+        self.first = arg_one
+        self.second= arg_two
+    
+    fn mutate_first(inout self,val:T_FIRST):
+        self.first = val
+    
+    fn mutate_second(inout self,val:T_SECOND):
+        self.second = val
+
+    
+fn main():
+
+    #explicitely specify the types:
+    var tmp = naive_register_tuple[Bool,Bool](True,True)
+    
+    #with struct parameter deduction:
+    var val = naive_register_tuple(True,1)
+    
+    #mutate first value:
+    val.mutate_first(False)
+    
+    #get the type from the parameters:
+    var my_vec = DynamicVector[val.T_FIRST]()
+    my_vec.push_back(val.first)
+    
+    #get a copy:
+    var val2 = val
+
+    #get fields individually
+    let val_first = val2.first
+    let val_second:val2.T_SECOND = val2.second
+```
+
+Many methods could be implemented on top of a register_passable struct.
+
+This is great for meta-programming and productive/creative implementations.
+
+Examples:
+- ```__getitem__``` to create a ```value[index]``` type of access
+- ```__add__``` to perform ```new_value = value_a+value_b```
+- many more
+
+### AnyRegType
+
+> It represent any register-passable mojo data type.
+
+When making a register-passable struct,
+
+the types of the members must be register-passable aswel.
+
+This is why the struct made in the above example are parametrized:
+
+```python
+struct naive_register_tuple[T_FIRST:AnyRegType,T_SECOND:AnyRegType]:
+    var first:T_FIRST
+    var second:T_SECOND
+```
+
+
+
+
+
+### trivial
+It means that we can get a copy of a value and that we can move it.
+
+There is no need to implement thoses methods. (```copyinit```, ```moveinit```, ```takeinit```, ```del```)
+
+Think about it, theses are just "sequences of bytes" that can be copied as they are from one register to another.
+
+A way to think about thoses is in term of "bags of bits" (see mojo documentation).
+
+
+
+> Note: that decorator is subject to reconsiderations
+
+see [Documentation: trivial types](https://docs.modular.com/mojo/programming-manual.html#trivial-types)
+
+# A new tool in the 🧰 !
+One clear benefit is the speed.
+
+Another significant benefit is that it creates the opportunity to design/implement new/different types.
+
+Theses will becomes more popular as mojo evolve and people start to create hardware specific types.
+
+
+It also **reconcile performance and user-friendlyness** in a significant manner .
+
+
+
+
+
+---
+
+&nbsp;
+
+
+See [Contributions](/contribute.md) for ideas, drafts, tutorials, corrections.
+
+
+--- SOURCE: tutorials/python-world-mojo-world.md ---
+# 🔁 Python land and mojo land, PythonObject
+
+[PythonObject](https://docs.modular.com/mojo/stdlib/python/object.html) is a mojo type that can store python objects of any python class (int, list,ndarray..)
+- can "travel" trough **mojo functions**, as a PythonObject, but can also be passed to **python functions**, as a PythonObject.
+- can go back and forth between thoses two worlds.
+- is understood both by python and mojo
+
+### mojo->python
+```python
+var the_number:Int = 1
+var the_py_object = PythonObject(the_number)
+```
+the_number is a mojo [Int](https://docs.modular.com/mojo/stdlib/builtin/int.html), it is automatically converted to Python object by the method ```__init__(inout self: Self, integer: Int)``` of PythonObject.
+### python->mojo
+```python
+the_number = the_py_object.__index__()
+```
+```__index__()``` is a method of [PythonObject](https://docs.modular.com/mojo/stdlib/python/object.html)
+
+```to_float64()``` is another one.
+
+### calling python functions
+```python
+var the_python_list = PythonObject([])
+```
+The PythonObject is initialized from an empty mojo [ListLiteral](    https://docs.modular.com/mojo/stdlib/builtin/builtin_list.html) by ```__init__[*Ts: AnyType](inout self: Self, value: ListLiteral[Ts])```
+
+the_python_list is now a PythonObject of class list.
+
+```python
+the_python_list.append(123)
+```
+**append is not a method of PythonObject**
+
+- append is a python method of the list class.
+- the_python_list is a PythonObject of the list class
+- append is in python land and mojo can find it inside the python object and call it!
+
+### the ability to import and use any created python file or "pip" package:
+```python
+from python import Python
+var my_python_file = Python.import_module("my_python_file_name") #no .py needed
+my_python_file.my_function([1,2,3]) #mojo will find my_function
+```
+[import_module](https://docs.modular.com/mojo/stdlib/python/python.html#import_module) return a PythonObject
+# Example with many comments:
+```python
+from python import Python
+from python import PythonObject
+
+fn plot_from_mojo(values: PythonObject) raises:
+    #require matplotlib package to be installed
+    let plt = Python.import_module("matplotlib.pyplot")     
+    plt.plot(values) #theses values comes from numpy
+                     #that python object class is ndarray: 
+                     #print(values.__class__.__name__)
+    plt.show()
+
+fn numpy_array_from_mojo() raises -> PythonObject:
+    let np = Python.import_module("numpy")      #np is a PythonObject  
+                                                #let np:PythonObject...
+                                                #import_module returns a PythonObject
+    var x = PythonObject([]) #x: PythonObject, class: list 
+                             #initialized from an empty list literal https://docs.modular.com/mojo/stdlib/builtin/builtin_list.html
+                             #note that [] is a mojo type! (ListLiteral)
+    
+    var range_size:Int = 256     #Mojo Int!         https://docs.modular.com/mojo/stdlib/builtin/int.html
+    #mojo have ranges too, that one is a mojo one   https://docs.modular.com/mojo/stdlib/builtin/range.html
+    for i in range(range_size):  #i is a mojo Int 
+        #append is a python function, mojo find it inside the PythonObject
+        x.append(i) #i get converted to a python object trough the __init__ function of PythonObject
+
+    return np.cos(np.array(x)*np.pi*2.0/256.0)
+    #np.cos return a python object of class ndarray
+
+
+def main():     
+    #numpy_array_from_mojo is a mojo function that return a PythonObject.       
+    var results = numpy_array_from_mojo() 
+    #plot_from_mojo is a mojo function that takes a PythonObject.      
+    plot_from_mojo(results) 
+
+```
+--- SOURCE: tutorials/reader-in-few-lines-with-endian-ness.md ---
+# 🕯️ [reader.read\[Int32,"swap"\](3) in 45 lines]() 
+> with mojo v0.4.0 
+
+Theses mojo features are used:
+- [alias](https://docs.modular.com/mojo/programming-manual.html#alias-named-parameter-expressions)
+- [bitcasted](https://docs.modular.com/mojo/stdlib/memory/unsafe.html#bitcast) pointer to generic T
+- [generic struct](https://docs.modular.com/mojo/programming-manual.html#defining-parameterized-types-and-functions) ([T] is a parameter)
+- [@parameter if](https://docs.modular.com/mojo/programming-manual.html#powerful-compile-time-programming)
+- [parameter with a default value](https://docs.modular.com/mojo/programming-manual.html#using-default-parameter-values)
+- [extend lifetime](https://docs.modular.com/mojo/programming-manual.html#field-lifetimes-of-owned-arguments-in-__moveinit__-and-__del__) with _ = pointer
+- [Raising errors: dynamic messages](https://docs.modular.com/mojo/changelog.html#v0.4.0-2023-10-05)
+- [sizeof\[T\]()](https://docs.modular.com/mojo/stdlib/sys/info.html#sizeof) 
+- [raising errors](https://docs.modular.com/mojo/stdlib/builtin/error.html)
+
+It is nice to see how they work together.
+
+*note: how productive and user friendly 🔥 is* 
+> ⚠️ the code has not been tested, not ready for use
+
+```python
+def main():
+    var reader = file_reader("data_from_ruby")
+    
+    #return a Pointer to four Uint32
+    let LE_ui32 = reader.read[UInt32](4)
+
+    for i in range(4):
+        print(LE_ui32.load(i))
+
+    #two Float32, converted from another endian-ness
+    
+    let BE_f32 = reader.read[Float32,"swap"](2)
+    
+    print(BE_f32.load(0))
+    print(BE_f32.load(1))
+    
+    #free the pointers
+    LE_ui32.free()
+    BE_f32.free()
+
+    #move the reader cursor back four bytes
+    reader.offset -=4
+
+    #Float32 (not pointer), converted from another endian-ness
+    print(reader.read_one[Float32,"swap"]())
+```
+
+
+
+```python
+from sys.info import sizeof
+
+struct file_reader:
+    var data:DTypePointer[DType.uint8]
+    var size: Int
+    var offset:Int
+
+    fn __init__(inout self,filename:String) raises:
+        #open the file
+        var handler = open(filename,"r")
+
+        #pointer with no allocation done:
+        self.data = DTypePointer[DType.uint8]()
+        self.size = 0
+        self.offset = 0
+        
+        #read the file into tmp
+        let tmp = handler.read()
+        self.size = tmp._buffer.size
+        self.data = self.data.alloc(self.size)
+        
+        #interpret the bytes as uint8 when .load(index)
+        let tmp_ptr = tmp._as_ptr().bitcast[DType.uint8]()
+        
+        #copy the content of tmp into self.data
+        for i in range(self.size):
+            self.data.store(i,tmp_ptr.load(i))
+        
+        _=tmp #extending the lifetime to more than tmp_ptr
+        #if dont do, tmp will be freed when last used
+        #and tmp_ptr will point to freed memory
+        
+        #close the file
+        handler.close()
+    
+    fn read_one[T:AnyType,endian:StringLiteral= "not_swap"](inout self) raises->T:
+        let tmp = self.read[T,endian](1)
+        let tmp2:T = tmp.load(0)
+        tmp.free()
+        return tmp2
+    
+    #"be" is default if no value is passed
+    fn read[T:AnyType,endian:StringLiteral= "not_swap"](inout self,e: Int = 1) raises->Pointer[T]:
+        
+        #size of T in bytes multiplied by elements
+        let fsize = e*sizeof[T]()
+        
+        if (self.offset+fsize)>self.size:
+            raise Error("file is not that big")
+        
+        let tmp = Pointer[UInt8]().alloc(fsize)
+        
+        for i in range(fsize):
+            tmp.store(i,self.data.load(i+self.offset))
+        
+        self.offset+=fsize
+        
+        #swapping the bytes if specified:
+        @parameter
+        #"not_swap" is the default parameter value!
+        if endian == "swap":
+            alias sizeoft=sizeof[T]()
+
+            let tmp_for_swap = Pointer[UInt8]().alloc(sizeoft)
+            
+            for i in range(0,fsize,sizeoft):
+                for i2 in range(0,sizeoft):
+                    tmp_for_swap.store(i2,tmp.load(i+i2))
+                for i2 in range(0,sizeoft):
+                    tmp.store(i+i2,tmp_for_swap.load(sizeoft-1-i2))
+            
+            tmp_for_swap.free()
+        #Pointer[UInt8] to Pointer[T]
+        #does not modify the data, just provide "a viewer"
+        return tmp.bitcast[T]()
+
+    #when instance of file_reader is deleted
+    fn __del__(owned self):
+        #free memory
+        self.data.free()
+```
+```ruby
+# ruby code to generate data
+File.write("name.extension",[1,2,3,4,1.1,2.5].pack("l<4g2"))
+```
+--- SOURCE: tutorials/simd-is-a-type-with-methods-and-operators.md ---
+# `SIMD` is a type, with `methods` and `operators` !
+
+In mojo, `SIMD` vectors are first-class citizens.
+
+For example, `Int64` is a `SIMD` vector of size 1.
+
+(`SIMD[DType.int64, 1]`)
+
+&nbsp;
+
+The `SIMD` type has `Methods`  aswel as `operators`. 
+
+
+&nbsp;
+
+#### Examples:
+
+```mojo
+print(
+    4 * SIMD[DType.int8,4](1,2,3,4)
+)
+```
+> [4, 8, 12, 16]
+
+&nbsp;
+
+```mojo
+print(
+    SIMD[DType.int32,4](1,1,2,2).reduce_add()
+)
+```
+> 6
+
+&nbsp;
+
+```mojo
+print(
+    SIMD[DType.bool,4](True,False,True,False).reduce_and()
+)
+```
+> false
+
+&nbsp;
+
+The multiply `operator` (`*`) works in an unifying manner,
+
+with both `SIMD` vectors of size `1` and size `32`.
+
+
+&nbsp;
+
+So learning `SIMD` is just like learning an arbitraty `class` / `type`.
+
+It has the `__add__` dunder, `__init__` and many more `methods`.
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+
+# `SIMD` on the `Stack`
+
+```mojo
+var x = SIMD[DType.float64,2](1.5, 2.5)
+var y = x.reduce_add()
+print(y)
+```
+`y` is a `Float64`.
+
+(`SIMD[DType.float64, 1]`)
+
+&nbsp;
+
+There is already a small tutorial for it:
+
+- [SIMD: 🔢✖️2️⃣🟰❪2️⃣,4️⃣,6️⃣,8️⃣❫](./simd.md)
+
+&nbsp;
+
+# `SIMD` on the `Heap`
+
+Let's take for example a pointer to `10` * `Int64`.
+
+Instead of iterating each elements to add them together,
+
+It is also possible to do a fast addition with `SIMD` !
+
+&nbsp;
+
+### Preparing a `DTypePointer`
+
+It is like a pointer, but is more specialized for `SIMD`.
+
+
+We'll use `alloc`, we'll have to `free`.
+
+```mojo
+def main():
+    alias amount_of_bytes = 256
+    var mem = DTypePointer[DType.uint8].alloc(amount_of_bytes)
+    for i in range(amount_of_bytes):
+        mem[i] = i #slower but good first step !
+```
+
+&nbsp;
+
+#### Second step: `SIMD` vector
+Let's load the first 8 elements
+```mojo
+var bunch_of_bytes = SIMD[type=DType.uint8, size=8].load(mem)
+print(bunch_of_bytes)
+```
+> [0, 1, 2, 3, 4, 5, 6, 7]
+
+The data is now in a `SIMD` vector.
+
+Let's not `free` yet, and learn more.
+
+&nbsp;
+
+### Stride and width
+width is the size of the `SIMD` vector.
+
+`stride` can be used with `offset`.
+
+
+    0◄─────┐               
+    1      │               
+    2◄─────┤               
+    3      │  Stride: 2    
+    4◄─────┤  Width: 4     
+    5      │               
+    6◄─────┤               
+    7      │               
+           │                  
+           ▼               
+    [0,2,4,6] SIMD[Width:4] 
+
+&nbsp;
+
+#### A. The concept
+```mojo
+var stride_like = 2
+for i in range(0,8,stride_like):
+    print(i)   
+```
+> 0, 2, 4, 6
+#### B. The SIMD stride
+
+```mojo
+var separated_by_2 = mem.simd_strided_load[width = 8](
+    stride = 2
+)
+print(separated_by_2)
+```
+> [0, 2, 4, 6, 8, 10, 12, 14]
+
+&nbsp;
+
+Let's not `free` yet, and learn more!
+
+&nbsp;
+
+### `gather`
+
+It gathers the values stored at various positions into a `SIMD` vector.
+
+```mojo
+for i in range(16):
+    mem[i] = i*i
+
+print(
+    mem.gather(
+        SIMD[DType.int64,4](1, 2, 5, 6)
+    )
+)
+```
+> [1, 4, 25, 36]
+
+&nbsp;
+
+Here is the `gather` `method` of `DTypePointer` in a visual form:
+
+    Memory: 0 10 20 30 40 50        
+            │       │  │  │     
+            └─────┬─┴──┴──┘     
+     Gather 0     │ 3  4  5     
+                  ▼             
+            [0,30,40,50]        
+                            
+&nbsp;
+
+&nbsp;
+
+### `scatter`
+
+It assign new values to various positions.
+
+The values are provided in a `SIMD` vector.
+
+The positions aswel, but theses are `int64`.
+
+```mojo
+mem.scatter(
+    offset = SIMD[DType.int64, 2](1,10),
+    val = SIMD[DType.uint8, 2](0, 0)
+)
+print(mem[1])
+print(mem[10])
+```
+> 0
+
+> 0
+
+&nbsp;
+
+Here is the `scatter` `method` of `DTypePointer` in a visual form:
+
+
+
+
+    Memory: 0 10 20 30 40 50    
+            ▲     ▲             
+            │     │             
+            │     │             
+         ┌──┴─────┘             
+         │  0     2   Indexes   
+         │  100   200 Values    
+    scatter                     
+           
+                                  
+                                       
+> Memory: 100, 10, 200, 30, 40, 50         
+
+&nbsp;
+
+&nbsp;
+
+# ♻️ `free`
+
+It is a `method` of `DTypePointer`.
+
+`alloc` gave us some `RAM` for the program,
+
+`free` gives it back:
+
+
+```mojo
+mem.free()
+```
+
+Very easy to use:
+
+        ┌──────────────────────┐                         
+        │            RAM       │                         
+        ├──┐                   │                         
+        └┼─┴───────────────────┘                         
+         │                                                
+         │                                               
+         ▼                                               
+    alloc                                              
+        ┌──┐                                             
+        └──┘                                             
+    our program has to give the small amount of ram back
+    because another program might need it !             
+
+&nbsp;
+
+
+
+`free` and `alloc`
+
+`alloc` and `free`
+
+It is a recycling thing!
+
+&nbsp;
+
+Note that mojo have `Reference` to help !
+
+
+&nbsp;
+
+# math
+
+There is a `math` module with functions that works with `SIMD`.
+
+Theses are functions like `cos`, `floor`, `iota`, and many more.
+
+Here is a link to the documentation:
+
+- [Documentation: math](https://docs.modular.com/mojo/stdlib/math/math)
+
+&nbsp;
+
+# 🎉 End of small tutorial
+
+Hope you enjoyed it,
+
+`SIMD` is easy and it has many more `methods`.
+
+Many people do `AI` with because it is really fast,
+
+but it is good for making music too !
+
+&nbsp;
+
+You don't have to use `SIMD` all the time,
+
+but it is there if one day the program become too slow, for example.
+
+
+
+Because `Int64` is a vector of size `1`,
+
+only a few changes can turn the program into `SIMD` fast!
+
+&nbsp;
+
+Note: on most computers, a vector can be as much as `32` bytes.
+
+It works well as a small buffer without alloc!
+
+--- SOURCE: tutorials/simd.md ---
+# ```SIMD```: 🔢✖️2️⃣🟰❪2️⃣,4️⃣,6️⃣,8️⃣❫
+It is to perform the same operation on multiple numbers. 
+
+
+
+&nbsp;
+
+
+### ```S.I.M.D``` is like a small array
+But it has a maximum size, depending on the computer and the type.
+
+It stands for single instruction, multiple data: ```SIMD``` can perform ```math.cos``` on multiple numbers for example. 
+
+It is a lot faster and smaller than an array, so the iteration is usually done by taking ```32``` elements at a time, for example.
+
+
+Here is a ```SIMD``` that has 8 elements of type ```DType.float32```:
+```python
+var x = SIMD[DType.float32,8]()
+
+for i in range(8): x[i]=i
+
+print(x)     #[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0]
+```
+The size chosen is 8, but it can be much larger.
+
+By default, the SIMD will use the ```maximum size``` (```width```) that permit the computer:
+```python
+print(simdwidthof[DType.float32]()) #8, depend on the computer
+print(simdwidthof[DType.uint8]())   #32, depend on the computer
+```
+ℹ️ Note: sizes and types are parameters
+
+
+
+&nbsp;
+### 🔢🔨 Single instruction: multiple data
+This is why ```SIMD``` is fast, it can perform an operation on many numbers "at the same time".
+```python
+#previously defined: var x = SIMD[DType.float32,8]()
+#previously assigned: for i in range(8): x[i]=i
+#value of x:            #[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0]
+
+print(x>3)              #[False, False, False, False, True, True, True, True]
+print(x==1.0)           #[False, True, False, False, False, False, False, False]
+print(x*2)              #[0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0]
+```
+In contrast, an operation performed on a single number:
+```python
+var j = 1.0
+j = j + 1.0
+print(j>1.5)    #True
+```
+It is important to note that most "single" numbers are ```SIMD``` with a ```width``` of ```1``` and a ```DType```.
+
+This is great, because it just make the whole system easy to do ```SIMD```  on demand.
+
+For example, ```math.cos``` can be performed both on a single number and multiple numbers, only the ```width``` vary.
+
+```python
+var x = Int64(1) #SIMD[DType.int64,1]
+```
+
+&nbsp;
+### math
+```S.I.M.D``` has the ability to perform math in a fast way,
+
+because operations can be performed on multiple numbers at the same time.
+
+Here are a few ```math``` operations and reductions, there are many more:
+```python
+y = math.iota[DType.float32,8](0) #[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0]
+print(y.reduce_add())             #28.0
+print(y*y.reduce_add())           #[0.0, 28.0, 56.0, 84.0, 112.0, 140.0, 168.0, 196.0]
+print(y.reduce_max())             #7.0
+print(y*y)                        #[0.0, 1.0, 4.0, 9.0, 16.0, 25.0, 36.0, 49.0]
+print(math.cos(y))
+print(math.sqrt(y))
+#links to the documentation of mojo that contains many more math
+```
+(see [Documentation: math](https://docs.modular.com/mojo/stdlib/math/math.html))
+
+&nbsp;
+
+### utilities
+It includes ```slice```, ```join```, ```rotate```, ```iota```,..
+
+```iota``` is to create a incrementing sequence of numbers, by giving the first value:
+```python
+y = math.iota[DType.float32,8](0) #[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0]
+A = y.slice[4](offset=0)          #[0.0, 1.0, 2.0, 3.0]
+B = y.slice[4](offset=4)          #[4.0, 5.0, 6.0, 7.0]
+C = SIMD.join(B,A)                #[4.0, 5.0, 6.0, 7.0, 0.0, 1.0, 2.0, 3.0]
+print(C.rotate_left[4]())         #[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0]
+```
+
+&nbsp;
+
+### pointers
+Usually, numbers are loaded from the disk and stored in the ```RAM```,
+
+The pointer is then used to ```simd_load``` some numbers into a ```SIMD``` value, in order to perform operations.
+
+```python
+p = DTypePointer[DType.uint8].alloc(8)
+
+for i in range(8): p[i] = i
+for i in range(8): print(p[i])  #prints 0,1,2,3,4,5,6,7 "like with arrays"
+
+r = p.simd_load[8](0)
+print(r)                        #[0, 1, 2, 3, 4, 5, 6, 7]
+
+r = r+10
+p.simd_store(r)
+print(p.simd_load[8](0)) #[10, 11, 12, 13, 14, 15, 16, 17]
+print(p.simd_load[4](0)) #[10, 11, 12, 13]
+print(p.simd_load[4](4)) #[14, 15, 16, 17]
+
+p.free()
+```
+> ℹ️ Note that mojo have [Tensors](https://docs.modular.com/mojo/stdlib/tensor/tensor.html), they can load data and are just great ! 🔥 
+
+&nbsp;
+
+### Casting/converting
+```python
+var i:Int32 = 1             #SIMD[DType.int32,1](1), one number
+print(SIMD.interleave(i,0)) #[1, 0]
+print(SIMD.interleave(i,0).cast[DType.bool]()) #[True,False]
+
+var K:Int64 = 2             #SIMD[DType.int64,1], one number
+var o = K.cast[DType.float32]()
+print(o)                    #2.0
+```
+
+&nbsp;
+
+### booleans
+```python
+values_b = SIMD[DType.bool,4](True,False,False,True)
+
+print(math.any_true(values_b))  #True
+print(math.all_true(values_b))  #False
+print(values_b.reduce_or())     #True
+print(values_b.reduce_and())    #False
+print(~values_b)                #[False, True, True, False]
+```
+
+&nbsp;
+
+### selection
+Based on ```True``` or ```False```, select corresponding values to build a ```SIMD```.
+```python
+yes = SIMD[DType.int32,4](10,20,30,40)
+no  = SIMD[DType.int32,4](-10,-20,-30,-40)
+guide = SIMD[DType.bool,4](True,True,False,False)
+res= guide.select(yes,no)
+print(res) #[10, 20, -30, -40]
+```
+
+&nbsp;
+
+### shuffle
+To change the order of the values:
+```python
+numbers = SIMD[DType.int32,4](10,20,30,40)
+print(numbers.shuffle[3,2,0,1]()) #[40, 30, 10, 20]
+```
+
+
+
+&nbsp;
+
+### limit
+The highest value supported by a ```DType```, for example.
+
+There is also ```inf```, ```neginf``` for floats and more: see [Documentation: limit](https://docs.modular.com/mojo/stdlib/math/limit.html)
+
+
+
+```python
+#limits
+print(math.limit.max_finite[DType.uint8]())  #255
+print(math.limit.min_finite[DType.uint8]())  #0
+print(math.limit.max_finite[DType.uint64]()) #18446744073709551615
+print(math.limit.max_finite[DType.float32]())#3.4028234663852886e+38
+```
+
+
+
+&nbsp;
+
+### 🧰👍 Many many more features, see the documentation on the website or the repo of mojo.
+
+### 📎📖 links: [```math```](https://docs.modular.com/mojo/stdlib/math/math.html), [```SIMD```](https://docs.modular.com/mojo/stdlib/builtin/simd.html) and [```DType```](https://docs.modular.com/mojo/stdlib/builtin/dtype.html).
+
+### There is also an [intuitive walk-trough](https://docs.modular.com/mojo/manual/) on the website of mojo.
+
+&nbsp;
+
+> Made by the community! 🩳
+--- SOURCE: tutorials/struct-as-namespace.md ---
+
+# 🫙 struct as a namespace (@staticmethod)
+
+
+Using python functions from mojo with a wrapper:
+
+```python   
+fn main():
+    print(strings.contains("hello world","hello"))
+    print(strings.endswith("hello world","world"))
+    print(strings.count("hello world","l"))
+    print(strings.find("hello world","l"))
+    print(strings.replace("hello world world","world","planet"))
+```
+
+>  *the global scope is clean, not cluttered*
+
+A function marked by the decorator ```@staticmethod``` is called on the struct.
+
+> *the struct act as a namespace !*
+
+No need to instantiate an object.
+
+
+
+```python
+struct strings:
+    
+    @staticmethod   #without try: except
+    def center(a:String,b:Int) -> String:
+        return PythonObject(a).center(PythonObject(b)).to_string()
+    
+    @staticmethod
+    fn replace(a:String,b:String,c:String)->String:
+        try:
+            return PythonObject(a).replace(PythonObject(b),PythonObject(c)).to_string()
+        except e:
+            print(e)
+            return ""
+
+    @staticmethod
+    fn contains(a:String,b:String)->Bool:
+        try:
+            if PythonObject(a).find(PythonObject(b)) == -1:
+                return False
+            else:
+                return True
+        except e:
+            print(e)
+            return False
+    
+    @staticmethod
+    fn endswith(a:String,b:String)->Bool:
+        try:
+            return PythonObject(a).endswith(PythonObject(b)).__bool__()
+        except e:
+            print(e)
+            return False
+    
+    @staticmethod
+    fn count(a:String,b:String)->Int:
+        try:
+            return PythonObject(a).count(PythonObject(b)).to_float64().__int__()
+        except e:
+            print(e)
+            return -1
+    
+    @staticmethod
+    fn find(a:String,b:String)->Int:
+        try:
+            return PythonObject(a).find(PythonObject(b)).to_float64().__int__()
+        except e:
+            print(e)
+            return -1
+```
+
+```try: except:``` could be left unused, but it is a good habit for later!
+
+# 🗃️ organised
+
+- packages
+- modules
+- struct
+  - @staticmethod
+--- SOURCE: tutorials/traits.md ---
+
+
+# 📋 Traits: accept any types that comply to requirements
+
+
+> Tutorial updated to reflect [Changelog: v0.6.0 (2023-12-04)](https://docs.modular.com/mojo/changelog.html#v0.6.0-2023-12-04)
+
+>Traits introduced in [Changelog: v0.6.0 (2023-12-04)](https://docs.modular.com/mojo/changelog.html#v0.6.0-2023-12-04)
+
+&nbsp;
+
+
+
+We already know that a type(struct) can implement some methods, and have some fields.
+
+
+What if multiples types implement the same method signature but differently ? 
+
+Can we sort of group them?
+
+Yes, it is partially why traits are usefull.
+
+
+A trait is like a checklist, it allows mojo to verify if a type comply with a list of things.
+
+For now, only methods can be "added" to that check list.
+
+That checklist can then be used to accept different types as argument for example.
+
+*(It is not exacly a checklist, but it helps to think about it that way, in order to start understanding)*
+
+
+
+&nbsp;
+# 🟢 Introduction (Let's start from the beginning)
+
+A value/variable has to comply some requirements in order to be passed as an argument(```()```).
+
+Usually, they have to be of a pre-determined type (example: ```Int64```).
+
+Here is an example(```Int64```):
+```python
+fn MyFunction(argument: Int64):
+    pass
+fn main():
+    var MyValue: Int64 = 1
+    MyFunction(MyValue)
+```
+
+```MyValue``` is passed as an argument to ```MyFunction```,
+
+there are no errors because the type of ```MyValue``` comply to the requirements.
+
+The requirement is simple: the  value passed as an argument has to be an ```Int64```!
+
+&nbsp;
+
+What if we want to be able to pass a value of either ```Int64``` or ```Int32``` type ?
+
+We can specify thoses requirements in a new trait!
+
+But let's choose an existing trait for now! (```Intable```)
+
+&nbsp;
+
+
+
+The trait ```Intable``` requires the types who want to comply with it:
+- An ```__int__(self)->Int``` method implemented in their struct
+
+Both ```Int64``` and ```Int32``` comply with that trait.
+
+
+
+&nbsp;
+ 
+
+Traits have to be specified in the parameter zone (```[]```)
+
+```python
+fn MyFunction[Requirements: Intable](argument: Requirements):
+    print(int(argument))
+    
+fn main():
+    var MyValue: Int64 = 2
+    MyFunction(MyValue)
+
+    var MyValue2: Int32 = 1
+    MyFunction(MyValue2)
+```
+We can now call the ```__int__()``` method on the argument ! 
+
+It is what ```int(argument)``` does, and the ```Intable``` trait was made for ```__int__()```.
+
+&nbsp;
+
+Make sure to understand that we can now call the ```__int__()``` method on the argument.
+
+The type of the value passed to the function as an argument have to comply to ```Intable```.
+
+In order to comply, the type have to implement ```__int__(self)->Int```
+
+Sorry for the repetition, it is important.
+
+
+
+
+&nbsp;
+
+## two arguments:
+```Python
+fn MyFunction[R_1: Intable,R_2: Intable](first: R_1, second: R_2) -> Int:
+    return (int(first)+int(second))
+    
+fn main():
+    var result = MyFunction(Int64(2),Int32(1))
+    print(result)
+```
+It is necessary to have two sets of the same requirements,
+
+because the arguments could be of  differents ```Intable``` compliant types.
+
+One could be ```Int64``` and the other ```Int32```.
+
+Each argument is related to its corresponding parameter ```[]```.
+
+&nbsp;
+
+#### with different requirements:
+```python
+fn Repeat[R_1: Intable, R_2: Stringable](amount: R_1, message: R_2):
+    for i in range(int(amount)):
+        print(str(message))
+
+fn main():
+    Repeat(2,"Two times")
+```
+In order to comply with the ```Stringable``` trait,
+
+A struct have to implement one method:
+- ```fn __str__(self) -> String``` 
+
+&nbsp;
+
+# Creating a new type
+```Int64``` is a type, and types are designed in a ```struct``` block.
+
+Let's first create a non interesting type, and slowly get to traits!
+
+&nbsp;
+### 1️⃣
+```python
+struct MyType:
+    var val: Int
+
+fn main():
+    var MyValue = MyType(1)
+```
+
+```error: 'MyType' does not implement any '__init__' methods in 'var' initializer```
+
+### 2️⃣✅
+
+```python
+struct MyType:
+    var val: Int
+    fn __init__(inout self, argument: Int):
+        self.val = argument
+
+fn main():
+    var MyValue = MyType(1)
+```
+
+### 3️⃣
+```python
+struct MyType:
+    var val: Int
+    fn __init__(inout self, argument: Int):
+        self.val = argument
+
+fn main():
+    var MyValue = MyType(1)
+    var TryCopy = MyValue
+```
+
+```error: value of type 'MyType' cannot be copied into its destination```
+
+### 4️⃣✅
+```python
+struct MyType:
+    var val: Int
+    fn __init__(inout self, argument: Int):
+        self.val = argument
+    fn __copyinit__(inout self, other: Self):
+        self.val = other.val
+
+fn main():
+    var MyValue = MyType(1)
+    var TryCopy = MyValue
+```
+
+### 5️⃣ Let's implement the ```Intable``` requirements
+```python
+struct MyType:
+    var val: Int
+    fn __init__(inout self, argument: Int):
+        self.val = argument
+    fn __copyinit__(inout self, other: Self):
+        self.val = other.val 
+    fn __int__(self)->Int : return self.val 
+
+fn MyFunction[Requirements: Intable](argument: Requirements):
+    print(int(argument))
+
+fn main():
+    var MyValue = MyType(1)
+    MyFunction(MyValue)
+```
+```error: invalid call to 'MyFunction': callee expects 1 input parameter, but 0 were specified```
+
+
+
+### 6️⃣✅
+Let's specify that the ```struct``` implement ```Intable``` inside the parenthesis ```()``` !
+```python
+struct MyType(Intable): #()
+    var val: Int
+    fn __init__(inout self, argument: Int):
+        self.val = argument
+    fn __copyinit__(inout self, other: Self):
+        self.val = other.val
+    fn __int__(self)->Int : return self.val
+    
+
+fn MyFunction[Requirements: Intable](argument: Requirements):
+    print(int(argument))
+
+fn main():
+    var MyValue = MyType(1)
+    MyFunction(MyValue)
+```
+### 7️⃣✅ Let's implement ```Stringable``` trait's requirements
+Also specify that the ```struct``` implement ```Stringable```.
+
+*Because a type can implement multiple traits.*
+
+```python
+struct MyType(Intable,Stringable): #()
+    var val: Int
+    fn __init__(inout self, argument: Int):
+        self.val = argument
+    fn __copyinit__(inout self, other: Self):
+        self.val = other.val
+    fn __int__(self)->Int : return self.val
+    fn __str__(self)->String: return String(self.val)
+
+fn MyFunction[Requirements: Stringable](argument: Requirements):
+    print(str(argument))
+
+fn main():
+    var MyValue = MyType(1)
+    MyFunction(MyValue)
+```
+
+
+### 8️⃣✅ Let's regroup the traits under a new trait
+A trait can inherit multiples traits, they are specified inside the parenthesis ```()```
+```python
+trait MyTrait(Intable,Stringable): #()
+    ... 
+
+struct MyType(MyTrait):
+    var val: Int
+    fn __init__(inout self, argument: Int):
+        self.val = argument
+    fn __copyinit__(inout self, other: Self):
+        self.val = other.val
+    fn __int__(self)->Int : return self.val
+    fn __str__(self)->String: return String(self.val)
+
+fn MyFunction[Requirements: MyTrait](argument: Requirements):
+    print(str(argument))
+
+fn MyFunctionTwo[Requirements: Stringable](argument: Requirements):
+    print(str(argument))
+
+fn main():
+    var MyValue = MyType(1)
+    MyFunction(MyValue)    #👍
+    MyFunctionTwo(MyValue) #👍
+```
+```trait MyTrait(Intable,Stringable)``` is inheriting from ```Intable``` and ```Stringable```.
+
+the three dots ```...``` are required for now to keep the block not empty.
+### 9️⃣✅ Make it smaller
+
+```python
+trait MyTrait(Intable,Stringable):
+    ...
+
+@value
+struct MyType(MyTrait): #()
+    var val: Int
+    fn __int__(self)->Int : return self.val
+    fn __str__(self)->String: return String(self.val)
+
+fn MyFunction[Requirements: MyTrait](argument: Requirements):
+    print(str(argument))
+    print(int(argument))
+
+fn main():
+    var MyValue = MyType(1)
+    MyFunction(MyValue)
+```
+the ```@value``` struct decorator synthesize 3 methods:
+
+- ```__copyinit__()```
+- ```__moveinit__()```
+- ```__init__()```
+
+Two of theses comply to traits requirements:
+
+- ```Movable```
+- ```Copyable```
+
+*see [Documentation: @value](https://docs.modular.com/mojo/manual/decorators/value.html)*
+
+&nbsp;
+
+
+### 1️⃣0️⃣✅ Specify compliance to ```Movable``` and ```Copyable```
+
+```python
+trait MyTrait(Intable,Stringable,Movable,Copyable):
+    ...
+
+@value
+struct MyType(MyTrait): 
+    var val: Int
+    fn __int__(self)->Int : return self.val
+    fn __str__(self)->String: return String(self.val)
+
+fn MyFunction[Requirements: Movable](argument: Requirements):
+    let some = argument^
+
+
+fn main():
+    var MyValue = MyType(1)
+    MyFunction(MyValue)
+```
+
+### 1️⃣1️⃣✅ Adding new requirements
+
+```python
+trait Incrementer(Movable,Copyable):
+    fn Increment(inout self) -> Int: ...
+
+@value
+struct IntCounter(Incrementer):
+    var val: Int
+    fn Increment(inout self) -> Int:
+        self.val += 1
+        return self.val
+
+fn main():
+    var C1 = IntCounter(0)
+    for i in range(2): print(C1.Increment())
+```
+The three dots ```...``` are required for now to keep the method block not empty.
+
+In the future, we might be able to provides a default implementation there.
+
+(see [Documentation: using traits](https://docs.modular.com/mojo/manual/traits.html#using-traits))
+
+
+
+
+### 1️⃣2️⃣✅ The power of traits
+
+In the begining, the only requirement available was type equality. (```Ìnt64```)
+
+It was only possible pass a value of that type to that function argument:
+
+```fn double(argument: Int64)```
+
+&nbsp;
+
+After that, the ```Intable``` trait made it possible to pass values of multiple types.
+
+we passed both ```Ìnt64``` and ```Ìnt32``` values to:
+
+```python
+fn MyFunction[Requirements: Intable](argument: Requirements):
+    print(int(argument))
+```
+
+
+
+&nbsp;
+
+We now have a new trait named ```Ìncrementer```,
+
+Let's create another type that comply with it and pass both to a function!
+
+```python
+trait Incrementer(Movable,Copyable):
+    fn Increment(inout self) -> Int: ...
+
+@value
+struct IntCounter(Incrementer): 
+    var val: Int
+    fn Increment(inout self) -> Int:
+        self.val += 1
+        return self.val
+
+@value
+struct PythonCounter(Incrementer): 
+    var val: PythonObject
+    fn Increment(inout self) -> Int:
+        try:
+            self.val += 1
+            return int(self.val)
+        except e: return 0
+
+fn IncrementAnyCounter[R:Incrementer](inout AnyCounter:R):
+    print(AnyCounter.Increment())
+
+fn main():
+    var C1 = IntCounter(0)
+    var C2 = PythonCounter(0)
+    for i in range(2):
+        IncrementAnyCounter(C1)
+        IncrementAnyCounter(C2)
+```
+
+
+
+
+### 1️⃣3️⃣✅ Beyond function argument
+
+Let's make a trait parametrized type. (```[]```)
+
+The new type will be able to have a field that comply to ```Incrementer```. 
+
+
+```python
+trait Incrementer(Movable,Copyable):
+    fn Increment(inout self) -> Int: ...
+
+@value
+struct IntCounter(Incrementer): #()
+    var val: Int
+    fn Increment(inout self) -> Int:
+        self.val += 1
+        return self.val
+
+@value
+struct PythonCounter(Incrementer): #()
+    var val: PythonObject
+    fn Increment(inout self) -> Int:
+        try:
+            self.val += 1
+            return int(self.val)
+        except e: return 0
+
+@value
+struct AnyCounter[T:Incrementer]:
+    var val: T
+
+fn main():
+    var C1 = AnyCounter(IntCounter(0))
+    var C2 = AnyCounter(PythonCounter(0))
+    for i in range(2):
+        print(C1.val.Increment(), C2.val.Increment())
+```
+
+&nbsp;
+
+# Making a struct that implement an existing trait
+
+### The [DynamicVector](https://docs.modular.com/mojo/stdlib/utils/vector.html#dynamicvector) type 
+
+
+
+> 🔥 will now call del on its elements when del is called on it! 🔥
+
+
+
+parametrized on a trait: ```[T:CollectionElement]```.
+
+
+
+
+
+### The [CollectionElement](https://docs.modular.com/mojo/stdlib/utils/vector.html#collectionelement) ```trait``` requirements:
+
+- ```__copyinit__()``` (Copyable)
+- ```__moveinit__()``` (Movable)
+- ```__del__()``` (Destructable)
+
+
+
+&nbsp;
+
+### Designing a struct that comply with the ```CollectionElement``` trait
+It is fantastic, 
+
+the ```@value``` struct decorator can synthesize the required methods of that specific trait.
+
+That decorator synthesize exacly 3 functions and 2 of them are thoses.
+
+- ```__copyinit__()```
+- ```__moveinit__()```
+
+It will also sythesize an initializer:
+- ```__init__()```
+
+
+
+*see [Documentation: @value](https://docs.modular.com/mojo/manual/decorators/value.html)*
+
+
+```python
+@value
+struct my_struct(CollectionElement):
+    var x:Int
+    var y:String
+
+fn main():
+    var vector = DynamicVector[my_struct]()
+    vector.push_back(my_struct(1,"hello"))
+    vector.push_back(my_struct(2,"world"))
+    print(vector[0].x,vector[0].y)
+```
+You might have noticed that ```@value``` do no synthesize ```__del()__```,
+
+and that the ```CollectionElement``` trait requires an implementation of it. (```Destructable```)
+
+it is because **every traits inherit from the ```Destructable``` trait**.
+
+and mojo automatically adds a no-op ```__del__()``` to types that don't implement one.
+
+see [Documentation: Destructable](https://docs.modular.com/mojo/manual/traits.html#the-destructable-trait)
+
+
+
+
+
+&nbsp;
+
+# 💄 Traits:  another example!
+
+
+```ruby
+trait CanWalk:
+    fn walk(self): ...
+trait CanSwim:
+    fn swim(self): ...
+trait CanDoBoth(CanWalk,CanSwim): #Inherit from both
+    ...
+
+
+@value
+struct turtle(CanDoBoth):
+    var name:String
+    fn walk(self): print(self.name, " is walking")
+    fn swim(self): print(self.name, " is swimming")
+
+@value
+struct dolphin(CanSwim):
+    var name:String
+    fn swim(self): print(self.name, " is swimming")
+
+
+fn call_walk[T:CanWalk](w:T):
+    w.walk()
+
+fn call_swim[T:CanSwim](s:T):
+    s.swim()
+
+fn call_both[T:CanDoBoth](b: T):
+    b.walk()
+    b.swim()
+
+
+fn main():
+    let d = dolphin("🐬")
+    let t = turtle("🐢")
+
+    #🐢 can do both
+    call_both(t) #👍
+    call_swim(t) #👍 
+    call_walk(t) #👍
+
+    #🐬 dolphin can swim
+    call_swim(d)
+```
+
+🐢 implemented the requirements of the inherited traits of ```CanDoBoth``` 
+
+🐢 comply to ```CanWalk``` and ```CanSwim``` aswell !
+
+
+
+
+
+&nbsp;
+
+# Multiple features together!
+
+```rust
+@value
+struct Concept(CollectionElement):
+    var name:String
+
+trait Learner:
+    fn learn(inout self, c: Concept): ...
+
+trait Teacher:
+    fn teach[L:Learner](self, inout other: L): ...
+
+@value
+struct Human(Learner,Teacher):
+    var Brain: DynamicVector[Concept]
+    fn learn(inout self,c: Concept):
+        self.Brain.push_back(c)
+    fn teach[L:Learner](self, inout other: L):
+        for something in range(len(self.Brain)):
+            other.learn(self.Brain[something])
+    fn __init__(inout self): self.Brain = DynamicVector[Concept]()
+
+@value
+struct AI(Learner,Teacher):
+    var DigitalBrain: DynamicVector[Concept]
+    fn learn(inout self,c: Concept):
+        self.DigitalBrain.push_back(c)
+    fn teach[L:Learner](self, inout other: L):
+        for something in range(len(self.DigitalBrain)):
+            other.learn(self.DigitalBrain[something])
+    fn __init__(inout self): self.DigitalBrain = DynamicVector[Concept]()
+    
+fn TransferKnowledge[T:Teacher,L:Learner](from_:T , inout to_:L):
+    from_.teach(to_)
+
+fn main():
+    var h = Human()
+    h.learn(Concept("First concept"))
+    h.learn(Concept("Second concept"))
+    h.learn(Concept("Third concept"))
+    
+    var a = AI()
+    TransferKnowledge(h,a)
+    
+    var h2 = Human()
+    TransferKnowledge(a,h2)
+
+    for i in range(3):
+        print(h2.Brain[i].name)
+```
+ 
+
+&nbsp;
+
+*In the future, we might be able to provide fields and default methods implementations to traits!*
+
+*But don't worry, it is already very powerfull and liberative!*
+
+
+
+*(see [Documentation: Traits](https://docs.modular.com/mojo/manual/traits.html#using-traits))*
+
+
+&nbsp;
+
+# Traits and ```@staticmethod```
+see [Documentation: traits can require static methods](https://docs.modular.com/mojo/manual/traits.html#traits-can-require-static-methods)
+
+This is a very expressive feature, here is an example:
+
+```python
+
+trait MathImplementation:
+    @staticmethod
+    fn double_int(a:Int)->Int: ...
+
+struct First(MathImplementation):
+    @staticmethod
+    fn double_int(a:Int)->Int:
+        return a*2
+
+struct Second(MathImplementation):
+    @staticmethod
+    fn double_int(a:Int)->Int:
+        return a<<1
+
+fn double_with[T:MathImplementation=First](arg:Int)->Int:
+    return T.double_int(arg)
+
+fn main():
+    let result = double_with[First](1)
+    let result2 = double_with[Second](1)
+    print(result)
+    
+    #Default implementation 
+    print(double_with(1)) # 🔥   
+```
+There are more ways to select a default implementation:
+- [alias](https://docs.modular.com/mojo/manual/parameters/#alias-named-parameter-expressions)
+- [param_env](https://docs.modular.com/mojo/stdlib/sys/param_env.html)
+- [@parameter if](https://docs.modular.com/mojo/manual/decorators/parameter.html#parametric-if-statement)
+
+```@staticmethod``` is usefull to make namespace types that dont need an instance for example.
+
+
+
+
+
+
+
+
+# Traits that comes with mojo
+A list with clear explanations are available in: [Documentation: built-in traits]()
+
+- ```len(my_struct_instance)``` Sized
+- ```int(my_struct_instance)``` Intable
+- ```str(my_struct_instance)``` Stringable
+
+Along with:
+- ```CollectionElement``` DynamicVector
+- ```Copyable``` *\_\_copyinit\_\_()*
+- ```Destructable``` *\_\_del\_\_()*
+- ```Movable``` *\_\_moveinit\_\_()*
+    
+    
+
+The list will probably grow as mojo evolve!
+
+
+&nbsp;
+
+# 📬  
+
+
+This tutorial is a community effort ❤️ , it can contains error and will be updated.
+
+
+
+&nbsp;
+
+Make sure to navigate the official site of mojo, wich contains the best ressources for learning!
+
+Mojo also have it's documentation available on it's github [repository](https://github.com/modularml/mojo/tree/main/docs) !
+
+
+
+
+
+
+
+
+--- SOURCE: tutorials/try-and-except-errors-handling.md ---
+# [Try & Except: ✋->⚠️->⛑️->🩹->👍 ]()
+> with v0.4.0
+
+There are explainations further down the page,
+
+This example accompany thoses:
+
+```python
+from random import random_float64,seed
+alias flip_a_coin = random_float64
+alias tail = 0.5
+
+def say_three():
+    raise Error("⚠️ no time to say three")
+
+fn count_to_5() raises:
+    print("count_to_5: one")
+    print("count_to_5: two")
+    try:
+        say_three()
+    except e:
+        print("\t count_to_5: error",e)
+        
+        if flip_a_coin()>tail:
+            raise Error("⚠️ we stopped at three")
+        else:
+            print("count_to_5: three ⛑️")
+    
+    print("count_to_5: four")
+    print("count_to_5: five")
+
+
+fn main() raises:
+    seed()
+    
+    try:
+        count_to_5()
+    except e:
+        print("error inside main(): ",e)
+        #main: errror e
+        if e.__repr__() == "⚠️ we stopped at three":
+            print("main: three ⛑️")
+            print("main: four ⛑️")
+            print("main: five ⛑️")
+
+    print("✅ main function: all good")
+```
+In order to illustrate Except and Try, 
+
+The code will randomely produce one of those two scenarios:
+#### Fix the error from count_to_5:
+
+    count_to_5: one
+    count_to_5: two
+            count_to_5: error ⚠️ no time to say three
+    count_to_5: three ⛑️
+    count_to_5: four
+    count_to_5: five
+    ✅ main function: all good
+
+#### Fix the error from main:
+
+    count_to_5: one
+    count_to_5: two
+            count_to_5: error ⚠️ no time to say three
+    error inside main():  ⚠️ we stopped at three
+    main: three ⛑️
+    main: four ⛑️
+    main: five ⛑️
+    ✅ main function: all good
+
+# More
+
+#### Raising
+- ```def()``` functions can call raising functions and can raise by default
+-  ```fn() raises``` is necessary in order to raise
+- ```fn()``` cannot call functions that might raise, for example: a def function that raises by default
+
+#### Try:
+Inside the try block, we can call functions that could raise and error. It is also possible to Raise an error.
+
+If and error is thrown, the execution continue at the beginning of the Except: block just below
+
+#### Except e:
+Here it is possible to inspect the error e, based on that, we can fix it.
+
+If fixed, the the execution continue on the first line after the except block.
+
+If it is not possible to fix it, it is possible to Raise an error: either the same or another.
+
+The error will be transfered to the next Except: block. (see example)
+--- SOURCE: tutorials/type-check-class-of-pythonobject.md ---
+# 🐍🔍 type-checking a PythonObject
+
+> This repo is a community effort, it could contains errors that requires [contributing](/contribute.md) a correction!
+
+&nbsp;
+
+[```Python.type```](https://docs.modular.com/mojo/stdlib/python/python#type) is a function to get the type/class of a PythonObject.
+
+
+
+It makes it possible to check if a PythonObject is of the int python class,
+
+before getting it's value as a mojo Int, for example.
+
+&nbsp;
+
+```python
+from python import Python
+
+def main():
+    #get the class objects
+    var int_type  = Python.evaluate("int")      #<class 'int'>
+    var bool_type = Python.evaluate("bool")     #<class 'bool'>
+    var str_type  = Python.evaluate("str")      #<class 'str'>
+    var float_type= Python.evaluate("float")    #<class 'float'>
+    var none_type = Python.evaluate("type(None)") #<class 'NoneType'>
+    
+    #create a python object
+    var x = PythonObject("test")
+
+    print(Python.type(x) is str_type) #True
+
+    #change to a bool
+    x = True 
+    print(Python.type(x) is bool_type) #True
+
+    #change to none
+    x = None
+    print(Python.type(x) is none_type) #True
+```
+## 👍 Practical use:
+
+*(the below code is a continuation of the main function above)*
+```python
+    x = 123
+    #1. perform a type-check 
+    if Python.type(x) is int_type:
+        #2. Create a mojo Int with it 
+        var y: Int = int(x) 
+        print(y)
+    else: 
+        print("It is not an Int.")
+
+    #Another example
+    x = None
+    if Python.type(x) is none_type:
+        x = 1234
+    
+    if Python.type(x) is int_type:
+        print(x) #1234, great!
+```
+#### output
+```
+123
+1234
+```
+
+&nbsp;
+
+#### with  ```is not``` :
+*(also a continuation of the main function above)*
+```python
+    x = None
+    if Python.type(x) is not int_type:
+        x = 123
+    print(x) #123, Great!
+```
+
+&nbsp;
+
+#### simple method summarized:
+```python
+from python import Python
+def main():     
+    #1. get the class to check for
+    float_class = Python.evaluate("float")
+    #2. possibility to check/validate if needed
+    #   below is just a simple check to avoid small typos
+    if str(float_class)!= "<class 'float'>":
+        raise("It is not the float class")
+    #3. start type-checking using that class
+    x = PythonObject(0.1)
+    if Python.type(x) is float_class:
+        print("ok")
+```
+In *step #1*, the class is obtained using ```Python.evaluate```.
+
+The reason the tutorial uses that way is that we can see a class name right from the start.
+
+&nbsp;
+
+It is possible to get it from an existing PythonObject of that class, just like in python.
+
+but could be less clear about what is being checked, if the reader is not familiar with python.
+
+```python
+from python import Python
+def main():     
+    float_class = Python.type(3.14)
+    x = PythonObject(0.1)
+    if Python.type(x) is float_class:
+        print("ok")
+```
+*see  [Mojo documentation: Python types](https://docs.modular.com/mojo/manual/python/types#python-types-in-mojo)*
+
+&nbsp; 
+
+## **👍🐍 This is consistent with how python works**:
+
+```python
+# 🐍 python_code_example.py
+#    meant to be runned by a python interpreter
+
+float_class = float
+if str(float_class)!= "<class 'float'>":
+    raise("It is not the float class")
+x = 0.1
+if type(x) is float_class:
+    print("ok")
+
+
+float_class = type(3.14)
+x = 0.1
+if type(x) is float_class:
+    print("ok")
+```
+
+*see [Python 3 documentation](https://docs.python.org/3/library/stdtypes.html)*
+
+
+&nbsp;
+
+### Type checking and imported modules
+Lets type check a custom user-created python class:
+```python
+# 🐍 mycustomclass.py
+class MyClass:
+    x = 123
+```
+```python
+# 🔥 mymojofile.mojo
+from python import Python
+def main():     
+    # import the module from the current path
+    Python.add_to_path(".")
+    MyModule = Python.import_module("mycustomclass")
+    
+    MyInstance = MyModule.MyClass()
+    print(MyInstance.x) #123
+
+    if Python.type(MyInstance) is MyModule.MyClass:
+        print("ok")
+
+    y = 1.1
+    if Python.type(y) is MyModule.MyClass:
+        print("Should not print")
+```
+
+```Python.import_module``` will raise and error if it fails to import, 
+
+```try:``` and ```except e:``` can also handle errors raised from python, right within mojo!
+
+see [Mojo documentation: Python integration](https://docs.modular.com/mojo/manual/python)
+
+&nbsp;
+
+# ```is```, the identity operator in Python
+
+Once this concept is understood, there are less confusion in understanding that code:
+```python
+from python import Python
+def main():     
+    float_class = Python.type(3.14)
+    x = PythonObject(0.1)
+    if Python.type(x) is float_class:
+        print("ok")
+```
+
+In python, objects have a unique identifier, it is a number.
+
+
+If two objects have the same identity, they share the same value.
+
+For example, in python:
+```python
+a = [1,2]
+b = [a,[4,5,6]]
+
+#Changes in a, are reflected in b
+a.append(3)
+print(b)        #[[1, 2, 3], [4, 5, 6]]
+
+#It is because a and b[0] have the same identity
+print(id(a),id(b[0])) #print two same numbers
+print(a is b[0])      #True, a is b! 
+```
+
+&nbsp;
+
+#### Conclusion to solidify understanding:
+
+in python:
+```python
+a = 1.5
+float_type = float
+a_type = type(a)
+
+print(a_type is float_type)         #True
+print(id(a_type) == id(float_type)) #True
+
+print(type(5.5) is type(0.1))       #True
+```
+
+In mojo now:
+```python
+from python import Python
+def main():     
+    a = PythonObject(1.5)
+    float_type = Python.evaluate("float")
+    a_type = Python.type(a)
+
+    print(a_type is float_type)                             #True
+    id_function = Python.evaluate("id")
+    print(id_function(a_type) == id_function(float_type))   #True
+
+    print(Python.type(5.5) is Python.type(0.1))             #True
+```
+
+Hopefully, you are now able to understand and do type checking with and without ```Python.evaluate``` !
+
+Thanks for reading,
+
+feel free to express feedbacks in order to ameliorate the tutorial and gauge it's helpfulness. 
+
+
+
+
+&nbsp;
+
+
+> 🗓️🔃 Tutorial updated during the mojo [v24.1.0](https://docs.modular.com/mojo/changelog#v241-2024-02-29) era
+
+🔥 To learn more and better, make sure to read Mojo's [documentation and manual](https://docs.modular.com/mojo/manual/)
+
+
+
+# ❤️‍🔥
+
+&nbsp;
+
+&nbsp;
+
+### Going the extra mile with a concrete use case
+
+```python
+from python import Python
+
+def main():     
+    p_arr = Python.evaluate("[1.1,True,5,'hello']")
+    
+    if Python.type(p_arr) is Python.evaluate("list"):
+        p_arr.append("world")
+    else: p_arr = []
+
+    var x = Int(0)
+    var y = Float64(0.0)
+    var z = False
+    for e in p_arr:
+        if Python.type(e) is Python.type(99):
+            x = int(e)
+        if Python.type(e) is Python.type(False):
+            z = e.__bool__()
+        if Python.type(e) is Python.type(1.1):
+            y = e.to_float64()
+        if Python.type(e) is Python.type(""):
+            print(str(e))
+    
+    #output: hello
+    #output: world
+    print(x,y,z) #5 1.1000000000000001 True
+```
+--- SOURCE: tutorials/use-parameters-to-create-or-integrate-workflow.md ---
+ # 🟢 Let's ```mojo build -D your="own" -D version=1 app.🔥``` with ``` 🛡️Constrained```
+
+
+You gonna learn how to parametrize your app, starting from the ```🔨 mojo build``` command ⬅️🟤🟣🔵.
+
+We then will pass thoses input parameters to the 🟤🟣🔵➡️```🛡️constrained``` function.
+
+This will allow us to validate our inputs during the building process.
+
+
+
+If our inputs are validated (thus not tell mojo to stop building),
+
+we will parametrize an if statement with one of the inputs 🔵🔀,
+
+it will tell mojo-build if it should use main_1 or main_2!
+
+Once the program has been ✅ built, we can start it ▶️!
+
+Let's start parametrizing!
+
+&nbsp;
+
+# 🌴🧋 ```my_app.mojo``` 🧉🌴
+
+```mojo
+from sys.param_env import env_get_int, env_get_string
+from sys.param_env import is_defined
+
+fn main():
+    alias app_version = 
+        env_get_int["app_version"]() # ⬅️🟤
+
+    constrained[ # 🛡️
+        app_version > 0,
+        "app_version cannot be 0 or below"
+    ]()
+
+    constrained[ # 🛡️
+        app_version < 100,
+        "Version 99 is the maximum !"
+    ]()
+
+    alias app_name = 
+        env_get_string["app_name"]() # ⬅️🟣
+    
+    constrained[ # 🛡️
+        len(app_name)<32,
+        "The app name cannot be > 31 ! "
+    ]()
+
+    constrained[ # 🛡️
+        len(app_name)>0,
+        "The app name is too small"
+    ]()
+
+    alias app_use_simd:Bool = is_defined["app_use_simd"]() # ⬅️🔵
+
+    print("Welcome to", str(app_name))
+    print("the version is", str(app_version))
+    print("simd:", str(app_use_simd))
+
+    @parameter
+    if app_use_simd:       # 🔵🔀 what should mojo build? 
+        app_start_simd()     # 🔨❓   
+    else:
+        app_start_not_simd() # 🔨❓
+
+fn app_start_simd():
+    var values = SIMD[DType.uint8]()
+    print("app started")
+
+fn app_start_not_simd():
+    var values = List[UInt8]()
+    print("app started")
+```
+🔨```mojo build my_app.mojo -D app_name="Todo list" -D app_version=100 -D app_use_simd```⬅️🟤🟣🔵
+> 🛡️ constraint failed: Version 99 is the maximum !
+
+🔨```mojo build my_app.mojo -D app_name="Todo list" -D app_version=1 -D app_use_simd```⬅️🟤🟣🔵
+
+> ✅ Built!
+
+👍 my_app has been built from my_app.mojo
+
+▶️```./my_app```
+```
+Welcome to Todo list
+the version is  1
+simd:  True
+app started
+```
+
+&nbsp;
+
+#### 💘 Excellent! You can now make your app and use ```🛡️constrained```!
+
+> Make sure to read the mojo language [Documentation: manual](https://docs.modular.com/mojo/manual/)
+
+
+&nbsp;
+
+### 🎉 end of the small tutorial
+--- SOURCE: tutorials/using-python-in-mojo.md ---
+# 🐍 using python in mojo: a to z
+
+> with v0.4.0
+
+👷 under active development, see [contributions](/contribute.md)
+### Import python in mojo
+```python
+from python import Python
+```
+### create mutable variable res
+```python
+def main():
+    var res:PythonObject 
+```
+### list comprehension
+```python
+    res = Python.evaluate("[x*x for x in range(1,4)]")
+
+    for i in res: # i is a PythonObject
+        let element:Float64 = i.to_float64()
+        print(element) #1.0 4.0 9.0
+```
+### call methods
+```python
+    res = " and " #res is a PythonObject 
+
+    #call join method
+    res = res.join(["mojo","python"])
+
+    print(res) #print: mojo and python
+```
+### list
+```python
+    res =[]
+    res.append(Float64(1))
+    res.append("hello world")
+    res.append(True)
+    res.pop()
+    res.append(False)
+    print(res) #[1.0, 'hello world', False]
+```
+### tuples
+```python
+    res = (True,0)
+    print(res[0])
+    print(res[1])
+```
+### get and call python functions
+```python
+    res = Python.evaluate("bin")
+    print(res(15)) #0b1111
+```
+### types
+```python
+    res = 1.0
+    print(res.__class__.__name__) #float
+```
+
+### instance
+```python
+    res = True
+    let is_instance = Python.evaluate("isinstance")
+    let float_type = Python.evaluate("bool")
+    print(is_instance(res,float_type))
+```
+
+### convert to mojo types
+```python
+    res = "hello world"
+    let res_b:String = res.upper().to_string()
+    print(res_b) #HELLO WORLD
+
+    res = 1.0
+    let res_c:Float64 = res.to_float64()
+
+    res = 123
+    let res_d:Int = res.__index__()
+
+    res = True
+    let res_e:Bool = res.__bool__()
+
+```
+
+# with pip modules
+### numpy linspace
+```python
+    res = Python.import_module("numpy").linspace(0, 1.0, 5)
+    print(res) #[0.   0.25 0.5  0.75 1.  ]
+```
+### matplotlib plotting
+```python
+    res = Python.import_module("matplotlib.pyplot")
+    res.plot([1.1,2.2,4.4])
+    res.show()
+```
+# importing a custom python file
+#### main.mojo:
+```python
+from python import Python
+
+def main():
+    #path to the file (current directory)
+    Python.add_to_path("./")
+
+    #name of the file without .py
+    let my_module = Python.import_module("python_file")
+
+    my_module.my_func(2, 3)
+```
+#### python_file.py:
+```python
+def my_func(a,b):
+    print(a+b)
+```
+
+
+--- SOURCE: tutorials/variant.md ---
+# 👜 Variant, a type that can hold values of different types
+
+[Variant](https://docs.modular.com/mojo/stdlib/utils/variant) is a type, just like Bool, Int32 and DynamicVector, .. 
+
+But the type of the value it holds can vary, thus the name, Variant.
+
+&nbsp;
+
+A ```Variant[Int,Bool]``` can hold a value of either ```Int``` or ```Bool```, for example.
+
+The type of the **current value** it holds can be **checked**, and it's value retrieved.
+
+&nbsp;
+
+We can also **reassign** it a **value**, either of the **current type**, or **another types** it supports.
+
+&nbsp;
+
+It is **kind of** like an object in python, but for struct. (a way to think about it, in order to understand)
+
+&nbsp;
+
+At the end of the small tutorial, we will create a list that can contain a mixture of any types.
+
+ just like a list in python, with only two lines of mojo code:
+ ```python
+alias MyObject = Variant[Bool,Int,String,Float64]
+var list = DynamicVector[MyObject]()
+ ```
+ (It is exciting, reading the page in a top to bottom order is recommended)
+
+&nbsp;
+
+
+### ✈️ overview  of usage 
+
+```python
+var BuddyInLivingRoom: Variant[Dog,Cat,Bool] #Dog and Cat types in example section
+
+#Assign a value of type Bool
+BuddyInLivingRoom = False
+
+#Check if the current value type is Bool (and not Cat or Dog)
+if BuddyInLivingRoom.isa[Bool](): print("Nobody there")
+#(Note that we check if it is a Bool, NOT the value it contains)
+
+#Assign a value of another type
+BuddyInLivingRoom.set(Dog("Sweetheart"))
+
+#Check if the value type is Dog
+if BuddyInLivingRoom.isa[Dog](): print("It must be sweetheart") 
+
+#Dereference the value as Dog type and interact with it
+if BuddyInLivingRoom.get[Dog]()[].name == "Sweetheart": print("knew it !")
+```
+
+&nbsp;
+
+# ⚠️ important and easy
+Before retrieving a value of type cat,
+
+It is important to check if the variant is currently holding a value of cat type:
+1. ### 🛂 check type ```if BuddyInLivingRoom.isa[Cat]() == True```
+2. ### 🛄 get the reference: ```v = BuddyInLivingRoom.get[Cat]()```
+3. ### 🛃 dereference and get a copy: ```the_cat = v[]```
+4. ### 🛜 (a) interact with the copy: ```print(the_cat.name)```
+5. ### 🛜 (b) interact with the original: ```v[].name = "new name"```
+
+&nbsp;
+# The methods of the variant type
+
+- ```.set(Dog("name"))```
+    
+    It is important to use that function when **re-assigning** a value,
+    
+    because the **destructor** of the previous value need to be called. (ensure cleanup logic in ```__del__```)
+- ```.isa[Cat]()```
+    
+    Necessary to check the type of the current value of the variant.
+
+    That way, ```.get[Cat]()``` can saferly returns a reference to a ```Cat``` value.
+
+
+- ```.get[Dog]()```
+
+    Returns a reference (of type ```Dog```) to the value stored in the variant.
+    
+    Can be dereferenced with square brackets(```[]```)
+
+    Example: ```name = v.get[Dog]()[].name```
+
+- ```.take[Cat]()```
+    
+    move the value out of the variant.
+
+    that way, the destructor is **not** called and we can move it elsewhere again (into a function for example).
+
+    Type checking is necessary in order to avoid dereferencing as the wrong type. (```.isa[Dog]()```)
+  
+    ⚠️ *Be mindfull that ```.set```  assume that a previous value exist and call the destructor on it.*
+    
+    *If the value was taken out,
+    there is no valid value to call a destructor on.*
+    
+    *It is possible to re-assign another value to the variant with ```=``` instead of ```set```.*
+
+    *That way, the destructor won't be called.* ⚠️
+
+    
+
+&nbsp;
+
+# Happy relationship between ```.Get[T]()``` and ```Reference```
+```.get[T]()``` returns a reference to a value of type ```T```.
+
+it is possible to mutate the original value in an easy manner,
+by dereferencing on the left side of the ```=``` sign. (see 🔵)
+
+
+
+```python
+from utils.variant import Variant
+
+def main():
+    var V:Variant[Int,String]
+    V = String("hello world")
+
+    #Mutate the original, trough the reference
+    V.get[String]()[]="new"                     #🔵
+    print(V.get[String]()[]) #"new"
+    
+    #Dereference and create a copy
+    V_copy = V.get[String]()[]
+    V_copy = "won't mutate original"
+
+    print(V.get[String]()[]) #"new"
+```
+⚠️ Note that 🔵 operate on a String reference, so assigning an Int would implicitely convert it to a String.
+
+The type of the current value of the variant would still be of String type and it's value would be String("123")
+
+It makes more sense to use ```V.set[Int](123)``` in that case.
+
+&nbsp;
+
+# 👨‍🏭 Example
+```python
+from utils.variant import Variant
+
+@value
+struct Cat(CollectionElement):
+    var name: String
+@value
+struct Dog(CollectionElement):
+    var name: String
+
+def buddy_name(buddy: Variant[Dog,Cat])->String:
+    if buddy.isa[Dog]():
+        ref_to_buddy = buddy.get[Dog]()
+        the_buddy = ref_to_buddy[] #dereference it
+        return the_buddy.name
+    if buddy.isa[Cat]():
+        ref_to_buddy = buddy.get[Cat]()
+        the_buddy = ref_to_buddy[]
+        return the_buddy.name
+    return "some return that could be replaced by an optional or variant"
+
+def main():
+    #Declare a variable of type Variant, 
+    #can hold a value of either Dog or Cat type.
+    var MyBuddy:Variant[Dog,Cat]
+
+    MyBuddy = Dog("sweetheart")
+    print(buddy_name(MyBuddy))
+
+    MyBuddy.set(Cat("mona"))
+    print(buddy_name(MyBuddy))
+
+    #Getting the type it currently holds:
+    if MyBuddy.isa[Cat](): print("Cat!")
+    if MyBuddy.isa[Dog](): print("Dog!")
+
+    #It can be changed any time !
+    for i in range(3):
+        MyBuddy.set(Dog("minisweetheart "+String(i)))
+        print(buddy_name(MyBuddy))
+    for i in range(3):
+        MyBuddy.set(Cat("minimona "+String(i)))
+        print(buddy_name(MyBuddy)) 
+
+    #In addition to Dog and Cat,
+    #It is possible to add another type to the variant
+    #Bool could be added as an hint that it is an empty value(neither cat or dog)
+
+    var BuddyInLivingRoom: Variant[Dog,Cat,Bool]
+    BuddyInLivingRoom = False
+    if BuddyInLivingRoom.isa[Bool](): print("Nobody there")
+    
+    BuddyInLivingRoom.set(Dog("Sweetheart"))
+    if BuddyInLivingRoom.isa[Dog](): print("It must be Sweetheart") 
+    if BuddyInLivingRoom.get[Dog]()[].name == "Sweetheart": print("knew it !")
+```
+&nbsp;
+
+### ```Variant``` is user-friendly and usefull, make sure to put it in your toolbox where you can see it.
+
+### Both ```Variant``` and ```traits``` allows for passing values of multiples type to functions, for example.
+
+&nbsp;
+
+
+&nbsp;
+
+# Starting point exercice to make friend with Variant 
+
+Feel free to meet ```Variant``` in a brand new ```def main():``` function, 
+
+it wants to play "guess what's in the box" with it's new friend.
+
+```python
+from utils.variant import Variant
+
+def main():
+    seed()
+    var V:Variant[Int,Float32,Bool] = get_box()
+    if V.isa[Bool]():
+        print(V.get[Bool]()[])
+        ref = V.get[Bool]()
+        ref[] = not ref[]
+        print(V.get[Bool]()[])
+    #Improve the game, Variant is always playful
+    #It takes very little time to complete it.
+    #Once done, Variant will always be there for you!
+
+from random import seed, random_si64
+def get_box()->Variant[Int,Float32,Bool]:
+    var tmp = Variant[Int,Float32,Bool](True)
+    v = random_si64(0,2)
+    if v == 0: tmp.set[Int](0)
+    if v == 1: tmp.set[Float32](1.0)
+    if v == 2: tmp.set[Bool](random_si64(0,1)==1)
+    return tmp
+```
+
+&nbsp;
+
+# 💝 ```Variant[Bool,Int,String,Float64]```
+
+
+With variant, it is possible create a type, that appears to be an object.
+
+Just decide a big variant of all the types you want it to be able to be.
+
+In combination with ```alias```, the big  and powerful variant, can be given sort of a short name.  
+
+Let's create a list of it, so that we can store different types in the same list.
+
+
+```python
+from utils.variant import Variant
+alias MyObject = Variant[Bool,Int,String,Float64]
+
+def main():
+    var list = DynamicVector[MyObject]() #🔥
+    list.push_back(MyObject(True))
+    list.push_back(MyObject(Float64(1.1)))
+    list.push_back(MyObject(9))
+    list.push_back(MyObject(String("hello world")))
+
+    for i in range(len(list)):
+        v = list[i]
+        if v.isa[Bool](): print("Bool:  ",v.get[Bool]()[])
+        if v.isa[Int]():  print("Int: " , v.get[Int]()[])
+        if v.isa[String]():  print("String:  ", v.get[String]()[])
+        if v.isa[Float64](): print("Float64: ", v.get[Float64]()[])
+```
+### output
+```
+Bool:   True
+Float64:  1.1000000000000001
+Int:  9
+String:   hello world
+```
+&nbsp;
+
+# 👏🌴
+
+If you never did low-level code before, congratulation.
+
+What you now can do would be called a "vector of typesafe union" in C++.
+
+Let's just call it pizza.
+
+At the end of the day, it is just a type that can sort-of vary, and we can give it a short name.
+
+Two concepts: ```alias``` and 
+```Variant```
+
+&nbsp;
+
+### Interesting interaction with a function
+```python
+from utils.variant import Variant
+alias MyObject = Variant[Bool,Int,String,Float64]
+
+def main():
+    v = MyObject(True)  #Bool
+    mutate(v)           #Change to Float64
+    if v.isa[Float64](): print(v.get[Float64]()[]) #prints 1.0
+
+def mutate(inout arg: MyObject):
+    arg.set[Float64](1.0)
+```
+
+&nbsp;
+
+---
+
+### Hope that small tutorial was helpful and enjoyable.
+
+
+### Happy coding with ```Variant```!
+
+&nbsp;
+
+
+#### *👍 Please consider contributing ideas, corrections, discussions, suggestions ❤️‍🔥*
+--- SOURCE: tutorials/vectorise-simd-cosine.md ---
+```python
+import math
+from sys.info import simdwidthof
+from algorithm import vectorize
+from python import Python
+
+fn main():
+
+    alias size = 256
+    alias value_type = DType.float64
+    
+    #allocate array of size elements of type value_type
+    var array = DTypePointer[value_type]().alloc(size)
+    
+    @parameter
+    fn cosine[group_size:Int](X: Int):
+        #create a simd array of size group_size. values: X->(X+group_size-1)
+        var tmp = math.iota[value_type, group_size](X)
+        tmp = tmp * 3.14 * 2 / 256.0
+        tmp = math.cos[value_type,group_size](tmp)
+        array.simd_store[group_size](X,tmp)
+    
+    #how much values at a time
+    alias by_group_of = simdwidthof[value_type]() 
+    vectorize[by_group_of,cosine](size)
+    
+    for i in range(size):
+        print(array.load(i))
+    
+    try:
+        var plt = Python.import_module("matplotlib.pyplot")
+        var python_y_array = PythonObject([])
+        for i in range(size):
+            python_y_array.append(array.load(i))
+        var python_x_array = Python.evaluate("[x for x in range(256)]")
+        plt.plot(python_x_array,python_y_array)
+        plt.show()
+    except:
+        print("no plot")
+    
+    #release memory
+    array.free()
+```
+--- SOURCE: tutorials/what-have-change-when-there-is-a-new-update.md ---
+# 📫 find out changes and improvements when there is a new update
+
+When there is a new update, a new changelog is available.
+
+The changelogs are availables for us [here](https://docs.modular.com/mojo/changelog.html)
+
+## What is a changelog
+It is an entry that describe the changes made, new features and bug fixed of an update.
+
+## How are they usefull
+
+Provides a clear listing of new features that are now availables.
+
+They also helps to maintain existing code by adapting to changes.
+
+## Practical example
+
+Lets understand how usefull it is by partially analysing a real changelog.
+
+### [v0.5.0 (2023-11-2)](https://docs.modular.com/mojo/changelog.html#v0.5.0-2023-11-2)
+From a glance, we can see that SIMD got a new function:
+-  ```join()``` : allows concatenating two SIMD values
+
+More features:
+-  Tensor has new ```fromfile()``` and ```tofile()``` methods to save and load as bytes from a file.
+-  Mojo now supports compile-time keyword parameters
+   -  ```fn foo[a: Int, b: Int = 42]()```
+-  Keyword parameters are also supported in structs
+- The parameters for InlinedFixedVector have been switched. 
+  - It now looks more like SIMD, let's make changes to existing codes to reflect the improvement, another benetits of changelogs.
+-  The [benchmark](https://docs.modular.com/mojo/stdlib/benchmark/benchmark.html) module has been simplified and improved 
+- ...more exciting features
+
+A section is dedicated to list features that have been removed if any.
+
+### ✅ Fixed section
+That sections show all the bug reports made on the [github repository of mojo](https://github.com/modularml/mojo/issues) that have been fixed in that update.
+
+Users can also create new bug reports if needed on that link.
+
+The repository is also a place to create a feature request.
+
+
+---
+
+> People also usually discuss the changes on the [Discord channel](https://www.discord.gg/modular)
+
+> There are also live Q/A, demonstrations and blog posts by mojo/modular team
+
+--- SOURCE: tutorials/with-blocks-for-struct-parametric-minimal-raise.md ---
+
+
+# 🔥 With blocks: with my_struct(1) as v (parametric/minimal/raise)
+
+
+> with v0.5.0
+
+The with blocks are similar to the ones in python in many aspects.
+
+In mojo, it is possible to parametrize the struct.
+
+This is just one distinction, there are probably more and more to come!
+
+
+
+### A. Minimal example
+That example cover a new supported feature introduced in [Changelog: 2023-10-05](https://docs.modular.com/mojo/changelog.html#v0.4.0-2023-10-05)
+
+- support an ```__enter__``` method without implementing support for an ```__exit__``` method
+```python
+@value
+struct my_struct[T:AnyType]:
+    var value: T
+    
+    fn __init(inout self,arg:T):
+        self.value = arg
+    
+    fn __enter__(owned self) -> T:
+        return self.value
+        #__del__() called on self here
+
+fn main():
+
+    #struct parameter deduction:
+    with my_struct(1.5) as value:
+        print(value)
+
+    #explicitely specify type:
+    with my_struct[Bool](True) as value:
+        print(value)
+```
+
+Note the absence of an ```__exit__()``` method in that  example. 
+
+self is "consumed" in the ```__enter__(owned self)->T```
+
+```__del()__``` is called on self after the last use of it.
+
+
+ see [Mojo documentation:ASAP](https://docs.modular.com/mojo/programming-manual.html#behavior-of-destructors) for more on why it is called after it's last use.
+
+There is also a small tutorial on ASAP inside this repository.
+
+&nbsp;
+
+### B. Error handling and Exit
+That example cover some features introduced in
+[Changelog: week-of-2023-04-24](https://docs.modular.com/mojo/changelog.html#week-of-2023-04-24).
+
+##### enter the with block, and provide value of type T
+```fn __enter__(self) -> T:```
+
+##### exit the with block without error
+```fn __exit__(self):```
+
+##### error got raised inside the with block:
+```fn __exit__(self, err: Error) -> Bool:```
+
+
+```python
+@value
+struct my_struct[T:AnyType]:
+    var value: T
+    
+    fn __init(inout self,arg:T):
+        self.value = arg
+    
+    #Return a value to be used by the with block
+    fn __enter__(self) -> T:
+        return self.value
+    
+    fn __exit__(self):
+        print("🏖️ exit with success")
+
+    #For error handling
+    fn __exit__(self, err: Error) -> Bool:
+        print("❌ Error 'received' by __exit__ : ",err)
+
+        if err._message() == "Error in with block":
+            #Let's consider it handled by returning True.
+            print("✅ Handled in exit")
+            return True
+            
+        #If return False, it means the error was not handled here
+        #the error will be re-propagated/re-thrown 
+        return False
+
+fn main() raises:
+    
+    try:
+        with my_struct(1.5) as value:
+            print(value)
+            #raise Error("Error in with block") 
+            raise Error("Another error") 
+    
+    except err:
+        #The error got re-thrown here
+        print("❌ Error 'received' by main : ",err)
+
+        #Lets consider it handled.
+        print("✅ Handled in main")
+
+        #Program will continue, below in the main function
+
+    print("Main: all good")
+```
+
+Depending on wich error is thrown (see the commented one),
+
+the program produce one of theses two outputs:
+#### A:
+```
+1.5
+❌ Error 'received' by __exit__ :  Error in with block
+✅ Handled in exit
+Main: all good
+```
+#### B:
+```
+1.5
+❌ Error 'received' by __exit__ :  Another error
+❌ Error 'received' by main :  Another error
+✅ Handled in main
+Main: all good
+```

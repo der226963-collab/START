@@ -1,0 +1,6155 @@
+--- SOURCE: guides/index.md ---
+# Guides
+
+<script>
+  import pages from '@temp/pages'
+  export default {
+    computed: {
+      guides() {
+          return pages.filter(p => p.path.indexOf('/guides/general/') >= 0)
+      },
+      std() {
+        return this.sortByCategories(
+          pages.filter(p => p.path.indexOf('/guides/std/') >= 0)
+        )
+      },
+      builtins() {
+          return pages.filter(p => p.path.indexOf('/guides/builtins/') >= 0)
+      },
+      decorators() {
+          return pages.filter(p => p.path.indexOf('/guides/decorators/') >= 0)
+      },
+      intro() {
+        return this.sortByCategories(
+            pages.filter(p => p.path.indexOf('/guides/intro-to-mojo/') >= 0)
+        )
+      },
+      benchmarks() {
+            return pages.filter(p => p.path.indexOf('/guides/benchmarks/') >= 0)
+      },
+    },
+    methods: {
+      sortByCategories(pages) {
+        return pages.sort((a, b) => a.frontmatter.categories.localeCompare(b.frontmatter.categories))
+      },
+    }
+  }
+</script>
+
+
+## Intro to Mojo
+_This guide is in the early stages, feedback welcomed [on Github](https://github.com/mojodojodev/mojodojo.dev/discussions/categories/feedback)_
+
+<table>
+  <tr>
+    <th>Chapter</th>
+    <th>Description</th>
+  </tr>
+  <tr v-for="chapter in intro">
+   <td><a :href="chapter.path">{{ chapter.frontmatter.categories }}</a></td>
+   <td style="white-space: pre-wrap;">{{ chapter.frontmatter.usage }}</td>
+  </tr>
+</table>
+
+## General
+
+<table>
+  <tr>
+    <th>Guide</th>
+    <th>Description</th>
+  </tr>
+  <tr v-for="guide in guides">
+   <td><a :href="guide.path">{{ guide.title }}</a></td>
+   <td style="white-space: pre-wrap;">{{ guide.frontmatter.usage }}</td>
+  </tr>
+</table>
+
+
+## Builtins
+
+<table>
+  <tr>
+    <th>Item</th>
+    <th>Description</th>
+  </tr>
+  <tr v-for="i in builtins">
+   <td><a :href="i.path">{{ i.title }}</a></td>
+   <td style="white-space: pre-wrap;">{{ i.frontmatter.usage }}</td>
+  </tr>
+</table>
+
+## Decorators
+
+<table>
+  <tr>
+    <th>Item</th>
+    <th>Description</th>
+  </tr>
+  <tr v-for="i in decorators">
+   <td><a :href="i.path">{{ i.title }}</a></td>
+   <td style="white-space: pre-wrap;">{{ i.frontmatter.usage }}</td>
+  </tr>
+</table>
+
+
+## Standard Library
+
+<table>
+  <tr>
+    <th>Item</th>
+    <th>Module</th>
+    <th>Description</th>
+  </tr>
+  <tr v-for="s in std">
+   <td><a :href="s.path">{{ s.title }}</a></td>
+   <td style="white-space: pre-wrap;">{{ s.frontmatter.categories }}</td>
+   <td style="white-space: pre-wrap;">{{ s.frontmatter.usage }}</td>
+  </tr>
+</table>
+
+## Benchmarks
+Benchmarking various conversions of Python to Mojo
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+  </tr>
+  <tr v-for="s in benchmarks">
+   <td><a :href="s.path">{{ s.title }}</a></td>
+   <td style="white-space: pre-wrap;">{{ s.frontmatter.usage }}</td>
+  </tr>
+</table>
+--- SOURCE: guides/benchmarks/sudoku.md ---
+---
+usage: Solving a Sudoku game as fast as possible
+---
+
+# Sudoku Solver
+Speed Increase: 55x
+
+
+```mojo
+%%python
+def is_valid(board, row, col, num):
+    for x in range(9):
+        if board[row][x] == num:
+            return False
+
+    for x in range(9):
+        if board[x][col] == num:
+            return False
+
+    start_row = row - row % 3
+    start_col = col - col % 3
+    for i in range(3):
+        for j in range(3):
+            if board[i+start_row][j+start_col] == num:
+                return False
+    return True
+
+def solve_sudoku(board):
+    for i in range(9):
+        for j in range(9):
+            if board[i][j] == 0:
+                for num in range(1, 10):
+                    if is_valid(board, i, j, num):
+                        board[i][j] = num
+                        if solve_sudoku(board):
+                            return True
+                        board[i][j] = 0
+                return False
+    return True
+
+board = [
+    [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    [0, 9, 8, 0, 0, 0, 0, 6, 0],
+    [8, 0, 0, 0, 6, 0, 0, 0, 3],
+    [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    [7, 0, 0, 0, 2, 0, 0, 0, 6],
+    [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    [0, 0, 0, 0, 8, 0, 0, 7, 9]
+]
+
+print("Solved:", solve_sudoku(board))
+for i in board:
+    print(i)
+```
+
+    Solved: True
+    [5, 3, 4, 6, 7, 8, 9, 1, 2]
+    [6, 7, 2, 1, 9, 5, 3, 4, 8]
+    [1, 9, 8, 3, 4, 2, 5, 6, 7]
+    [8, 5, 9, 7, 6, 1, 4, 2, 3]
+    [4, 2, 6, 8, 5, 3, 7, 9, 1]
+    [7, 1, 3, 9, 2, 4, 8, 5, 6]
+    [9, 6, 1, 5, 3, 7, 2, 8, 4]
+    [2, 8, 7, 4, 1, 9, 6, 3, 5]
+    [3, 4, 5, 2, 8, 6, 1, 7, 9]
+
+
+
+```mojo
+%%python
+from timeit import timeit
+
+board = [
+    [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    [0, 9, 8, 0, 0, 0, 0, 6, 0],
+    [8, 0, 0, 0, 6, 0, 0, 0, 3],
+    [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    [7, 0, 0, 0, 2, 0, 0, 0, 6],
+    [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    [0, 0, 0, 0, 8, 0, 0, 7, 9]
+]
+
+python_secs = timeit(lambda: solve_sudoku(board), number=2)/2
+print("python seconds:", python_secs)
+```
+
+    python seconds: 0.020060801063664258
+
+
+
+```mojo
+from Pointer import DTypePointer
+from DType import DType
+from Buffer import NDBuffer
+from List import DimList
+from Random import randint
+from List import VariadicList
+from Math import sqrt
+from Numerics import FPUtils
+
+
+struct Board[grid_size: Int]:
+    var data: DTypePointer[DType.uint8]
+    var sub_size: Int
+    alias elements = grid_size**2
+
+    fn __init__(inout self, *values: Int) raises:
+        let args_list = VariadicList(values)
+        if len(args_list) != elements:
+            raise Error("The amount of elements must be equal to the grid_size parameter squared")
+
+        let sub_size = sqrt(Float64(grid_size))
+        if sub_size - sub_size.cast[DType.int64]().cast[DType.float64]() > 0:
+            raise Error("The square root of the grid grid_size must be a whole number 9 = 3, 16 = 4")
+        self.sub_size = sub_size.cast[DType.int64]().to_int()
+
+
+        self.data = DTypePointer[DType.uint8].alloc(grid_size**2)
+        for i in range(len(args_list)):
+            self.data.simd_store[1](i, args_list[i])
+
+    fn __getitem__(self, row: Int, col: Int) -> UInt8:
+        return self.data.simd_load[1](row * grid_size + col)
+
+    fn __setitem__(self, row: Int, col: Int, data: UInt8):
+        self.data.simd_store[1](row * grid_size + col, data)
+
+    fn print_board(inout self):
+        for i in range(grid_size):
+            print(self.data.simd_load[grid_size](i * grid_size))
+
+    fn is_valid(self, row: Int, col: Int, num: Int) -> Bool:
+        # Check the given number in the row
+        for x in range(grid_size):
+            if self[row, x] == num:
+                return False
+
+        # Check the given number in the col
+        for x in range(grid_size):
+            if self[x, col] == num:
+                return False
+
+        # Check the given number in the box
+        let start_row = row - row % self.sub_size
+        let start_col = col - col % self.sub_size
+        for i in range(self.sub_size):
+            for j in range(self.sub_size):
+                if self[i+start_row, j+start_col] == num:
+                    return False
+        return True
+
+    fn solve(self) -> Bool:
+        for i in range(grid_size):
+            for j in range(grid_size):
+                if self[i, j] == 0:
+                    for num in range(1, 10):
+                        if self.is_valid(i, j, num):
+                            self[i, j] = num
+                            if self.solve():
+                                return True
+                            # If this number leads to no solution, then undo it
+                            self[i, j] = 0
+                    return False
+        return True
+
+
+let board = Board[9](
+    5, 3, 0, 0, 7, 0, 0, 0, 0,
+    6, 0, 0, 1, 9, 5, 0, 0, 0,
+    0, 9, 8, 0, 0, 0, 0, 6, 0,
+    8, 0, 0, 0, 6, 0, 0, 0, 3,
+    4, 0, 0, 8, 0, 3, 0, 0, 1,
+    7, 0, 0, 0, 2, 0, 0, 0, 6,
+    0, 6, 0, 0, 0, 0, 2, 8, 0,
+    0, 0, 0, 4, 1, 9, 0, 0, 5,
+    0, 0, 0, 0, 8, 0, 0, 7, 9
+)
+
+print("Solved:", board.solve())
+board.print_board()
+```
+
+    Solved: True
+    [5, 3, 4, 6, 7, 8, 9, 1, 2]
+    [6, 7, 2, 1, 9, 5, 3, 4, 8]
+    [1, 9, 8, 3, 4, 2, 5, 6, 7]
+    [8, 5, 9, 7, 6, 1, 4, 2, 3]
+    [4, 2, 6, 8, 5, 3, 7, 9, 1]
+    [7, 1, 3, 9, 2, 4, 8, 5, 6]
+    [9, 6, 1, 5, 3, 7, 2, 8, 4]
+    [2, 8, 7, 4, 1, 9, 6, 3, 5]
+    [3, 4, 5, 2, 8, 6, 1, 7, 9]
+
+
+
+```mojo
+from Benchmark import Benchmark
+alias board_size = 9 
+fn bench(python_secs: Float64):
+    @parameter
+    fn init_board() raises -> Board[board_size]:
+        return Board[board_size](
+            5, 3, 0, 0, 7, 0, 0, 0, 0,
+            6, 0, 0, 1, 9, 5, 0, 0, 0,
+            0, 9, 8, 0, 0, 0, 0, 6, 0,
+            8, 0, 0, 0, 6, 0, 0, 0, 3,
+            4, 0, 0, 8, 0, 3, 0, 0, 1,
+            7, 0, 0, 0, 2, 0, 0, 0, 6,
+            0, 6, 0, 0, 0, 0, 2, 8, 0,
+            0, 0, 0, 4, 1, 9, 0, 0, 5,
+            0, 0, 0, 0, 8, 0, 0, 7, 9
+        )
+
+    fn solve():
+        try:
+            let board = init_board()
+            _ = board.solve()
+        except:
+            pass
+
+    let mojo_secs = Benchmark().run[solve]() / 1e9
+    print("mojo seconds:", mojo_secs)
+    print("speedup:", python_secs / mojo_secs)
+
+bench(python_secs.to_float64())
+```
+
+    mojo seconds: 0.00036501099999999999
+    speedup: 55.234368285891797
+
+
+<CommentService />
+--- SOURCE: guides/builtins/Bool.md ---
+---
+title: Bool
+categories: Builtins
+usage: The primitive Bool scalar value used in Mojo
+---
+
+Contributed by [StitchyPie](https://github.com/StitchyPie)
+
+# Bool
+The primitive Bool scalar value used in Mojo.
+
+## init
+
+
+```mojo
+var x = True
+print(x)
+
+var y: Bool = False
+print(y)
+```
+
+    True
+    False
+
+
+## fields
+`Bool` stores it's data in the member variable `value`:
+
+
+```mojo
+print(my_bool.value)
+```
+
+    True
+
+
+## invert
+Flips from `True` to `False` or vice-versa
+
+
+```mojo
+print(True.__invert__())
+print(~False)
+```
+
+    False
+    True
+
+
+## equal
+
+
+```mojo
+print(True.__eq__(True))
+print(True == False)
+```
+
+    True
+    False
+
+
+## not equal
+
+
+```mojo
+print(True.__ne__(True))
+print(True != False)
+```
+
+    False
+    True
+
+
+## and
+True if both values are True
+
+
+```mojo
+print(True.__and__(True))
+print(True & False)
+```
+
+    True
+    False
+
+
+## or
+True if any value is True
+
+
+```mojo
+print(True.__or__(False))
+print(False or False)
+```
+
+    True
+    False
+
+
+## xor
+Exclusive or, outputs true if exactly one of two inputs is true
+
+
+```mojo
+print(True.__xor__(True))
+print(True ^ False)
+print(False ^ True)
+print(False ^ False)
+```
+
+    False
+    True
+    True
+    False
+
+
+## ror, rand and rxor
+
+Think of the `r` as reversed, for example in `a & b`, if `a` doesn't implement `__and__`, then `b.__rand__(a)` will run instead.
+
+For example create a struct `MyNumber` and implement `__rand__` with a `Bool`:
+
+
+```mojo
+struct MyNumber:
+    var value: FloatLiteral
+    fn __init__(inout self, num: FloatLiteral):
+        self.value = num
+
+    fn __rand__(self, other: Bool) -> Bool:
+        print("Called MyNumber's __rand__ function")
+        if self.value > 0.0 and other:
+            return True
+        return False
+```
+
+You normally can't compare a `Bool` with a `FloatLiteral`, but now we implemented `__rand__` we can:
+
+
+```mojo
+let my_number = MyNumber(1.0)
+print(True & my_number)
+```
+
+    Called MyNumber's __rand__ function
+    True
+
+
+`True.__and__(my_number)` has no implementation, so it reverses it and runs `my_number.__rand__(True)` instead, with the special logic we implemented.
+
+<CommentService />
+--- SOURCE: guides/builtins/BuiltinList.md ---
+---
+title: BuiltinList
+categories: Builtins
+usage: The primitive ListLiteral class in Mojo
+---
+
+Contributed by [StitchyPie](https://github.com/StitchyPie) and [Lorenzobattistela](https://github.com/Lorenzobattistela)
+
+# BuiltinList
+The primitive ListLiteral class in Mojo.
+
+A ListLiteral is a list of elements that are immutable, it only includes getter methods for accessing elements, nothing can be modified post-initialization.
+
+## init
+The types can be implicit:
+
+
+```mojo
+let list = [1,2,3]
+print(list)
+```
+
+    [1, 2, 3]
+
+
+Or explicit:
+
+
+```mojo
+let explicit_list: ListLiteral[Int, Int, Int] = [1, 2, 3]
+print(explicit_list)
+```
+
+    [1, 2, 3]
+
+
+A ListLiteral can also contain elements of different types.
+
+
+```mojo
+let mixed_list= [1, 2.0, True]
+print(mixed_list)
+```
+
+    [1, 2.0, True]
+
+
+## fields
+- storage: this is the MLIR type that stores the literals, we'll force an error to see what `mixed_list` storage looks like:
+
+
+```mojo
+mixed_list.storage = 0
+```
+
+    error: Expression [8]:20:26: cannot implicitly convert 'Int' value to '!pop.pack<[!kgen.declref<_"$Builtin"::_"$Int"::_Int>, !kgen.declref<_"$Builtin"::_"$FloatLiteral"::_FloatLiteral>, !kgen.declref<_"$Builtin"::_"$Bool"::_Bool>]>' in assignment
+        mixed_list.storage = 0
+                             ^
+    
+    expression failed to parse (no further compiler diagnostics)
+
+## len
+
+
+```mojo
+print(len(mixed_list))
+```
+
+    3
+
+
+## get
+
+Get a list element at the given index with the element type, note that we have to specify the index of the element and the type of the element we're retrieving, refer to [parametrization here](https://docs.modular.com/mojo/programming-manual.html#defining-parameterized-types-and-functions)
+
+
+```mojo
+print(mixed_list.get[0, Int]())
+print(mixed_list.get[2, Bool]())
+```
+
+    1
+    True
+
+
+
+```mojo
+let x = -1
+print(x.__index__())
+```
+
+    -1
+
+
+<CommentService />
+--- SOURCE: guides/builtins/BuiltinSlice.md ---
+---
+title: BuiltinSlice
+categories: Builtins
+usage: Implements slice.
+---
+
+Contributed by [Lorenzobattistela](https://github.com/Lorenzobattistela)
+
+# slice
+
+Represents a slice expression.
+Objects of this type are generated when slice syntax `[a:b:c]` is used.
+
+## init
+
+We can initialize slices by specifying where it should stop. If we don't specify a start, it will default to 0. If we don't specify a step, it will default to 1. The step is the number of elements to skip between each element.
+
+
+```mojo
+from String import String
+
+var x = String("slice it!")
+var a : slice = slice(5)
+var b : slice = slice(5, 9)
+var c : slice = slice(1, 4, 2)
+
+print(x[a])
+print(x[b])
+print(x[c])
+```
+
+    slice
+     it!
+    lc
+
+--- SOURCE: guides/builtins/Error.md ---
+---
+title: Error
+categories: Builtins
+usage: Implements the Error class.
+---
+
+Contributed by [Lorenzobattistela](https://github.com/Lorenzobattistela)
+
+# Error
+
+The Error class is used to handle errors in Mojo.
+
+## init
+
+We are able to initialize empty errors, with custom messages and even with string references.
+
+
+
+```mojo
+var err : Error = Error()
+raise err
+```
+
+    warning: Expression [3]:22:5: unreachable code after raise statement
+        return
+        ^
+    
+
+
+    Error: 
+
+
+
+```mojo
+var custom_err : Error = Error("my custom error")
+raise custom_err
+```
+
+    warning: Expression [4]:22:5: unreachable code after raise statement
+        return
+        ^
+    
+
+
+    Error: my custom error
+
+
+
+```mojo
+var ref : StringRef = StringRef("hello")
+var err : Error = Error(ref)
+
+raise err
+```
+
+    warning: Expression [7]:24:5: unreachable code after raise statement
+        return
+        ^
+    
+
+
+    Error: hello
+
+
+## fields
+
+- `value`: The error message.
+
+
+```mojo
+var err : Error = Error("something is wrong")
+print(err.value)
+```
+
+    something is wrong
+
+
+## copyinit
+
+Allows error to be copied.
+
+
+```mojo
+var err : Error = Error("hey")
+var other : Error = err
+
+raise other
+```
+
+    warning: Expression [8]:25:5: unreachable code after raise statement
+        return
+        ^
+    
+
+
+    Error: hey
+
+--- SOURCE: guides/builtins/FloatLiteral.md ---
+---
+title: FloatLiteral
+categories: Builtins
+usage: Floating point literal type.
+---
+
+Contributed by [StitchyPie](https://github.com/StitchyPie)
+
+# FloatLiteral
+Floating point literal type.
+
+## init
+
+
+```mojo
+let x = 10.0
+print(x)
+```
+
+    10.0
+
+
+
+```mojo
+let y: FloatLiteral = 4 # Must state type otherwise it will default to Int
+print(y)
+```
+
+    4.0
+
+
+## bool
+
+Returns true if the value does not equal 0.0
+
+
+```mojo
+if 1.0:
+    print("not 0.0")
+
+if not 0.0:
+    print("is 0.0")
+```
+
+    not 0.0
+    is 0.0
+
+
+## neg
+
+Returns `FloatLiteral` with a swapped sign.
+
+
+```mojo
+print(-x)
+```
+
+    -10.0
+
+
+## lt
+
+Returns true if `lhs` (left hand side) is smaller than `rhs` (right hand side).
+
+
+```mojo
+print(-5.0 < -2.0)
+```
+
+    True
+
+
+## le
+
+Returns true if `lhs` is smaller than or equal to the `rhs`.
+
+
+```mojo
+print(5.0 <= 5.0)
+```
+
+    True
+
+
+## eq
+
+Returns true if `lhs` is equal to `rhs`.
+
+
+```mojo
+print(1.0 == 1.0)
+```
+
+    True
+
+
+## ne
+
+Returns true if `lhs` is not equal to `rhs`.
+
+
+```mojo
+print(1.0 != 2.0)
+```
+
+    True
+
+
+## gt
+
+Returns true if `lhs` is larger than `rhs`.
+
+
+```mojo
+print(3.0 > 2.0)
+```
+
+    True
+
+
+## ge
+
+Returns true if `lhs` is larger than or equal to `rhs`.
+
+
+```mojo
+print(2.0 >= 2.0)
+```
+
+    True
+
+
+## add
+
+returns `lhs` plus `rhs`.
+
+
+```mojo
+print(40.0 + 2.0)
+```
+
+    42.0
+
+
+## sub
+
+returns `lhs` minus `rhs`.
+
+
+```mojo
+print(2.0 - 44.0)
+```
+
+    -42.0
+
+
+## mul
+
+`mul` return `lhs` multiplied by `rhs`.
+
+
+```mojo
+print(21.0 * 2.0)
+```
+
+    42.0
+
+
+## truediv
+
+returns `lhs` divided by `rhs`.
+
+
+```mojo
+print(5.0 / 2.0)
+```
+
+    2.5
+
+
+## floordiv
+
+Returns `lhs` divided by `rhs` rounded down to the next whole number
+
+
+```mojo
+print(5.0 // 2.0)
+```
+
+    2.0
+
+
+## mod
+Returns the remainder of `lhs` divided by `rhs`
+
+
+```mojo
+print(5.0 % 2.0)
+```
+
+    1.0
+
+
+# pow
+
+Returns `lhs` raised to the power of `rhs`
+
+
+```mojo
+print(2.0 ** 8.0)
+```
+
+    256.0
+
+
+## radd, rsub, rmul, rtruediv, rfloordiv, rmod, rpow
+Think of the `r` as reversed, for example in `a + b`, if `a` doesn't implement `__add__`, then `b.__radd__(a)` will run instead.
+
+For example create a struct `MyNumber` only implementing `__radd__`:
+
+
+```mojo
+struct MyNumber:
+    var value: FloatLiteral
+
+    fn __init__(inout self, num: FloatLiteral):
+        self.value = num
+
+    fn __radd__(self, rhs: FloatLiteral) -> FloatLiteral:
+        print("running MyNumber 'radd' implementation")
+        return self.value + rhs
+```
+
+
+```mojo
+let num = MyNumber(40.0)
+print(2.0 + num)
+```
+
+    running MyNumber 'radd' implementation
+    42.0
+
+
+
+## iadd, isub, imul, itruediv, ifloordiv, imod, ipow
+`i` stands for `in-place`, the `lhs` becomes the result of the operation and a new object is not created.
+
+
+```mojo
+var a = 40.0
+
+a += 2.0
+print(a)
+```
+
+    42.0
+
+
+
+```mojo
+a -= 10.0
+print(a)
+```
+
+    32.0
+
+
+
+```mojo
+a %= 5.0
+print(a)
+```
+
+    2.0
+
+
+
+```mojo
+a /= 3.0
+print(a)
+```
+
+    0.66666666666666663
+
+
+
+```mojo
+a *= 20.0
+print(a)
+```
+
+    13.333333333333332
+
+
+
+```mojo
+a //= 2.0
+print(a)
+```
+
+    6.0
+
+
+
+```mojo
+a **= 2.0
+print(a)
+```
+
+    36.0
+
+
+<CommentService />
+--- SOURCE: guides/builtins/StringLiteral.md ---
+---
+title: StringLiteral
+categories: Builtins
+usage: This type represents a string literal. String literals are all null-terminated for compatibility with C APIs, but this is subject to change. String literals store their length as an integer, and this does not include the null terminator.
+---
+
+Contributed by [Lorenzobattistela](https://github.com/Lorenzobattistela)
+
+# StringLiteral
+
+This type represents a string literal.
+
+String literals are all null-terminated for compatibility with C APIs, but this is subject to change. String literals store their length as an integer, and this does not include the null terminator.
+
+
+## init
+
+
+```mojo
+var x: StringLiteral = "Literal"
+print(x)
+
+var y = "StringLiteral"
+print(y)
+```
+
+    Literal
+    StringLiteral
+
+
+## fields
+
+- `value`: The MLIR storage for the string literal, lets force an error to see the type:
+
+
+```mojo
+y.value = 0
+```
+
+    error: Expression [3]:19:15: cannot implicitly convert 'Int' value to 'string' in assignment
+        y.value = 0
+                  ^
+    
+    expression failed to parse (no further compiler diagnostics)
+
+You can also print it directly:
+
+
+```mojo
+print(y.value)
+```
+
+    StringLiteral
+
+
+## bool
+
+Convert the string to a boolean value. True if the string is not empty, false otherwise.
+
+
+```mojo
+var x = ""
+print(x.__bool__())
+
+var y = "a"
+print(y.__bool__())
+```
+
+    False
+    True
+
+
+## equal
+
+Compare the equality of two strings, receiving other StringLiteral as parameter. True if equal.
+
+
+```mojo
+var x = "abc"
+var y = "abc"
+var z = "ab"
+
+print(x.__eq__(y))
+print(x.__eq__(z))
+print(x == y)
+```
+
+    True
+    False
+    True
+
+
+## not equal
+
+Compare the inequality of two strings, receiving other StringLiteral as parameter. True if not equal.
+
+
+```mojo
+var x = "abc"
+var y = "abc"
+var z = "ab"
+
+print(x.__ne__(y))
+print(x.__ne__(z))
+print(x != y)
+```
+
+    False
+    True
+    False
+
+
+## add
+
+Concatenate two StringLiterals.
+
+
+```mojo
+let x = "hello "
+let y = "world"
+
+var c = x.__add__(y)
+var d = x + y
+
+print(c)
+print(d)
+```
+
+    hello world
+    hello world
+
+
+## len
+
+Return the length of the string.
+
+
+```mojo
+var x = "string"
+print(x.__len__())
+print(len(x))
+```
+
+    6
+    6
+
+
+## data
+
+Get raw pointer to the underlying data.
+
+`pointer<scalar<si8>>` is the return type of the method. It means that the method returns a pointer to the underlying data of the string literal. The `si8`` indicates that the data is a sequence of 8-bit signed integers, which is a common way to represent characters in a string.
+
+So, if you have a StringLiteral object, you can call data() on it to get a pointer to its underlying data. This could be useful if you need to pass the string data to a function that requires a pointer, or if you want to perform low-level operations on the string data.
+
+
+```mojo
+var x = "string"
+var y = x.data()
+x = "alo"
+print(y)
+print(x)
+```
+
+    string
+    alo
+
+
+<CommentService />
+--- SOURCE: guides/builtins/StringRef.md ---
+---
+title: StringRef
+categories: Builtins
+usage: Represent a constant reference to a string, i.e. a sequence of characters and a length, which need not be null terminated.
+---
+
+Contributed by [Lorenzobattistela](https://github.com/Lorenzobattistela)
+
+# StringRef
+
+Represent a constant reference to a string, i.e. a sequence of characters and a length, which need not be null terminated.
+
+## init
+
+
+```mojo
+var x = StringRef("a")
+print(x)
+```
+
+    a
+
+
+Or specifying the pointer
+
+
+```mojo
+let x = "string"
+let ptr = x.data()
+let str_ref = StringRef(ptr)
+print(str_ref)
+```
+
+    string
+
+
+
+```mojo
+let x = "string_2"
+let ptr = x.data()
+let length = len(x)
+
+let str_ref = StringRef(ptr, length)
+print(str_ref.length)
+print(str_ref)
+```
+
+    8
+    string_2
+
+
+## fields
+
+`data`: A pointer to the beginning of the string data being referenced.
+`length`: The length of the string being referenced.
+
+
+```mojo
+var a : StringRef = StringRef("a")
+print(a.data)
+print(a.length)
+```
+
+    a
+    1
+
+
+## getitem
+
+Get the string value at the specified position. It receives the index of the character to get. You can use the brackets notation to get the character at the specified position.
+
+
+```mojo
+var x = StringRef("hello")
+print(x.__getitem__(0))
+print(x[1])
+```
+
+    h
+    e
+
+
+## equal
+
+Compares two strings are equal.
+
+
+```mojo
+var x = StringRef("hello")
+var y = StringRef("hello")
+print(x.__eq__(y))
+print(x == y)
+```
+
+    True
+    True
+
+
+## not equal
+
+Compares two strings are not equal.
+
+
+```mojo
+var x = StringRef("hello")
+var y = StringRef("hello")
+print(x.__ne__(y))
+print(x != y)
+```
+
+    False
+    False
+
+
+## length
+
+Returns the length of the string.
+
+
+```mojo
+var x = StringRef("hello")
+print(x.__len__())
+print(len(x))
+```
+
+    5
+    5
+
+--- SOURCE: guides/builtins/Tuple.md ---
+---
+title: Tuple
+categories: Builtins
+usage: Tuple literal, consists of zero or more values separated by commas.
+---
+
+Contributed by [gautam-e](https://github.com/gautam-e)
+
+# Tuple
+Tuple literal, consists of zero or more values separated by commas.
+
+## init
+These are the same, as `Tuple` can be elided when using `()` brackets:
+
+
+```mojo
+let t = (1, 2, 3)
+let t = Tuple(1, 2, 3)
+```
+
+You can also use different types inside the tuple, and can be implicit or explicit with the types:
+
+
+```mojo
+let u = ("string", 5.0, 2)
+let v: Tuple[StringLiteral, FloatLiteral, Int] = ("string", 5.0, 2)
+```
+
+## length
+
+Number of elements in the tuple.
+
+
+```mojo
+print("Length of the tuple:", len(t))
+```
+
+    Length of the tuple: 3
+
+
+## get
+
+Get a specific element in the tuple.
+
+
+```mojo
+print(u.get[1, FloatLiteral]())
+```
+
+    5.0
+
+
+## limitations
+You can't get items from a tuple if it's not [@register_passable](/guides/decorators/register_passable.md):
+
+
+```mojo
+@value
+struct Coord:
+    var x: Int
+    var y: Int
+
+var x = (Coord(5, 10), 5.5)
+
+let y = x.get[0, Coord]()
+print(y.data[0].x)
+```
+
+    error: Expression [2]:23:28: invalid call to 'get': result cannot bind generic !mlirtype to memory-only type 'Coord'
+        let y = x.get[0, Coord]()
+                ~~~~~~~~~~~~~~~^~
+    
+    /.modular/Kernels/mojo/Builtin/Tuple.mojo:58:5: function declared here
+        fn get[i: Int, T: AnyType](self) -> T:
+        ^
+    
+
+
+To remedy this you can mark it as [@register_passable](/guides/decorators/register_passable.md), but it must contain all register passable types:
+
+
+```mojo
+@value
+@register_passable
+struct Coord:
+    var x: Int
+    var y: Int
+
+var x = (Coord(5, 10), 5.5)
+
+print(x.get[0, Coord]().x)
+```
+
+    5
+
+
+So items like a `String` won't work.
+
+<CommentService />
+--- SOURCE: guides/decorators/always_inline.md ---
+---
+usage: Causes body of the function to be copied directly into the body of the calling function in the final binary 
+---
+
+# @always_inline
+At compile time this causes the body of the function to be copied or `inlined` directly into the body of the calling function for the final binary. This removes overhead associated with function calls jumping to a new point in code. Normally the compiler will do this automatically where it improves performance, but this decorator forces it to occur, the downside is that it can increase the binary size for the duplicated functions.
+
+## @always_inline("nodebug")
+This works the same but doesn't include debug information so you can't step into the function when debugging, but it will reduce debug build binary size.
+
+<CommentService />
+--- SOURCE: guides/decorators/noncapturing.md ---
+---
+usage: Marks a closure as not capturing variables from the outer scope
+---
+
+# @noncapturing
+Marks a closure as not capturing variables from the outer scope.
+
+Mojo considers closures capturing by default, even if it's not capturing anything, for example if you don't put the `capturing` keyword after `fn()` you'll get a compiler error:
+
+
+```mojo
+fn outer(f: fn() -> None):
+    f()
+
+fn call_it():
+    fn inner():
+        print("inner")
+
+    outer(inner) 
+
+call_it()
+```
+
+    error: Expression [5]:12:10: invalid call to 'outer': argument #0 cannot be converted from 'fn() capturing -> None' to 'fn() -> None'
+        outer(inner) 
+        ~~~~~^~~~~~~
+    
+    Expression [5]:5:1: function declared here
+    fn outer(f: fn() -> None):
+    ^
+    
+    expression failed to parse (no further compiler diagnostics)
+
+You can fix it by adding the `capturing` keyword:
+
+
+```mojo
+fn outer(f: fn() capturing -> None):
+    f()
+
+fn call_it():
+    fn inner():
+        print("inner")
+
+    outer(inner) 
+
+call_it()
+```
+
+    inner
+
+
+Alternatively, because it's not actually capturing any outer values you can annotate with `@noncapturing`:
+
+
+```mojo
+fn outer(f: fn() -> None):
+    f()
+
+fn call_it():
+    @noncapturing
+    fn inner():
+        print("inner")
+
+    outer(inner) 
+
+call_it()
+```
+
+    inner
+
+
+To give you a sense of what capturing is in a closure, let's take a look:
+
+
+```mojo
+fn outer(f: fn() capturing -> Int):
+    print(f())
+
+fn call_it():
+    let a = 5 
+    fn inner() -> Int:
+        return a
+
+    outer(inner) 
+
+call_it()
+```
+
+    5
+
+
+You can see that we captured the `a` variable in the inner closure and returned it to the outer function
+
+<CommentService />
+--- SOURCE: guides/decorators/parameter.md ---
+---
+usage: Causes the function or if statement to run at compile time
+---
+
+# @parameter
+
+## if statement
+
+This will cause the `if` statement to run at compile time, there is no runtime performance cost because the path that doesn't run will be excluded from the final binary:
+
+
+```mojo
+from TargetInfo import os_is_linux
+
+@parameter
+if os_is_linux():
+    print("this will be included in the binary")
+else:
+    print("this will be eliminated from compilation process")
+```
+
+    this will be included in the binary
+
+
+## function
+
+This will run at compile time, so that you pay no runtime price for anything inside the function:
+
+
+```mojo
+fn add_print[a: Int, b: Int](): 
+    @parameter
+    fn add[a: Int, b: Int]() -> Int:
+        return a + b
+
+    let x = add[a, b]()
+    print(x)
+
+add_print[5, 10]()
+```
+
+    15
+
+
+What this essentially translates to is:
+
+
+```mojo
+fn add_print(): 
+    let x = 15
+    print(x)
+
+add_print()
+```
+
+    15
+
+
+The `add` calculation ran at compile time, so those extra instructions don't happen at runtime 
+
+<CommentService />
+--- SOURCE: guides/decorators/register_passable.md ---
+---
+usage: Indicates the values can be passed through registers
+---
+
+# @register_passable 
+You can decorate a type with `@register_passable` which allows a type to passed through registers and adds some generic behaviour, for example a `UInt32` is just 32 bits for the actual value and can be directly copied into and out of registers, while a `String` contains a pointer that requires special constructor and destructor behavior to allocate and free memory so it's `memory only`.
+
+Create a type with a pair of `UInt32` and mark it register passable:
+
+
+```mojo
+@register_passable
+struct Pair:
+    var a: UInt32
+    var b: UInt32
+
+    fn __init__(a: UInt32, b: UInt32) -> Self:
+        return Self{a: 2, b: 4}
+
+    fn __copyinit__(self) -> Self:
+        return Self{a: 2, b: 4}
+
+    fn __del__(owned self):
+        print("running __del__")
+```
+
+`__init__`, `__copyinit__` and `__del__` aren't required, this is just to indicate what you can define on a `@register_passable` type, for example printing something when the object is dropped:
+
+
+```mojo
+fn test():
+    let x = Pair(5, 10)
+    var y = x
+    y.a = 10
+    y.b = 20
+
+    print(x.a, x.b)
+    print(y.a, y.b)
+
+test()
+```
+
+    running __del__
+    2 4
+    running __del__
+    10 20
+
+
+Generally you will also want to mark it with the [@value](/guides/decorators/value) decorator, which implements all the boilerplate for you:
+
+
+```mojo
+@value
+@register_passable
+struct Pair:
+    var a: Int
+    var b: Int
+
+let x = Pair(5, 10)
+print(x.a, x.b)
+```
+
+    5 10
+
+
+Trying to define `__moveinit__` will result in an error, the whole idea behind `@register_passable` is that you can copy it into or out of a register by copying:
+
+
+```mojo
+@register_passable
+struct Pair:
+    var a: Int
+    var b: Int
+
+    fn __moveinit__(inout self, owned exisiting: Self):
+        self.a = exisiting.a
+        self.b = existing.b
+```
+
+    error: Expression [11]:10:5: '__moveinit__' is not supported for @register_passable types, they are always movable by copying a register
+        fn __moveinit__(inout self, owned exisiting: Self):
+        ^
+    
+    error: Expression [11]:12:18: use of unknown declaration 'existing', 'fn' declarations require explicit variable declarations
+            self.b = existing.b
+                     ^~~~~~~~
+    
+
+
+## @register_passable("trivial")
+This means you can't define:
+- `__init__`
+- `__copyinit__`
+- `__moveinit__`
+- `__del__`
+
+It's referred to as `trivial` because it is always pass by copy/value, there is no special logic required for destruction, construction, indirection or anything else. You can think of it like a `Int64` contains just 64 bits of data, generally lives on the stack, and can be copied straight into registers. You don't need any special allocation or memory freeing behaviour because it's `trivial`, copying it around everywhere is the most efficient way to use it. Right now Mojo's generics only work with trivial types because the compiler can treat these trivial types the same, while it can't generalize on objects that require special constructor and destructor behaviour. This will be resolved when `traits` are introduced.
+
+Examples of trivial types:
+- Arithmetic types such as `Int`, `Bool`, `Float64` etc.
+- Pointers (the address value is trivial, not the data being pointed to)
+- Arrays of other trivial types including SIMD
+- Struct types decorated with `@register_passable("trivial")`, that can only contain other trivial types:
+
+
+```mojo
+@register_passable("trivial")
+struct Pair:
+    var a: Int
+    var b: Int
+```
+
+<CommentService />
+--- SOURCE: guides/decorators/value.md ---
+---
+usage: Generates initialization, move and copy boilerplate
+---
+
+# @value
+Generates boilerplate for a struct, for example on this struct with nothing implemented:
+
+
+```mojo
+struct Pair:
+    var x: Int
+    var y: Int
+```
+
+We can't initialize the struct:
+
+
+```mojo
+let pair = Pair(5, 10)
+```
+
+    error: Expression [2]:16:20: 'Pair' does not implement any '__init__' methods in 'let' initializer
+        let pair = Pair(5, 10)
+                   ~~~~^~~~~~~
+    
+
+
+Until we implement `__init__`:
+
+
+```mojo
+struct Pair:
+    var x: Int
+    var y: Int
+
+    fn __init__(inout self: Pair, x: Int, y: Int):
+        self.x = x
+        self.y = y
+```
+
+
+```mojo
+let pair = Pair(5, 10)
+print(pair.x)
+```
+
+    5
+
+
+But now we can't copy or move it:
+
+
+```mojo
+let pair2 = pair
+```
+
+    error: Expression [5]:16:17: value of type 'Pair' cannot be copied into its destination
+        let pair2 = pair
+                    ^~~~
+    
+
+
+
+```mojo
+let pair2 = pair^
+```
+
+    error: Expression [16]:18:21: value of type 'Pair' cannot be copied into its destination
+        let pair2 = pair^
+                        ^
+    
+    error: Expression [16]:18:21: expression does not designate a value with a lifetime
+        let pair2 = pair^
+                        ^
+    
+
+
+Until we implement `__moveinit__` and `__copyinit__`:
+
+
+```mojo
+struct Pair:
+    var x: Int
+    var y: Int
+
+    fn __init__(inout self, x: Int, y: Int):
+        print("Running init")
+        self.x = x
+        self.y = y
+
+    fn __moveinit__(inout self, owned existing: Self):
+        print("Running move init")
+        self.x = existing.x
+        self.y = existing.x
+
+    fn __copyinit__(inout self, existing: Self):
+        print("Running copy init")
+        self.x = existing.x
+        self.y = existing.y
+
+```
+
+
+```mojo
+let pair = Pair(5, 10)
+
+# Move object
+let pair2 = pair^
+
+# Copy object
+let pair3 = pair2
+```
+
+    Running init
+    Running move init
+    Running copy init
+
+
+To generate all that boilerplate for our members you can annotate with `@value`:
+
+
+```mojo
+@value
+struct Pair:
+    var x: Int
+    var y: Int
+
+```
+
+    20
+    5
+
+
+And use it as normal:
+
+
+```mojo
+let pair = Pair(5, 10)
+
+# Move object
+var pair2 = pair^
+# Copy object
+let pair3 = pair2
+# Edit original
+pair2.x = 20
+
+# Print both the original and copy
+print(pair2.x)
+print(pair3.x)
+```
+
+    20
+    5
+
+
+<CommentService />
+--- SOURCE: guides/examples/assert.md ---
+```mojo
+from Intrinsics import llvm_intrinsic
+
+fn asrt(cond: Bool, msg: StringLiteral):
+        if cond:
+            return
+        print("Assert Error:", msg)
+        llvm_intrinsic["llvm.trap", NoneType]()
+ 
+
+asrt(5 == 10, "5 does not equal 10")
+```
+
+    Assert Error: 5 does not equal 10
+
+
+    error: Execution was interrupted, reason: signal SIGILL: illegal operand.
+    The process has been left at the point where it was interrupted, use "thread return -x" to return to the state before expression evaluation.
+
+
+
+```mojo
+from String import String
+
+let name = "billy"
+let domain = StringRef("gmail.com")
+let x = String(name) + "@" + domain
+
+print(x)
+```
+
+    billy@gmail.com
+
+--- SOURCE: guides/examples/opencv.md ---
+```python
+%%python
+import cv2 as cv
+import numpy as np
+from matplotlib import colors
+
+image = cv.imread('/home/jovyan/fire.png')
+
+hex_values = [
+    '#998AD3',
+    '#E494D3',
+    '#CDF1AF',
+    '#87DCC0',
+    '#88BBE4'
+]
+
+colours = []
+for hex_value in hex_values:
+    rgb_tuple = colors.hex2color(hex_value)
+    rgb = tuple(int(val * 255) for val in rgb_tuple)
+    colours.append(rgb)
+
+
+output_image = np.zeros_like(image)
+
+for i in range(image.shape[0]):
+    for j in range(image.shape[1]):
+
+        closest_colour = colours[np.argmin(np.linalg.norm(colours - image[i, j], axis=1))]
+
+        output_image[i, j] = closest_colour
+
+cv.imwrite("output.jpg", output_image)
+```
+
+
+```python
+from Buffer import Buffer, NDBuffer
+from DType import DType
+from Index import StaticIntTuple
+from TargetInfo import dtype_simd_width
+from List import DimList
+
+let cv = Python.import_module("cv2")
+let np = Python.import_module("numpy")
+let py = Python.import_module("builtins")
+
+var img = cv.imread("/home/jovyan/fire.png")
+py.print(img)
+
+# alias hex_values = [
+#     '#998AD3',
+#     '#E494D3',
+#     '#CDF1AF',
+#     '#87DCC0',
+#     '#88BBE4'
+# ]
+
+let h = img.shape[0].to_index()
+let w = img.shape[1].to_index()
+let c = img.shape[2].to_index()
+
+print("image is", h,"x",w,"x",c)
+
+# Create a buffer over the Numpy array
+# var buf = NDBuffer[3, DimList(256, 256, 3), DType.int8](img.pyObject.value, StaticIntTuple[3](h, w, c), DType.int8)
+
+# Calcuate how many elements can fit into our SIMD register
+# alias nelts = dtype_simd_width[DType.int8]()
+# let size = img.size
+# let iterations = size // nelts
+# let leftovers = size % nelts
+
+# print("nelts:", nelts)
+# print("size:", size)
+# print("iterations:", iterations)
+# print("leftovers:", leftovers)
+
+# # let vals = buf.simd_load[nelts](0) / 10
+
+# for i in range(1, 10):
+#     let i_shape = buf.get_nd_index(i)
+#     print(buf[i_shape])
+#     let i_shape = buf.get_nd_index(i * nelts)
+#     buf.simd_store[nelts](i_shape, 10)
+
+cv.resize(img, (64, 64), inerpolation = cv.INTER_LINEAR)
+cv.imwrite("little_fire.png", img)
+
+
+ 
+```
+
+    [[[255 255 255]
+      [255 255 255]
+      [255 255 255]
+      ...
+      [255 255 255]
+      [255 255 255]
+      [255 255 255]]
+    
+     [[255 255 255]
+      [255 255 255]
+      [255 255 255]
+      ...
+      [255 255 255]
+      [255 255 255]
+      [255 255 255]]
+    
+     [[255 255 255]
+      [255 255 255]
+      [255 255 255]
+      ...
+      [255 255 255]
+      [255 255 255]
+      [255 255 255]]
+    
+     ...
+    
+     [[255 255 255]
+      [255 255 255]
+      [255 255 255]
+      ...
+      [255 255 255]
+      [255 255 255]
+      [255 255 255]]
+    
+     [[255 255 255]
+      [255 255 255]
+      [255 255 255]
+      ...
+      [255 255 255]
+      [255 255 255]
+      [255 255 255]]
+    
+     [[255 255 255]
+      [255 255 255]
+      [255 255 255]
+      ...
+      [255 255 255]
+      [255 255 255]
+      [255 255 255]]]
+    image is 256 x 256 x 3
+
+--- SOURCE: guides/general/mojo-playground-vscode.md ---
+---
+title: Mojo Playground From VSCode
+categories: General
+usage: Connect VS Code to the Mojo Playground via the Jupyter Notebook extension
+---
+
+# Mojo playground from VS Code
+### Getting the Jupyter URL
+If you don't have access to the Mojo playground you'll need to [Sign up to the waitlist here](https://www.modular.com/get-started)
+
+Open the link to your playground via your email from Modular and copy down the address in the browser, leaving out everything after your email address:
+
+`https://playground.modular.com/user/<your_email>`
+
+[Generate a token here](https://playground.modular.com/hub/token), noting it down somewhere safe.
+
+Add it to the end of your url like this (change the email address and token):
+
+```https://playground.modular.com/user/<your_email>/?token=<your_token>```
+
+### VS Code
+Install the [Jupyter VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter)
+
+From the command pallette (`ctrl+shift+p` or `shift+command+p`) select `Create: New Jupyter Notebook`
+
+Then from the command pallette again select `Notebook: Select Notebook Kernel` and follow the options:
+
+`Select another kernel` > `Existing Jupyter Server` > `Enter the URL of a running Jupyter Server`
+
+It'll prompt for you to enter a server name, you can set it as `Mojo Playground` or whatever you like, then choose the Mojo kernel.
+
+Now try writing some code and running a cell!
+
+
+### Tips
+Every time you want to use it, you'll need to start the server from your browser, you can the add the link without your username and it'll remember your session via cookies:
+
+```bash
+open 'https://playground.modular.com'
+```
+
+You'll likely need to restart the kernel at some point as bugs are ironed out, you can use:
+
+Command Pallette > `Jupyter: Restart Kernel`
+
+<CommentService />
+--- SOURCE: guides/intro-to-mojo/basic-types.md ---
+---
+title: "Basic Types"
+categories: "02: Basic Types"
+usage: "Get started with Mojo basic types and how to interact with Python"
+head:
+  - [meta, { name: twitter:card , content: summary }]
+  - [meta, { name: twitter:site , content: '@mojodojodev' }]
+  - [meta, { name: twitter:title , content: "Intro to Mojo: Basic Types" }]
+  - [meta, { name: twitter:description , content: "Get started with Mojo basic types and how to interact with Python" }]
+  - [meta, { name: twitter:image , content: "https://mojodojo.dev/hero.png" }]
+---
+
+# Basic Types
+_This guide is in the early stages, feedback welcomed [on Github](https://github.com/mojodojodev/mojodojo.dev/discussions/categories/feedback)_
+
+## PythonObject
+Let's start by running code through the Python interpreter from Mojo to get a [PythonObject](https://docs.modular.com/mojo/MojoPython/PythonObject.html) back:
+
+
+```mojo
+x = Python.evaluate('5 + 10')
+print(x)
+```
+
+    15
+
+
+`x` is represented in memory the same way as if we ran this in Python:
+
+
+```mojo
+%%python
+x = 5 + 10
+print(x)
+```
+
+    15
+
+
+_in the Mojo playground, using `%%python` at the top of a cell will run code through Python instead of Mojo_
+
+`x` is actually a pointer to `heap` allocated memory.
+
+::: tip CS Fundamentals
+`stack` and `heap` memory are really important concepts to understand, [this YouTube video](https://www.youtube.com/watch?v=_8-ht2AKyH4) does a fantastic job of explaining it visually. 
+
+If the video doesn't make sense, for now you can use the mental model that:
+
+- `stack` memory is very fast but small, the size of the values are static and can't change at runtime
+- `pointer` is an address to lookup the value somewhere else in memory
+- `heap` memory is huge and the size can change at runtime, but needs a pointer to access the data which is relatively slow
+
+These concepts will make more sense over time
+:::
+
+You can access all the Python keywords by importing `builtins`:
+
+
+```mojo
+let py = Python.import_module("builtins")
+
+py.print("this uses the python print keyword")
+```
+
+    this uses the python print keyword
+
+
+We can now use the `type` builtin from Python to see what the dynamic type of `x` is:
+
+
+```mojo
+py.print(py.type(x))
+```
+
+    <class 'int'>
+
+
+We can read the address that is stored in `x` on the `stack` using the Python builtin `id`
+
+
+```mojo
+py.print(py.id(x))
+```
+
+    139732464847136
+
+
+This is pointing to a C object in Python, and Mojo behaves the same when using a `PythonObject`, accessing the value actually uses the address to lookup the data on the `heap` which comes with a performance cost. 
+
+This is a simplified representation of how the `C Object` being pointed to would look if it were a Python dict:
+
+
+```mojo
+%%python
+heap = {
+    44601345678945: {
+        "type": "int",
+        "ref_count": 1,
+        "size": 1,
+        "digit": 8,
+        #...
+    }
+    #...
+}
+```
+
+On the stack the simplified representation of `x` would look like this:
+
+
+```mojo
+%%python
+[
+    { "frame": "main", "variables": { "x": 44601345678945 } }
+]
+```
+
+`x` contains an address that is pointing to the heap object
+
+In Python we can change the type dynamically:
+
+
+```mojo
+x = "mojo"
+```
+
+The object in C will change its representation:
+
+
+```mojo
+%%python
+heap = {
+    44601345678945 : {
+        "type": "string",
+        "ref_count": 1,
+        "size": 4,
+        "ascii": True,
+        # utf-8 / ascii for "mojo"
+        "value": [109, 111, 106, 111]
+        # ...
+    }
+}
+```
+
+Mojo also allows us to do this when the type is a `PythonObject`, it works the exact same way as it would in a Python program.
+
+This allows the runtime to do nice convenient things for us
+- once the `ref_count` goes to zero it will be de-allocated from the heap during garbage collection, so the OS can use that memory for something else
+- an integer can grow beyond 64 bits by increasing `size`
+- we can dynamically change the `type`
+- the data can be large or small, we don't have to think about when we should allocate to the heap
+
+However this also comes with a penalty, there is a lot of extra memory being used for the extra fields, and it takes CPU instructions to allocate the data, retrieve it, garbage collect etc.
+
+In Mojo we can remove all that overhead:
+
+## Mojo 🔥
+
+
+```mojo
+x = 5 + 10
+print(x)
+```
+
+    15
+
+
+We've just unlocked our first Mojo optimization! Instead of looking up an object on the heap via an address, `x` is now just a value on the stack with 64 bits that can be passed through registers.
+
+This has numerous performance implications:
+
+- All the expensive allocation, garbage collection, and indirection is no longer required
+- The compiler can do huge optimizations when it knows what the numeric type is
+- The value can be passed straight into registers for mathematical operations
+- There is no overhead associated with compiling to bytecode and running through an interpreter
+- The data can now be packed into a vector for huge performance gains
+
+That last one is very important in today's world, let's see how Mojo gives us the power to take advantage of modern hardware.
+
+## SIMD
+
+SIMD stands for `Single Instruction, Multiple Data`, hardware now contains special registers that allow you do the same operation across a vector in a single instruction, greatly improving performance, let's take a look:
+
+
+```mojo
+from DType import DType
+
+y = SIMD[DType.uint8, 4](1, 2, 3, 4)
+print(y)
+```
+
+    [1, 2, 3, 4]
+
+
+In the definition `[DType.uint8, 4]` are known as `parameters` which means they must be compile-time known, while `(1, 2, 3, 4)` are the `arguments` which can be compile-time or runtime known. 
+
+For example user input or data retrieved from an API is runtime known, and so can't be used as a `parameter` during the compilation process.
+
+In other languages `argument` and `parameter` often mean the same thing, in Mojo it's a very important distinction.
+
+This is now a vector of 8 bit numbers that are packed into 32 bits, we can perform a single instruction across all of it instead of 4 separate instructions:
+
+
+```mojo
+y *= 10
+print(y)
+```
+
+    [10, 20, 30, 40]
+
+
+::: tip CS Fundamentals
+Binary is how your computer stores memory, with each bit representing a `0` or `1`. Memory is typically `byte` addressable, meaning that each unique memory address points to one `byte`, which consists of 8 `bits`.
+
+This is how the first 4 digits in a `uint8` are represented in hardware:
+
+- 1 = `00000001`
+- 2 = `00000010`
+- 3 = `00000011`
+- 4 = `00000100`
+
+Binary `1` and `0` represents `ON` or `OFF` indicating an electrical charge in the tiny circuits of your computer.
+
+[Check this video](https://www.youtube.com/watch?v=RrJXLdv1i74) if you want more information on binary.
+:::
+
+We're packing the data together with SIMD on the `stack` so it can be passed into a SIMD register like this:
+
+`00000001` `00000010` `00000011` `00000100`
+
+The SIMD register in modern CPU's is huge, let's see how big it is in the Mojo playground:
+
+
+```mojo
+from TargetInfo import simdbitwidth
+print(simdbitwidth())
+```
+
+    512
+
+
+That means we could pack 64 x 8bit numbers together and perform a calculation on all of it with a single instruction.
+
+You can also initialize SIMD with a single argument:
+
+
+```mojo
+z = SIMD[DType.uint8, 4](1)
+print(z)
+```
+
+    [1, 1, 1, 1]
+
+
+## Scalars
+
+Scalar just means a single value, you'll notice in Mojo all the numerics are SIMD scalars:
+
+
+```mojo
+var x = UInt8(1)
+x = "will cause an error"
+```
+
+    error: Expression [14]:20:9: cannot implicitly convert 'StringLiteral' value to 'SIMD[ui8, 1]' in assignment
+        x = "will cause an error"
+            ^~~~~~~~~~~~~~~~~~~~~
+    
+
+
+`UInt8` is just an `alias` for `SIMD[DType.uint8, 1]`, you can see all the [numeric SIMD types imported by default here](https://docs.modular.com/mojo/MojoStdlib/SIMD.html):
+
+- Float16
+- Float32
+- Float64
+- Int8
+- Int16
+- Int32
+- Int64
+- UInt8
+- UInt16
+- UInt32
+- UInt64
+
+Also notice when we try and change the type it throws an error, this is because Mojo is `strongly typed`
+
+If we use existing Python modules, it will give us back a `PythonObject` that behaves the same `loosely typed` way as it does in Python:
+
+
+```mojo
+np = Python.import_module("numpy")
+
+arr = np.ndarray([5])
+print(arr)
+arr = "this will work fine"
+print(arr)
+```
+
+    [0.   0.25 0.5  0.75 1.  ]
+    this will work fine
+
+
+## Strings
+In Mojo the heap allocated `String` isn't imported by default:
+
+
+```mojo
+from String import String
+
+s = String("Mojo🔥")
+print(s)
+```
+
+    Mojo🔥
+
+
+`String` is actually a pointer to `heap` allocated data, this means we can load a huge amount of data into it, and change the size of the data dynamically during runtime.
+
+Let's cause a type error so you can see the data type underlying the String:
+
+
+```mojo
+x = s.buffer
+x = 20
+```
+
+    error: Expression [17]:22:10: cannot implicitly convert 'DynamicVector[SIMD[si8, 1]]' value to 'PythonObject' in assignment
+        x = s.buffer
+            ~^~~~~~~
+    
+
+
+`DynamicVector` is similar to a Python list, here it's storing multiple `int8`'s that represent the characters, let's print the first character:
+
+
+```mojo
+print(s[0])
+```
+
+    M
+
+
+Now lets take a look at the decimal representation:
+
+
+```mojo
+from String import ord
+
+print(ord(s[0]))
+```
+
+    77
+
+
+That's the ASCII code [shown in this table](https://www.ascii-code.com/)
+
+We can build our own string this way, we can put in 78 which is N and 79 which is O
+
+
+```mojo
+from Vector import DynamicVector
+
+let vec = DynamicVector[Int8](2)
+
+vec.push_back(78)
+vec.push_back(79)
+```
+
+We can use a `StringRef` to get a pointer to the same location in memory, but with the methods required to output the numbers as text:
+
+
+```mojo
+from Pointer import DTypePointer
+from DType import DType
+
+let vec_str_ref = StringRef(DTypePointer[DType.int8](vec.data).address, vec.size)
+print(vec_str_ref)
+```
+
+    NO
+
+
+Because it points to the same location in `heap` memory, changing the original vector will also change the value retrieved by the reference:
+
+
+```mojo
+vec[1] = 78
+print(vec_str_ref)
+```
+
+    NN
+
+
+Create a `deep copy` of the String and allocate it to the heap:
+
+
+```mojo
+from String import String
+let vec_str = String(vec_str_ref)
+
+print(vec_str)
+```
+
+    NN
+
+
+Now we've made a copy of the data to a new location in `heap` memory, we can modify the original and it won't effect our copy:
+
+
+```mojo
+vec[0] = 65
+vec[1] = 65
+print(vec_str)
+```
+
+    NN
+
+
+The other string type is a `StringLiteral`, it's written directly into the binary, when the program starts it's loaded into `read-only` memory, which means it's constant and lives for the duration of the program:
+
+
+```mojo
+var lit = "This is my StringLiteral"
+print(lit)
+```
+
+    This is my StringLiteral
+
+
+Force an error to see the type:
+
+
+```mojo
+lit = 20
+```
+
+    error: Expression [26]:26:11: cannot implicitly convert 'Int' value to 'StringLiteral' in assignment
+        lit = 20
+              ^~
+    
+
+
+One thing to be aware of is that an emoji is actually four bytes, so we need a slice of 4 to have it print correctly:
+
+
+```mojo
+emoji = String("🔥😀")
+print("fire:", emoji[0:4])
+print("smiley:", emoji[4:8])
+```
+
+    fire: 🔥
+    smiley: 😀
+
+
+Check out [Maxim Zaks Blog post](https://mzaks.medium.com/counting-chars-with-simd-in-mojo-140ee730bd4d) for more details.
+
+## Other Builtins
+These are all of the other builtin types not discussed which are accessible without importing anything, the type can be inferred, but are explicit here for demonstration, for example `let bool: Bool = True` can just be `let bool = True`:
+
+### Bool
+Standard Bool type
+
+
+```mojo
+let bool: Bool = True
+print(bool == False)
+```
+
+    False
+
+
+### Int
+Int is the same size as your architecture e.g. on a 64 bit machine it's 64 bits
+
+
+```mojo
+let i: Int = 2 
+print(i)
+```
+
+    2
+
+
+It can also be used as an index:
+
+
+```mojo
+var vec_2 = DynamicVector[Int]()
+vec_2.push_back(2)
+vec_2.push_back(4)
+vec_2.push_back(6)
+
+print(vec_2[i])
+```
+
+    6
+
+
+### FloatLiteral
+
+
+```mojo
+let float: FloatLiteral = 3.3
+print(float)
+```
+
+    3.2999999999999998
+
+
+
+```mojo
+let f32 = Float32(float)
+print(f32)
+```
+
+    3.2999999523162842
+
+
+### ListLiteral
+
+When you initialize the list the types can be inferred, however when retrieving an item you need to provide the type as a `parameter`:
+
+
+```mojo
+let list: ListLiteral[Int, FloatLiteral, StringLiteral] = [1, 5.0, "Mojo🔥"]
+print(list.get[2, StringLiteral]())
+```
+
+    Mojo🔥
+
+
+### Tuple
+
+
+```mojo
+let tup = (1, "Mojo", 3)
+print(tup.get[0, Int]())
+```
+
+    1
+
+
+### Slice
+A slice follows the python convention of:
+
+`start:end:step`
+
+So for example using Python syntax:
+
+
+```mojo
+let original = String("MojoDojo")
+print(original[0:4])
+```
+
+    Mojo
+
+
+You can also represent as:
+
+
+```mojo
+let slice_expression = slice(0, 4)
+
+print(original[slice_expression])
+```
+
+    Mojo
+
+
+And to get every second letter:
+
+
+```mojo
+print(original[0:4:2])
+```
+
+    Mj
+
+
+Or:
+
+
+```mojo
+let slice_expression = slice(0, 4, 2)
+print(original[slice_expression])
+```
+
+    Mj
+
+
+### Error
+The error type is very simplistic, we'll go into more details on errors in a later chapter:
+
+
+```mojo
+def return_error():
+    raise Error("This returns an Error type")
+
+return_error()
+```
+
+    Error: This returns an Error type
+
+
+## Exercises
+1. Use the Python interpreter to calculate 2 to the power of 8 in a `PythonObject` and print it
+2. Using the Python `math` module, return `pi` to Mojo and print it
+3. Initialize two single floats with 64 bits of data and the value 2.0, using the full SIMD version, and the shortened alias version, then multiply them together and print the result.
+4. Create a loop using SIMD that prints four rows of data that looks like this:
+```
+    [1,0,0,0]
+    [0,1,0,0]
+    [0,0,1,0]
+    [0,0,0,1]
+```
+In Mojo you can create a loop like this:
+
+```mojo
+for i in range(4):
+    pass
+```
+
+## Solutions
+
+### Exercise 1
+
+
+```mojo
+let pow = Python.evaluate("2 ** 8") 
+print(pow)
+```
+
+    256
+
+
+### Exercise 2
+
+
+```mojo
+let math = Python.import_module("math")
+
+let pi = math.pi
+print(pi)
+```
+
+    3.141592653589793
+
+
+### Exercise 3
+
+
+```mojo
+let left = Float64(2.0)
+let right = SIMD[DType.float64, 1](2.0)
+
+print(left * right)
+```
+
+    4.0
+
+
+### Exercise 4
+
+
+```mojo
+for i in range(4):
+    simd = SIMD[DType.uint8, 4](0)
+    simd[i] = 1
+    print(simd)
+```
+
+    [1, 0, 0, 0]
+    [0, 1, 0, 0]
+    [0, 0, 1, 0]
+    [0, 0, 0, 1]
+
+
+<CommentService />
+--- SOURCE: guides/intro-to-mojo/setup.md ---
+---
+title: "Setup"
+categories: "01: Setup"
+usage: "Introduction and how to use the Mojo playground"
+head:
+  - [meta, { name: twitter:card , content: summary }]
+  - [meta, { name: twitter:site , content: "@mojodojodev" }]
+  - [meta, { name: twitter:title , content: "Intro to Mojo: Setup" }]
+  - [meta, { name: twitter:description , content: "Introduction and how to use the Mojo playground" }]
+  - [meta, { name: twitter:image , content: "https://mojodojo.dev/hero.png" }]
+---
+
+# Intro to Mojo
+_This guide is in the early stages, feedback welcomed [on Github](https://github.com/mojodojodev/mojodojo.dev/discussions/categories/feedback)_
+
+This guide assumes some familiarity with a programming language like Python, but does not assume knowledge about Computer Science (CS). Anything that explains a `CS Fundamental` will be in a green box so you can skip over them if you already come from a systems programming background:
+
+::: tip CS Fundamentals
+This is related to a Computer Science topic that you'll need to be familiar with to understand how Mojo works at a deeper level.
+:::
+
+While it aims to be a stepping stone from Python to Mojo, unique Python concepts will be explained along the way, so programmers from all backgrounds can use this to learn Mojo.
+
+## Setup 
+- Go to the official Modular [Get Started](https://www.modular.com/get-started) form
+- Fill out the form, tick Mojo and press submit
+- In a few days you'll get an email with a button `Access the Mojo Playground`
+- If you want to access the playground from VS Code [follow this guide](/guides/general/mojo_playground_vscode.md)
+- You can download these notebooks to run them locally [via Github](https://github.com/mojodojodev/mojodojo.dev/tree/main/guides/intro-to-mojo) 
+
+## Links
+- Join [the Modular Discord](https://discord.gg/modular)
+- Check out the the official [Mojo Github repo](https://github.com/modularml/mojo) to see discussions, issues and proposals
+- [Read the Docs](https://docs.modular.com/mojo/) for all the official Mojo documentation
+
+
+<CommentService />
+--- SOURCE: guides/std/Assert.md ---
+---
+title: Assert
+categories: Assert
+usage: Place constraints on functions that are checked at compile time, and check conditions only in debug builds
+---
+# Assert
+## assert_param
+Asserts that the condition is true in the `parameter / comptime` domain, used to place constraints on functions
+
+
+```mojo
+from Assert import assert_param
+```
+
+We can put compile time assertions in the ensure that the two numbers passed in are positive
+
+
+```mojo
+fn add_positives[x: Int, y: Int]() -> UInt8:
+    assert_param[x > 0]()
+    assert_param[y > 0]()
+    return x + y
+```
+
+Let's get the result that's calculated at compile time
+
+
+```mojo
+let res = add_positives[2, 4]()
+print(res)
+```
+
+    6
+
+
+Now we'll introduce the error so you can see how it looks, it will always be at the end of the error message:
+
+
+```mojo
+add_positives[-2, 4]()
+```
+
+    Expression [2]:6:24:               constraint failed: param assertion failed
+        assert_param[x > 0]()
+                           ^
+    
+    expression failed to parse (no further compiler diagnostics)
+
+You can also add a message to change the compiler error output:
+
+
+```mojo
+fn add_positives[x: Int, y: Int]() -> UInt8:
+    assert_param[x > 0, "x is not positve, use a positve number over 0"]()
+    assert_param[y > 0, "y is not positve, use a positve number over 0"]()
+    return x + y
+
+let res = add_positives[-2, -4]()
+print(res)
+```
+
+    Expression [5]:6:73:               constraint failed: x is not positve, use a positve number over 0
+        assert_param[x > 0, "x is not positve, use a positve number over 0"]()
+                                                                            ^
+    
+    expression failed to parse (no further compiler diagnostics)
+
+## debug_assert
+Asserts that the condition is true in debug builds, and is removed from the compilation process in release builds
+
+
+```mojo
+from Assert import debug_assert
+
+fn test_debug_assert[x: Int](y: Int):
+    debug_assert(x == 42, "x is not equal to 42")
+    debug_assert(y == 42, "y is not equal to 42")
+
+
+test_debug_assert[1](2)
+```
+
+debug_assert doesn't work in the playground because it's not a debug build.
+
+<CommentService />
+--- SOURCE: guides/std/Benchmark.md ---
+---
+title: Benchmark
+categories: Benchmark
+usage: Pass in a closure that returns None as a parameter to benchmark its speed in nanoseconds
+---
+# Benchmark
+## Import
+
+
+```mojo
+from Benchmark import Benchmark
+```
+
+## General Usage
+
+Loop through each number up to `n` and calculate the total in the fibonacci sequence:
+
+
+```mojo
+alias n = 35 
+```
+
+Define the recursive version first:
+
+
+```mojo
+fn fib(n: Int) -> Int:
+    if n <= 1:
+       return n 
+    else:
+       return fib(n-1) + fib(n-2)
+```
+
+To benchmark it, create a nested `fn` that takes no arguments and doesn't return anything, then pass it in as a parameter:
+
+
+```mojo
+fn bench():
+    fn closure():
+        for i in range(n):
+            _ = fib(i)
+
+    let nanoseconds = Benchmark().run[closure]()
+    print("Nanoseconds:", nanoseconds)
+    print("Seconds:", Float64(nanoseconds) / 1e9)
+
+bench()
+```
+
+    Nanoseconds: 50322420
+    Seconds: 0.05032242
+
+
+Define iterative version for comparison:
+
+
+```mojo
+fn fib_iterative(n: Int) -> Int:
+    var count = 0
+    var n1 = 0
+    var n2 = 1
+
+    while count < n:
+       let nth = n1 + n2
+       n1 = n2
+       n2 = nth
+       count += 1
+    return n1
+
+fn bench_iterative():
+    fn iterative_closure():
+        for i in range(n):
+            _ = fib_iterative(i)
+
+    let iterative = Benchmark().run[iterative_closure]()
+    print("Nanoseconds iterative:", iterative)
+
+bench_iterative()
+```
+
+    Nanoseconds iterative: 0
+
+
+Notice that the compiler has optimized away everything, LLVM can change an iterative loop to a constant value if all the inputs are known at compile time through `constant folding`, or if the value isn't actually used for anything with `Dead Code Elimination` both of which could be occurring here.
+
+There is a lot going on under the hood, and so you should always test your assumptions with benchmarks, especially if you're adding complexity because you _think_ it will improve performance, [which often isn't the case](https://vimeo.com/649009599).
+
+## Max iters
+Set max iterations and a 1s max total duration
+
+
+```mojo
+from Time import sleep
+
+fn bench_args():
+    fn sleeper():
+        print("sleeping 300,000ns")
+        sleep(3e-4)
+    
+    print("0 warmup iters, 4 max iters, 0ns min time, 1_000_000_000ns max time")
+    let nanoseconds = Benchmark(0, 5, 0, 1_000_000_000).run[sleeper]()
+    print("average time", nanoseconds)
+
+bench_args()
+```
+
+    0 warmup iters, 4 max iters, 0ns min time, 1_000_000_000ns max time
+    sleeping 300,000ns
+    sleeping 300,000ns
+    sleeping 300,000ns
+    sleeping 300,000ns
+    sleeping 300,000ns
+    sleeping 300,000ns
+    average time 363769
+
+
+Note there is some extra logic inside `Benchmark` to help improve accuracy, so here it actually runs 6 iterations
+
+## Max Duration
+Limit the max running time, so it will never run over 0.001 seconds and will not hit the max iters of 5:
+
+
+```mojo
+fn bench_args_2():
+    fn sleeper():
+        print("sleeping 300,000ns")
+        sleep(3e-4)
+    
+    print("\n0 warmup iters, 5 max iters, 0 min time, 1_000_000ns max time")
+    let nanoseconds = Benchmark(0, 5, 0, 1_000_000).run[sleeper]()
+    print("average time", nanoseconds)
+
+bench_args_2()
+```
+
+    
+    0 warmup iters, 5 max iters, 0 min time, 1_000_000ns max time
+    sleeping 300,000ns
+    sleeping 300,000ns
+    sleeping 300,000ns
+    average time 364582
+
+
+## Min Duration
+Try with a minimum of 3 million nanoseconds, so it ignores the max iterations and runs 5 normal runs:
+
+
+```mojo
+fn bench_args():
+    fn sleeper():
+        print("sleeping 300,000ns")
+        sleep(3e-4)
+
+    let nanoseconds = Benchmark(0, 2, 1_500_000, 1_000_000_000).run[sleeper]()
+    print("average time", nanoseconds)
+
+bench_args()
+```
+
+    sleeping 300,000ns
+    sleeping 300,000ns
+    sleeping 300,000ns
+    sleeping 300,000ns
+    sleeping 300,000ns
+    sleeping 300,000ns
+    sleeping 300,000ns
+    sleeping 300,000ns
+    average time 366545
+
+
+## Warmup
+You should always have some warmup iterations, there is some extra logic for more accurate results so it won't run exactly what you specify:
+
+
+```mojo
+fn bench_args():
+    fn sleeper():
+        print("sleeping 300,000ns")
+        sleep(3e-4)
+
+    let nanoseconds = Benchmark(1, 2, 0, 1_000_000_000).run[sleeper]()
+    print("average time", nanoseconds)
+
+bench_args()
+```
+
+    sleeping 300,000ns
+    sleeping 300,000ns
+    sleeping 300,000ns
+    sleeping 300,000ns
+    sleeping 300,000ns
+    sleeping 300,000ns
+    average time 364094
+
+
+<CommentService />
+--- SOURCE: guides/std/Random.md ---
+---
+title: Random
+categories: Random
+usage: "Provides functions for random numbers"
+---
+
+Contributed by [gautam](https://github.com/gautam-e)
+
+# Random
+
+Provides functions for random numbers
+
+
+```mojo
+from Random import rand, randint
+from Pointer import DTypePointer
+from DType import DType
+from Memory import memset_zero
+```
+
+Let's create a two variables to store new addresses on the heap and allocate space for 8 values, note the different `DType`:
+
+
+```mojo
+var p1 = DTypePointer[DType.uint8].alloc(8)
+var p2 = DTypePointer[DType.float32].alloc(8)
+```
+
+Zero them to ensure we don't read garbage memory:
+
+
+```mojo
+memset_zero(p1, 8)
+memset_zero(p2, 8)
+```
+
+
+```mojo
+print('values at p1:', p1.simd_load[8](0))
+print('values at p2:', p2.simd_load[8](0))
+```
+
+    values at p1: [0, 0, 0, 0, 0, 0, 0, 0]
+    values at p2: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+
+## rand
+
+Fill with 8 random numbers:
+
+
+```mojo
+
+rand[DType.uint8](p1, 8)
+rand[DType.float32](p2, 8)
+print('values at p1:', p1.simd_load[8](0))
+print('values at p2:', p2.simd_load[8](0))
+
+```
+
+    values at p1: [171, 1, 98, 17, 106, 175, 150, 238]
+    values at p2: [0.066842235624790192, 0.68677270412445068, 0.93043649196624756, 0.52692878246307373, 0.65391898155212402, 0.70119059085845947, 0.76219803094863892, 0.047464512288570404]
+
+
+## randint
+Fill memory with integer values within a range, e.g. 0 to 10.
+
+
+```mojo
+randint[DType.uint8](p1, 8, 0, 10)
+print(p1.simd_load[8](0))
+```
+
+    [9, 5, 1, 7, 4, 7, 10, 8]
+
+
+## random_float64
+
+Returns a single random `Float64` value within a specified range e.g 0.0 to 1.0.
+
+
+```mojo
+from Random import random_float64
+print(random_float64(0.0, 1.0))
+```
+
+    0.32823422616000769
+
+
+## random_si64
+
+Returns a single random `Int64` value within a specified range e.g -10 to +10.
+
+
+```mojo
+from Random import random_si64
+print(random_si64(-10, 10))
+```
+
+    -8
+
+
+## random_ui64
+
+Returns a single random `UInt64` value within a specified range e.g 0 to 10.
+
+
+```mojo
+from Random import random_ui64
+print(random_ui64(0, 10))
+```
+
+    2
+
+
+<CommentService />
+--- SOURCE: guides/std/Sort.md ---
+---
+title: Sort
+categories: Sort
+usage: "Sorts a DynamicVector[Int] inplace, in ascending order"
+---
+Contributed by [gautam](https://github.com/gautam-e)
+
+# sort
+
+Sorts a `DynamicVector[Int]` inplace, in ascending order
+
+
+```mojo
+from Sort import sort
+from Vector import DynamicVector
+
+let v = DynamicVector[Int](3)
+
+v.push_back(20)
+v.push_back(10)
+v.push_back(70)
+
+sort(v)
+
+for i in range(v.size):
+    print(v[i])
+```
+
+    10
+    20
+    70
+
+
+<CommentService />
+--- SOURCE: guides/std/String.md ---
+---
+title: String
+categories: String
+usage: Mutable String with DynamicVector[Int8] as the underlying data type
+---
+
+Contributed by [gautam](https://github.com/gautam-e)
+
+# String
+
+## Initialization
+
+
+```mojo
+from String import String
+
+var s = String("abcde")
+print(s)
+```
+
+    abcde
+
+
+## Indexing
+
+Loop through the string and print each item
+
+
+```mojo
+for i in range(len(s)):
+    print(s[i])
+```
+
+    a
+    b
+    c
+    d
+    e
+
+
+Both slicing and indexing are on bytes, not characters, for example an emoji is 4 bytes so you need to use this slice of 4 bytes to print the character:
+
+
+```mojo
+var utf8 = String("mojo🔥")
+print(utf8[4:8])
+```
+
+    🔥
+
+
+## Slicing
+
+Print part of the string sting using a slice
+
+Slice from 2 up to 4 non-inclusive:
+
+
+```mojo
+print(s[2:4]) 
+```
+
+    cd
+
+
+Slice all characters starting from 1:
+
+
+```mojo
+print(s[1:]) 
+```
+
+    bcde
+
+
+Slice all characters up to the second last:
+
+
+```mojo
+print(s[:-1]) 
+```
+
+    abcd
+
+
+Only get every second item after the start position:
+
+
+```mojo
+print(s[::2]) 
+```
+
+    ace
+
+
+## Appending
+Returns a new string by copying memory
+
+
+```mojo
+let x = String("Left")
+let y = String("Right")
+
+var c = x + y
+
+c += "🔥"
+
+print(c)
+```
+
+    LeftRight🔥
+
+
+## Join
+
+
+```mojo
+var j = String("🔥")
+```
+
+The `join` function has a similar syntax to Python's `join`. You can join elements using the current string as a delimiter.
+
+
+```mojo
+print(j.join('a', 'b'))
+print(j.join(40, 2))
+```
+
+    a🔥b
+    40🔥2
+
+
+You can also use it to join elements of a StaticIntTuple.
+
+
+```mojo
+from Index import StaticIntTuple
+
+var sit = StaticIntTuple[3](1,2,3)
+print(j.join(sit))
+```
+
+    1🔥2🔥3
+
+
+## atol
+The term comes from the C stdlib for `ASCII to long-integer`, it converts a string to an `Int` (currently just works with base-10 / decimal):
+
+
+```mojo
+from String import atol
+
+var n = atol("19")
+print(n)
+```
+
+    19
+
+
+This will throw an error because there's a character that's not a digit:
+
+
+```mojo
+var e = atol("hi")
+print(e)
+```
+
+    Error: String is not convertible to integer.
+
+
+## chr
+Use chr to convert an integer between 0 and 255 to a string containing the single character
+
+
+```mojo
+from String import chr
+
+print(chr(97))
+```
+
+    a
+
+
+## ord
+Stands for `ordinal` which means the position of the character in ASCII
+
+
+```mojo
+from String import ord
+
+print(ord('a'))
+```
+
+    97
+
+
+Only 1 byte utf8 (ASCII) characters currently work, anything outside will currently wrap:
+
+
+```mojo
+print(ord('🔥'))
+```
+
+    -16
+
+
+## isdigit
+Check if the character passed in is a valid decimal between 0 and 9, which in ASCII is 48 to 57
+
+
+```mojo
+from String import isdigit
+
+print(isdigit(ord('8')))
+print(isdigit(ord('a')))
+```
+
+    True
+    False
+
+
+## Conversions
+### To `DynamicVector[Int8]`
+
+
+In Mojo a string is backed by a `DynamicVector[Int8]`, which you can access via the `buffer` member variable:
+
+
+```mojo
+let buffer = String("mojo").buffer
+print(buffer.capacity)
+```
+
+    4
+
+
+Force an error so Mojo shows us the type:
+
+
+```mojo
+buffer = ""
+```
+
+    error: Expression [19]:25:14: cannot implicitly convert 'StringLiteral' value to 'DynamicVector[SIMD[si8, 1]]' in assignment
+        buffer = ""
+                 ^~
+    
+
+
+### From `DynamicVector[Int8]`
+
+
+```mojo
+from Vector import DynamicVector
+
+var x = DynamicVector[Int8](4)
+x.push_back(109)
+x.push_back(111)
+x.push_back(106)
+x.push_back(111)
+
+let s = String(x.data, 4)
+print(s)
+```
+
+    mojo
+
+
+<CommentService />
+--- SOURCE: guides/std/TargetInfo.md ---
+---
+title: TargetInfo
+categories: TargetInfo
+usage: Functions related to determining host info such as OS, CPU, width etc.
+---
+
+## Width, Alignment and Size
+
+
+```mojo
+from TargetInfo import (
+    alignof,
+    bitwidthof,
+    simdwidthof,
+    simdbitwidth,
+    simd_byte_width,
+    sizeof
+)
+
+from DType import DType
+```
+
+### alignof
+
+You can check the alignment of a type, in the struct below it returns 4 bytes:
+
+
+```mojo
+struct Foo:
+    var a: UInt8
+    var b: UInt32
+
+print(alignof[Foo]())
+```
+
+    4
+
+
+This means each instance of `Foo` will start at a memory address that is a multiple of 4 bytes, there will also be 3 bytes of padding to accommodate the `UInt8`.
+
+You can use this for anything falling under an `AnyType`:
+
+
+```mojo
+print(alignof[UInt64]())
+```
+
+    8
+
+
+### bitwidthof
+
+The same as [alignof](#alignof) above, but uses bits instead of bytes:
+
+
+```mojo
+struct Foo:
+    var a: UInt8
+    var b: UInt32
+
+print(bitwidthof[Foo]())
+```
+
+    64
+
+
+There will be 24 bits of padding for this type as each object can only be placed at multiples of 64 in memory
+
+### simdwidthof
+
+How many of the type can fit into the targets SIMD register, e.g. to see how many uint64's can be processed with a single instruction:
+
+
+```mojo
+print(simdwidthof[DType.uint64]())
+```
+
+    8
+
+
+### simd_bit_width
+The total amount of bits that can be processed at the same time on the host systems SIMD register
+
+
+```mojo
+print(simdbitwidth())
+```
+
+    512
+
+
+Take note how the result of `dtype_simd_width[DType.uint64]()` shows you how many of that data type can fit into the systems SIMD register, e.g. 512 / 64 = 8
+
+### simd_byte_width
+
+The total amount of bytes that can be processed at the same time on the host systems SIMD register
+
+
+```mojo
+print(simd_byte_width())
+```
+
+    64
+
+
+### sizeof
+The total size in bytes of an `AnyType`
+
+
+```mojo
+print(sizeof[UInt8]())
+```
+
+    1
+
+
+## OS
+
+
+```mojo
+from TargetInfo import os_is_linux, os_is_macos, os_is_windows
+```
+
+### os_is_linux
+
+Example of conditional compilation based on the operating system:
+
+
+```mojo
+@parameter
+if os_is_linux():
+    print("this will be included in the binary")
+else:
+    print("this will be eliminated from compilation process")
+```
+
+    this will be included in the binary
+
+
+### os_is_macos
+
+
+```mojo
+print(os_is_macos())
+```
+
+    False
+
+
+### os_is_windows
+
+
+```mojo
+print(os_is_windows())
+```
+
+    False
+
+
+## Arch
+
+
+```mojo
+from TargetInfo import (
+    has_avx,
+    has_avx2,
+    has_avx512f,
+    has_intel_amx,
+    has_neon,
+    has_sse4,
+    is_apple_m1
+)
+```
+
+### has_avx
+[Advanced Vector Extensions](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions) are instructions for x86 SIMD support, they are commonly used in Intel and AMD chips, the first version of AVX first began shipping in 2011.
+
+
+```mojo
+print(has_avx())
+```
+
+    True
+
+
+### has_avx2
+[Advanced Vector Extensions 2](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions) are instructions for x86 SIMD support, expanding integer commands to 256 bits, and started shipping in 2013l
+
+
+```mojo
+print(has_avx2())
+```
+
+    True
+
+
+### has_avx512f
+[Advanced Vector Extensions 512](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions) added 512 bit support for x86 SIMD instructions, and began shipping in 2016.
+
+
+```mojo
+print(has_avx512f())
+```
+
+    True
+
+
+### has_intel_amx
+
+[AMX](https://en.wikipedia.org/wiki/Advanced_Matrix_Extensions) is an extension to x86 with instructions for special units designed for ML workloads such as TMUL which is a matrix multiply on BF16, it began shipping in 2023.
+
+
+```mojo
+print(has_intel_amx())
+```
+
+    False
+
+
+### has_neon
+
+[Neon](https://en.wikipedia.org/wiki/ARM_architecture_family#Advanced_SIMD_(Neon)) also known as Advanced SIMD is an ARM extension for specialized instructions.
+
+
+```mojo
+print(has_neon())
+```
+
+    False
+
+
+### has_sse4
+[SSE4](https://en.wikipedia.org/wiki/SSE4) is the older SIMD instruction extension for x86 processors introduced in the mid 2000's
+
+
+```mojo
+print(has_sse4())
+```
+
+    True
+
+
+### is_apple_m1
+
+
+The [Apple M1 chip](https://en.wikipedia.org/wiki/Apple_M1) contains a ARM CPU that supports Neon 128 bit instructions and GPU accessible through [metal API](https://developer.apple.com/metal/)
+
+
+```mojo
+print(is_apple_m1())
+```
+
+    False
+
+
+<CommentService />
+--- SOURCE: guides/std/Time.md ---
+---
+title: Time
+categories: Time
+usage: Measure elapsed time and make a thread sleep
+---
+# Time
+
+
+```mojo
+from Time import now, sleep, time_function
+```
+
+## now
+Gets the current nanoseconds using the systems monotonic clock, which is generally the time elapsed since the machine was booted, but will vary behaviour by platform for states like `sleep` etc.
+
+
+```mojo
+print(now())
+```
+
+    276729993584072
+
+
+## sleep
+Make a thread sleep for the duration in seconds
+
+
+```mojo
+let tic = now()
+sleep(.001)
+let toc = now() - tic
+
+print("slept for", toc, "nanoseconds")
+```
+
+    slept for 1062234 nanoseconds
+
+
+## time_function
+Pass in a nested `fn` a.k.a `closure` that takes no arguments and returns `None` as a parameter, e.g. to time a function named `sleep1ms`:
+
+
+```mojo
+fn sleep1ms():
+    sleep(.001)
+
+fn measure():
+    fn closure() -> None:
+        sleep1ms()
+
+    let nanos = time_function[closure]()
+    print("sleeper took", nanos, "nanoseconds to run")
+
+measure()
+```
+
+    sleeper took 1060233 nanoseconds to run
+
+
+<CommentService />
+--- SOURCE: guides/std/Buffer/Buffer.md ---
+---
+title: Buffer
+categories: Buffer
+usage: The buffer doesn't own the underlying memory, it's a view over data that is owned by another object
+---
+
+# Buffer
+
+The buffer doesn't own the underlying memory, it's a view over data that is owned by another object
+
+
+```mojo
+from Buffer import Buffer
+from DType import DType
+from Pointer import DTypePointer
+```
+
+Allocate 8 `uint8` and pass that pointer into the buffer:
+
+
+```mojo
+let p = DTypePointer[DType.uint8].alloc(8)
+let x = Buffer[8, DType.uint8](p)
+```
+
+## zero
+Zero all the valuees to make sure no garbage data is used:
+
+
+```mojo
+x.zero()
+print(x.simd_load[8](0))
+```
+
+    [0, 0, 0, 0, 0, 0, 0, 0]
+
+
+## Get Item and Set Item
+Loop through and set each item:
+
+
+```mojo
+for i in range(len(x)):
+    x[i] = i
+
+print(x.simd_load[8](0))
+```
+
+    [0, 1, 2, 3, 4, 5, 6, 7]
+
+
+## Copy Init
+
+Copy the buffer `x` to `y`, change the dynamic size to 4, and multiply all the values by 10
+
+
+```mojo
+var y = x
+y.dynamic_size = 4
+
+for i in range(y.dynamic_size):
+    y[i] *= 10 
+```
+
+Now print the values from the original buffer `x`, to show they point to the same data:
+
+
+```mojo
+print(x.simd_load[8](0))
+```
+
+    [0, 10, 20, 30, 4, 5, 6, 7]
+
+
+## simd_store
+Utilize Single Instruction Mutliple Data by manipulating 32 bytes of data at the same time:
+
+
+```mojo
+let first_half = x.simd_load[4](0) * 2
+let second_half = x.simd_load[4](4) * 10
+
+x.simd_store(0, first_half)
+x.simd_store(4, second_half)
+
+print(x.simd_load[8](0))
+```
+
+    [0, 20, 40, 60, 40, 50, 60, 70]
+
+
+## simd_nt_store
+`nt` is non-temporal
+
+Skips the cache for memory that isn't going to be accessed soon, so if you have a large amount of data it doesn't fill up the cache and block something else that would benefit from quick access.
+
+
+```mojo
+x.simd_nt_store(0, second_half)
+print(x.simd_load[8](0))
+```
+
+    [40, 50, 60, 70, 40, 50, 60, 70]
+
+
+## simd_fill
+Store the value in the argument for chunks of the width provided in the parameter
+
+
+```mojo
+x.simd_fill[8](10)
+print(x.simd_load[8](0))
+```
+
+    [10, 10, 10, 10, 10, 10, 10, 10]
+
+
+## stack_allocation
+Returns a buffer with the data allocated to the stack
+
+
+```mojo
+x.stack_allocation()
+print(x.simd_load[8](0))
+```
+
+    [10, 10, 10, 10, 10, 10, 10, 10]
+
+
+## bytecount
+Count the total bytes
+
+
+```mojo
+print(x.bytecount())
+```
+
+    8
+
+
+## aligned_simd_store
+Some registers work better with different alignments e.g. AVX-512 performs better with 64 bit alignment, so you might want padding for a type like a UInt32
+
+
+```mojo
+x.aligned_simd_store[8, 8](0, 5)
+```
+
+## aligned_simd_load
+Some registers work better with different alignments e.g. AVX-512 performs better with 64 bit alignment, so you might want padding for a type like a UInt32
+
+
+```mojo
+print(x.aligned_simd_load[8, 8](0))
+```
+
+    [5, 5, 5, 5, 5, 5, 5, 5]
+
+
+## aligned_stack_allocation
+Allocate to the stack with a given alignment for extra padding
+
+
+```mojo
+x.aligned_stack_allocation[8]()
+```
+
+## prefetch
+Specifies hows soon until the data will be visited again and how the data will be used, to optimize for the cache
+
+
+```mojo
+from Intrinsics import PrefetchOptions
+x.prefetch[PrefetchOptions().for_read().high_locality()](0)
+```
+
+<CommentService />
+--- SOURCE: guides/std/Buffer/NDBuffer.md ---
+---
+title: NDBuffer
+categories: Buffer
+usage: A buffer that doesn't own the underlying memory, it allows you to represent an N-Dimensional shape both statically, and dynamically at runtime
+---
+
+# NDBuffer
+A buffer that doesn't own the underlying memory, it allows you to represent an N-Dimensional shape both statically, and dynamically at runtime
+
+## import
+
+
+```mojo
+from DType import DType
+from List import DimList
+from Pointer import DTypePointer
+from Buffer import NDBuffer
+from Memory import memset_zero
+from List import VariadicList, DimList
+from Assert import assert_param
+from Functional import unroll
+from Index import StaticIntTuple
+```
+
+## setup
+This struct allows you to carry around the pointer that owns the data the NDBuffer is pointing to.
+
+
+```mojo
+struct Tensor[rank: Int, shape: DimList, type: DType]:
+    var data: DTypePointer[type]
+    var buffer: NDBuffer[rank, shape, type]
+
+    fn __init__(inout self):
+        let size = shape.product[rank]().get()
+        self.data = DTypePointer[type].alloc(size)
+        memset_zero(self.data, size)
+        self.buffer = NDBuffer[rank, shape, type](self.data)
+
+    fn __del__(owned self):
+        self.data.free()
+```
+
+## init
+We can now create a shape statically and store data, but be careful there's no safety checks on our struct yet:
+
+
+```mojo
+let x = Tensor[3, DimList(2, 2, 2), DType.uint8]()
+x.data.simd_store(0, SIMD[DType.uint8, 8](1, 2, 3, 4, 5, 6, 7, 8))
+```
+
+Let's try using the buffer now:
+
+
+```mojo
+print(x.buffer.num_elements())
+```
+
+    8
+
+
+## indexing
+
+We can also access elements via it's 3D shape:
+
+
+```mojo
+print(x.buffer[0, 0, 0])
+```
+
+    1
+
+
+Notice incrementing the first dimension will get the 5th item:
+
+
+```mojo
+print(x.buffer[1, 0, 0])
+```
+
+    5
+
+
+And incrementing the 2nd dimension will increment get the 7th:
+
+
+```mojo
+print(x.buffer[1, 1, 0])
+```
+
+    7
+
+
+To set an item we need to use a `StaticIntTuple`
+
+
+```mojo
+x.buffer[StaticIntTuple[3](1, 1, 1)] = 50
+print(x.buffer[1, 1, 1])
+```
+
+    50
+
+
+## runtime bounds checking
+
+There are no safety checks on our struct yet so we can access data out of bounds:
+
+
+```mojo
+print(x.buffer[1, 1, 2])
+```
+
+    0
+
+
+This is a big safety concern so let's make our own `__get__` method that enforces bounds checking:
+
+
+```mojo
+struct Tensor[rank: Int, shape: DimList, type: DType]:
+    var data: DTypePointer[type]
+    var buffer: NDBuffer[rank, shape, type]
+    fn __init__(inout self):
+        let size = shape.product[rank]().get()
+        self.data = DTypePointer[type].alloc(size)
+        memset_zero(self.data, size)
+        self.buffer = NDBuffer[rank, shape, type](self.data)
+
+    fn __del__(owned self):
+        self.data.free()
+
+    fn __getitem__(self, *idx: Int) raises -> SIMD[type, 1]:
+        for i in range(rank):
+            if idx[i] >= shape.value[i].get():
+                raise Error("index out of bounds")
+        return self.buffer.simd_load[1](VariadicList[Int](idx))
+```
+
+
+```mojo
+let x = Tensor[3, DimList(2, 2, 2), DType.uint64]()
+x.data.simd_store(0, SIMD[DType.uint64, 8](0, 1, 2, 3, 4, 5, 6, 7))
+
+print(x[0, 2, 0])
+```
+
+    Error: index out of bounds
+
+
+## compile time bounds checking
+This bounds checking isn't optimal because it has a runtime cost, we could create a separate function that checks the shape at compile time:
+
+
+```mojo
+struct Tensor[rank: Int, shape: DimList, type: DType]:
+    var data: DTypePointer[type]
+    var buffer: NDBuffer[rank, shape, type]
+    fn __init__(inout self):
+        let size = shape.product[rank]().get()
+        self.data = DTypePointer[type].alloc(size)
+        memset_zero(self.data, size)
+        self.buffer = NDBuffer[rank, shape, type](self.data)
+
+    fn get[*idx: Int](self) -> SIMD[type, 1]:
+        @parameter
+        fn check_dim[i: Int]():
+            assert_param[idx[i] < shape.value[i].get()]()
+
+        unroll[rank, check_dim]()
+
+        return self.buffer.simd_load[1](VariadicList[Int](idx))
+```
+
+`*idx` is a variadic list of `Int`, so you can pass in as many as you like.
+
+`get()` Creates a closure named `check_dim` decorated by `@parameter` so it runs at compile time, it's checking that each item in `*idx` is less then the same dimension in the static `shape`. `unroll` is used to run it at compile-time `i` amount of times.
+
+
+```mojo
+let x = Tensor[3, DimList(2, 2, 2), DType.uint64]()
+x.data.simd_store(0, SIMD[DType.uint64, 8](0, 1, 2, 3, 4, 5, 6, 7))
+```
+
+
+```mojo
+print(x.get[1, 1, 2]())
+```
+
+    Expression [12]:17:56:                             constraint failed: param assertion failed
+                assert_param[idx[i] < shape.value[i].get()]()
+                                                           ^
+    
+    expression failed to parse (no further compiler diagnostics)
+
+## simd_load
+Loads SIMD values from the specified position, e.g.:
+
+
+```mojo
+print(x.buffer.simd_load[4](0, 0, 0))
+print(x.buffer.simd_load[4](1, 0, 0))
+print(x.buffer.simd_load[2](1, 1, 0))
+```
+
+    [0, 1, 2, 3]
+    [4, 5, 6, 7]
+    [6, 7]
+
+
+## simd_store
+Store a SIMD vector at the given ND index, for example here we take the first 4 numbers, multiply them by 8, and store them in the second half of the tensor.
+
+
+```mojo
+x.buffer.simd_store(StaticIntTuple[3](1, 0, 0), x.buffer.simd_load[4]() * 8)
+print(x.buffer.simd_load[8]())
+```
+
+    [0, 1, 2, 3, 0, 8, 16, 24]
+
+
+## Fields
+
+
+```mojo
+print(x.buffer.dynamic_dtype)
+print(x.buffer.dynamic_shape)
+print(x.buffer.dynamic_stride)
+print(x.buffer.is_contiguous)
+```
+
+    uint64
+    (2, 2, 2)
+    (4, 2, 1)
+    True
+
+
+## bytecount
+The total amount of bytes in the buffer
+
+
+```mojo
+print(x.buffer.bytecount())
+```
+
+    64
+
+
+## dim
+The dimension at the given index
+
+
+```mojo
+print(x.buffer.dim[0]())
+```
+
+    2
+
+
+## fill
+Fills the buffer in chunks of you SIMD register size, but doesn't go out of bounds
+
+
+```mojo
+x.buffer.fill(10)
+print(x.buffer[1, 1, 1])
+```
+
+    10
+
+
+## flatten
+Returns a buffer of 1 dimension
+
+
+```mojo
+var y = x.buffer.flatten()
+print(y[7])
+```
+
+    10
+
+
+## get_nd_index
+Get the N-Dimensional Index needed to access the nth item
+
+
+```mojo
+print(x.buffer.get_nd_index(5))
+```
+
+    (1, 0, 1)
+
+
+## get_rank
+The total amount of dimensions
+
+
+```mojo
+print(x.buffer.get_rank())
+```
+
+    3
+
+
+## get_shape
+A tuple indicating dimensions of the buffer.
+
+
+```mojo
+print(x.buffer.get_shape())
+```
+
+    (2, 2, 2)
+
+
+## num_elements
+Calculates the total number of elements in the buffer, works the same as `size`
+
+
+```mojo
+print(x.buffer.num_elements())
+```
+
+    8
+
+
+## size
+Calculates the total number of elements in the buffer, works the same as `num_elements`
+
+
+```mojo
+print(x.buffer.size())
+```
+
+    8
+
+
+## stack_allocation
+Return a new NDBuffer that is backed by stack allocated data, aligned to the DType
+
+
+```mojo
+let new = x.buffer.stack_allocation()
+
+print(new.size())
+```
+
+    8
+
+
+## stride
+The step size of a dimension, e.g. in a `2x2x2` tensor if you increment the first dimension, you'll skip over 4 elements:
+
+
+```mojo
+print(x.buffer.stride(0))
+```
+
+    4
+
+
+Lets prove this by seeing how we could access the 4th element:
+
+
+```mojo
+print(x.buffer.get_nd_index(4))
+```
+
+    (1, 0, 0)
+
+
+## zero
+Set all elements to the zero value
+
+
+```mojo
+x.buffer.zero()
+print(x.get[0, 0, 0]())
+```
+
+    0
+
+
+<CommentService />
+--- SOURCE: guides/std/Pointer/DTypePointer.md ---
+---
+title: DTypePointer
+categories: Pointer
+usage: Store an address with a given DType, allowing you to allocate, load and modify data with convenient access to SIMD operations.
+---
+# DTypePointer
+  Store an address with a given DType, allowing you to allocate, load and modify data with convenient access to SIMD operations.
+
+## Import
+
+
+```mojo
+from Pointer import DTypePointer
+
+from DType import DType
+from Random import rand
+from Memory import memset_zero
+```
+
+## Initialization
+Create two variables to store a new address on the heap and allocate 8 bytes
+
+
+```mojo
+var p1 = DTypePointer[DType.uint8].alloc(8)
+var p2 = DTypePointer[DType.uint8].alloc(8)
+```
+
+## Operators
+Perform operations with the two pointers
+
+
+```mojo
+if p1:
+    print("p1 is not null")
+print("p1 is at a lower address than p2:", p1 < p2)
+print("p1 and p2 are equal:", p1 == p2)
+print("p1 and p2 are not equal:", p1 != p2)
+```
+
+    p1 is not null
+    p1 is at a lower address than p2: False
+    p1 and p2 are equal: False
+    p1 and p2 are not equal: True
+
+
+## Storing and loading SIMD data
+First zero all the values for this exercise to make it clear what's happening. 
+
+
+```mojo
+memset_zero(p1, 8)
+```
+
+this zeroes 8 bytes as `p1` a pointer of type `UInt8`, if it was `UInt16` it would set 8*16 bits to 0
+
+Grab the 8 values and print them:
+
+
+```mojo
+var all_data = p1.simd_load[8](0)
+print(all_data)
+```
+
+    [0, 0, 0, 0, 0, 0, 0, 0]
+
+
+Store some random data in only half of the 8 bytes:
+
+
+```mojo
+rand(p1, 4)
+print(all_data)
+```
+
+    [0, 0, 0, 0, 0, 0, 0, 0]
+
+
+Take note that the `all_data` variable does not contain a reference to the heap, it's a sequential 8 bytes on the stack or in a register, so we don't see the changed data yet.
+
+We need to load the data from the heap to see what's now at the address:
+
+
+```mojo
+all_data = p1.simd_load[8](0)
+print(all_data)
+```
+
+    [0, 33, 193, 117, 0, 0, 0, 0]
+
+
+Now lets grab the first half, add 1 to the first 4 bytes with a single instruction SIMD (Single Instruction, Multiple Data) and store it in the second half
+
+
+```mojo
+var half = p1.simd_load[4](0)
+half = half + 1
+p1.simd_store[4](4, half)
+```
+
+Load the data again and print it
+
+
+```mojo
+all_data = p1.simd_load[8](0)
+print(all_data)
+```
+
+    [0, 33, 193, 117, 1, 34, 194, 118]
+
+
+You're now taking advantage of the hardware by using specialized instructions to perform an operation on 32/64 bytes of data at once, instead of 4 separate operations, and these operations can also run through special registers that can significantly boost performance.
+
+## Pointer Arithmetic
+Lets use the same data from the SIMD operators, and shift the pointer address up by 1 byte
+
+
+```mojo
+p1 += 1
+all_data = p1.simd_load[8](0)
+print(all_data)
+```
+
+    [33, 193, 117, 1, 34, 194, 118, 0]
+
+
+You can see we're now starting from the 2nd byte, and we have a garbage value at the end that we haven't allocated! Be careful as this is undefined behaviour (UB) and a security vulnerability, attackers could take advantage of this. You need to be very careful not to introduce a problem like this when using pointers.
+
+Lets move back to where we were:
+
+
+```mojo
+p1 -= 1
+all_data = p1.simd_load[8](0)
+print(all_data)
+```
+
+    [0, 33, 193, 117, 1, 34, 194, 118]
+
+
+## Freeing memory
+If we don't free the memory, the operating system won't be able to reclaim it, this is one way memory leaks are created.
+
+
+```mojo
+p1.free()
+```
+
+We can introduce a security vulnerability by using the pointer after free and accessing the garbage data that's not allocated, don't do this!
+
+
+```mojo
+all_data = p1.simd_load[8](0)
+print(all_data)
+```
+
+    [99, 206, 45, 92, 5, 0, 0, 0]
+
+
+## Build your own Struct
+Playing with pointers is dangerous! Lets build a safe `struct` abstraction around it that interacts with the pointer, so we have less surface area for potential mistakes.
+
+
+```mojo
+struct Matrix:
+    var data: DTypePointer[DType.uint8]
+
+    fn __init__(inout self):
+        "Initialize the struct and set everything to zero"
+        self.data = DTypePointer[DType.uint8].alloc(64)
+        memset_zero(self.data, 64)
+
+    # This is what will run when the object goes out of scope
+    fn __del__(owned self):
+        return self.data.free()
+
+    # This allows you to use let x = obj[1]
+    fn __getitem__(self, row: Int) -> SIMD[DType.uint8, 8]:
+        return self.data.simd_load[8](row * 8)
+
+    # This allows you to use obj[1] = SIMD[DType.uint8]()
+    fn __setitem__(self, row: Int, data: SIMD[DType.uint8, 8]):
+        return self.data.simd_store[8](row * 8, data)
+
+    fn print_all(self):
+        print("--------matrix--------")
+        for i in range(8):
+            print(self[i])
+```
+
+Initializing the matrix will set all the values to 0, please take note that the `matrix` identifier is immutable with `let`, but we're still able to modify the data because the `data` member is `var`
+
+
+```mojo
+let matrix = Matrix()
+matrix.print_all()
+```
+
+    --------matrix--------
+    [0, 0, 0, 0, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0, 0, 0, 0]
+
+
+We can loop through and set the values, one row at a time with SIMD using the abstraction we built
+
+
+```mojo
+for i in range(8):
+    matrix[i] = i
+
+matrix.print_all()
+```
+
+    --------matrix--------
+    [0, 0, 0, 0, 0, 0, 0, 0]
+    [1, 1, 1, 1, 1, 1, 1, 1]
+    [2, 2, 2, 2, 2, 2, 2, 2]
+    [3, 3, 3, 3, 3, 3, 3, 3]
+    [4, 4, 4, 4, 4, 4, 4, 4]
+    [5, 5, 5, 5, 5, 5, 5, 5]
+    [6, 6, 6, 6, 6, 6, 6, 6]
+    [7, 7, 7, 7, 7, 7, 7, 7]
+
+
+Because it's returning a `SIMD[DType.u8, 8]`, we can also modify the column value using `__setitem__` from the SIMD implementation
+
+
+```mojo
+for i in range(8):
+    matrix[i][0] = 9
+    matrix[i][7] = 9
+
+matrix.print_all()
+```
+
+    --------matrix--------
+    [9, 0, 0, 0, 0, 0, 0, 9]
+    [9, 1, 1, 1, 1, 1, 1, 9]
+    [9, 2, 2, 2, 2, 2, 2, 9]
+    [9, 3, 3, 3, 3, 3, 3, 9]
+    [9, 4, 4, 4, 4, 4, 4, 9]
+    [9, 5, 5, 5, 5, 5, 5, 9]
+    [9, 6, 6, 6, 6, 6, 6, 9]
+    [9, 7, 7, 7, 7, 7, 7, 9]
+
+
+For one more example lets try grabbing the fourth row, doubling it, and then writing that to the first row
+
+
+```mojo
+var fourth_row = matrix[3]
+print("\nforth row:", fourth_row)
+fourth_row *= 2
+print("modified:", fourth_row, "\n")
+
+matrix[0] = fourth_row
+matrix.print_all()
+```
+
+    
+    forth row: [9, 3, 3, 3, 3, 3, 3, 9]
+    modified: [18, 6, 6, 6, 6, 6, 6, 18] 
+    
+    --------matrix--------
+    [18, 6, 6, 6, 6, 6, 6, 18]
+    [9, 1, 1, 1, 1, 1, 1, 9]
+    [9, 2, 2, 2, 2, 2, 2, 9]
+    [9, 3, 3, 3, 3, 3, 3, 9]
+    [9, 4, 4, 4, 4, 4, 4, 9]
+    [9, 5, 5, 5, 5, 5, 5, 9]
+    [9, 6, 6, 6, 6, 6, 6, 9]
+    [9, 7, 7, 7, 7, 7, 7, 9]
+
+
+We've created a specific specialized data type that is optimized to perform operations on a matrix of data 8*8 bytes wide, experiment yourself, create a function to manipulate the entire matrix of 64 bytes using SIMD.
+
+Mojo gives you the power to do whatever you want with pointers, but [always remember what uncle ben said](https://youtu.be/P9qCFIVlNyM?t=12)
+
+<CommentService />
+--- SOURCE: guides/std/Pointer/Pointer.md ---
+---
+title: Pointer
+categories: |
+  Pointer
+usage: |
+  Store an address to any type, allowing you to allocate, load and modify single instances or arrays of the type on the heap
+---
+# Pointer
+  Store an address to any type, allowing you to allocate, load and modify single instances or arrays of the type on the heap
+
+## Import
+
+
+```mojo
+from Pointer import Pointer
+
+from Memory import memset_zero
+from String import String
+```
+
+## Initialization
+Create a struct and use that as the type for the pointer
+
+
+```mojo
+struct Coord:
+    var x: UInt8 
+    var y: UInt8
+```
+
+
+```mojo
+var p1 = Pointer[Coord].alloc(2)
+var p2 = Pointer[Coord].alloc(2)
+```
+
+All the values will be garbage, we need to manually zero them if there is a chance we might read the value before writing it, otherwise it'll be undefined behaviour (UB):
+
+
+```mojo
+memset_zero(p1, 2)
+memset_zero(p2, 2)
+```
+
+## Operators
+Perform operations with the two pointers
+
+
+```mojo
+if p1:
+    print("p1 is not null")
+print("p1 and p2 are equal:", p1 == p2)
+print("p1 and p2 are not equal:", p1 != p2)
+```
+
+    p1 is not null
+    p1 and p2 are equal: False
+    p1 and p2 are not equal: True
+
+
+## Register Passable
+
+Let's try printing the zeroed value from the first point:
+
+
+```mojo
+let coord = p1[0]
+print(coord.x)
+```
+
+    error: Expression [6]:17:19: invalid call to '__getitem__': result cannot bind generic !mlirtype to memory-only type 'Coord'
+        let coord = p1[0]
+                    ~~^~~
+    
+    /.modular/Kernels/mojo/Stdlib/Pointer.mojo:118:5: function declared here
+        fn __getitem__(self, offset: Int) -> type:
+        ^
+    
+
+
+Take note of the above error, a `memory-only` type means it can't be passed through registers, we need that behavior to use the `[x]` syntax on a Pointer. Lets redefine it with `@register_passable` annotated: 
+
+
+```mojo
+@register_passable
+struct Coord:
+    var x: UInt8 
+    var y: UInt8
+```
+
+Now we'll be able to use Python syntax to access objects of type `Coord`:
+
+
+```mojo
+var p1 = Pointer[Coord].alloc(2)
+memset_zero(p1, 2)
+
+var coord = p1[0]
+print(coord.x)
+```
+
+    0
+
+
+## Storing Values
+
+Let's try setting the values
+
+
+```mojo
+coord.x = 5
+coord.y = 5
+print(coord.x)
+```
+
+    5
+
+
+
+```mojo
+print(p1[0].x)
+```
+
+    0
+
+
+Note above that `coord` is an identifier to memory on the stack or in a register, when we try and print `p1[0]` it hasn't been modified. We need to write the data.
+
+
+```mojo
+p1.store(0, coord)
+print(p1[0].x)
+```
+
+    5
+
+
+Lets add 5 to it and store it at offset 1
+
+
+```mojo
+coord.x += 5
+coord.y += 5
+
+p1.store(1, coord)
+```
+
+Now print both the coords:
+
+
+```mojo
+for i in range(2):
+    print(p1[i].x)
+    print(p1[i].y)
+```
+
+    5
+    5
+    10
+    10
+
+
+## Undefined Behaviour
+
+Now we'll destroy the universe by going outside the bounds we allocated:
+
+
+```mojo
+let third_coord = p1.load(2)
+print(third_coord.x)
+print(third_coord.y)
+```
+
+    179
+    85
+
+
+These are garbage values, we've done something very dangerous that will cause undefined behaviour, and allow attackers to access data they shouldn't.
+
+Let's keep going down this dangerous path:
+
+
+```mojo
+p1 += 2
+```
+
+Now the pointer is pointer is pointing straight to unallocated garbage data! Let's have a look:
+
+
+```mojo
+for i in range(2):
+    print(p1[i].x)
+    print(p1[i].y)
+```
+
+    179
+    85
+    0
+    0
+
+
+Oh no! Let's move back to where we were and free the memory, if we forget to free the memory that'll cause a memory leak if this code runs a lot:
+
+
+```mojo
+p1 -= 2
+p1.free()
+```
+
+## Build your own struct
+
+It's easy to make mistakes when playing with pointers, let's create a struct to reduce the surface area of potential errors.
+
+
+```mojo
+struct Coords:
+    var data: Pointer[Coord]
+    var length: Int
+
+    fn __init__(inout self, length: Int) raises:
+        self.data = Pointer[Coord].alloc(length)
+        memset_zero(self.data, length)
+        self.length = length
+
+    fn __getitem__(self, index: Int) raises -> Coord:
+        if index > self.length - 1:
+            raise Error("Trying to access index out of bounds")
+        return self.data.load(index)
+
+    # This is what will run when the object goes out of scope
+    fn __del__(owned self):
+        return self.data.free()
+```
+
+We've added some initial safety, this is the bare minimum but instead of allowing potential undefined behaviour, we're causing the program to throw an error when accessing an index out of bounds:
+
+
+```mojo
+let coords = Coords(5)
+
+print(coords[5].x)
+```
+
+    Error: Trying to access index out of bounds
+
+
+Experiment with your own safety checks and adding functions utilizing the pointer safely, Mojo gives you the power to do whatever you want with pointers, but [always remember what uncle ben said](https://youtu.be/P9qCFIVlNyM?t=12)
+
+<CommentService />
+--- SOURCE: guides/std/Vector/DynamicVector.md ---
+---
+title: DynamicVector
+categories: Vector
+usage: Dynamically allocated vector
+---
+
+Contributed by [Alex1957](https://github.com/Alex19578)
+
+# DynamicVector
+## import
+
+
+```mojo
+from Vector import DynamicVector
+```
+
+## init
+
+You can reserve memory to add elements without the cost of copying everything if it grows too large.
+
+Reserve 8 elements worth of memory:
+
+
+```mojo
+var vec = DynamicVector[Int](8)
+```
+
+## push_back
+To add elements to the vector, you can use the `push_back` method:
+
+
+```mojo
+vec.push_back(10)
+vec.push_back(20)
+
+print(len(vec))
+```
+
+    2
+
+
+## variables
+
+
+```mojo
+print(vec.capacity)
+print(vec.data[0])
+print(vec.size)
+```
+
+    8
+    10
+    2
+
+
+## indexing
+You can access and assign elements using indexes
+
+::: warning
+No bounds checking, can access garbage data
+:::
+
+
+```mojo
+print(vec[0])
+```
+
+    10
+
+
+
+```mojo
+vec[1] = 42
+print(vec[1])
+```
+
+    42
+
+
+::: warning
+Setting elements this way won't increase the `len` so may lead to errors, you should only use `push_back` to add a new element, and use this to modify existing elements
+:::
+
+
+```mojo
+print(len(vec))
+vec[6] = 10
+print(len(vec))
+```
+
+    2
+    2
+    10
+
+
+## copying
+
+This will result in a shallow copy, it'll be a pointer to the same location in memory:
+
+
+```mojo
+var vec2 = vec
+```
+
+If we modify `vec` then `vec2` will also be updated:
+
+
+```mojo
+vec[0] = 99
+print(vec2[0])
+```
+
+    99
+
+
+Use deep copy to copy all the data to a different location in memory so it's independent from the original:
+
+
+```mojo
+var vec3 = vec.deepcopy()
+```
+
+Modifying the original now won't effect the new copy:
+
+
+```mojo
+vec[1] = 100
+print(vec3[1])
+```
+
+    42
+
+
+## pop_back
+
+Access the last element, deallocate it, and reduce the element size by 1:
+
+::: warning
+This will access garbage data if there are no elements left
+:::
+
+
+```mojo
+print(vec.pop_back())
+```
+
+    100
+
+
+## reserve
+If it's greater than the current capacity then data is reallocated and moved:
+
+
+```mojo
+vec.reserve(16)
+print(vec.capacity)
+```
+
+    16
+
+
+## resize
+Discard elements if smaller then current size, add uninitialized data if larger:
+
+
+```mojo
+vec.resize(16)
+print(vec.size)
+```
+
+    16
+
+
+## clear
+Deallocates the data in the vector
+
+
+```mojo
+vec.clear()
+print(vec[1])
+```
+
+    0
+
+
+<CommentService />
+--- SOURCE: guides/std/Vector/InlinedFixedVector.md ---
+---
+categories: Vector
+usage: Contains a statically known vector size, but can also grow dynamically at runtime
+---
+
+Contributed by [Alex1957](https://github.com/Alex19578)
+
+# InlinedFixedVector
+## import
+
+
+```mojo
+from Vector import InlinedFixedVector
+```
+
+## init
+
+You can reserve memory to add elements without the cost of copying everything if it grows too large.
+
+Statically allocate 4 elements, and reserve a capacity of 8 elements
+
+
+```mojo
+var vec = InlinedFixedVector[4, Int](8)
+```
+
+## append
+To add elements to the vector, you can use the `append` method:
+
+
+```mojo
+vec.append(10)
+vec.append(20)
+
+print(len(vec))
+```
+
+    6
+
+
+## variables
+
+
+```mojo
+print(vec.capacity)
+print(vec.current_size)
+print(vec.dynamic_data[0])
+print(vec.static_data[0])
+```
+
+    8
+    6
+    10
+    10
+
+
+## indexing
+You can access and assign elements using indexes
+
+::: warning
+No bounds checking, can access garbage data
+:::
+
+
+```mojo
+print(vec[0])
+```
+
+    10
+
+
+
+```mojo
+vec[1] = 42
+print(vec[1])
+```
+
+    42
+
+
+::: warning
+Setting elements this way won't increase the `len` so may lead to errors, you should only use `append` to add a new element, and use this to modify existing elements
+:::
+
+
+```mojo
+print(len(vec))
+vec[6] = 10
+print(len(vec))
+```
+
+    6
+    6
+
+
+## copying
+
+This will result in a shallow copy, it'll be a pointer to the same location in memory:
+
+
+```mojo
+var vec2 = vec
+```
+
+If we modify `vec` then `vec2` will also be updated:
+
+
+```mojo
+vec[0] = 99
+print(vec2[0])
+```
+
+    99
+
+
+Use deep copy to copy all the data to a different location in memory so it's independent from the original:
+
+
+```mojo
+var vec3 = vec.deepcopy()
+```
+
+Modifying the original now won't effect the new copy:
+
+
+```mojo
+vec[1] = 100
+print(vec3[1])
+```
+
+    42
+
+
+## clear
+Deallocates the data in the vector
+
+
+```mojo
+vec.clear()
+print(vec[1])
+```
+
+    0
+
+
+<CommentService />
+--- SOURCE: guides/std/Vector/UnsafeFixedVector.md ---
+---
+title: UnsafeFixedVector
+categories: Vector
+usage: Can not be resized after initialization, but size can be runtime known
+---
+
+Contributed by [Alex1957](https://github.com/Alex19578)
+
+# UnsafeFixedVector
+## import
+
+
+```mojo
+from Vector import UnsafeFixedVector
+```
+
+## Init
+
+You can reserve memory to add elements without the cost of copying everything if it grows too large.
+
+Statically allocate 4 elements, and reserve a capacity of 8 elements
+
+
+```mojo
+var vec = UnsafeFixedVector[Int](8)
+```
+
+## append
+To add elements to the vector, you can use the `append` method:
+
+
+```mojo
+vec.append(10)
+vec.append(20)
+
+print(len(vec))
+```
+
+    2
+
+
+## variables
+
+
+```mojo
+print(vec.capacity)
+print(vec.data[0])
+print(vec.size)
+```
+
+    8
+    10
+    2
+
+
+## indexing
+You can access and assign elements using indexes
+
+::: warning
+No bounds checking, can access garbage data
+:::
+
+
+```mojo
+print(vec[0])
+```
+
+    10
+
+
+
+```mojo
+vec[1] = 42
+print(vec[1])
+```
+
+    42
+
+
+::: warning
+Setting elements this way won't increase the `len` so may lead to errors, you should only use `append` to add a new element, and use this to modify existing elements
+:::
+
+
+```mojo
+print(len(vec))
+vec[6] = 10
+print(len(vec))
+```
+
+    2
+    2
+
+
+## copying
+
+This will result in a shallow copy, it'll be a pointer to the same location in memory:
+
+
+```mojo
+var vec2 = vec
+```
+
+If we modify `vec` then `vec2` will also be updated:
+
+
+```mojo
+vec[0] = 99
+print(vec2[0])
+```
+
+    99
+
+
+There is no deep copy for this type
+
+## clear
+Deallocates the data in the vector
+
+
+```mojo
+vec.clear()
+print(vec[1])
+```
+
+    0
+
+
+<CommentService />
+--- SOURCE: blog/2023-05-08-why-use-mojo.md ---
+---
+title: Why Use Mojo? 
+author: Mojo Dojo
+author_site: https://mojodojo.dev
+author_image: https://mojodojo.dev/hero.png
+excerpt: Why I'm excited about Mojo 
+date: 2023-05-08
+feed: true
+---
+
+# Why Use Mojo?
+The Mojo toolchain is not yet available, [but you can signup](https://www.modular.com/get-started) to get early preview access to a Mojo notebook.
+
+Check [the official why mojo page](https://docs.modular.com/mojo/why-mojo.html) for insights into the Modular team's reasoning for creating Mojo, this is the personal perspective of an engineer specializing in optimizing machine learning (ML) inference.
+
+## Intro
+Mojo has been designed to address Python's limitations by adding proven language features, enabling performance enhancement at a low level. Developed by Chris Lattner and his experienced team, Mojo aims to be a fully compatible Python superset. Lattner is recognized amongst many other things for creating Low-Level Virtual Machine (LLVM), a prevalent compiler infrastructure that optimizes code performance across numerous hardware and platforms. LLVM is utilized by the majority of high-performance languages, including C/C++, Rust, Zig, and Swift.
+
+## Lessons Learned
+Over the years, LLVM has seen extensive development, with a vast number of contributors ranging from individual hackers to major corporations. In the process of creating a modern programming language today, developers typically write code that is lowered to LLVM, as achieving similar performance across all existing hardware independently would be a monumental task. Consequently, the announcement of Chris Lattner launching a language that addresses Python's complex ecosystem and performance issues has generated considerable enthusiasm. This excitement stems not only from his prior success in resolving similar challenges, but also from his humble leadership style that fosters collaboration between hackers and corporate entities. Lattner acknowledges the lessons learned from past mistakes with the Swift language and demonstrates a appreciation for modern language features by improving upon them in Mojo, such as Rust's lifetimes and Zig's comptime.
+
+## Current Optimization Solution
+The ML ecosystem has experienced significant growth in complexity, with the C++ library ONNXRuntime emerging as the quickest route to hardware optimization. However, this library presents substantial challenges due to its 20 distinct execution providers and the need to build it from source via the infamously tricky CMake build system to optimize for various hardware. Selecting the appropriate Linux distribution and dependency versions based on the target platform and hardware can be an arduous task, with certain hardware necessitating the use of a specific tag or commit when building the library that ONNXRuntime links to.
+
+## Mojo Benefits
+Mojo enables fast development via an Interpreter and Just-in-Time (JIT) compilation or can compile to a single binary through Multi-Level Intermediate Representation (MLIR), another project initiated by Chris Lattner for TensorFlow, to enable hardware optimization during compilation. Resembling LLVM, MLIR incorporates additional benefits for ML and extensibility to other domains, and MLIR is now a part of the LLVM project.
+
+Mojo enables optimizations through language-level exposure of types, such as SIMD (Single Instruction, Multiple Data), which allows modern hardware to perform the same operation on blocks of data simultaneously. This capability is particularly valuable in ML, leading to substantial performance improvements. Delving into a current Python library making use of linear algebra such as Numpy reveals C, Fortran, and Assembly at the core optimizing for different hardware. [Observe a demonstration by Jeremy Howard](https://www.youtube.com/watch?v=6GvB5lZJqcE) as he simplifies thousands of lines of intricate, hardware-specific code into a few concise lines of Mojo.
+
+Mojo's current appeal lies not in its capabilities for training models, which will likely be developed in the future, but rather in its ability to improve the optimization process for inference at a lower level. This eliminates the need for modern engineers to delve into programming languages such as C/C++, Fortran, or Assembly, which can be a major barrier.
+
+## Summary
+Engineers can leverage a minimalist superset of Python for low-level optimization while enabling high-level programmers to work with their code using familiar Python syntax, eliminating the need to depend on old, complex libraries for optimization across various hardware platforms. Currently, to enhance performance, engineers often convert Python to C/C++ or Rust, but this approach hinders ML engineers' ability to experiment with inference code. Mojo's appeal stems from its ability to provide optimal performance across diverse hardware platforms without the frustration of grappling with languages like C/C++, Fortran, Assembly, CUDA and CMake, all while offering code that is accessible to ML engineers primarily focused on reducing model loss. As a result, both parties can collaborate and experiment with the same inference code, increasing the likelihood that this approach will emerge as the optimal solution to overcome current challenges in ML.
+
+<CommentService />
+--- SOURCE: blog/2023-05-22-mojo-first-impressions.md ---
+---
+title: Mojo First Impressions 
+author: Mojo Dojo
+author_site: https://mojodojo.dev
+author_image: https://mojodojo.dev/hero.png
+excerpt: A user perspective from the first few weeks of Mojo's release
+date: 2023-05-22
+feed: true
+head:
+  - [meta, { name: twitter:card , content: summary }]
+  - [meta, { name: twitter:site , content: '@mojodojodev' }]
+  - [meta, { name: twitter:title , content: Mojo First Impressions }]
+  - [meta, { name: twitter:description , content: "A user perspective from the first few weeks of Mojo's release" }]
+  - [meta, { name: twitter:image , content: "https://mojodojo.dev/hero.png" }]
+---
+
+# Mojo First Impressions
+
+### My Journey
+I'm an engineer that has fallen into optimizing Machine Learning (ML) performance by converting Python to Rust, I really enjoy the work because it's so much more challenging than any other programming I've done, but the ML engineers struggle using Rust and so can no longer contribute to the code I was tasked with converting. In my spare time I've been working on a high level Rust ML inference library to try and ease this problem, but the unsafe code, type system complexity, and compiling the dependent C++ libraries for different hardware is a huge pain. 
+
+I first saw the Mojo launch announcement on hackernews which stated that `Chris Lattner` was involved, and so I started reading [Why Mojo](https://docs.modular.com/mojo/why-mojo.html) where they explicitly called out my exact problems, once I got to the end of the [programming manual](https://docs.modular.com/mojo/programming-manual.html) and watched [Jeremy Howard's launch demo](https://www.youtube.com/watch?v=6GvB5lZJqcE) I was completely sold and so bought the [mojodojo.dev](https://mojodojo.dev) domain.
+
+### Launch
+I managed to get into the Mojo playground on launch day which was the 3rd of May, it was quickly apparent that this was a very young language with missing features, but there was an overwhelming surge of interest from people in the same position as me. The decision to launch early with missing features may seem counter-intuitive, but understanding what your users actually want can only be achieved through the tangible feedback that a product launch provides.
+
+The team behind Mojo is a collection of highly skilled developers with extensive experience in language design, compilers and ML. They're responsible for much of the technology that is currently running our models in production today, and they're building a product that answers their own intricate needs. But Mojo extends its appeal to a wider audience including system programmers who aren't `compiler nerds` (a term of endearment 😀), and Python developers interested in learning how to optimize at a lower level.
+
+### The first couple weeks
+The speed at which the Mojo team is able to rectify the most common grievances is impressive. In Mojo there is a `PythonObject` that represents a pointer to a value from `CPython` interpreted code, the most common complaint was not being able to print the values from these objects, as well as other unimplemented `dunder` (double underscore) methods such as `__truediv__` for the `\` operator. The Mojo team established a [GitHub repository for raising issues](https://github.com/modularml/mojo/) and feature requests. Once an engineer was assigned it took just a few days for [all of the requested dunder methods to be implemented](https://docs.modular.com/mojo/MojoPython/PythonObject.html). Launching early gives you valuable feedback about what your core audience actually wants, and builds confidence as you fix the main pain points.
+
+The growing Mojo community has a positive and helpful attitude, with numerous community members emerging that are enthusiastically answering questions and solving compiler errors. The Mojo team also responds to community content with enthusiasm, I've seen multiple people start engaging with answering questions after a nice message from someone on the Mojo team about their blog post.
+
+Syntax debates have already begun of course! But they've be met with a surprising level of maturity, for example the `inout` keyword for a mutable reference makes a lot of sense when you've used it for a while but it's quite novel at first, there was much debate at first but once [Chris asked for a bikeshedding pause](https://github.com/modularml/mojo/issues/7#issuecomment-1551821543) it actually happened! [See bike-shedding](https://en.wikipedia.org/wiki/Law_of_triviality). I believe this comes from a respect in Chris Lattner's expertise, having led large open source projects building ubiquitous languages, compilers and infrastructure including Clang, LLVM, MLIR and Swift. Many languages have no final point of authority, or a lack of trust from the community, and so the bikeshedding never ends. The few negative sentiments I've seen have had a response that they hope the user returns once the language is more mature.
+
+### Language Features
+Exploring the language further I feel that Mojo incorporates the best features of various languages:
+
+- English readability of Python
+- Memory Safety of Rust
+- Hardware level control of C
+- Zero cost abstractions of C++
+- Metaprogramming and generics simplicity of Zig
+- Parallelization simplicity of Go
+
+In several aspects, Mojo surpasses the aforementioned languages:
+
+- Incorporation of `SIMD` at the language level for enhanced hardware control
+- Simpler memory management model than Rust with more control through a lack of implicit `move`
+- Ability to use any existing runtime function at compile time without annotation
+- Enables creating functions like `autotune` and `search` to optimize for various hardware at compile time using the core language
+
+Everything currently implemented is orthogonal, and not just a mixed bag of modern features. The big question mark is the implementation of `traits` also known as `protocols`, and a syntax to express `lifetimes` which is currently in the works.
+
+### Current State
+My only criticism on the launch would be some of the marketing suggesting that Mojo is currently a superset of Python, to paraphrase Warren Buffet:
+
+> You can hold a `rock concert`, and that's okay. You can perform a `symphony`, and that's okay. But don't hold a `rock concert` and advertise it as a `symphony`.
+
+Mojo is currently a `rock concert` for system programmers that don't mind getting their hands dirty, with a clear vision and path towards becoming a `symphony` and superset of Python.
+
+If you don't mind getting your hands dirty check out these resources:
+
+#### Official
+- [Sign up for the playground](https://www.modular.com/get-started)
+- [Read the FAQ](https://docs.modular.com/mojo/faq.html)
+- [Read the manual](https://docs.modular.com/mojo/programming-manual.html)
+- [Join the Discord](https://www.discord.gg/modular)
+
+#### Unofficial
+- [Mojo Guides](/guides/)
+- [This week in Mojo](/this_week_in_mojo/)
+- [Mojo team answers](/mojo_team_answers)
+- [Is Mojo for Me?](/is_mojo_for_me)
+
+<CommentService />
+--- SOURCE: blog/2023-07-17-rust-or-mojo-ai.md ---
+---
+author: Mojo Dojo
+author_site: https://mojodojo.dev
+author_image: https://mojodojo.dev/hero.png
+excerpt: Comparing the experience of rewriting C/C++/Python with Rust and Mojo
+date: 2023-07-17
+feed: true
+head:
+  - [meta, { name: twitter:card , content: summary }]
+  - [meta, { name: twitter:site , content: "@mojodojodev" }]
+  - [meta, { name: twitter:title , content: "Rust or Mojo for the future of AI?" }]
+  - [meta, { name: twitter:description , content: "Comparing the experience of rewriting C++ and Python with Rust and Mojo" }]
+  - [meta, { name: twitter:image , content: "https://mojodojo.dev/hero.png" }]
+---
+
+# Rust or Mojo for the future of AI?
+## Intro
+There has been dissatisfaction with the combination of C/C++ and Python for putting ML models into production, debugging problems when something goes wrong can be a nightmarish task. Ideally we could have one language that allows systems programmers to squeeze our hardware to the limits of physics, while also being suitable as a safe high level language to make putting code into production easy, reliable and performant. Rust fits that space well despite having a steep learning curve, and it's starting to be noticed in the industry as a potential solution.
+
+Converting production code that uses computer vision ML models from C/C++/Python to Rust is a nice experience on the surface, Rust works well as a high-level, safe and expressive language with very low performance overhead. But the ecosystem is still young, and so we still rely on huge C++ projects like opencv, which itself relies on huge C++ projects like ffmpeg for image and video encoding and decoding. The experience of linking to these libraries can be quite painful, especially statically, and squeezing performance out of SIMD registers or other specialized hardware requires even more complexity. It begins to feel redundant when you end up with hundreds of megabytes of `.so` dependencies while wrapping C/C++ in unsafe Rust.
+
+## C++ Dependencies
+There is an ongoing attempt to [rewrite opencv functionality](https://github.com/rust-cv/cv/graphs/contributors?from=2019-05-05&to=2019-05-17&type=c) in Rust but it hasn't picked up much steam since it was introduced in 2019 with very little activity now, and it only really scratches the surface. Many are using [opencv-rust C++ bindings](https://github.com/twistedfall/opencv-rust) which are maintained by a dedicated, but mostly solo contributor. It gives you everything needed for computer vision, including the aforementioned ffmpeg to decode video and get frames into a tensor. Then, to boost performance on ML models, the fastest solution in my benchmarks was to convert TensorFlow and PyTorch models to ONNX and use libonnxruntime bindings from a crate named [ort](https://github.com/pykeio/ort). There is a good Rust native implementation named [tract-onnx](https://github.com/sonos/tract), but it doesn't have many contributors, so it is missing operators, is slow with some operators, and only runs on CPU. The [ort](https://github.com/pykeio/ort) fork of the original outdated libonnxruntime bindings is faster for all the models I've benchmarked, plus the `libonnxruntime.so` dependency is very small and easy to statically link, and some larger companies like Twitter have started using it.
+
+## C++ from Rust
+The tensor representation in opencv is a `Matrix`, a bit of a misnomer as it can contain more than 2 dimensions. `ort` uses a Rust native crate named `ndarray` for it's tensor type, they both have the same C row-major representation in memory, so we can get performance improvements by dipping into unsafe Rust and bitcasting the Rust native `ndarray::Array` as the C++ native `opencv::Matrix` without copying any data. However writing `unsafe` Rust around C++ libraries is [not always the most pleasant experience](https://zackoverflow.dev/writing/unsafe-rust-vs-zig/), and with the vast majority of AI researchers being Python users who aren't interested in learning Rust, it's unlikely that it will ever get significant adoption in ML. It'll never be as ergonomic for researchers as the combination of `opencv-python`, `numpy`, `pytorch` etc.
+
+What if we could keep the beauty and simplicity of Python as a high level language, and rewrite one function at a time in Mojo to get better performance, removing the complexity and indirections of all the C/C++/Fortran dependencies?
+
+## Rewriting C/C++/Python with Mojo
+Instead of adding more complexity on top of C++, let's see how we can use Mojo to simplify things and get even faster performance.
+
+Currently Mojo is only available from an online Jupyter notebook (local release should be in the next few months), so to benchmark we're going to need to need to run Python from the same notebook environment.
+
+We'll be taking a png of a fire emoji, manually implementing a box blur in python, then using an optimized opencv function, and rewriting it in Mojo to remove all the underlying C/C++/OpenCL complexity.
+
+In Mojo we can use any library from the entire Python ecosystem, so we'll use opencv to get our images into a numpy array and matplotlib to render them:
+
+
+```mojo
+%%python
+import cv2
+import numpy as np
+from matplotlib import colors, pyplot as plt
+from timeit import timeit
+
+def render(img):
+    plt.figure(figsize=(2, 2))
+    plt.axis("off")
+    plt.imshow(img)
+    plt.show()
+
+def open(img):
+    img = cv2.imread(img).astype(np.uint8)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
+    return img
+```
+
+In the Mojo playground, `%%python` represents a cell that runs through the Python interpreter, but we can still access that code from inside Mojo cells, for example:
+
+
+```mojo
+img = open("fire.png")
+render(img)
+```
+
+
+    
+![png](/2023-07-17-rust-or-mojo-ai_3_0.png)
+    
+
+
+    
+
+
+When using opencv from python, instead of a `Mat` like in C++ we get back the ultra-ergonomic numpy array, for example printing out the RGBA of the first pixel (all white):
+
+
+```mojo
+%%python
+img = open("fire.png")
+print(img[0, 0, 0:4])
+```
+
+    [255 255 255 255]
+
+
+The format is: [Red, Green, Blue, Alpha] represented by 8bit unsigned integers.
+
+Or a middle pixel with some color:
+
+
+```mojo
+%%python
+print(img[120, 120, 0:4])
+```
+
+    [253 162  54 255]
+
+
+Let's try applying a blur using python first:
+
+
+```mojo
+%%python
+def box_blur(image, diameter):
+    blurred_image = np.copy(image)
+    height, width, _ = image.shape
+    radius = diameter // 2
+
+    for x in range(0, height):
+        for y in range(0, width):
+            # Take the average of the pixels in the neighborhood
+            blurred_image[x, y] = np.mean(
+                image[
+                    max(0, x - radius):min(height, x + radius + 1),
+                    max(0, y - radius):min(width, y + radius + 1)
+                ],
+                axis=(0, 1)
+            )
+    return blurred_image
+
+blurred = box_blur(img, 8)
+render(blurred)
+```
+
+
+    
+![png](/2023-07-17-rust-or-mojo-ai_9_0.png)
+    
+
+
+    
+
+
+This is obviously going to be a very slow operation in Python compared to what you can do in a language like C. Let's time how long it takes in the Mojo Playground:
+
+
+```mojo
+%%python
+img = open("fire.png")
+python_secs = timeit(lambda: box_blur(img, 8), number = 5) / 5
+print(python_secs)
+```
+
+    0.6462432577274739
+
+
+The opencv version of the operation uses C++ and one of a few hardware APIs depending on how it was compiled, taking advantage of vectorization. First lets take a look at the result to make sure it's doing the same thing:
+
+
+```mojo
+%%python
+img = open("fire.png")
+img = cv2.filter2D(img, -1, np.ones((8, 8))/64)
+render(img)
+```
+
+
+    
+![png](/2023-07-17-rust-or-mojo-ai_13_0.png)
+    
+
+
+    
+
+
+And now we can time it:
+
+
+```mojo
+%%python
+img = open("fire.png")
+opencv_secs = timeit(lambda: cv2.filter2D(img, -1, np.ones((8, 8), np.uint8)/64), number=5) / 5
+print("Seconds:", opencv_secs)
+```
+
+    Seconds: 0.0014652336016297341
+
+
+That's giving us a nice speedup of around 400x over the Python version:
+
+
+```mojo
+print("Speedup:", python_secs / opencv_secs)
+```
+
+    Speedup: 441.05134977021925
+
+
+Going to the definition of `filter2D` we find the below code. The `...` means the C++ functions have default values; these are just for type hints in Python. The overload with `UMat` is for when you're using the GPU version of opencv:
+
+```mojo
+@typing.overload
+def filter2D(src: cv2.typing.MatLike, ddepth: int, kernel: cv2.typing.MatLike, dst: cv2.typing.MatLike | None = ..., anchor: cv2.typing.Point = ..., delta: float = ..., borderType: int = ...) -> cv2.typing.MatLike: ...
+@typing.overload
+def filter2D(src: UMat, ddepth: int, kernel: UMat, dst: UMat | None = ..., anchor: cv2.typing.Point = ..., delta: float = ..., borderType: int = ...) -> UMat: ...
+```
+
+Then if you do a search for filter2D in [the opencv C++ source code](https://github.com/search?q=repo%3Aopencv%2Fopencv+filter2D&type=code) you'll find 5 pages of results where `filter2D` is defined. Likely your version of opencv will be running through OpenCL to take advantage of your CPU SIMD registers, so if you want to contribute a faster version not only will you need to [figure out how OpenCL works](https://www.nersc.gov/assets/pubs_presos/MattsonTutorialSC14.pdf), you'll also need to learn know how to use SIMD intrinsics from C++ as a fallback.
+
+There is a lot more going on underneath the hood, for example `ffmpeg` decoding the image and putting it into a `numpy` array for us. A lot of engineering hours and complexity went into making the API's so simple and easy to use while remaining fast. It's great for the Python user with an interface that is as close to English pseudo code as possible, but what if you wanted to build your own library to operate efficiently on numpy arrays?
+
+You're going to have to know about:
+- The C/C++ programming languages
+- The Python [C API](https://docs.python.org/3/c-api/index.html)
+- The [NumPy C API](https://numpy.org/doc/stable/reference/c-api/index.html), 
+- How NumPy does [CPU/SIMD optimizations](https://numpy.org/doc/stable/reference/simd/index.html)
+- How to [Interop with NumPy](https://numpy.org/doc/stable/user/basics.interoperability.html)
+
+And if you're doing anything with linear algebra:
+- The Fortran programming language
+- [BLAS](https://www.netlib.org/blas/) 
+- [LAPACK](https://www.netlib.org/lapack/)
+
+Making your way down the stack to the actual Fortran routines requires many layers of indirection and is a daunting task. With Mojo we can learn one simple programming model that applies to CPU's, GPU's and even TPU's to replace all that complexity.
+
+## Pointing to a CPython object from Mojo
+The standard library is still being built up for Mojo, so sometimes we need to use foreign-looking syntax to interact with [MLIR](https://mlir.llvm.org/) for things that haven't been added yet. Everything in Mojo lowers to MLIR, which is used to generate code for hardware-specific optimizations. It was built by Chris Lattner and his team at Google as a successor to LLVM because it allows the modularity required for ML and exotic hardware types. Since then it was open sourced with wide adoption and absorbed into the LLVM project. It still uses the legacy LLVM infrastructure for CPU codegen and optimization.
+
+There is nothing in the standard library yet for converting a Python integer representing an address to a Mojo pointer with a given data type, so for now we need to write our own function:
+
+
+```mojo
+from DType import DType
+from Pointer import DTypePointer
+
+fn numpy_data_pointer(numpy_array: PythonObject) raises -> DTypePointer[DType.uint32]:
+    return DTypePointer[DType.uint32](
+                __mlir_op.`pop.index_to_pointer`[
+                    _type:__mlir_type.`!pop.pointer<scalar<ui32>>>`
+                ](
+                    SIMD[DType.index,1](numpy_array.__array_interface__['data'][0].__index__()).value
+                )
+            )
+```
+
+:::tip
+In the comments below, an AI compiler engineer working on Mojo suggests they'll add a static `from_address` method to make this a lot more simple:
+
+```mojo
+let p = DTypePointer[DType.uint32].from_address(arr.__array_interface__['data'][0])
+```
+:::
+
+You can see `pop` is an MLIR dialect the Modular team have developed; it's not intended for normal programmers to need to understand this syntax, and over time useful things will be wrapped in a nice API by compiler engineers for systems engineers and Python programmers to use at a higher level. But you still have the power to define your own dialects or use one of the many already defined in the MLIR ecosystem, which makes it easy for vendors to accelerate their hardware, for example you can take a look at the [gpu dialect](https://mlir.llvm.org/docs/Dialects/GPU/) here. This enables compiler engineers to write optimizations for different hardware as it becomes more exotic for AI acceleration, and Mojo developers will be able to take full advantage.
+
+Lets go line by line to explain what's happening:
+
+```mojo
+fn numpy_array_pointer(numpy_array: PythonObject) raises -> DTypePointer[DType.uint32]:
+```
+
+`PythonObject` has the same representation in Mojo as it does in Python, see [Intro to Mojo: Basic Types](/guides/intro-to-mojo/basic-types.html) for more details. `raises` means that an error could occur which is always the case when interacting with Python. Here I'm returning a Pointer to a DType of `uint32` so each element represents the RGBA of a single pixel.
+
+```mojo
+__mlir_op.`pop.index_to_pointer`[
+```
+
+This is the operation to convert from an index which is an integer of size that matches your architecture, for example 64bit on an x86-64 machine, to an address that can be used as a pointer.
+
+```mojo
+_type:__mlir_type.`!pop.pointer<scalar<ui32>>>`
+```
+
+This is the type as represented in MLIR, it's 32bits so each element encompasses 4*8bit color channels representing RGBA.
+
+```mojo
+SIMD[DType.index,1](numpy_array.__array_interface__['data'][0].__index__()).value
+```
+Let's split the above into three separate parts:
+
+```mojo
+numpy_array.__array_interface__['data'][0]
+```
+This is using the Python interpreter to get back the address of where the raw data of the numpy array starts in memory.
+
+```
+.__index__()
+```
+This converts it from a PythonObject to a Mojo `Int`
+```
+SIMD[DType.index,1](...).value
+```
+This gets us back a raw MLIR `scalar<index>` type which can then be converted to a `pointer<scalar<ui32>>>` type via the MLIR operation.
+
+```
+return DTypePointer[DType.uint32](...)
+```
+Finally it's returned as the desired type, which is a Mojo pointer starting at the address in memory where the raw data of the numpy array starts.
+
+## Writing the Box Blur in Mojo
+
+Below we're taking advantage of Mojo's builtin SIMD type, we figure out how many 32bit pixels we can operate on at once in the hardwares SIMD register, then for each pixel we accumulate the RGB values in a box around it and apply the average to give the blur effect. For example if our SIMD register is 512bits we can operate on 16 32bit pixels at once:
+
+
+```mojo
+from TargetInfo import simdwidthof
+from Memory import memcpy
+from Time import now
+from Math import clamp
+
+fn box_blur_mojo[diameter: Int](image: PythonObject) raises:
+    # Get number of elements that fit into your hardwares SIMD register
+    alias simd_width = simdwidthof[DType.uint32]()
+    # The amount of pixels that will be averaged in box around the target pixel
+    alias pixels = diameter ** 2
+    alias radius = diameter // 2
+    # Use the function we defined earlier to point to the numpy arrays raw data
+    let p = numpy_data_pointer(image)
+    # Get the numpy dimensions from the Python iterpreter and convert them to Mojo ints
+    let height = image.shape[0].__index__()
+    let width = image.shape[1].__index__()
+    let el = width * height
+    # Because we don't want blurred pixels influencing the outcome of the next pixel, we allocate a new array
+    let tmp = DTypePointer[DType.uint32].alloc(el)
+
+    for y in range(0, height):
+        # Step over the amount of elements we'll operate on at the same time with SIMD
+        for x in range(0, width, simd_width):
+            var sum_r = SIMD[DType.uint32, simd_width]()
+            var sum_g = SIMD[DType.uint32, simd_width]()
+            var sum_b = SIMD[DType.uint32, simd_width]()
+
+            # Loop through a box around the pixel
+            for ky in range(-radius, radius):
+                for kx in range(-radius, radius):
+                    # Make sure to not go out of bounds
+                    let iy = clamp(Int64(y) + ky, 0, height-1)
+                    let ix = clamp(Int64(x) + kx, 0, width-1)
+                    # Grab the amount of 32bit RGBA pixels that can fit into your hardwares SIMD register
+                    let rgb = p.simd_load[simd_width](iy.to_int() * width + ix.to_int())
+                    # and seperate out the RGB components using bit shifts and masking, adding the values to the sums
+                    sum_r += rgb & SIMD[DType.uint32, simd_width](255)
+                    sum_g += rgb >> 8 & SIMD[DType.uint32, simd_width](255)
+                    sum_b += rgb >> 16 & SIMD[DType.uint32, simd_width](255)
+
+            # Combine 8bit color channels back into 32bit pixel (last channel is alpha 255 for no transparency)
+            # And divide by total pixels in the box to get the average colors
+            let combined = (sum_r / pixels) | (sum_g / pixels << 8) | (sum_b / pixels << 16) |  (255 << 24)
+            # Store all the pixels at once (16 on a 512bit SIMD register)
+            tmp.simd_store(y * width + x, combined)
+    # Copy the data from the temporay image to the original numpy array
+    memcpy(p, tmp, el)
+    tmp.free()
+
+var image = open("fire.png")
+box_blur_mojo[8](image)
+render(image)
+```
+
+
+    
+![png](/2023-07-17-rust-or-mojo-ai_24_0.png)
+    
+
+
+    
+
+
+## Vectorize
+You may have noticed a bug: if the image width isn't a multiple of our SIMD register, we'll have some leftover pixels that don't get blurred. Mojo includes a vectorize function because it's such a common requirement to load chunks of data that fit into the SIMD register, and it accounts for any leftovers without us having to calculate that ourselves:
+
+
+```mojo
+from Functional import vectorize
+
+fn box_blur_mojo[diameter: Int](image: PythonObject) raises:
+    alias simd_width = simdwidthof[DType.uint32]()
+    alias pixels = diameter ** 2
+    alias radius = diameter // 2
+    let p = numpy_data_pointer(image)
+    let height = image.shape[0].__index__()
+    let width = image.shape[1].__index__()
+    let el = width * height
+    let tmp = DTypePointer[DType.uint32].alloc(el)
+
+    for y in range(0, height):
+        # This inner loop is vectorized by stepping over simd_width pixels (16 32bit pixels on a 512bit SIMD register) 
+        # on the x axis, as we're loading that amount of pixels and operating on them at the same time
+        @parameter
+        fn inner[simd_width: Int](x: Int):
+            var sum_r = SIMD[DType.uint32, simd_width]()
+            var sum_g = sum_r
+            var sum_b = sum_r
+            for ky in range(-radius, radius):
+                for kx in range(-radius, radius):
+                    let iy = clamp(Int64(y) + ky, 0, height-1)
+                    let ix = clamp(Int64(x) + kx, 0, width-1)
+                    let rgb = p.simd_load[simd_width](iy.to_int() * width + ix.to_int())
+                    sum_r += rgb & 255
+                    sum_g += rgb >> 8 & 255
+                    sum_b += rgb >> 16 & 255
+            let combined = (sum_r / pixels) | (sum_g / pixels << 8) | (sum_b / pixels << 16) |  (255 << 24)
+            tmp.simd_store(y * width + x, combined)
+        # Run the vectorized inner loop
+        vectorize[simd_width, inner](width)
+    memcpy(p, tmp, el)
+    tmp.free()
+```
+
+Now we can use a similar benchmark function as Python to take the average of 5 iterations:
+
+
+```mojo
+var image = open("fire.png")
+
+var nanos = 0.0
+let its = 5
+for _ in range(its):
+    let tick = now()
+    box_blur_mojo[8](image)
+    nanos += (now() - tick)
+mojo_secs = nanos / its / 1e9
+
+print("total time:", mojo_secs)
+print("python speedup:", python_secs / mojo_secs)
+print("opencv speedup:", opencv_secs / mojo_secs)
+```
+
+    total time: 0.00046445619999999999
+    python speedup: 1391.3976338941625
+    opencv speedup: 3.15472934074243
+
+
+We just replaced tens of thousands of lines of incredibly hard-to-understand C++ code, accounting for all the different hardware API's that opencv supports, and still managed to get a 3x performance improvement. This can be further improved by splitting rows and running on separate cores, but this didn't result in faster performance on my playground instance as the CPU is shared with other users, stay tuned for updates once the local compiler is released.
+
+This isn't the most performant way to do a box blur; I chose this method because it's the fewest lines of code and easiest to explain.
+
+## Conclusion
+Overall I really enjoy working with computer vision and Rust as it's a fun language, but adding complexity is not going to help the ecosystem, it's desperately in need of simplification. As [Andrej Karpathy shows](https://www.youtube.com/watch?v=VMj-3S1tku0), neural networks are not complicated to implement, it's making them go fast on different hardware where all the complexity comes from, and because Mojo is focused on simplifying that process while allowing AI researchers to interact with their code from Python, I'm confident that it's going to be the path forward for the industry.
+
+If you found any mistakes, incorrect information, or have faster benchmarks, please let me know in the comments below or [Edit this page on GitHub](https://github.com/mojodojodev/mojodojo.dev/edit/main/blog/2023-07-17-rust-or-mojo-ai.md) to raise a pull request!
+
+
+_contributions by [Ryan Govostes](https://github.com/rgov) and [Abdul Dakkak](https://github.com/abduld)_
+
+<CommentService />
+--- SOURCE: blog/index.md ---
+# Blog
+
+[RSS](/rss.xml) / [Atom](/atom.xml)
+
+<BlogPosts />
+--- SOURCE: index.md ---
+---
+home: true
+heroImage: /hero.png
+actions:
+  - text: Guides
+    link: /guides/
+  - text: Mojo Team Answers
+    link: /mojo_team_answers
+    type: primary
+  - text: This Week in Mojo
+    link: /this_week_in_mojo/
+    type: primary
+  - text: Blog
+    link: /blog/
+    type: primary
+  - text: Is Mojo For Me?
+    link: /is_mojo_for_me
+    type: secondary
+footer: MIT Licensed - Unofficial and not affiliated with Modular or Mojo
+---
+
+
+<div style="display: flex; justify-content: center; align-items: center; padding-bottom: 20px;">
+    <a href="/rss.xml" style="margin-right: 15px;">RSS</a>
+    <a href="/atom.xml" style="margin-right: 15px;">Atom</a>
+    <a href="/feed.json">JSON</a>
+</div>
+--- SOURCE: definitions.md ---
+# Definitions 
+## inout
+Any mutations `in` the function will persist `out` of the function, also known as a mutable reference
+
+## argument
+A value that you pass to a function when calling it, or the identifier in the function definition:
+
+
+```mojo
+fn example(argument: Int):
+    pass
+```
+
+## parameter
+Not to be confused with `argument`, these go in the `[]` brackets in a method or function definition. Everything inside these brackets must be known at compile time:
+
+
+```mojo
+fn example[parameter: Int](argument: Int):
+    pass
+```
+
+The `@parameter` decorator over an `if` statement runs during compilation:
+
+
+```mojo
+from TargetInfo import os_is_linux
+@parameter
+if os_is_linux():
+    print("this will be included in the binary")
+else:
+    print("this will be eliminated from compilation process")
+```
+
+    this will be included in the binary
+
+
+# register_passable 
+You can decorate a type with `@register_passable` to indicate it's not `memory only`, for example a `UInt3232` is just 32 bits for the actual value and can be directly copied into and out of registers, while a `String` contains an address that requires indirection to access the data so it's `memory only`.
+
+Create a type with a pair of `UInt3232` and mark it register passable:
+
+
+```mojo
+@register_passable
+struct Pair:
+    var a: Int
+    var b: Int
+
+    fn __copyinit__(self) -> Self:
+        return Self{a: self.a, b: self.b}
+
+    fn __del__(owned self):
+        print("dropping")
+```
+
+`__copyinit__` and `__del__` aren't required, this is just to indicate that you can define how it copies if you like, and do something special when the object is dropped:
+
+
+```mojo
+fn test():
+    let x = Pair{a: 5, b: 10}
+    var y = x
+    y.a = 10
+    y.b = 20
+
+    print(x.a, x.b)
+    print(y.a, y.b)
+
+test()
+```
+
+    dropping
+    5 10
+    dropping
+    10 20
+
+
+Generally you just want to mark it with the [@value](/guides/decorators/value) decorator, which will give you everything you need for `value-semantics`:
+
+
+```mojo
+@value
+@register_passable
+struct Pair:
+    var a: Int
+    var b: Int
+
+let x = Pair(5, 10)
+print(x.a, x.b)
+```
+
+    5 10
+
+
+Trying to define `__moveinit__` will result in an error, the whole idea behind `register_passable` is that the type is moveable into or out of a register by copying without any indirection:
+
+
+```mojo
+@register_passable
+struct Pair:
+    var a: Int
+    var b: Int
+
+    fn __moveinit__(inout self, owned exisiting: Self):
+        self.a = exisiting.a
+        self.b = existing.b
+```
+
+    error: Expression [7]:10:5: '__moveinit__' is not supported for @register_passable types, they are always movable by copying a register
+        fn __moveinit__(inout self, owned exisiting: Self):
+        ^
+    
+    error: Expression [7]:10:5: '__moveinit__' result type must be 'Pair'
+        fn __moveinit__(inout self, owned exisiting: Self):
+        ^
+    
+    error: Expression [7]:12:18: use of unknown declaration 'existing', 'fn' declarations require explicit variable declarations
+            self.b = existing.b
+                     ^~~~~~~~
+    
+
+
+## trivial
+For a trivial type you can't define `__init__`, `__copyinit__`, `__moveinit__`, `__del__`, moving is `trivial` because it always moves by copy, there is no special logic required for indirection or anything else.
+
+Examples of trivial types:
+- Arithmetic types such as `Int`, `Bool`, `Float64` etc.
+- Pointers
+- Arrays of other trivial types including SIMD
+- Struct only trivial types decorated with `@register_passable("trivial")`:
+
+
+```mojo
+@register_passable("trivial")
+struct Pair:
+    var a: Int
+    var b: Int
+```

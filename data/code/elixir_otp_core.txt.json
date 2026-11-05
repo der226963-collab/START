@@ -1,0 +1,28 @@
+{
+  "title": "Elixir OTP / Concurrency Core (curated selection)",
+  "author": "Elixir Core Team / elixir-lang contributors",
+  "edition": "main branch, commit cb8695250e2ff8b27c343e2a5ce91e2da7bbdfde (2026-11-04 snapshot)",
+  "source": "elixir-lang/elixir, branch main, lib/elixir/lib/ (files listed in files)",
+  "licence": "Apache License 2.0",
+  "licence_verified_from": "elixir-lang/elixir LICENSE, read via GitHub connector",
+  "chars": 472389,
+  "sha256": "3db5bf44f523aeb77f60b39bc68a49e1b4ef48cc53c7825ab233cdb8dc7df663",
+  "file_count": 11,
+  "files": [
+    "gen_server.ex",
+    "supervisor.ex",
+    "dynamic_supervisor.ex",
+    "application.ex",
+    "task.ex",
+    "task/supervisor.ex",
+    "registry.ex",
+    "agent.ex",
+    "stream.ex",
+    "system.ex",
+    "process.ex"
+  ],
+  "failed": [],
+  "failed_count": 0,
+  "status": "proposed",
+  "notes": "Curated OTP and concurrency core: GenServer, Supervisor, DynamicSupervisor, Application, Task, Task.Supervisor, Registry, Agent, Stream, System, Process. These are the modules that teach the BEAM actor model (processes, message passing, supervision trees, fault tolerance) in real code. Left out: the rest of lib/elixir/lib (see elixir_stdlib_core.txt) and lib/elixir/src (Erlang compiler internals). Files joined with '--- SOURCE: <repo path> ---' separators, code unmodified."
+}

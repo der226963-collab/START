@@ -1,0 +1,41 @@
+{
+  "title": "Julia Base Library Source (curated selection, part 2)",
+  "authors": [
+    "JuliaLang contributors"
+  ],
+  "source_repo": "JuliaLang/julia",
+  "source_branch": "master",
+  "source_commit": "ac394d3c58087921afc35ab5d61997057e7910cc",
+  "source": "JuliaLang/julia, master, base/ (the 16 curated files that did not fit the ~1.1M cap of julia_base_source.txt)",
+  "licence": "MIT License",
+  "licence_detail": "MIT License, Copyright (c) 2009-2025 Jeff Bezanson, Stefan Karpinski, Viral B. Shah, and other contributors",
+  "licence_verified_from": "JuliaLang/julia LICENSE.md, read via GitHub connector",
+  "notes": "Second half of the curated base selection: sorting, strings, IO, error handling, broadcasting, reflection, utilities, version/UUID. Together with julia_base_source.txt this is the complete curated list (53 files); code unmodified. The full base/ is ~4.9M chars, so this remains a subset.",
+  "file": "julia_base_source2.txt",
+  "chars": 461753,
+  "sha256": "1c31f3a2610ed0c17fbda7ef8b6dd3e84b89d89b51bbc01b66065a1f76f792d2",
+  "files": [
+    "base/sort.jl",
+    "base/accumulate.jl",
+    "base/anyall.jl",
+    "base/combinatorics.jl",
+    "base/cartesian.jl",
+    "base/checked.jl",
+    "base/Enums.jl",
+    "base/strings/basic.jl",
+    "base/strings/string.jl",
+    "base/io.jl",
+    "base/error.jl",
+    "base/broadcast.jl",
+    "base/reflection.jl",
+    "base/util.jl",
+    "base/version.jl",
+    "base/uuid.jl"
+  ],
+  "file_count": 16,
+  "failed": [],
+  "failed_count": 0,
+  "status": "proposed",
+  "approved": false,
+  "pushed": false
+}

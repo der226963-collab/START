@@ -1,0 +1,28 @@
+{
+  "title": "Elixir Standard Library Core (curated selection)",
+  "author": "Elixir Core Team / elixir-lang contributors",
+  "edition": "main branch, commit cb8695250e2ff8b27c343e2a5ce91e2da7bbdfde (2026-11-04 snapshot)",
+  "source": "elixir-lang/elixir, branch main, lib/elixir/lib/ (11 files listed in files)",
+  "licence": "Apache License 2.0",
+  "licence_verified_from": "elixir-lang/elixir LICENSE, read via GitHub connector",
+  "chars": 1025415,
+  "sha256": "0b8f8a556a0e1d6e2f9bd51e13dd742d2d64179f2c2b131933a3370b2741c7c5",
+  "file_count": 11,
+  "files": [
+    "kernel.ex",
+    "enum.ex",
+    "string.ex",
+    "macro.ex",
+    "code.ex",
+    "module.ex",
+    "exception.ex",
+    "file.ex",
+    "access.ex",
+    "list.ex",
+    "keyword.ex"
+  ],
+  "failed": [],
+  "failed_count": 0,
+  "status": "proposed",
+  "notes": "Curated core of the Elixir standard library as written in Elixir itself: Kernel (the core macros and functions imported by default), Enum, String, Macro, Code, Module, Exception, File, Access, List, Keyword. Left out for the ~1M budget: the rest of lib/elixir/lib (e.g. GenServer/Supervisor/Task in elixir_otp_core.txt, Stream, System, Registry, Calendar, Regex, Base, URI, Date/Time, Protocol, Inspect), lib/elixir/src (Erlang compiler internals) and lib/elixir/unicode (data tables). Files joined with '--- SOURCE: <repo path> ---' separators, code unmodified."
+}

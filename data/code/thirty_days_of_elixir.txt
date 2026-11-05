@@ -1,0 +1,3198 @@
+--- SOURCE: README.md ---
+
+# 30 Days of Elixir
+
+A walk through the [Elixir](http://elixir-lang.org/) language, one exercise per day for 30 days.
+
+## Frequently Asked Question:
+
+**How am I supposed to use this?**
+
+I'm not sure! I originally **wrote** these exercises as I was learning the language myself. I don't know if merely
+**reading** them will be of much use though. I recommend you open each file in your favorite editor, change it,
+break it, rewrite the code in your own style, etc. Experiment, and if you find a mistake, then bonus points for you!
+
+### You have to start somewhere.
+
+**[01-hello-world.exs](01-hello-world.exs)** - We start at the very beginning: our first message to the world!
+
+**[02-unit-testing.exs](02-unit-testing.exs)** - We'll need unit testing for the rest of the exercises, so let's do this! The built-in unit
+testing library ExUnit is capable and easy-to-use.
+
+**[03-input-output.exs](03-input-output.exs)** - Here we learn that file input and user input are easy. José has even done us a solid and
+duplicated some familiar Path and File methods from Ruby.
+
+**[04-list.exs](04-list.exs)** - What's a functional language without a List? Here we learn some simple list manipulation, and for
+awhile we can pretend lists are like our familiar Ruby arrays. :-)
+
+**[05-map.exs](05-map.exs)** - Maps are the go-to key-value structure in Elixir, and the syntax is fairly simple coming from other
+dynamic languages.
+
+**[06-record.exs](06-record.exs)** - Where are our beloved objects? In functional programming, data is just data, and Elixir gives you
+the Record structure to organize it a bit. Records are a little like Struct from other imperative languages, except of
+course they are immutable!
+
+**[07-fibonacci.exs](07-fibonacci.exs)** - You learn recursion by using recursion! We learn about multiple methods of the same name,
+pattern matching, and guard clauses, cool! Finally we do it all over again, backwards! (Hey, why not?)
+
+### Learning is a Process.
+
+**[08-process-ring.exs](08-process-ring.exs)** - Sometimes a contrived example is the best way to focus on the technology. For now, let's just
+send messages around in a ring and see how this Process thing works.
+
+**[09-ping.exs](09-ping.exs)** - Now let's build something useful! Wow, it's easy to launch as many processes as you have increments
+of work. When the work is finished, send a message back to the parent and he'll assemble the results. Cool!
+
+### So, do you Sudoku?
+
+**[10-sudoku-board.exs](10-sudoku-board.exs)** - No objects? Pshaaw! Who needs 'em - let's use simple lists to represent our Sudoku board.
+Easy!
+
+**[11-sudoku-solver.exs](11-sudoku-solver.exs)** - Epic fail. Our code is pretty, but the algorithm is naive and too slow to use on a
+full-size board.
+
+**[12-sudoku-solver-norvig.exs](12-sudoku-solver-norvig.exs)** - Time to bring out the big guns! Here we port Peter Norvig's Holy Grail of a Solver
+over to Elixir. We learn how to change imperative operations on mutable state to functional ones on immutable data.
+This solver is freakin' fast!
+
+### Spades, cuz they look like little shovels!
+
+**[13-card-deck.exs](13-card-deck.exs)** - Let's see how we might represent a deck of cards. Easy, a list of tuples! We'll also build a
+higher-order function to deal out the cards to players.
+
+**[14-spades.exs](14-spades.exs)** - They're aliiiiive! Processes connect to one another and send messages, across terminal windows,
+machines, even teh intarwebs! Let's put this to good use and build a multi-player game of Spades. Ace of Spades FTW!
+
+### Tease your brain, but don't be a bully.
+
+**[15-quine.exs](15-quine.exs)** - A quine is a program that prints its own source code. Let's build the smallest one we can using
+Elixir... sigils help a lot!
+
+**[16-euler-tree.exs](16-euler-tree.exs)** - Project Euler problem 67 is a fun puzzle; let's solve it with a functional language! We'll
+make extensive use of list comprehensions in this one.
+
+**[17-dining-philosophers.exs](17-dining-philosophers.exs)** - Pass the fork! The actor model makes certain problems a lot easier to reason about,
+and feeding some philosophers is one of them.
+
+### OTP, hey you know me!
+
+**[18-gen_server.exs](18-gen_server.exs)** - Here we move up a level and build a Prime Factors server using OTP GenServer behaviour.
+
+**[19-supervisor.exs](19-supervisor.exs)** - This one is simple: when our Prime Factors server craps out, restart it. Easy!
+
+### Let's build a web...
+
+**[20-inets.exs](20-inets.exs)** - Erlang's built-in inets library is nothing to be amazed by, but it gets the job done. We'll simply
+announce ourselves to the world again, this time via HTTP.
+
+**[21-wiki.exs](21-wiki.exs)** - Now let's build something useful, combining our knowledge of inets and some simple File IO to build
+a wiki web server.
+
+**[22-socket-server.exs](22-socket-server.exs)** - "I don't always build web apps, but when I do, I use low-level sockets and parse the HTTP
+headers myself," said no one, ever. Turns out [gen_tcp](http://erlang.org/doc/man/gen_tcp.html) is pretty easy to use
+if you want to handle socket communication.
+
+### What's this doing here?
+
+**[23-digest.exs](23-digest.exs)** - Erlang/OTP has so many things to offer, yet simple hexdigest using sha1 isn't one of 'em. At least
+we get to learn one way to import external Erlang code and run it in Elixir, so not all is lost.
+
+**[24-stream.exs](24-stream.exs)** - Let's build a better Fibonacci method using lazy streams. You can tell our understanding of the
+language has improved, as the amount of code to implement this is 1/10th of the size of our first foray into Fibonacci!
+
+**[25-set.exs](25-set.exs)** - We'll learn about the built-in [HashSet](http://elixir-lang.org/docs/stable/elixir/HashSet.html)
+library, just for fun.
+
+### The Rat Pack didn't have Macros.
+
+**[26-frank.exs](26-frank.exs)** - Here we'll make a brief incursion into the land of macros. In this exercise, we'll build a web DSL
+with custom syntax. This first try we'll just use a macro to write a method. `quote`/`unquote` confounds a bit.
+
+**[27-frank-2.exs](27-frank-2.exs)** - This version of Frank is only a little better, but lets our path matches contain any character and
+utilizes pattern matching to grab the right handler method. But here we're still struggling with `quote`/`unquote` et
+al. What does it all mean?
+
+**[28-frank-3.exs](28-frank-3.exs)** - Macros are starting to make a little more sense now. The final version of Frank can handle
+patterns in the URL, e.g. `/foo/:id` and our macro code got simpler!
+
+### You'll never learn if you don't Trie.
+
+**[29-vector.exs](29-vector.exs)** - For our last couple of exercises, let's do something completely different! Elixir has a list data
+structure, but no [Vector](https://clojure.org/reference/data_structures#Vectors), so let's
+create one... our first attempt has us learning about Hash Array Mapped Trie (HAMT), and as it turns out, using this
+structure for a vector wasn't the best idea.
+
+**[30-vector.exs](30-vector.exs)** - Take 2... Thanks to Jean Niklas L'orange's
+[excellent articles about Clojure's Vectors](http://hypirion.com/musings/understanding-persistent-vector-pt-1), we
+learn how to build a Bit Partitioned Vector Trie. And now, we have a Vector with constant-time access. Cool stuff!
+
+## Copyright & License
+
+Copyright (c) [Tim Morgan](http://timmorgan.org)
+
+Licensed under MIT, see LICENSE file.
+--- SOURCE: 01-hello-world.exs ---
+
+# http://elixir-lang.org/getting-started/introduction.html
+
+IO.puts "hello world"
+--- SOURCE: 02-unit-testing.exs ---
+
+# http://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html
+# https://hexdocs.pm/ex_unit/ExUnit.html
+
+ExUnit.start                                # set up the test runner
+
+defmodule MyTest do
+  use ExUnit.Case                           # use requires a module and sets up macros; will explore more later
+
+  test 'simple test' do
+    assert 1 + 1 == 2
+    #assert 1 + 1 == 3                      # Elixir is smart! No need for assert_equal, assert_gte, etc.
+                                            # And we still get great failure messages, yipee!
+                                            # 1) test_assert (MyTest)
+                                            #    ** (ExUnit.ExpectationError)
+                                            #                 expected: 2
+                                            #      to be equal to (==): 3
+  end
+
+  test "refute is opposite of assert" do    # test macro accepts string as test name
+    refute 1 + 1 == 3
+  end
+
+  test :assert_raise do                     # test macro also accepts an atom
+    assert_raise ArithmeticError, fn ->
+      1 + "x"
+    end
+  end
+
+  test "assert_in_delta asserts that val1 and val2 differ by less than delta." do
+    assert_in_delta 1, # actual
+                    5, # expected
+                    6  # delta
+  end
+
+end
+--- SOURCE: 03-input-output.exs ---
+
+# https://hexdocs.pm/elixir/IO.html
+# https://hexdocs.pm/elixir/File.html
+
+defmodule CowInterrogator do
+
+  # docstring are quite useful you can generate docs out of them
+  # check: http://elixir-lang.org/getting-started/module-attributes.html
+  # for more info
+  @doc """
+  Gets name from standard IO
+  """
+  def get_name do
+    IO.gets("What is your name? ")
+    |> String.trim
+  end
+
+  def get_cow_lover do
+    IO.getn("Do you like cows? [y|n] ", 1)
+  end
+
+  def interrogate do
+    name = get_name()
+    case String.downcase(get_cow_lover()) do
+      "y" ->
+        IO.puts "Great! Here's a cow for you #{name}:"
+        IO.puts cow_art()
+      "n" ->
+        IO.puts "That's a shame, #{name}."
+      _ ->
+        IO.puts "You should have entered 'y' or 'n'."
+    end
+  end
+
+  def cow_art do
+    path = Path.expand("support/cow.txt", __DIR__)
+    case File.read(path) do
+      {:ok, art} -> art
+      {:error, _} -> IO.puts "Error: cow.txt file not found"; System.halt(1)
+    end
+  end
+end
+
+ExUnit.start
+
+
+defmodule InputOutputTest do
+  use ExUnit.Case
+  import String
+
+  test "checks if cow_art returns string from support/cow.txt" do
+    # this call checks if cow_art function returns art from txt file
+    art = CowInterrogator.cow_art
+    assert trim(art) |> first == "(" # first is implemented in String module
+  end
+end
+
+# call interrogate performs most of the work
+# asks about your name, your interests in cows
+# and renders cow art
+CowInterrogator.interrogate
+--- SOURCE: 04-list.exs ---
+
+# http://elixir-lang.org/getting-started/basic-types.html
+
+ExUnit.start
+
+defmodule ListTest do
+  use ExUnit.Case
+
+  def sample() do
+    ["Tim", "Jen", "Mac", "Kai"]
+  end
+
+  test "sigil" do
+    assert sample() == ~w(Tim Jen Mac Kai)
+  end
+
+  test "head" do
+    [head | _] = sample()
+    assert head == "Tim"
+  end
+
+  test "tail" do
+    [_ | tail] = sample()
+    assert tail == ~w(Jen Mac Kai)
+  end
+
+  # warning, has to traverse the entire list!
+  test "last item" do
+    assert List.last(sample()) == "Kai"
+  end
+
+  test "delete item" do
+    assert List.delete(sample(), "Mac") == ~w(Tim Jen Kai)
+    # only deletes the first occurrence
+    assert List.delete([1, 2, 2, 3], 2) == [1, 2, 3]
+  end
+
+  test "List.fold" do
+    list = [20, 10, 5, 2.5]
+    sum = List.foldr list, 0, &(&1 + &2)
+    # or...
+    # sum = List.foldr list, 0, fn (num, sum) -> num + sum end
+    assert sum == 37.5
+  end
+
+  # Seems that Enum module methods are encouraged over List methods
+  # (if possible)
+  test "Enum.reduce" do
+    list = [20, 10, 5, 2.5]
+    sum = Enum.reduce list, 0, &(&1 + &2)
+    # or...
+    # sum = Enum.reduce list, 0, fn (num, sum) -> num + sum end
+    assert sum == 37.5
+  end
+
+  # List.wrap is much like Ruby's Array() method
+  test "wrap" do
+    assert List.wrap(sample()) == sample()
+    assert List.wrap(1) == [1]
+    assert List.wrap([]) == []
+    assert List.wrap(nil) == []
+  end
+
+  test "list comprehension" do
+    some = for n <- sample(), String.first(n) < "M", do: n <> " Morgan"
+    assert some == ["Jen Morgan", "Kai Morgan"]
+  end
+
+  # I was curious about raw speed of working with large lists...
+  # Let's just build and reverse a large list.
+  # Surprisingly, the manual way is not much slower.
+
+  # Also got to browse Erlang docs for timer:tc/1
+  # (http://www.erlang.org/doc/man/timer.html#tc-1) and call thru from Elixir.
+  # Easy!
+
+  test "manual reverse speed" do
+    {microsec, reversed} = :timer.tc fn ->     # Erlang function, yay!
+      Enum.reduce 1..1_000_000, [], fn (i, l) -> List.insert_at(l, 0, i) end
+    end
+    assert reversed == Enum.to_list(1_000_000..1)
+    IO.puts "manual reverse took #{microsec} microsecs"
+  end
+
+  # Another thing worth pointing out is it's cheap to insert at the front of a
+  # list while it's expensive to insert at the end of a list (which is O(n)).
+  test "speed of inserting at the end of a list" do
+    {microsec, reversed} = :timer.tc fn ->     # Erlang function, yay!
+      # It takes about 1.6 seconds on my laptop even with only 10000 elements.
+      # For 1..1_000_000, it would take a really long time.
+      Enum.reduce 1..10000, [], fn (i, l) -> List.insert_at(l, -1, i) end
+    end
+    assert reversed == Enum.to_list(1..10000)
+    IO.puts "inserting at the end of a list took #{microsec} microsecs"
+  end
+
+  test "Enum.reverse speed" do
+    {microsec, reversed} = :timer.tc fn ->
+      Enum.reverse 1..1_000_000
+    end
+    assert reversed == Enum.to_list(1_000_000..1)
+    IO.puts "Enum.reverse took #{microsec} microsecs"
+  end
+end
+--- SOURCE: 05-map.exs ---
+
+# https://hexdocs.pm/elixir/Map.html
+
+ExUnit.start
+
+defmodule MapTest do
+  use ExUnit.Case
+
+  def sample do
+    %{foo: 'bar', baz: 'quz'}
+  end
+
+  test "Map.get" do
+    assert Map.get(sample(), :foo) == 'bar'
+    assert Map.get(sample(), :non_existent) == nil
+  end
+
+  test "[]" do
+    assert sample()[:foo] == 'bar'
+    assert sample()[:non_existent] == nil
+  end
+
+  test "." do
+    assert sample().foo == 'bar'
+    assert_raise KeyError, fn ->
+      sample().non_existent
+    end
+  end
+
+  test "Map.fetch" do
+    {:ok, val} = Map.fetch(sample(), :foo)
+    assert val == 'bar'
+    :error = Map.fetch(sample(), :non_existent)
+  end
+
+  test "Map.put" do
+    assert Map.put(sample(), :foo, 'bob') == %{foo: 'bob', baz: 'quz'}
+    assert Map.put(sample(), :far, 'bar') == %{foo: 'bar', baz: 'quz', far: 'bar'}
+  end
+
+  test "Update map using pattern matching syntax" do
+    # You can only update existing keys in this way
+    assert %{ sample() | foo: 'bob'} == %{foo: 'bob', baz: 'quz'}
+    # It doesn't work if you want to add new keys
+    assert_raise KeyError, fn ->
+      %{ sample() | far: 'bob'}
+    end
+  end
+
+  test "Map.values" do
+    # Map does not preserve order of keys, thus we Enum.sort
+    assert Enum.sort(Map.values(sample())) == ['bar', 'quz']
+  end
+end
+--- SOURCE: 06-record.exs ---
+
+ExUnit.start
+
+defmodule User do
+  defstruct email: nil, password: nil
+end
+
+defimpl String.Chars, for: User do
+  def to_string(%User{email: email}) do
+    email
+  end
+end
+
+defmodule RecordTest do
+  use ExUnit.Case
+
+  defmodule ScopeTest do
+    use ExUnit.Case
+    
+    # https://hexdocs.pm/elixir/Record.html
+    require Record
+    Record.defrecordp :person, first_name: nil, last_name: nil, age: nil
+
+    test "defrecordp" do
+      p = person(first_name: "Kai", last_name: "Morgan", age: 5) # regular function call
+      assert p == {:person, "Kai", "Morgan", 5} # just a tuple!
+    end
+  end
+
+  # CompileError
+  # test "defrecordp out of scope" do
+  #   person()
+  # end
+
+  def sample do
+    %User{email: "kai@example.com", password: "trains"} # special % syntax for struct creation
+  end
+
+  test "defstruct" do
+    assert sample() == %{__struct__: User, email: "kai@example.com", password: "trains"}
+  end
+
+  test "property" do
+    assert sample().email == "kai@example.com"
+  end
+
+  test "update" do
+    u = sample()
+    u2 = %User{u | email: "tim@example.com"}
+    assert u2 == %User{email: "tim@example.com", password: "trains"}
+  end
+
+  test "protocol" do
+    assert to_string(sample()) == "kai@example.com"
+  end
+end
+--- SOURCE: 07-fibonacci.exs ---
+
+defmodule Fib do
+  @moduledoc """
+  Fibonacci Sequence function.
+  Please note, I wrote this purely from memory --
+  I mean, I'm sure there's a more concise way to build this algorithm. :-)
+  """
+
+  @seed [0, 1]
+
+  # named functions can have different arities, whereas anonymous functions cannot
+  # also, anonymous functions cannot call themselves recursively :-(
+
+  def fib(n) when n < 2 do
+    Enum.take @seed, n
+  end
+
+  def fib(n) when n >= 2 do
+    fib(@seed, n - 2)
+  end
+
+  def fib(acc, 0), do: acc
+
+  def fib(acc, n) do
+    fib(acc ++ [Enum.at(acc, -2) + Enum.at(acc, -1)], n - 1)
+  end
+end
+
+defmodule Fib2 do
+  @moduledoc """
+  Fibonacci Sequence function.
+  This is my attempt to be more efficient by building the list
+  backwards (and then reversing at the end).
+  """
+
+  @seed [1, 0]
+
+  def fib2(n) when n < 2 do
+    Enum.reverse(@seed) |> Enum.take(n)
+  end
+
+  def fib2(n) when n >= 2 do
+    fib2(@seed, n - 2)
+  end
+
+  def fib2(acc, 0), do: Enum.reverse(acc)
+
+  def fib2([first, second | _] = lst, n) do
+    fib2([first + second | lst], n - 1)
+  end
+end
+
+ExUnit.start
+
+defmodule RecursionTest do
+  use ExUnit.Case
+
+  import Fib
+
+  test "fibonacci" do
+    assert fib(0) == []
+    assert fib(1) == [0]
+    assert fib(2) == [0, 1]
+    assert fib(10) == [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+  end
+
+  import Fib2
+
+  test "fibonacci 2" do
+    assert fib2(0) == []
+    assert fib2(1) == [0]
+    assert fib2(2) == [0, 1]
+    assert fib2(10) == [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+  end
+
+  test "benchmark" do
+    {microsecs, _} = :timer.tc fn -> fib(1000) end
+    IO.puts "fib() took #{microsecs} microsecs"     # 7118 microsecs
+    {microsecs, _} = :timer.tc fn -> fib2(1000) end
+    IO.puts "fib2() took #{microsecs} microsecs"    # 90 microsecs
+  end
+end
+--- SOURCE: 08-process-ring.exs ---
+
+# The goal here was to learn about Elixir's (Erlang's) lightweight processes.
+# The following module gets spawned a few times connected in a ring where messages are sent around in order.
+
+# http://elixir-lang.org/getting-started/basic-types.html
+# http://elixir-lang.org/docs/stable/elixir/Process.html
+# http://elixir-lang.org/getting-started/processes.html
+# http://benjamintanweihao.github.io/blog/2013/06/25/elixir-for-the-lazy-impatient-and-busy-part-2-processes-101/
+# http://benjamintanweihao.github.io/blog/2013/07/13/elixir-for-the-lazy-impatient-and-busy-part-4-processes-101/
+
+defmodule Pinger do
+  @doc "Send message (echo) to the next process in the ring."
+  def ping(echo, limit) do
+    receive do
+      # got a message, send another message to the next process in the ring
+      {[next | rest], msg, count} when count <= limit ->
+        IO.puts "Received: #{inspect msg} (count #{count})"
+        :timer.sleep(1000)
+        send next, {rest ++ [next], echo, count+1}
+        ping(echo, limit)
+
+      # over our limit of messages, send :ok around the ring
+      {[next | rest], _, _} ->
+        send next, {rest, :ok}
+
+      # someone told us to stop, so pass along the message
+      {[next | rest], :ok} ->
+        send next, {rest, :ok}
+    end
+  end
+end
+
+defmodule Spawner do
+  def start do
+    limit = 5
+    {foo, _foo_monitor} = spawn_monitor(Pinger, :ping, ["ping", limit])
+    {bar, _bar_monitor} = spawn_monitor(Pinger, :ping, ["pong", limit])
+    {baz, _baz_monitor} = spawn_monitor(Pinger, :ping, ["pung", limit])
+    send foo, {[bar, baz, foo], "start", 0}
+    wait [foo, bar, baz]
+  end
+
+  @doc "Waits for all processes to finish before exiting."
+  def wait(pids) do
+    IO.puts "waiting for pids #{inspect pids}"
+    receive do
+      {:DOWN, _, _, pid, _} ->
+        IO.puts "#{inspect pid} quit"
+        pids = List.delete(pids, pid)
+        unless Enum.empty?(pids) do
+          wait(pids)
+        end
+    end
+  end
+end
+
+Spawner.start
+--- SOURCE: 09-ping.exs ---
+
+# If you get errors running 254 ping commands it's probably due to the number
+# of open files.  You can "fix" this by running this command in the terminal
+# session before running this program:
+#
+#   ulimit -n 1024
+#
+# If the limit is 256 (the default) then we can run 120 or so before we run out
+# of file descriptors.
+
+defmodule Ping do
+  @moduledoc """
+  Ping a class-C subnet to find hosts that respond.
+  To run from the command line:
+
+    $ elixir 09-ping.exs 192.168.1.x
+  """
+
+  @doc """
+  Ping an IP asynchronously and send a tuple back to the parent saying what
+  has happened:
+
+  `{:ok, ip, pingable?}` where `pingable?` tells us if `ip` is pingable.
+
+  `{:error, ip, error}` when some error caused us to not be able to run the
+  ping command.
+
+  """
+  def ping_async(ip, parent) do
+    send parent, run_ping(ip)
+  end
+
+  @doc """
+  Ping a single IP address returning a tuple which `ping_async` can return.
+  """
+  def run_ping(ip) do
+    # This is a Ruby-ish way of dealing with failure...
+    # TODO: Discover the "Elixir way"
+    try do
+      # return code should be handled somehow with pattern matching
+      {cmd_output, _} = System.cmd("ping", ping_args(ip))
+      alive? = not Regex.match?(~r/100(\.0)?% packet loss/, cmd_output)
+      {:ok, ip, alive?}
+    rescue
+      e -> {:error, ip, e}
+    end
+  end
+
+  def ping_args(ip) do
+    wait_opt = if darwin?(), do: "-W", else: "-w"
+    ["-c", "1", wait_opt, "5", "-s", "1", ip]
+  end
+
+  def darwin? do
+    {output, 0} = System.cmd("uname", [])
+    String.trim_trailing(output) == "Darwin"
+  end
+end
+
+defmodule Subnet do
+  @doc """
+  Ping all IPs in a class-C subnet and return a map with results.
+  """
+  def ping(subnet) do
+    all = ips(subnet)
+    Enum.each all, fn ip ->
+      # Task.start gives better logging than spawn when things go awry.
+      # http://elixir-lang.org/getting-started/processes.html#tasks
+      Task.start(Ping, :ping_async, [ip, self()])
+    end
+    wait %{}, Enum.count(all)
+  end
+
+  @doc """
+  Given a class-C subnet string like '192.168.1.x', return list of all 254 IPs therein.
+  """
+  def ips(subnet) do
+    subnet = Regex.run(~r/^\d+\.\d+\.\d+\./, subnet) |> Enum.at(0)
+    Enum.to_list(1..254) |> Enum.map(fn i -> "#{subnet}#{i}" end)
+  end
+
+  defp wait(results, 0), do: results
+  defp wait(results, remaining) do
+    receive do
+      {:ok, ip, pingable?} ->
+        results = Map.put(results, ip, pingable?)
+        wait(results, remaining - 1)
+      {:error, ip, error} ->
+        IO.puts "#{inspect error} for #{ip}"
+        wait(results, remaining - 1)
+    end
+  end
+end
+
+# Command-line execution support
+# TODO is there a way to check if this script is being executed directly (vs imported elsewhere)?
+case System.argv do
+  [subnet] ->
+    results = Subnet.ping(subnet)
+    results
+    |> Enum.filter(fn {_ip, exists} -> exists end)
+    |> Enum.map(fn {ip, _} -> ip end)
+    |> Enum.sort
+    |> Enum.join("\n")
+    |> IO.puts
+  _ ->
+    ExUnit.start
+
+    defmodule SubnetTest do
+      use ExUnit.Case
+
+      test "ips" do
+        ips = Subnet.ips("192.168.1.x")
+        assert Enum.count(ips) == 254
+        assert Enum.at(ips, 0) == "192.168.1.1"
+        assert Enum.at(ips, 253) == "192.168.1.254"
+      end
+    end
+end
+--- SOURCE: 10-sudoku-board.exs ---
+
+defmodule SudokuBoard do
+  @moduledoc "Functions to interrogate a board."
+
+  import Enum
+
+  @doc "Returns true if the board is solved."
+  def solved?(board) do
+    rows_solved?(board) and cols_solved?(board)
+  end
+
+  @doc "Returns true if all rows are solved."
+  def rows_solved?([row | rest]) do
+    max = count(row)
+    sort(row) == to_list(1..max) and rows_solved?(rest)
+  end
+  def rows_solved?([]), do: true
+
+  @doc "Returns true if all columns are solved."
+  def cols_solved?(board) do
+    do_cols_solved?(board, count(board)-1)
+  end
+
+  defp do_cols_solved?(board, index) when index >= 0 do
+    max = count(board)
+    col = map board, fn row -> at(row, index) end
+    sort(col) == to_list(1..max) and do_cols_solved?(board, index-1)
+  end
+  defp do_cols_solved?(_, -1), do: true
+end
+
+ExUnit.start
+
+defmodule SudokuBoardTest do
+  use ExUnit.Case
+
+  import SudokuBoard
+
+  test "solved? on solved board" do
+    board = [
+      [1, 2],
+      [2, 1]
+    ]
+    assert solved?(board)
+  end
+
+  test "solved? on incorrectly solved board" do
+    board = [
+      [1, 1],
+      [2, 1]
+    ]
+    assert not solved?(board)
+    board = [
+      [2, 1],
+      [2, 1]
+    ]
+    assert not solved?(board)
+  end
+end
+--- SOURCE: 11-sudoku-solver.exs ---
+
+Code.load_file("./10-sudoku-board.exs")
+
+defmodule SudokuSolver do
+  @moduledoc """
+  Brute force solve a Sudoku puzzle.
+
+  TODO this is not a feasible approach for a 9x9 board since it generates too many combinations.
+  I will be working on a better solution soon.
+
+  This module does not concern itself with input/output -- it's up to you to feed
+  it a list of lists that represents the board, where `nil` is used to indicate a blank.
+
+  Here is a very small board to be solved:
+
+    iex> board = [[1,   nil, 3  ],
+                  [3,   nil, 2  ],
+                  [nil, 3,   nil]]
+
+  The solve/1 method accepts the board and returns it solved:
+
+    iex> SudokuSolver.solve(board)
+    [[1, 2, 3],
+     [3, 1, 2],
+     [2, 3, 1]]
+
+  The way it works is by first determining possible solutions. Each solution is determined
+  by first building a list of non-used numbers for each row, e.g. in the sample board
+  above, the missing number in the first row is 2, second row is 1, and third row is 1 and 2.
+
+  Then, these "possibles" are combined to find possible solutions. For the sample board above,
+  possible solutions are: [2, 1, 1, 2] and [2, 1, 2, 1].
+
+  From there, we simply brute force check each solution against the board to see if it's solved.
+
+  In effect, we are using logic to find possible solutions that work for each *row*, then we
+  use brute force to check the solutions against each *column*.
+  """
+
+  import Enum
+
+  @doc """
+  Given a list of lists (a square) containing some numbers (which represents a Sudoku board),
+  and containing nils where blanks are, return a square with all numbers filled in.
+
+  ## Example
+
+    iex> board = [[1,   nil, 3  ],
+                  [3,   nil, 2  ],
+                  [nil, 3,   nil]]
+    iex> SudokuSolver.solve(board)
+    [[1, 2, 3],
+     [3, 1, 2],
+     [2, 3, 1]]
+  """
+  def solve(board) do
+    board
+      |> solutions
+      |> map(fn s -> apply_solution(board, s) end)
+      |> find(fn b -> SudokuBoard.solved?(b) end)
+  end
+
+  @doc """
+  Given a board and a solution, insert the values from the solution
+  into the nil spots in the board.
+
+  TODO I'm not happy with how this method turned out.
+  It seems inefficient to flatten and reconstitute the board on each iteration.
+
+  ## Example
+
+    iex> board = [[1,   nil],
+                  [nil, 1  ]]
+    iex> SudokuSolver.apply_solution(board, [2, 2])
+    [[1, 2], [2, 1]]
+  """
+  def apply_solution(board, [first | rest]) do
+    size = count(board)
+    board = List.flatten(board)
+    pos = find_index board, fn col -> col == nil end
+    List.replace_at(board, pos, first)
+      |> chunk_every(size)
+      |> apply_solution(rest)
+  end
+  def apply_solution(board, []), do: board
+
+  @doc """
+  Returns possible combinations for solving the board.
+
+  ## Example
+
+    iex> board = [[1,   nil, 3  ],
+                  [3,   nil, 2  ],
+                  [nil, 3,   nil]]
+    iex> SudokuSolver.solutions(board)
+    [[2, 1, 1, 2], [2, 1, 2, 1]]
+  """
+  def solutions(board) do
+    possibles(board) |> combinations
+  end
+
+  defp possibles([row | rest]) do
+    possible = to_list(1..count(row)) -- row
+    [possible | possibles(rest)]
+  end
+  defp possibles([]), do: []
+
+  @doc """
+  Given a list of possibilities for each row, return all possible combinations.
+
+  ## Example
+
+    iex> SudokuSolver.combinations([[1], [2], [3, 4]])
+    [[1, 2, 3, 4], [1, 2, 4, 3]]
+  """
+  def combinations([list | rest]) do
+    crest = combinations(rest)
+    for p <- permutations(list), r <- crest do
+      List.flatten([p | r])
+    end
+  end
+  def combinations([]), do: [[]]
+
+  @doc """
+  Return all possible permutations of a list.
+
+  ## Example
+
+    iex> SudokuSolver.permutations([1,2,3])
+    [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]
+  """
+  # http://whileonefork.blogspot.com/2010/11/erlang-so-awesome-it-makes-my-brain.html
+  def permutations([]), do: [[]]
+  def permutations(list) do
+    for h <- list, t <- permutations(list -- [h]), do: [h | t]
+  end
+end
+
+ExUnit.start
+
+defmodule SudokuSolverTest do
+  use ExUnit.Case
+
+  import SudokuSolver
+
+  test "correct behavior of combinations" do
+    assert combinations([[1]]) == [[1]]
+    assert combinations([[2, 3], [1]]) == [[2, 3, 1], [3, 2, 1]]
+    assert combinations([[1], [2], [3, 4]]) == [[1, 2, 3, 4], [1, 2, 4, 3]]
+  end
+
+  test "solves a small board" do
+    board = [[1,   nil, 3  ],
+             [3,   nil, 2  ],
+             [nil, 3,   nil]]
+    assert solve(board) == [[1, 2, 3],
+                            [3, 1, 2],
+                            [2, 3, 1]]
+  end
+
+  test "returns nil on unsolvable board" do
+    board = [[1,   nil, 3  ],
+             [3,   nil, 2  ],
+             [nil, 2,   nil]]
+    assert solve(board) == nil
+  end
+
+end
+--- SOURCE: 12-sudoku-solver-norvig.exs ---
+
+defmodule SudokuSolver do
+  @moduledoc """
+  Solves 9x9 Sudoku puzzles, Peter Norvig style.
+
+  http://norvig.com/sudoku.html
+  """
+
+  @size 9
+  @rows 'ABCDEFGHI'
+  @cols '123456789'
+
+  import Enum
+
+  # used to cache all squares, units, and peer relationships
+  defmodule Board do
+    defstruct squares: nil, units: nil, peers: nil
+  end
+
+  def cross(list_a, list_b) do
+    for a <- list_a, b <- list_b, do: [a] ++ [b]
+  end
+
+  @doc "Return all squares"
+  def squares, do: cross(@rows, @cols)
+
+  @doc """
+  All squares divided by row, column, and box.
+  """
+  def unit_list do
+    (for c <- @cols, do: cross(@rows, [c])) ++
+    (for r <- @rows, do: cross([r], @cols)) ++
+    (for rs <- chunk_every(@rows, 3), cs <- chunk_every(@cols, 3), do: cross(rs, cs))
+  end
+
+  @doc """
+  All squares from unit_list, organized in a Map with each square as key.
+
+     iex> Map.get(SudokuSolver.units, 'C2')
+     [['A2', 'B2', 'C2', 'D2', 'E2', 'F2', 'G2', 'H2', 'I2'],
+      ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'],
+      ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3']]
+  """
+  def units do
+    ul = unit_list()
+    list = for s <- squares(), do: {s, (for u <- ul, s in u, do: u)}
+    Enum.into(list, %{})
+  end
+
+  @doc """
+  Like units/0 above, returning a Map, but not including the key itself.
+
+     iex> Map.get(SudokuSolver.peers, 'C2')
+     MapSet.new(['A2', 'B2', 'D2', 'E2', 'F2', 'G2', 'H2', 'I2',
+                  'C1', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9',
+                  'A1', 'A3', 'B1', 'B3'])
+  """
+  def peers do
+    squares = cross(@rows, @cols)
+    u = units()
+    list = for s <- squares do
+      all = u |> Map.get(s) |> concat |> Enum.into(MapSet.new)
+      me = [s] |> Enum.into(MapSet.new)
+      {s, MapSet.difference(all, me)}
+    end
+    Enum.into(list, %{})
+  end
+
+  @doc """
+  Convert grid to a Map of possible values, {square: digits}, or
+  return false if a contradiction is detected.
+  """
+  def parse_grid(grid, board) do
+    # To start, every square can be any digit; then assign values from the grid.
+    values = Enum.into((for s <- board.squares, do: {s, @cols}), %{})
+    do_parse_grid(values, Map.to_list(grid_values(grid)), board)
+  end
+
+  defp do_parse_grid(values, [{square, value} | rest], board) do
+    values = do_parse_grid(values, rest, board)
+    if value in '0.' do
+      values
+    else
+      assign(values, square, value, board)
+    end
+  end
+  defp do_parse_grid(values, [], _), do: values
+
+  @doc """
+  Convert grid into a Map of {square: char} with '0' or '.' for empties.
+  """
+  def grid_values(grid) do
+    chars = for c <- grid, c in @cols or c in '0.', do: c
+    unless count(chars) == 81, do: raise('error')
+    Enum.into(zip(squares(), chars), %{})
+  end
+
+  @doc """
+  Eliminate all the other values (except d) from values[s] and propagate.
+  Return values, except return false if a contradiction is detected.
+  """
+  def assign(values, s, d, board) do
+    values = Map.put(values, s, [d])
+    p = MapSet.to_list(Map.get(board.peers, s))
+    eliminate(values, p, [d], board)
+  end
+
+  @doc """
+  Eliminate values from given squares and propagate.
+  """
+  def eliminate(values, squares, vals_to_remove, board) do
+    reduce_if_truthy squares, values, fn square, values ->
+      eliminate_vals_from_square(values, square, vals_to_remove, board)
+    end
+  end
+
+  # Remove value(s) from a square, then:
+  # (1) If a square s is reduced to one value, then eliminate it from the peers.
+  # (2) If a unit u is reduced to only one place for a value d, then put it there.
+  defp eliminate_vals_from_square(values, square, vals_to_remove, board) do
+    vals = Map.get(values, square)
+    if MapSet.intersection(Enum.into(vals, MapSet.new), Enum.into(vals_to_remove, MapSet.new)) |> any? do
+      vals = reduce vals_to_remove, vals, fn val, vals -> List.delete(vals, val) end
+      if length(vals) == 0 do
+        # contradiction, removed last value
+        false
+      else
+        values = Map.put(values, square, vals)
+        values = if length(vals) == 1 do
+          # eliminate value(s) from the peers.
+          eliminate(values, MapSet.to_list(Map.get(board.peers, square)), vals, board)
+        else
+          values
+        end
+        # eliminate value(s) from units
+        eliminate_from_units(values, Map.get(board.units, square), vals_to_remove, board)
+      end
+    else
+      values
+    end
+  end
+
+  # If a unit u is reduced to only one place for a value d, then put it there.
+  defp eliminate_from_units(values, units, vals_to_remove, board) do
+    reduce_if_truthy units, values, fn unit, values ->
+      reduce_if_truthy vals_to_remove, values, fn val, values ->
+        dplaces = for s <- unit, val in Map.get(values, s), do: s
+        case length(dplaces) do
+          0 -> false                                      # contradiction: no place for this value
+          1 -> assign(values, at(dplaces, 0), val, board) # d can only be in one place in unit; assign it there
+          _ -> values
+        end
+      end
+    end
+  end
+
+  # Similar to Enum.reduce/3 except it won't continue to call the work function
+  # if the accumulator becomes false or nil.
+  defp reduce_if_truthy(coll, acc, fun) do
+    reduce coll, acc, fn i, a ->
+      a && fun.(i, a)
+    end
+  end
+
+  @doc """
+  Given a puzzle char list, find the solution and return as a char list.
+
+  Use display/1 to print the grid as a square.
+  """
+  def solve(grid) do
+    board = %Board{squares: squares(), units: units(), peers: peers()}
+    grid
+      |> parse_grid(board)
+      |> search(board)
+      |> flatten(board)
+  end
+
+  @doc """
+  Flatten a values Map back into a single char list.
+  """
+  def flatten(values, board) do
+    board.squares
+      |> map(fn s -> Map.get(values, s) end)
+      |> concat
+  end
+
+  @doc """
+  Using depth-first search and propagation, try all possible values.
+  """
+  def search(false, _), do: false
+  def search(values, board) do
+    if all?(board.squares, fn s -> count(Map.get(values, s)) == 1 end) do
+      values # solved!
+    else
+      # Chose the unfilled square s with the fewest possibilities
+      {square, _count} = map(board.squares, &({&1, count(Map.get(values, &1))}))
+        |> filter(fn {_, c} -> c > 1 end)
+        |> sort(fn {_, c1}, {_, c2} -> c1 < c2 end)
+        |> List.first
+      find_value Map.get(values, square), fn d ->
+        assign(values, square, d, board) |> search(board)
+      end
+    end
+  end
+
+  @doc """
+  Display these values as a 2-D grid.
+  """
+  def display(grid) do
+    chunk_every(grid, @size)
+      |> map(fn row -> chunk_every(row, 1) |> join(" ") end)
+      |> join("\n")
+      |> IO.puts
+  end
+end
+
+ExUnit.start
+
+defmodule SudokuSolverTest do
+  use ExUnit.Case
+
+  import SudokuSolver
+
+  def print(grid, solved) do
+    IO.puts "puzzle-----------"
+    display(grid)
+    IO.puts "solved-----------"
+    display(solved)
+    IO.puts "\n"
+  end
+
+  test "solve easy" do
+    grid1 = '..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..'
+    solved = solve(grid1)
+    assert solved == '483921657967345821251876493548132976729564138136798245372689514814253769695417382'
+    print(grid1, solved)
+  end
+
+  test "solve hard" do
+    grid2 = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
+    solved = solve(grid2)
+    assert solved == '417369825632158947958724316825437169791586432346912758289643571573291684164875293'
+    print(grid2, solved)
+  end
+end
+--- SOURCE: 13-card-deck.exs ---
+
+defmodule Deck do
+  @moduledoc """
+    Create, shuffle, deal a set of 52 cards.
+  """
+
+  @doc """
+    Returns a list of tuples, in sorted order.
+  """
+  def new do
+    for suit <- ~w(Hearts Clubs Diamonds Spades),
+       face <- [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"],
+       do: {suit, face}
+  end
+
+  @doc """
+    Given a list of cards (a deck), reorder cards randomly.
+
+    If no deck is given, then create a new one and shuffle that.
+  """
+  def shuffle(deck \\ new()) do
+    Enum.shuffle(deck)
+  end
+
+  @doc """
+    Given a deck of cards, a list of players, and a deal function,
+    call the deal function for each card for each player. The function
+    should return the updated player.
+
+    Returns the list of players.
+  """
+  def deal(cards, players, deal_fn, cards_per_player \\ 52) do
+    cards_left = cards_per_player * Enum.count(players)
+    _deal(cards, players, deal_fn, cards_left)
+  end
+
+  def _deal(cards, players, _, 0), do: {players, cards}
+
+  def _deal([card | rest_cards], [player | rest_players], deal_fn, cards_left) do
+    player = deal_fn.(card, player)
+    _deal(rest_cards, rest_players ++ [player], deal_fn, cards_left - 1)
+  end
+
+  def _deal([], players, _, _), do: { players, [] }
+
+
+end
+
+ExUnit.start
+
+defmodule DeckTest do
+  use ExUnit.Case
+
+  test "new" do
+    deck = Deck.new
+    assert Enum.at(deck, 0)  == {"Hearts", 2}
+    assert Enum.at(deck, 51) == {"Spades", "A"}
+  end
+
+  test "shuffle" do
+    :random.seed(:erlang.now)
+    deck = Deck.shuffle
+    assert Deck.shuffle != deck
+    assert length(Deck.shuffle) == 52
+  end
+
+  test "deal" do
+    players = [{"tim", []}, {"jen", []}, {"mac", []}, {"kai", []}]
+    deck = Deck.new
+    {players, deck} = Deck.deal(deck, players, fn (card, {name, cards}) -> {name, cards ++ [card]} end)
+    assert Enum.at(players, 0) == {"tim", [{"Hearts", 2}, {"Hearts", 6}, {"Hearts",  10}, {"Hearts", "A"}, {"Clubs", 5}, {"Clubs",   9}, {"Clubs",  "K"}, {"Diamonds", 4}, {"Diamonds",   8}, {"Diamonds", "Q"}, {"Spades", 3}, {"Spades",  7}, {"Spades", "J"}]}
+    assert Enum.at(players, 1) == {"jen", [{"Hearts", 3}, {"Hearts", 7}, {"Hearts", "J"}, {"Clubs",    2}, {"Clubs", 6}, {"Clubs",  10}, {"Clubs",  "A"}, {"Diamonds", 5}, {"Diamonds",   9}, {"Diamonds", "K"}, {"Spades", 4}, {"Spades",  8}, {"Spades", "Q"}]}
+    assert Enum.at(players, 2) == {"mac", [{"Hearts", 4}, {"Hearts", 8}, {"Hearts", "Q"}, {"Clubs",    3}, {"Clubs", 7}, {"Clubs", "J"}, {"Diamonds", 2}, {"Diamonds", 6}, {"Diamonds",  10}, {"Diamonds", "A"}, {"Spades", 5}, {"Spades",  9}, {"Spades", "K"}]}
+    assert Enum.at(players, 3) == {"kai", [{"Hearts", 5}, {"Hearts", 9}, {"Hearts", "K"}, {"Clubs",    4}, {"Clubs", 8}, {"Clubs", "Q"}, {"Diamonds", 3}, {"Diamonds", 7}, {"Diamonds", "J"}, {"Spades",     2}, {"Spades", 6}, {"Spades", 10}, {"Spades", "A"}]}
+    assert deck == []
+  end
+
+  test "deal 5 cards per player" do
+    players = [{"tim", []}, {"jen", []}, {"mac", []}, {"kai", []}]
+    deck = Deck.new
+    {players, deck} = Deck.deal(deck, players, fn (card, {name, cards}) -> {name, cards ++ [card]} end, 5)
+    assert Enum.at(players, 0) == {"tim", [{"Hearts", 2}, {"Hearts", 6}, {"Hearts",  10}, {"Hearts", "A"}, {"Clubs", 5}]}
+    assert Enum.at(players, 1) == {"jen", [{"Hearts", 3}, {"Hearts", 7}, {"Hearts", "J"}, {"Clubs",    2}, {"Clubs", 6}]}
+    assert Enum.at(players, 2) == {"mac", [{"Hearts", 4}, {"Hearts", 8}, {"Hearts", "Q"}, {"Clubs",    3}, {"Clubs", 7}]}
+    assert Enum.at(players, 3) == {"kai", [{"Hearts", 5}, {"Hearts", 9}, {"Hearts", "K"}, {"Clubs",    4}, {"Clubs", 8}]}
+    [next | _rest_of_deck] = deck
+    assert next == {"Clubs", 9}
+  end
+end
+--- SOURCE: 14-spades.exs ---
+
+# Play Spades with four players using iex!
+#
+# To play:
+#
+# 1. In one terminal, start iex as the dealer:
+#
+#   iex --name dealer@localhost 14-spades.exs
+#   iex> Player.start_game
+#
+# 2. In three more terminals, start iex as players:
+#
+#   iex --sname two 14-spades.exs
+#   iex> Node.connect(:dealer@localhost)
+#   iex> Player.join
+#
+#   iex --sname three 14-spades.exs
+#   iex> Node.connect(:dealer@localhost)
+#   iex> Player.join
+#
+#   iex --sname four 14-spades.exs
+#   iex> Node.connect(:dealer@localhost)
+#   iex> Player.join
+#
+# 3. Enjoy!
+
+
+defmodule Dealer do
+  @moduledoc """
+  A separate process that brokers messages and determines winners.
+  """
+
+  @card_vals Enum.into([
+    {"J", 11},
+    {"Q", 12},
+    {"K", 13},
+    {"A", 14}
+  ], HashDict.new)
+
+  def start_game do
+    :global.register_name(:dealer, self)
+    IO.puts "waiting for players"
+    players = wait_for_players
+    IO.puts "dealing cards"
+    deal(players, shuffle)
+    IO.puts "starting game"
+    signal_start(players)
+    IO.puts "waiting for plays"
+    wait_for_plays(players)
+  end
+
+  defp wait_for_players(players \\ []) do
+    receive do
+      {:join, pid} ->
+        IO.puts "#{inspect pid} joined"
+        players = [pid | players]
+        if length(players) < 4 do
+          wait_for_players(players)
+        else
+          IO.puts "everyone joined!"
+          players
+        end
+    end
+  end
+
+  defp shuffle do
+    :random.seed(:erlang.now)
+    deck = for suit <- ~w(Hearts Diamonds Clubs Spades),
+              face <- [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"],
+              do: {suit, face}
+    Enum.shuffle(deck)
+  end
+
+  defp deal([player | rest_players], [card | rest_cards]) do
+    send player, {:deal, card}
+    deal(rest_players ++ [player], rest_cards)
+  end
+  defp deal(_, []), do: :ok
+
+  defp signal_start(players) do
+    Enum.each players, fn p -> send(p, :start) end
+  end
+
+  defp wait_for_plays(players) do
+    wait_for_plays(players, [], 0)
+  end
+
+  defp wait_for_plays(players, cards_played, tricks_played) when tricks_played < 13 do
+    if length(cards_played) == 0, do: IO.puts "#{tricks_played} tricks played"
+    receive do
+      action = {:play, card, player} ->
+        broadcast(players, action)
+        cards_played = cards_played ++ [{player, card}]
+        if length(cards_played) == 4 do
+          {winner, _} = trick_winner(cards_played)
+          broadcast(players, {:trick, winner})
+          if tricks_played < 12, do: send winner, :your_turn
+          wait_for_plays(players, [], tricks_played + 1)
+        else
+          players = reorder_players(players, player)
+          send List.first(players), :your_turn
+          wait_for_plays(players, cards_played, tricks_played)
+        end
+    end
+  end
+
+  defp wait_for_plays(players, [], 13) do
+    broadcast(players, :end)
+  end
+
+  def trick_winner(cards_played = [first_card | _rest]) do
+    {_, {suit, _}} = first_card
+    if Enum.any?(cards_played, fn {_, {s, _}} -> s == "Spades" end) do
+      sort_cards(cards_played)
+        |> Enum.filter(fn {_, {s, _}} -> s == "Spades" end)
+        |> List.first
+    else
+      sort_cards(cards_played)
+        |> Enum.filter(fn {_, {s, _}} -> s == suit end)
+        |> List.first
+    end
+  end
+
+  defp sort_cards(cards) do
+    Enum.sort cards, fn {_, {_, v1}}, {_, {_, v2}} ->
+      Dict.get(@card_vals, v1, v1) > Dict.get(@card_vals, v2, v2)
+    end
+  end
+
+  defp broadcast(players, action) do
+    Enum.each players, fn p -> send(p, action) end
+  end
+
+  defp reorder_players(players = [first | rest], player) do
+    if Enum.at(players, 3) == player do
+      players
+    else
+      reorder_players(rest ++ [first], player)
+    end
+  end
+
+end
+
+
+defmodule Player do
+  @moduledoc """
+  Handle player state and card selection for plays.
+  """
+
+  @doc """
+  Call this as the dealer to set up the game.
+  """
+  def start_game do
+    dealer = spawn_link(Dealer, :start_game, [])
+    send dealer, {:join, self}
+    IO.puts "I am #{inspect self}"
+    wait_to_start(dealer)
+  end
+
+  @doc """
+  Call this as a player to join an existing game.
+  """
+  def join do
+    dealer = :global.whereis_name(:dealer)
+    send dealer, {:join, self}
+    IO.puts "I am #{inspect self}"
+    wait_to_start(dealer)
+  end
+
+  defp wait_to_start(dealer, hand \\ []) do
+    receive do
+      {:deal, card} ->
+        hand = [card | hand]
+        wait_to_start(dealer, hand)
+      :start ->
+        play_2_of_clubs(dealer, hand)
+    end
+  end
+
+  defp play(dealer, hand, card) do
+    send dealer, {:play, card, self}
+    List.delete hand, card
+  end
+
+  defp play_2_of_clubs(dealer, hand) do
+    if card = Enum.find hand, fn card -> card == {"Clubs", 2} end do
+      hand = play(dealer, hand, card)
+    end
+    wait_to_play(dealer, hand)
+  end
+
+  defp wait_to_play(dealer, hand) do
+    receive do
+      {:play, card, player} ->
+        IO.puts "#{inspect player} played #{inspect card}"
+        wait_to_play(dealer, hand)
+      {:trick, player} ->
+        IO.puts "#{inspect player} won trick"
+        wait_to_play(dealer, hand)
+      :your_turn ->
+        hand = select_and_play_card(dealer, hand)
+        wait_to_play(dealer, hand)
+      :end ->
+        IO.puts "game over!"
+    end
+  end
+
+  defp select_and_play_card(dealer, hand) do
+    show_hand(hand)
+    if List.first(System.argv) == "--test" do # TODO how to set debug mode based on args?
+      card = Enum.shuffle(hand) |> List.first
+    else
+      card = select_card(hand)
+    end
+    play(dealer, hand, card)
+  end
+
+  defp select_card(hand) do
+    try do
+      number = IO.gets("Enter a card number to play: ")
+        |> String.strip
+        |> String.to_integer
+      card = Enum.at(hand, number-1)
+      unless card, do: raise ArgumentError
+      card
+    rescue
+      ArgumentError ->
+        IO.puts "Invalid entry; try again."
+        select_card(hand)
+    end
+  end
+
+  defp show_hand(hand) do
+    Enum.with_index(hand) |> Enum.each fn {{suit, face}, index} ->
+      IO.puts "#{index+1}. #{face} of #{suit}"
+    end
+  end
+end
+
+if List.first(System.argv) == "--test" do
+  ExUnit.start
+
+  defmodule SpadesTest do
+    use ExUnit.Case
+
+    test "trick winner in a single suit" do
+      hand = [{nil, {"Clubs", 2}}, {nil, {"Clubs", 3}}, {nil, {"Clubs", 4}}, {nil, {"Clubs", 5}}]
+      {_, card} = Dealer.trick_winner(hand)
+      assert card == {"Clubs", 5}
+    end
+
+    test "trick winner in a single suit with face cards" do
+      hand = [{nil, {"Clubs", 2}}, {nil, {"Clubs", 3}}, {nil, {"Clubs", "J"}}, {nil, {"Clubs", "A"}}]
+      {_, card} = Dealer.trick_winner(hand)
+      assert card == {"Clubs", "A"}
+    end
+
+    test "trick winner with irrelevant suit" do
+      hand = [{nil, {"Clubs", 2}}, {nil, {"Clubs", 3}}, {nil, {"Clubs", 4}}, {nil, {"Hearts", 5}}]
+      {_, card} = Dealer.trick_winner(hand)
+      assert card == {"Clubs", 4}
+    end
+
+    test "trick winner with one spade" do
+      hand = [{nil, {"Clubs", 2}}, {nil, {"Clubs", 3}}, {nil, {"Clubs", 4}}, {nil, {"Spades", 2}}]
+      {_, card} = Dealer.trick_winner(hand)
+      assert card == {"Spades", 2}
+    end
+
+    test "trick winner with all spades" do
+      hand = [{nil, {"Spades", 2}}, {nil, {"Spades", 3}}, {nil, {"Spades", 4}}, {nil, {"Spades", 5}}]
+      {_, card} = Dealer.trick_winner(hand)
+      assert card == {"Spades", 5}
+    end
+
+    test "setup" do
+      dealer = spawn_monitor Player, :start_game, []
+      :timer.sleep(100) # TODO why is this necessary?
+      two    = spawn Player, :join, []
+      three  = spawn Player, :join, []
+      four   = spawn Player, :join, []
+      wait
+    end
+
+    def wait do
+      receive do
+        {:DOWN, _, _, pid, _} ->
+          :quit
+        msg ->
+          IO.puts inspect msg
+          wait
+      end
+    end
+  end
+
+end
+--- SOURCE: 15-quine.exs ---
+
+d= ~S(IO.puts "d= ~S(#{d}\)"
+IO.puts d)
+IO.puts "d= ~S(#{d}\)"
+IO.puts d
+--- SOURCE: 16-euler-tree.exs ---
+
+defmodule Tree do
+  @moduledoc """
+  Project Euler - Problem 67
+
+  By starting at the top of the triangle below and moving to adjacent numbers on the row below, the maximum total from top to bottom is 23.
+
+     3
+    7 4
+   2 4 6
+  8 5 9 3
+
+  That is, 3 + 7 + 4 + 9 = 23.
+
+  Find the maximum total from top to bottom in tree.txt, a 15K text file containing a triangle with one-hundred rows.
+  """
+
+  def maximal_path([row, comparison_row | rest_rows]) do
+    row = reduce_row(row, comparison_row)
+    maximal_path([row | rest_rows])
+  end
+  def maximal_path([row]), do: List.first(row)
+
+  def from_file(filename) do
+    File.read!(filename)
+      |> String.strip
+      |> String.split("\n")
+      |> Enum.reverse
+      |> Enum.map(fn row ->
+        for num <- String.split(row, " "), do: String.to_integer(num)
+      end)
+      |> Enum.map(fn row -> append_index(row) end)
+  end
+
+  def reduce_row(row, comparison_row) do
+    for {{main, index}, {opt1, index1}, {opt2, index2}} <- pairs(row, comparison_row) do
+      sum1 = main + opt1
+      sum2 = main + opt2
+      if sum1 > sum2 do
+        {sum1, index ++ index1}
+      else
+        {sum2, index ++ index2}
+      end
+    end
+  end
+
+  def append_index(row) do
+    for {num, index} <- Enum.with_index(row) do
+      {num, [index]}
+    end
+  end
+
+  def pairs(row, comparison_row) do
+    for {num, path = [index | _]} <- comparison_row do
+      {{num, path}, Enum.at(row, index), Enum.at(row, index+1)}
+    end
+  end
+
+  def pretty_print(filename) do
+    tree = Tree.from_file(filename)
+    {sum, path} = Tree.maximal_path(tree)
+
+    IO.puts "maximal sum = #{sum}"
+
+    size = length(Enum.at(tree, 0))
+
+    tree
+      |> Enum.reverse
+      |> Enum.with_index
+      |> Enum.each(fn {row, row_index} ->
+        if rem(row_index, 2) == 0, do: IO.write(" ")
+        String.duplicate("  ", div(size - length(row), 2)) |> IO.write
+        (for {_, [p | _]} <- row do
+          if p == Enum.at(path, row_index) do
+            "\e[31mx"
+          else
+            "\e[32mo"
+          end
+        end)
+          |> Enum.join(" ")
+          |> IO.puts
+      end)
+  end
+end
+
+ExUnit.start
+
+defmodule TreeTest do
+  use ExUnit.Case
+
+  @path Path.expand("support/tree.txt", __DIR__)
+
+  test "read file" do
+    tree = Tree.from_file(@path)
+    assert length(tree) == 100
+    assert Enum.at(tree, 99) == [{59, [0]}]
+  end
+
+  test "append index" do
+    assert Tree.append_index([1, 2, 3]) == [{1, [0]}, {2, [1]}, {3, [2]}]
+  end
+
+  test "pairs" do
+    row1 = [{2, [0]}, {4, [1]}, {6, [2]}]
+    row2 = [{8, [0]}, {5, [1]}, {9, [2]}, {3, [3]}]
+    assert Tree.pairs(row2, row1) == [
+      {{2, [0]}, {8, [0]}, {5, [1]}},
+      {{4, [1]}, {5, [1]}, {9, [2]}},
+      {{6, [2]}, {9, [2]}, {3, [3]}},
+    ]
+  end
+
+  test "reduce row" do
+    row1 = [{30, [0]}, {11, [1]}, {85, [2]}, {31, [3]}, {34, [4]}, {71, [5]}, {13, [6]}, {48, [7]}, {05, [8]}, {14, [9]}, {44, [10]}, {03, [11]}, {19, [12]}, {67, [13]}, {23, [14]}]
+    row2 = [{23, [0]}, {33, [1]}, {44, [2]}, {81, [3]}, {80, [4]}, {92, [5]}, {93, [6]}, {75, [7]}, {94, [8]}, {88, [9]}, {23, [10]}, {61, [11]}, {39, [12]}, {76, [13]}, {22, [14]}, {03, [15]}]
+    assert Tree.reduce_row(row2, row1) == [
+      {63,  [ 0,  1]},
+      {55,  [ 1,  2]},
+      {166, [ 2,  3]},
+      {112, [ 3,  3]},
+      {126, [ 4,  5]},
+      {164, [ 5,  6]},
+      {106, [ 6,  6]},
+      {142, [ 7,  8]},
+      {99,  [ 8,  8]},
+      {102, [ 9,  9]},
+      {105, [10, 11]},
+      {64,  [11, 11]},
+      {95,  [12, 13]},
+      {143, [13, 13]},
+      {45,  [14, 14]},
+    ]
+  end
+
+  test "maximal path" do
+    tree = Tree.from_file(@path)
+    {sum, path} = Tree.maximal_path(tree)
+    assert sum == 7273
+    assert path == [0, 0, 0, 1, 2, 3, 4, 4, 5, 5, 6, 6, 7, 8, 9, 10, 11, 12, 12, 12, 13, 13, 13, 14, 14, 15, 15, 16, 17, 17, 17, 18, 19, 20, 21, 22, 23, 24, 25, 25, 25, 26, 27, 27, 28, 29, 30, 31, 32, 32, 32, 32, 33, 33, 34, 35, 36, 36, 36, 36, 36, 36, 36, 37, 38, 39, 40, 41, 41, 42, 42, 42, 42, 42, 42, 42, 43, 43, 43, 44, 45, 45, 45, 45, 45, 45, 46, 46, 46, 46, 47, 47, 48, 49, 49, 50, 51, 52, 52, 53]
+  end
+
+  def path, do: @path
+end
+
+Tree.pretty_print(TreeTest.path)
+--- SOURCE: 17-dining-philosophers.exs ---
+
+defmodule Table do
+  @moduledoc """
+  h2. Problem
+
+  http://rosettacode.org/wiki/Dining_philosophers
+
+  Five philosophers, Aristotle, Kant, Spinoza, Marx, and Russell (the tasks) spend their time
+  thinking and eating spaghetti. They eat at a round table with five individual seats.
+  For eating each philosopher needs two forks (the resources). There are five forks on the table,
+  one left and one right of each seat. When a philosopher cannot grab both forks it sits and waits.
+  Eating takes random time, then the philosopher puts the forks down and leaves the dining room.
+  After spending some random time thinking about the nature of the universe, he again becomes
+  hungry, and the circle repeats itself.
+
+  h2. My Solution
+
+  So, I cheated a little. I skipped modeling of the seats and fork placement, and instead modeled
+  forks as 5 discreet resources to be managed by the "Table". I figured philosophers can just
+  reach over and grab a fork, yeah? :-)
+
+  It turns out that message passing between processes made this very simple. Even adding "seats"
+  as resources to be managed wouldn't make this much more difficult.
+
+  h2. Sample Run
+
+    $ elixir 17-dining-philosophers.exs
+
+    1 philosopher waiting: Aristotle
+    1 philosopher waiting: Kant
+    Aristotle is eating (count: 1)
+    1 philosopher waiting: Spinoza
+    Kant is eating (count: 1)
+    2 philosophers waiting: Marx, Spinoza
+    3 philosophers waiting: Russell, Marx, Spinoza
+    Kant is done eating
+    Aristotle is done eating
+    ...
+  """
+
+  defmodule Philosopher do
+    defstruct name: nil, ate: 0, thunk: 0
+  end
+
+  def simulate do
+    forks = [:fork1, :fork2, :fork3, :fork4, :fork5]
+
+    table = spawn_link(Table, :manage_resources, [forks])
+
+    spawn(Dine, :dine, [%Philosopher{name: "Aristotle"}, table])
+    spawn(Dine, :dine, [%Philosopher{name: "Kant"     }, table])
+    spawn(Dine, :dine, [%Philosopher{name: "Spinoza"  }, table])
+    spawn(Dine, :dine, [%Philosopher{name: "Marx"     }, table])
+    spawn(Dine, :dine, [%Philosopher{name: "Russell"  }, table])
+
+    receive do: (_ -> :ok)
+  end
+
+  def manage_resources(forks, waiting \\ []) do
+    # distribute forks to waiting philosophers
+    if length(waiting) > 0 do
+      names = for {_, phil} <- waiting, do: phil.name
+      IO.puts "#{length waiting} philosopher#{if length(waiting) == 1, do: '', else: 's'} waiting: #{Enum.join names, ", "}"
+      if length(forks) >= 2 do
+        [{pid, _} | waiting] = waiting
+        [fork1, fork2 | forks] = forks
+        send pid, {:eat, [fork1, fork2]}
+      end
+    end
+    receive do
+      {:sit_down, pid, phil} ->
+        manage_resources(forks, [{pid, phil} | waiting])
+      {:give_up_seat, free_forks, _} ->
+        forks = free_forks ++ forks
+        IO.puts "#{length forks} fork#{if length(forks) == 1, do: '', else: 's'} available"
+        manage_resources(forks, waiting)
+    end
+  end
+
+end
+
+defmodule Dine do
+
+  def dine(phil, table) do
+    send table, {:sit_down, self, phil}
+    receive do
+      {:eat, forks} ->
+        phil = eat(phil, forks, table)
+        phil = think(phil, table)
+    end
+    dine(phil, table)
+  end
+
+  def eat(phil, forks, table) do
+    phil = %{phil | ate: phil.ate + 1}
+    IO.puts "#{phil.name} is eating (count: #{phil.ate})"
+    :timer.sleep(:random.uniform(1000))
+    IO.puts "#{phil.name} is done eating"
+    send table, {:give_up_seat, forks, phil}
+    phil
+  end
+
+  def think(phil, _) do
+    IO.puts "#{phil.name} is thinking (count: #{phil.thunk})"
+    :timer.sleep(:random.uniform(1000))
+    %{phil | thunk: phil.thunk + 1}
+  end
+
+end
+
+:random.seed(:erlang.now)
+Table.simulate
+--- SOURCE: 18-gen_server.exs ---
+
+# I wanted to learn about the GenServer, so:
+# 1. first wrote a function to return prime factors of a given number
+# 2. then wrapped that in a "server" that handles both sync and async calls
+
+defmodule PrimeFactors do
+  @moduledoc """
+  Calculate prime factors of any number given.
+  """
+
+  @doc """
+  Given a number, return a list of prime factors.
+  """
+  def prime_factors(number, div \\ 2, factors \\ []) do
+    cond do
+      prime?(number) ->
+        [number | factors]
+      rem(number, div) == 0 ->
+        prime_factors(div(number, div), 2, [div | factors])
+      true ->
+        prime_factors(number, div + 1, factors)
+    end
+  end
+
+  @doc """
+  Given a number, return true if the number is prime.
+  """
+  def prime?(2), do: true
+
+  def prime?(number) do
+    prime?(number, :math.sqrt(number) |> :erlang.trunc)
+  end
+
+  defp prime?(_, 1), do: true
+  defp prime?(number, div) do
+    if rem(number, div) == 0 do
+      false
+    else
+      prime?(number, div - 1)
+    end
+  end
+end
+
+defmodule PrimeFactorsServer do
+  @moduledoc """
+  Wrap the PrimeFactors.prime_factors functionality in a server.
+  """
+
+  use GenServer
+
+  import PrimeFactors
+
+  def start_link do
+    :gen_server.start_link({:local, :prime_factors}, __MODULE__, [], [])
+  end
+
+  def init(_args) do
+    {:ok, []}
+  end
+
+  # synchronous
+
+  def handle_call(:flush, _from, context) do
+    {:reply, context, []}
+  end
+
+  def handle_call(num, _from, context) do
+    {:reply, prime_factors(num), context}
+  end
+
+  # asynchronous
+
+  def handle_cast(num, context) do
+    {:noreply, [{num, prime_factors(num)} | context]}
+  end
+end
+
+ExUnit.start
+
+defmodule PrimeFactorsTest do
+  use ExUnit.Case
+
+  import PrimeFactors
+
+  test "prime_factors" do
+    assert prime_factors(10) == [5, 2]
+    assert prime_factors(100) == [5, 5, 2, 2]
+  end
+
+  test "prime?" do
+    assert(prime?(2))
+    assert(prime?(11))
+    assert(not prime?(8))
+  end
+
+  test "async" do
+    {:ok, pid} = PrimeFactorsServer.start_link
+    :gen_server.cast(pid, 10)
+    :gen_server.cast(pid, 100)
+    :gen_server.cast(pid, 1000)
+    assert :gen_server.call(pid, :flush) == [
+      {1000, [5, 5, 5, 2, 2, 2]},
+      {100, [5, 5, 2, 2]},
+      {10, [5, 2]}
+    ]
+    assert :gen_server.call(pid, :flush) == []
+  end
+end
+--- SOURCE: 19-supervisor.exs ---
+
+# The goal here is to learn (a tiny bit) about the Supervisor
+# We simply fire up the server from exercise 18 and restart it on failure.
+
+Code.load_file("./18-gen_server.exs")
+
+defmodule PrimeFactorsServer.Sup do
+  use Supervisor
+
+  def start_link do
+    :supervisor.start_link(__MODULE__, [])
+  end
+
+  def init(_opts) do
+    tree = [ worker(PrimeFactorsServer, []) ]
+    supervise(tree, strategy: :one_for_one)
+  end
+end
+
+
+# to use:
+# iex 19-supervisor.exs
+# iex> {:ok, pid} = PrimeFactorsServer.Sup.start_link
+#
+# iex> :gen_server.call(:prime_factors, 100)
+# [5, 5, 2, 2]
+#
+# iex> :gen_server.call(:prime_factors, "a")
+# =ERROR REPORT==== 30-Dec-2013::22:54:42 ===
+# ** Generic server prime_factors terminating
+# ** Last message in was <<"a">>
+# ** When Server state == []
+# ** Reason for termination ==
+# ** {badarg,
+# ...
+# ** (exit) {{:badarg, [{:math, :sqrt, ["a"], []}, {PrimeFactors, :prime?, 1, [file: '/tim/pp/30-days-of-elixir/18-gen_server.exs', line: 16]}, {PrimeFactors, :prime_factors, 3, [file: '/tim/pp/30-days-of-elixir/18-gen_server.exs', line: 4]}, {PrimeFactorsServer, :handle_call, 3, [file: '/tim/pp/30-days-of-elixir/18-gen_server.exs', line: 49]}, {:gen_server, :handle_msg, 5, [file: 'gen_server.erl', line: 585]}, {:proc_lib, :init_p_do_apply, 3, [file: 'proc_lib.erl', line: 239]}]}, {:gen_server, :call, [:prime_factors, "a"]}}
+#     gen_server.erl:180: :gen_server.call/2
+#
+# iex> :gen_server.call(:prime_factors, 8)
+# [2, 2, 2]
+--- SOURCE: 20-inets.exs ---
+
+# just playing with inets - nothing special
+
+require Record
+
+defmodule WebServer do
+  def run do
+    :inets.start()
+    options = [server_name: 'foo', server_root: '/tmp', document_root: '/tmp', port: 3000, modules: [App]]
+    {:ok, _pid} = :inets.start :httpd, options
+    IO.puts "running on port 3000"
+    receive do: (_ -> :ok) # TODO better way to wait?
+  end
+end
+
+defmodule App do
+  Record.defrecord :mod, Record.extract(:mod, from_lib: "inets/include/httpd.hrl")
+
+  def unquote(:do)(data) do
+    response = case mod(data, :request_uri) do
+      '/' -> 'hello world'
+      _   -> ['hello ', mod(data, :request_uri)]
+    end
+    {:proceed, [response: {200, response}]}
+  end
+end
+
+WebServer.run
+--- SOURCE: 21-wiki.exs ---
+
+require IEx
+require Record
+
+defmodule Wiki do
+  @moduledoc """
+    A very simple wiki.
+    CamelCase words are auto-linked.
+    Pages are stored in the support/wiki directory.
+
+    To run:
+
+    $ iex 21-wiki.exs
+
+    ... then point your browser to http://localhost:3000
+  """
+
+  Record.defrecord :mod, Record.extract(:mod, from_lib: "inets/include/httpd.hrl")
+
+  @page_name "([A-Z][a-z0-9]+){2,}"
+  @valid_page_name ~r/^([A-Z][a-z0-9]+){2,}$/
+  @edit_path ~r/^([A-Z][a-z0-9]+){2,}\/edit$/
+
+  @doc """
+    Start the inets server.
+  """
+  def run do
+    :inets.start()
+    options = [server_name: 'foo', server_root: '/tmp', document_root: '/tmp', port: 3000, modules: [__MODULE__]]
+    {:ok, _pid} = :inets.start :httpd, options
+    IO.puts "running on port 3000"
+  end
+
+  def unquote(:do)(data) do
+    [_slash | name] = mod(data, :request_uri)
+
+    cond do
+      name == '' ->
+        redirect('/HomePage')
+      Regex.match?(@valid_page_name, :erlang.list_to_bitstring(name)) ->
+        case mod(data, :method) do
+          'GET'  -> render_page(name)
+          'POST' -> save_page(name, data); redirect(name)
+        end
+      Regex.match?(@edit_path, :erlang.list_to_bitstring(name)) ->
+        name = Regex.replace(~r/\/edit$/, :erlang.list_to_bitstring(name), "")
+        render_page(name, :edit)
+      true ->
+        response(404, 'bad path')
+    end
+  end
+
+  def redirect(path, code \\ 302) do
+    body = ['redirecting you to <a href="', path, '">', path, '</a>']
+    response code, body, [location: path]
+  end
+
+  def render_page(name, action \\ :show) do
+    case {action, File.read(page_path(name))} do
+      {:edit, {:ok, body}} ->
+        response 200, edit_page_form(name, body) |> :erlang.bitstring_to_list
+      {:show, {:ok, body}} ->
+        response 200, body |> format(name) |> :erlang.bitstring_to_list
+      _ ->
+        response 404, edit_page_form(name) |> :erlang.bitstring_to_list
+    end
+  end
+
+  def format(content, name) do
+    content
+      |> sanitize
+      |> breakify
+      |> linkify
+      |> layoutify(name)
+  end
+
+  def sanitize(content) do
+    content = Regex.replace(~r/&/, content, "\\&amp;")
+    content = Regex.replace(~r/</, content, "\\&lt;")
+    content = Regex.replace(~r/>/, content, "\\&gt;")
+    content
+  end
+
+  def breakify(content) do
+    Regex.replace(~r/\r?\n/, content, "<br>")
+  end
+
+  def linkify(content) do
+    {:ok, regex} = Regex.compile(@page_name)
+    Regex.replace(regex, content, "<a href='/\\0'>\\0</a>")
+  end
+
+  def layoutify(content, name) do
+    """
+      <style>nav { margin-bottom: 25px; }</style>
+      <nav><a href='/HomePage'>HomePage</a> | <a href='/#{name}/edit'>edit</a></nav>
+      <section>#{content}</section>
+    """
+  end
+
+  def page_path(name) do
+    Path.join("support/wiki", name) |> Path.expand(__DIR__)
+  end
+
+  def save_page(name, data) do
+    [{'content', content}] = :httpd.parse_query(mod(data, :entity_body))
+    File.write!(page_path(name), content)
+  end
+
+  def edit_page_form(name, content \\ "") do
+    "<form action='/#{name}' method='post'><textarea name='content' rows='25' cols='80'>#{content}</textarea><br><button>Save</button><a href='/#{name}'>cancel</a></form>"
+  end
+
+  def response(code, body, headers \\ []) do
+    headers = [code: code, content_length: Integer.to_char_list(IO.iodata_length(body))] ++ headers
+    {:proceed, [response: {:response, headers, body}]}
+  end
+end
+
+Wiki.run
+--- SOURCE: 22-socket-server.exs ---
+
+defmodule WebServer do
+  @moduledoc """
+    This is a web server that tells you what your user-agent is.
+
+    h2. Motivation
+
+    I wanted to learn a bit about using sockets (`:gen_tcp`),
+    and since a web server is my favorite socket server, why not!
+
+    h2. Usage
+
+      $ iex 22-socket-server.exs
+
+    Then visit http://localhost:3000. You should see something like:
+
+      Your User-Agent is: Mozilla/5.0 (X11; Linux x86_64; rv:25.0) Gecko/20100101 Firefox/25.0
+  """
+
+  def server do
+    {:ok, lsock} = :gen_tcp.listen(3000, [:binary, {:packet, 0}, {:active, false}])
+    accept_connection(lsock)
+  end
+
+  def accept_connection(lsock) do
+    {:ok, sock} = :gen_tcp.accept(lsock)
+    case handle_request(sock) do
+      :closed ->
+        accept_connection(lsock)
+      request ->
+        IO.puts inspect request
+        msg = case extract_user_agent(request) do
+          nil -> "You don't have a user-agent!"
+          ua -> "Your User-Agent is: #{ua}"
+        end
+        :gen_tcp.send(sock, :erlang.bitstring_to_list("HTTP/1.1 200 OK\r\n\r\n" <> msg <> "\r\n"))
+        :gen_tcp.close(sock) # no keep-alive for you!
+        accept_connection(lsock)
+    end
+  end
+
+  def handle_request(sock, request \\ '') do
+    case :gen_tcp.recv(sock, 0) do
+      {:ok, b} ->
+        if Regex.match?(~r/\r\n\r\n/, b) do
+          :erlang.list_to_bitstring([request, b])
+        else
+          handle_request(sock, [request, b])
+        end
+      _ ->
+        :closed
+    end
+  end
+
+  def extract_user_agent(request) do
+    case Regex.run(~r/User-Agent: (.*)\r\n/, request) do
+      nil -> nil
+      [_, ua] -> ua
+    end
+  end
+end
+
+spawn_link(WebServer, :server, [])
+--- SOURCE: 23-digest.exs ---
+
+# Just playing with some digest stuff.
+#
+# To run:
+#
+# $ erlc support/sha1.erl && mv sha1.beam support/
+# $ elixir 23-digest.exs
+#
+# Observations:
+#
+# * Erlang/Elixir don't have a sha1 method built-in???
+# * Erlang/Elixir don't have a built-in binary-to-hex conversion???
+# * Loading Erlang code was a bit weird. I should have figured out
+#   how to compile erl files within the code (not the terminal)
+#
+# Dude, where's my expansive standard library?!
+
+:code.load_abs('support/sha1')
+
+ExUnit.start
+
+defmodule MiscTest do
+  use ExUnit.Case
+
+  test "sha1" do
+    # Erlang doesn't have sha1 built-in, so had to import code from
+    # our friend Mr. Nicolas Favre-Felix
+    assert :sha1.hexstring('foo') == '0BEEC7B5EA3F0FDBC95D0DD47F3C5BC275DA8A33'
+  end
+
+  test "md5" do
+    # Erlang has crypto built-in for md5, but no way natively to convert to hex
+    # so again Mr. Felix to the rescue!
+    assert :crypto.hash(:md5, 'foo') |> :sha1.bin2hex == 'ACBD18DB4CC2F85CEDEF654FCCC4A4D8'
+  end
+end
+--- SOURCE: 24-stream.exs ---
+
+defmodule Fib do
+  @moduledoc """
+    Lazy Fibonacci Sequence
+  """
+
+  defmodule FibVal do
+    defstruct val: 0, next: 1
+  end
+
+  @doc """
+    Return a lazy sequence of FibVals.
+
+    To get the values, use map &(&1.val)
+
+      iex> Fib.fib |> Stream.map(&(&1.val)) |> Enum.take(10)
+      [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+  """
+  def fib do
+    Stream.iterate %FibVal{}, fn %FibVal{val: val, next: next} ->
+      %FibVal{val: next, next: val + next}
+    end
+  end
+
+  @doc """
+    Return a lazy sequence of Fibonacci numbers
+
+    This one is better as it returns the actual integer value
+    and doesn't use FibVal, thanks to Stream.unfold/2
+
+      iex> Fib.fib2 |> Enum.take(10)
+      [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+  """
+  def fib2 do
+    Stream.unfold({0, 1}, fn {a, b} -> {a, {b, a + b}} end)
+  end
+end
+
+ExUnit.start
+
+defmodule FibTest do
+  use ExUnit.Case
+
+  test "fib" do
+    fib = Fib.fib |> Stream.map(&(&1.val)) |> Enum.take(10)
+    assert fib == [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+  end
+
+  test "fib2" do
+    fib = Fib.fib2 |> Enum.take(10)
+    assert fib == [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+  end
+end
+--- SOURCE: 25-set.exs ---
+
+ExUnit.start
+
+defmodule SetTest do
+  use ExUnit.Case
+
+  test "to_list" do
+    list = Enum.into([1, 2, 2, 3], HashSet.new) |> HashSet.to_list
+    assert list == [2, 3, 1] # unintuitive ordering
+  end
+
+  test "union" do
+    union = Enum.into([1, 2, 3], HashSet.new) |> HashSet.union(Enum.into([2, 3, 4], HashSet.new))
+    assert Set.to_list(union) == [2, 3, 4, 1] # unintuitive, but somewhat more understandable
+  end
+
+  test "intersection" do
+    union = Enum.into([1, 2, 3], HashSet.new) |> HashSet.intersection(Enum.into([2, 3, 4], HashSet.new))
+    assert Set.to_list(union) == [2, 3]
+  end
+
+  test "member?" do
+    refute Enum.into([1, 3, 5], HashSet.new) |> HashSet.member?(2)
+  end
+end
+--- SOURCE: 26-frank.exs ---
+
+# A micro web DSL library called "Frank"
+# The motivation was mainly to learn about macros.
+# One big bummer is that the way I implemented the macro,
+# there is no way to build a route based on a regex,
+# which is essential for a web DSL. :-)
+# Next version will hopefully support regex paths.
+
+require Record
+
+defmodule Frank do
+  @moduledoc """
+    Frank is a micro web library that provides a DSL for defining routes.
+
+        defmodule MyApp do
+          use Frank
+
+          get "/foo" do
+            response 200, "foo!"
+          end
+        end
+
+        Frank.sing(MyApp)
+
+    To run:
+
+    $ iex 26-frank.exs
+
+    ... then point your browser to http://localhost:3000
+  """
+
+  Record.defrecord :mod, Record.extract(:mod, from_lib: "inets/include/httpd.hrl")
+
+  @doc """
+    Start the web server given the app module.
+  """
+  def sing(module) do
+    :inets.start()
+    options = [server_name: 'frank', server_root: '/tmp', document_root: '/tmp', port: 3000, modules: [module]]
+    {:ok, _pid} = :inets.start :httpd, options
+    IO.puts "running on port 3000"
+  end
+
+  defmacro __using__(_opts) do
+    quote do
+      import Frank.Path
+
+      def unquote(:do)(data) do
+        name = List.to_atom(Frank.mod(data, :request_uri))
+        funs = __MODULE__.__info__(:functions)
+        if Keyword.get(funs, name) == 1 do
+          fun = :erlang.make_fun(__MODULE__, name, 1)
+          fun.(data)
+        else
+          response(404, 'not defined')
+        end
+      end
+    end
+  end
+
+  defmodule Path do
+    defmacro get(path, contents) do
+      contents = Macro.escape(Keyword.get(contents, :do), unquote: true)
+      quote bind_quoted: binding do
+        def unquote(String.to_atom(path))(data) do
+          unquote(contents)
+        end
+      end
+    end
+
+    def redirect(path, code \\ 302) do
+      body = ['redirecting you to <a href="', path, '">', path, '</a>']
+      response code, body, [location: path]
+    end
+
+    def sanitize(content) do
+      content = Regex.replace(~r/&/, content, "\\&amp;")
+      content = Regex.replace(~r/</, content, "\\&lt;")
+      content = Regex.replace(~r/>/, content, "\\&gt;")
+      content
+    end
+
+    def response(code, body, headers \\ []) do
+      if is_binary(body) do
+        body = :erlang.bitstring_to_list(body)
+      end
+      headers = [code: code, content_length: Integer.to_char_list(IO.iodata_length(body))] ++ headers
+      {:proceed, [response: {:response, headers, body}]}
+    end
+  end
+end
+
+defmodule Test do
+  use Frank
+
+  get "/" do
+    response 200, "<a href='/foo'>go to foo</a>"
+  end
+
+  get "/foo" do
+    response 200, "foo!"
+  end
+end
+
+Frank.sing(Test)
+--- SOURCE: 27-frank-2.exs ---
+
+# A micro web DSL library called "Frank"
+# The motivation was mainly to learn about macros.
+#
+# This version is only slightly better than the last...
+# It still does not support paths with regex match :-(
+#
+# Improvements over the last version are:
+# * define methods as `def handle(path, data)` instead of `def path(data)`
+# * used @before_compile callback to set a default handler method
+
+require Record
+
+defmodule Frank do
+  @moduledoc """
+    Frank is a micro web library that provides a DSL for defining routes.
+
+        defmodule MyApp do
+          use Frank
+
+          get "/foo" do
+            response 200, "foo!"
+          end
+        end
+
+        Frank.sing(MyApp)
+
+    To run:
+
+    $ iex 27-frank-2.exs
+
+    ... then point your browser to http://localhost:3000
+  """
+
+  Record.defrecord :mod, Record.extract(:mod, from_lib: "inets/include/httpd.hrl")
+
+  @doc """
+    Start the web server given the app module.
+  """
+  def sing(module) do
+    :inets.start()
+    options = [server_name: 'frank', server_root: '/tmp', document_root: '/tmp', port: 3000, modules: [module]]
+    {:ok, _pid} = :inets.start :httpd, options
+    IO.puts "running on port 3000"
+  end
+
+  defmodule Path do
+    defmacro get(path, contents) do
+      contents = Macro.escape(Keyword.get(contents, :do))
+      quote bind_quoted: binding do
+        def handle(unquote(path), data) do
+          unquote(contents)
+        end
+      end
+    end
+
+    defmacro __before_compile__(_env) do
+      quote do
+        def handle(_, data) do
+          IO.puts 'here default!'
+          response(404, 'not defined')
+        end
+      end
+    end
+
+    def redirect(path, code \\ 302) do
+      body = ['redirecting you to <a href="', path, '">', path, '</a>']
+      response code, body, [location: path]
+    end
+
+    def sanitize(content) do
+      content = Regex.replace(~r/&/, content, "\\&amp;")
+      content = Regex.replace(~r/</, content, "\\&lt;")
+      content = Regex.replace(~r/>/, content, "\\&gt;")
+      content
+    end
+
+    def response(code, body, headers \\ []) do
+      if is_binary(body) do
+        body = :erlang.bitstring_to_list(body)
+      end
+      headers = [code: code, content_length: Integer.to_char_list(IO.iodata_length(body))] ++ headers
+      {:proceed, [response: {:response, headers, body}]}
+    end
+  end
+
+  defmacro __using__(_opts) do
+    quote do
+      import Frank.Path
+
+      def unquote(:do)(data) do
+        name = Frank.mod(data, :request_uri)
+        IO.puts "calling #{name}"
+        handle(:erlang.list_to_bitstring(name), data)
+      end
+
+      @before_compile Path
+    end
+  end
+end
+
+defmodule Test do
+  use Frank
+
+  get "/" do
+    response 200, "<a href='/foo'>go to foo</a>"
+  end
+
+  get "/foo" do
+    response 200, "foo!"
+  end
+end
+
+Frank.sing(Test)
+--- SOURCE: 28-frank-3.exs ---
+
+# A micro web DSL library called "Frank"
+# The motivation was mainly to learn about macros.
+#
+# The third (and hopefully final) version of Frank
+# adds support for matching on parameters.
+# (Still no regex match, but I realized I didn't care
+# as much about that as I thought :-)
+
+require Record
+
+defmodule Frank do
+  @moduledoc """
+    Frank is a micro web library that provides a DSL for defining routes.
+
+        defmodule MyApp do
+          use Frank
+
+          get "/foo" do
+            response 200, "foo!"
+          end
+
+          get "/hello/:name" do
+            response 200, "greetings \#{name}"
+          end
+        end
+
+        Frank.sing(MyApp)
+
+    To run:
+
+    $ iex 28-frank-3.exs
+
+    ... then point your browser to http://localhost:3000
+    """
+
+  Record.defrecord :mod, Record.extract(:mod, from_lib: "inets/include/httpd.hrl")
+
+  @doc """
+    Start the web server given the app module.
+  """
+  def sing(module) do
+    :inets.start()
+    options = [server_name: 'frank', server_root: '/tmp', document_root: '/tmp', port: 3000, modules: [module]]
+    {:ok, _pid} = :inets.start :httpd, options
+    IO.puts "running on port 3000"
+  end
+
+  defmodule Path do
+    defmacro get(path, [do: code]) do
+      parts = build_pattern(path)
+      quote do
+        def handle(unquote(parts), data) do
+          unquote(code)
+        end
+      end
+    end
+
+    defmacro __before_compile__(_env) do
+      quote do
+        def handle(_, data) do
+          response(404, 'not defined')
+        end
+      end
+    end
+
+    defp build_pattern(path) do
+      path = String.lstrip(path, ?/)
+      for part <- String.split(path, "/") do
+        cond do
+          String.starts_with?(part, ":") ->
+            # expands (when unquoted) to a variable name
+            {String.to_atom(String.lstrip(part, ?:)), [], nil}
+          true ->
+            # literal string match
+            part
+        end
+      end
+    end
+
+    def redirect(path, code \\ 302) do
+      body = ['redirecting you to <a href="', path, '">', path, '</a>']
+      response code, body, [location: path]
+    end
+
+    def sanitize(content) do
+      content = Regex.replace(~r/&/, content, "\\&amp;")
+      content = Regex.replace(~r/</, content, "\\&lt;")
+      content = Regex.replace(~r/>/, content, "\\&gt;")
+      content
+    end
+
+    def response(code, body, headers \\ []) do
+      if is_binary(body) do
+        body = :erlang.bitstring_to_list(body)
+      end
+      headers = [code: code, content_length: Integer.to_char_list(IO.iodata_length(body))] ++ headers
+      {:proceed, [response: {:response, headers, body}]}
+    end
+  end
+
+  defmacro __using__(_opts) do
+    quote do
+      import Frank.Path
+
+      def unquote(:do)(data) do
+        [_ | path] = Frank.mod(data, :request_uri)
+        path = :erlang.list_to_bitstring(path)
+        parts = String.split(path, "/")
+        handle(parts, data)
+      end
+
+      @before_compile Path
+    end
+  end
+end
+
+defmodule Test do
+  use Frank
+
+  get "/" do
+    response 200, "<a href='/foo'>go to foo</a>"
+  end
+
+  get "/foo" do
+    response 200, "foo!"
+  end
+
+  get "/hello/:name" do
+    response 200, "greetings #{name}"
+  end
+end
+
+Frank.sing(Test)
+--- SOURCE: 29-vector.exs ---
+
+defmodule Vector do
+  @moduledoc """
+  This is my (woefully inadequate) attempt at building a Vector with constant-time
+  lookup using a Hash Array Mapped Trie (HAMT).
+
+  While it is blazing fast for getting the value at an index,
+  it's way slower (than just using a list) in the case of adding values and iterating.
+
+  Another shortcoming is the hash function will certainly create collisions and
+  I didn't bother to account for that in the storage. Sorry :-(
+
+  And last, the tree structure isn't compressed, so it gets big fast... don't bother
+  trying to IO.inspect the sucker!
+
+  But this is good enough for a single day's exercise, and I learned a ton
+  in the process... Yay for learning! :-)
+  """
+
+  @template :erlang.make_tuple(10, nil)
+
+  require Record
+  Record.defrecordp :vec, Vector, size: 0, children: {nil, @template}
+
+  @doc """
+  Builds a new empty vector.
+
+    iex> Vector.new
+    {Vector, 0, {nil, {nil, nil, nil, nil, nil, nil, nil, nil, nil, nil}}}
+  """
+  def new do
+    vec()
+  end
+
+  @doc """
+  Builds a new vector from the given list.
+
+    iex> v = Vector.new(["tim", "jen", "mac", "kai"])
+    iex> Vector.size(v)
+    4
+    iex> Vector.get(v, 1)
+    "jen"
+  """
+  def new(list) do
+    from_list(list, new)
+  end
+
+  @doc """
+  Builds a new vector with count items initialized to given value
+
+    iex> v = Vector.new(4, "foo")
+    iex> Vector.size(v)
+    4
+    iex> Vector.get(v, 3)
+    "foo"
+  """
+  def new(count, val) do
+    Enum.reduce 0..(count-1), new, fn i, v ->
+      Vector.put(v, i, val)
+    end
+  end
+
+  @doc """
+  Get the size of the vector.
+  """
+  def size(vec(size: size)) do
+    size
+  end
+
+  @doc """
+  Gets the value from the vector at the given index.
+
+     iex> v = Vector.put(nil, 10, "tim")
+     iex> Vector.get(v, 10)
+     "tim"
+  """
+  def get(vec(children: children), index) do
+    do_get(children, hash(index))
+  end
+
+  @doc """
+  Puts the value in a vector at the given index.
+
+     iex> v = Vector.new
+     iex> v = Vector.put(v, 10, "tim")
+     iex> Vector.get(v, 10)
+     "tim"
+  """
+  def put(v = vec(size: size, children: children), index, value) do
+    children = do_put(children, hash(index), value)
+    if index >= size do
+      vec(size: index + 1, children: children)
+    else
+      v
+    end
+  end
+  def put(nil, index, value), do: put(new, index, value)
+
+  @doc """
+  Given a vector, an accumulator, and a function, iterate over
+  each item in the vector passing the item and the accumulator
+  to the function. The function should return the modified
+  accumulator.
+
+    iex> v = Vector.new([1,2,3])
+    iex> Vector.reduce(v, 0, &(&2 + &1))
+    6
+  """
+  def reduce(v = vec(size: size), acc, fun) do
+    Enum.reduce 0..(size-1), acc, fn index, acc ->
+      fun.(get(v, index), acc)
+    end
+  end
+
+  def find(v = vec(size: size), value, index \\ 0) do
+    cond do
+      index >= size          -> nil
+      get(v, index) == value -> index
+      true                   -> find(v, value, index+1)
+    end
+  end
+
+  def from_list(list, v), do: from_list(list, v, 0)
+  def from_list([val | rest], v, index) do
+    v = put(v, index, val)
+    from_list(rest, v, index+1)
+  end
+  def from_list([], v, _), do: v
+
+  # traversed down to a non-existent key
+  defp do_get(nil, _) do
+    nil
+  end
+
+  # at the last node of our tree, so we should have a value!
+  defp do_get({val, _}, []) do
+    val
+  end
+
+  # traverse down the tree to get the value
+  defp do_get({_, children}, [pos | hash_rest]) do
+    node = elem(children, pos)
+    do_get(node, hash_rest)
+  end
+
+  # at the last leaf of our branch, so store the value
+  # FIXME our hash function will have collisions, so we really should
+  # store duplicates properly here, but we don't yet
+  defp do_put(_, [], value) do
+    {value, @template}
+  end
+
+  # build a new branch
+  defp do_put(nil, hash, value) do
+    do_put({nil, @template}, hash, value)
+  end
+
+  # traverse down the tree to store the value
+  defp do_put({val, children}, [pos | hash_rest], value) do
+    tree = do_put(elem(children, pos), hash_rest, value)
+    {val, put_elem(children, pos, tree)}
+  end
+
+  # generate a hash of the index,
+  # i.e. a list of positions for each level of depth in the tree
+  defp hash(index) do
+    chars = index
+      |> :erlang.phash2
+      |> Integer.to_char_list
+    for c <- chars, do: List.to_integer([c])
+  end
+end
+
+defimpl Enumerable, for: Vector do
+  def count(v) do
+    {:ok, Vector.size(v)}
+  end
+
+  # FIXME this is broke
+  def reduce(v, acc, fun) do
+    Vector.reduce(v, acc, fun)
+  end
+
+  def member?(v, val) do
+    {:ok, Vector.index(v, val) != nil}
+  end
+end
+
+ExUnit.start
+
+defmodule VectorTest do
+  use ExUnit.Case
+
+  test "stores a value at an index in a tree structure" do
+    v = Vector.new
+    v = Vector.put(v, 0, "tim")
+    assert v == {Vector, 1, {nil, {
+      nil, nil, nil, nil, nil, nil, nil, nil,
+      {nil, {
+        nil, nil, nil, nil, nil, nil, nil, nil,
+        {nil, {
+          nil, nil, nil, nil, nil, nil, nil,
+          {nil, {
+            nil, nil,
+            {nil, {
+              nil, nil, nil,
+              {nil, {
+                nil, nil, nil, nil, nil, nil, nil,
+                {nil, {
+                  nil, nil,
+                  {nil, {
+                    nil, nil, nil, nil, nil,
+                    {"tim", {nil, nil, nil, nil, nil, nil, nil, nil, nil, nil}},
+                    nil, nil, nil, nil}},
+                  nil, nil, nil, nil, nil, nil, nil}},
+                nil, nil}},
+              nil, nil, nil, nil, nil, nil}},
+            nil, nil, nil, nil, nil, nil, nil}},
+          nil, nil}},
+        nil}},
+      nil}}}
+  end
+
+  test "size" do
+    v = Vector.new
+    v = Vector.put(v, 0, "tim")
+    v = Vector.put(v, 1, "jen")
+    assert Vector.size(v) == 2
+    v = Vector.put(v, 9, "mac")
+    assert Vector.size(v) == 10
+  end
+
+  test "get" do
+    v = Vector.new
+    v = Vector.put(v, 0, "tim")
+    v = Vector.put(v, 1, "jen")
+    v = Vector.put(v, 2, "mac")
+    assert Vector.get(v, 0) == "tim"
+    assert Vector.get(v, 1) == "jen"
+    assert Vector.get(v, 2) == "mac"
+  end
+
+  test "get non-existent key" do
+    v = Vector.new
+    assert Vector.get(v, 10) == nil
+  end
+
+  test "count" do
+    v = Vector.new([1,2,3])
+    assert tuple_size(v) == 3
+  end
+
+  test "reduce" do
+    v = Vector.new([1,2,3])
+    sum = Vector.reduce(v, 0, &(&1 + &2))
+    assert sum == 6
+  end
+
+  test "find" do
+    v = Vector.new([1,2,3])
+    index = Vector.find(v, 3)
+    assert index == 2
+  end
+
+  @size 100_000
+
+  test "creation speed" do
+    {microsecs, _} = :timer.tc fn ->
+      List.duplicate("foo", @size)
+    end
+    IO.puts "List creation took #{microsecs} microsecs" # 3,525 microsecs
+    {microsecs, _} = :timer.tc fn ->
+      Vector.new(@size, "foo")
+    end
+    IO.puts "Vector creation took #{microsecs} microsecs" # 265,647 microsecs
+  end
+
+  test "iteration speed" do
+    list = List.duplicate("foo", @size)
+    {microsecs, _} = :timer.tc fn ->
+      Enum.reduce list, 0, fn _, count -> count + 1 end
+    end
+    IO.puts "List traversal took #{microsecs} microsecs" # 1605 microsecs
+    vector = Vector.new(@size, "foo")
+    {microsecs, _} = :timer.tc fn ->
+      Vector.reduce vector, 0, fn _, count -> count + 1 end
+    end
+    IO.puts "Vector traversal took #{microsecs} microsecs" # 105,732 microsecs
+  end
+
+  test "access speed" do
+    list = List.duplicate("foo", @size)
+    {microsecs, _} = :timer.tc fn ->
+      assert Enum.at(list, @size-1) == "foo"
+    end
+    IO.puts "List access took #{microsecs} microsecs" # 997 microsecs
+    vector = Vector.new(@size, "foo")
+    {microsecs, _} = :timer.tc fn ->
+      assert Vector.get(vector, @size-1) == "foo"
+    end
+    IO.puts "Vector access took #{microsecs} microsecs" # 3 microsecs
+  end
+end
+--- SOURCE: 30-vector.exs ---
+
+# persistent bit-partitioned vector trie
+# http://hypirion.com/musings/understanding-persistent-vector-pt-1 (and part 2)
+
+defmodule Vector do
+  import Bitwise
+
+  @bits 2
+  @width 1 <<< @bits # 4-way branching
+  @mask @width - 1
+
+  require Record
+  Record.defrecordp :vec, Vector, size: 0, depth: 0, tree: []
+
+  @doc """
+  Builds a new empty vector.
+
+    iex> Vector.new
+    {Vector, 0, 0, []}
+  """
+  def new do
+    vec()
+  end
+
+  @doc """
+  Builds a new vector from the given list.
+
+    iex> Vector.new(["tim", "jen"])
+    {Vector, 2, 1, ["tim", "jen"]}
+  """
+  def new(list) do
+    depth = round(Float.ceil(length(Integer.to_char_list((length(list) - 1), 2)) / @bits))
+    vec(size: length(list), depth: depth, tree: tree_from_list(list, depth))
+  end
+
+  @doc """
+  Get the size of the vector.
+
+    iex> v = Vector.new([1, 2, 3])
+    iex> Vector.size(v)
+    3
+  """
+  def size(vec(size: size)) do
+    size
+  end
+
+  @doc """
+  Gets the value from the vector at the given index.
+
+     iex> v = Vector.new(["tim", "jen", "mac", "kai"])
+     iex> Vector.get(v, 2)
+     "mac"
+  """
+  def get(vec(depth: depth, tree: tree), index) do
+    do_get(tree, key(index, depth))
+  end
+
+  @doc """
+  Puts the value in a vector at the given index.
+
+     iex> v = Vector.new
+     iex> v = Vector.put(v, 0, "tim")
+     iex> Vector.get(v, 0)
+     "tim"
+  """
+  def put(vec(size: size, depth: depth, tree: tree), index, value) do
+    if index > size, do: raise "index too large"
+    if index == size, do: size = index + 1
+    # grow tree
+    if size > depth * @width do
+      depth = depth + 1
+      tree = [tree]
+    end
+    # attach node
+    tree = do_put tree, key(index, depth), value
+    vec(size: size, depth: depth, tree: tree)
+  end
+
+  @doc """
+  Given a vector, an accumulator, and a function, iterate over
+  each item in the vector passing the item and the accumulator
+  to the function. The function should return the modified
+  accumulator.
+
+    iex> v = Vector.new([1,2,3])
+    iex> Vector.reduce(v, 0, &(&2 + &1))
+    6
+  """
+  def reduce(vec(size: size, depth: depth, tree: tree), acc, fun) do
+    do_reduce tree, depth-1, size, 0, acc, fun
+  end
+
+  defp do_reduce(node, depth, size, index, acc, fun) when depth > 0 and is_list(node) do
+    Enum.reduce Enum.with_index(node), acc, fn {n, i}, acc ->
+      do_reduce n, depth-1, size, index + (i * @width), acc, fun
+    end
+  end
+  defp do_reduce(node, _, size, index, acc, fun) when is_list(node) do
+    Enum.reduce Enum.slice(node, 0..(size-index-1)), acc, fun
+  end
+  defp do_reduce(_, _, _, _, acc, _), do: acc
+
+  defp key(index, depth) when depth > 0, do: key(index, depth, [])
+  defp key(index, depth, indices) when depth > 0 do
+    level = (depth - 1) * @bits
+    indices = indices ++ [(index >>> level) &&& @mask]
+    key(index, depth - 1, indices)
+  end
+  defp key(_, _, indices), do: indices
+
+  defp tree_from_list(list, depth) when depth > 1 do
+    list
+      |> Enum.chunk(@width, @width, List.duplicate(nil, @width))
+      |> tree_from_list(depth - 1)
+  end
+  defp tree_from_list(list, _), do: list
+
+  defp do_get(node, [idx | rest_key]) do
+    node = Enum.at(node, idx)
+    do_get(node, rest_key)
+  end
+  defp do_get(node, []), do: node
+
+  defp do_put(tree, [idx | rest_key], value) do
+    rest = do_put(Enum.at(tree, idx) || [], rest_key, value)
+    if length(tree) <= idx do # expand this node
+      tree = tree ++ List.duplicate(nil, idx - length(tree) + 1)
+    end
+    List.replace_at tree, idx, rest
+  end
+  defp do_put(_, [], value), do: value
+end
+
+ExUnit.start
+
+defmodule VectorTest do
+  use ExUnit.Case
+
+  test "put" do
+    v = Vector.new
+    v = Vector.put(v, 0, "first")
+    assert v == {Vector, 1, 1, ["first"]}
+    v = Vector.put(v, 1, "second")
+    assert v == {Vector, 2, 1, ["first", "second"]}
+    v = Vector.put(v, 2, "third")
+    assert v == {Vector, 3, 1, ["first", "second", "third"]}
+    v = Vector.put(v, 3, "fourth")
+    assert v == {Vector, 4, 1, ["first", "second", "third", "fourth"]}
+    v = Vector.put(v, 4, "fifth")
+    assert v == {Vector, 5, 2, [["first", "second", "third", "fourth"], ["fifth"]]}
+    v = Vector.put(v, 2, "third changed")
+    assert v == {Vector, 5, 2, [["first", "second", "third changed", "fourth"], ["fifth"]]}
+  end
+
+  test "new" do
+    v = Vector.new(List.duplicate(1, 5))
+    assert v == {Vector, 5, 2, [[1, 1, 1, 1], [1, nil, nil, nil]]}
+    v = Vector.new(List.duplicate(1, 64))
+    assert v == {Vector, 64, 3, [
+      [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]],
+      [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]],
+      [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]],
+      [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]
+    ]}
+  end
+
+  test "reduce" do
+    v = Vector.new([1,2,3,4,5,6])
+    sum = Vector.reduce(v, 0, &(&1 + &2))
+    assert sum == 21
+  end
+
+  @size 100_000
+
+  test "creation speed" do
+    {microsecs, _} = :timer.tc fn ->
+      List.duplicate("foo", @size)
+    end
+    IO.puts "List creation took #{microsecs} microsecs" # 2,815 microsecs
+    list = List.duplicate("foo", @size)
+    {microsecs, _} = :timer.tc fn ->
+      Vector.new(list)
+    end
+    IO.puts "Vector creation took #{microsecs} microsecs" # 18,996 microsecs
+  end
+
+  test "iteration speed" do
+    list = List.duplicate("foo", @size)
+    {microsecs, _} = :timer.tc fn ->
+      Enum.reduce list, 0, fn _, count -> count + 1 end
+    end
+    IO.puts "List traversal took #{microsecs} microsecs" # 1,605 microsecs
+    list = List.duplicate("foo", @size)
+    vector = Vector.new(list)
+    {microsecs, _} = :timer.tc fn ->
+      Vector.reduce vector, 0, fn _, count -> count + 1 end
+    end
+    IO.puts "Vector traversal took #{microsecs} microsecs" # 13,372 microsecs
+  end
+
+  test "access speed" do
+    list = List.duplicate("foo", @size)
+    {microsecs, _} = :timer.tc fn ->
+      assert Enum.at(list, @size-1) == "foo"
+    end
+    IO.puts "List access took #{microsecs} microsecs" # 997 microsecs
+    list = List.duplicate("foo", @size)
+    vector = Vector.new(list)
+    {microsecs, _} = :timer.tc fn ->
+      assert Vector.get(vector, @size-1) == "foo"
+    end
+    IO.puts "Vector access took #{microsecs} microsecs" # 3 microsecs
+  end
+end

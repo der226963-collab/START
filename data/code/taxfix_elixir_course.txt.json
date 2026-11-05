@@ -1,0 +1,18 @@
+{
+  "title": "Elixir Course (Taxfix)",
+  "author": "Taxfix Elixir course contributors",
+  "edition": "main branch, commit fc061ca4bf18c59cb9e1991c82aa385e4cad6fa5 (2026-08-04 snapshot)",
+  "source": "taxfix/elixir-course, branch main, README.md",
+  "licence": "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)",
+  "licence_verified_from": "taxfix/elixir-course README.md on the repo's own page ('The content of the Elixir course is covered by the Creative Commons (by-nc-sa) https://creativecommons.org/licenses/by-nc-sa/4.0/'); the repo has no LICENSE file",
+  "chars": 20403,
+  "sha256": "29e290846bbfef575ad170d61bd9489f75a99b63ac1bd6333c3adaf4bcfc553a",
+  "file_count": 1,
+  "files": [
+    "README.md"
+  ],
+  "failed": [],
+  "failed_count": 0,
+  "status": "proposed",
+  "notes": "The whole text of the Taxfix Elixir course is its README.md (20,460 chars): episode write-ups on Erlang/BEAM, processes, Tasks, GenServer, OTP, garbage collection, happy-path programming, ETS, Ecto, releases and a bot project, plus episode links (several point to YouTube videos, which are NOT included) and an Exercism team link. Images and the 12 MB talk/Drinking-a-little-bit-of-elixir.html.tar.gz slide deck are NOT included. Single file with one '--- SOURCE: <repo path> ---' separator."
+}

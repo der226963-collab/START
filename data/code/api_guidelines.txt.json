@@ -1,0 +1,30 @@
+{
+  "title": "Rust API Guidelines",
+  "source_repo": "rust-lang/api-guidelines",
+  "source_branch": "main",
+  "licence": "MIT / Apache 2.0",
+  "file": "api_guidelines.txt",
+  "file_count": 14,
+  "files_assembled": [
+    "about.md",
+    "checklist.md",
+    "naming.md",
+    "interoperability.md",
+    "macros.md",
+    "documentation.md",
+    "predictability.md",
+    "flexibility.md",
+    "type-safety.md",
+    "dependability.md",
+    "debuggability.md",
+    "future-proofing.md",
+    "necessities.md",
+    "external-links.md"
+  ],
+  "failed_count": 0,
+  "files_failed": [],
+  "chars": 92140,
+  "sha256": "061fc703ccc978195a25034d7ec5cd9c2ad79f2996edd0fffdb5dadb4329e0c3",
+  "note": "Eric approved inclusion 2026-11-04 (\"Implement all of those and push\")",
+  "cleaning": "Minimal cleaning only: HTML comments and standalone mdBook directive lines stripped, 3+ blank lines collapsed; prose and code blocks intact. Separator '--- SOURCE: <path under src/> ---' before each file."
+}

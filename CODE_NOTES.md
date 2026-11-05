@@ -221,6 +221,47 @@ Licences checked directly from each repo's LICENSE file:
   until a deletion is done another way; the local
   and code-corpus location data/code/rust_book.txt
   is authoritative.
+## 2026-11-04 — Advanced Rust books added to the code corpus
+
+- Eric: "Implement all of those and push" — all seven
+  licence-checked advanced books, assembled by a
+  subagent, independently verified (chars + SHA-256
+  against provenance, separator counts = file counts):
+  Reference (120 files, 1,118,649 chars, MIT/Apache),
+  Nomicon (63, 305,832, MIT), Async Book (46, 242,367,
+  MIT Turon 2018), Cookbook (118 SUMMARY files,
+  605,853, CC0, with mdBook includes expanded —
+  SUMMARY-only was only 145,021 chars of stubs),
+  Embedded Book (44, 218,890, MIT), API Guidelines
+  (14, 92,140, MIT/Apache), Design Patterns (50,
+  165,486, MPL 2.0). Combined code corpus:
+  3,868,749 chars, 8 files, sha256 ec9164ec…,
+  vs 1,119,539 chars Rust-Book-only before. At
+  mixture ratio 0.5 this cuts code repetition from
+  ~17x to ~5x (textbook train tokens unchanged) —
+  still repeated, but far less; a real mixture run
+  should still prefer ratio 0.2–0.3 until the code
+  corpus grows further (C, Java, crate source).
+- Pushed 2026-11-04, see commit below, on the
+  strength of verification + 58-test suite, no new
+  training run in this batch.
+
+- Mixture smoke result, 2026-11-04: tiny, BPE 100
+  merges (645 tokens, combined text), 20 steps,
+  batch 8, ratio 0.5 — code train tokens used
+  10,667,544 (unique only 636,170, so code was
+  repeated ~17x), code val used 1,185,283
+  (unique 70,686), total train 21,335,088 /
+  val 2,370,566, step 0 val 6.3124 to step 19 best
+  val 4.8910, train 4.9147, checkpoint /tmp/mixture-test.pt
+  local only. Generation at 20 steps tiny is
+  gibberish, as expected. Lesson, recorded plainly:
+  the mixture mechanism works, but at ratio 0.5
+  with only 1.1M chars of code, repetition dominates
+  — expanding the code corpus (Reference, Nomicon,
+  Async Book, etc., all licence-checked 2026-11-04)
+  is what makes a real mixture run viable, not
+  just a mechanism test.
 
 - Rust training result, 2026-11-04 (100 steps, ~20 min):
   4,963,200 params, vocab 845, train 9,158,441 /

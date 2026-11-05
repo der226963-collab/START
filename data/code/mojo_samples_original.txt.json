@@ -1,0 +1,114 @@
+{
+  "title": "Original Mojo code samples (written for START)",
+  "author": "START project",
+  "licence": "Original to this project; not copied from any book",
+  "method": "Original Mojo 1.2.0 programs written for START: custom transformer layers (attention, matmul, norms, RoPE, MLP, KV-cache), ETL pipelines (log/tick/JSONL parsing, windowing, incremental, benchmark), HFT frameworks (order book, matching engine, feed handler, risk checks, latency, backtester, market maker).",
+  "language": "Mojo 1.2.0 (pixi project, Modular channel)",
+  "files": [
+    {
+      "file": "mojo_samples/etl_benchmark.mojo",
+      "chars": 44586
+    },
+    {
+      "file": "mojo_samples/etl_gen_data.mojo",
+      "chars": 24999
+    },
+    {
+      "file": "mojo_samples/etl_incremental.mojo",
+      "chars": 28376
+    },
+    {
+      "file": "mojo_samples/etl_jsonl_parse.mojo",
+      "chars": 42385
+    },
+    {
+      "file": "mojo_samples/etl_log_parse.mojo",
+      "chars": 23653
+    },
+    {
+      "file": "mojo_samples/etl_pipeline.mojo",
+      "chars": 78336
+    },
+    {
+      "file": "mojo_samples/etl_tick_parse.mojo",
+      "chars": 28102
+    },
+    {
+      "file": "mojo_samples/etl_window_agg.mojo",
+      "chars": 44762
+    },
+    {
+      "file": "mojo_samples/hft_backtester.mojo",
+      "chars": 39045
+    },
+    {
+      "file": "mojo_samples/hft_feed_handler.mojo",
+      "chars": 44274
+    },
+    {
+      "file": "mojo_samples/hft_latency.mojo",
+      "chars": 32448
+    },
+    {
+      "file": "mojo_samples/hft_market_maker.mojo",
+      "chars": 32581
+    },
+    {
+      "file": "mojo_samples/hft_matching_engine.mojo",
+      "chars": 58319
+    },
+    {
+      "file": "mojo_samples/hft_order_book.mojo",
+      "chars": 57770
+    },
+    {
+      "file": "mojo_samples/hft_risk_checks.mojo",
+      "chars": 38171
+    },
+    {
+      "file": "mojo_samples/transformer_attention.mojo",
+      "chars": 29206
+    },
+    {
+      "file": "mojo_samples/transformer_benchmark.mojo",
+      "chars": 32737
+    },
+    {
+      "file": "mojo_samples/transformer_block.mojo",
+      "chars": 49983
+    },
+    {
+      "file": "mojo_samples/transformer_gradcheck.mojo",
+      "chars": 37549
+    },
+    {
+      "file": "mojo_samples/transformer_kv_cache.mojo",
+      "chars": 53485
+    },
+    {
+      "file": "mojo_samples/transformer_matmul.mojo",
+      "chars": 20574
+    },
+    {
+      "file": "mojo_samples/transformer_mlp.mojo",
+      "chars": 28481
+    },
+    {
+      "file": "mojo_samples/transformer_multihead.mojo",
+      "chars": 35369
+    },
+    {
+      "file": "mojo_samples/transformer_norms.mojo",
+      "chars": 27254
+    },
+    {
+      "file": "mojo_samples/transformer_rope.mojo",
+      "chars": 26833
+    }
+  ],
+  "chars": 960578,
+  "sha256": "e8e95e760e721af8ac815be49c046c64b93ccafd4186db18ee5273e68837084c",
+  "status": "proposed",
+  "verification": "All 25 programs run with `mojo <file>.mojo` and exit 0 with their own assertions passing. 7 ETL programs initially failed: they imported `parallelize` from `max.algorithm`, which is not in the plain mojo 1.2.0 package (it moved to the MAX package; the 1.2.0 stdlib index lists no parallelize). Fixed by replacing parallelize calls with a sequential chunk loop, keeping the chunk/merge structure; re-ran all 7, all exit 0. Total individual chars 954,707.",
+  "source": "original"
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Stuff Goes Bad: Erlang in Anger",
+  "authors": [
+    "Fred Hébert"
+  ],
+  "source_repo": "heroku/erlang-in-anger",
+  "source_branch": "master",
+  "source_commit": "5b0d738438b9e25a80933e86e69abc88fc4eefe9",
+  "licence": "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)",
+  "licence_detail": "CC BY-NC-SA 4.0, joint copyright Heroku and Fred Hébert, per repo README.md",
+  "licence_verified_from": "heroku/erlang-in-anger README.md, read via GitHub connector (states CC BY-NC-SA 4.0); PDF front matter also states CC BY-NC-SA 4.0",
+  "status": "proposed",
+  "approved": false,
+  "pushed": false,
+  "file": "erlang_in_anger.txt",
+  "chars": 148566,
+  "sha256": "d5b87c71000fb9b98d135ca52105fa4a7a35a1b951de1cd5f84f9065463aaa6c",
+  "file_count": 19,
+  "files": [
+    "000-copyright.tex",
+    "001-introduction.tex",
+    "101-diving.tex",
+    "102-building.tex",
+    "103-overload.tex",
+    "104-connecting.tex",
+    "105-runtime-metrics.tex",
+    "106-crash-dumps.tex",
+    "107-memory-leaks.tex",
+    "108-cpu.tex",
+    "109-tracing.tex",
+    "201-conclusion.tex",
+    "erlang/app_deps.erl",
+    "erlang/count.erl",
+    "erlang/dispcount.app",
+    "erlang/drop.erl",
+    "erlang/stats.erl",
+    "erlang/useragent.app.src",
+    "erlang/window.erl"
+  ],
+  "failed": [],
+  "notes": "Practical guide to operating/debugging production Erlang systems (12 TeX files: copyright notice, introduction, chapters 101-109, conclusion, in text.tex order). LaTeX markup stripped minimally with verbatim-protected shell/code listings kept untouched; footnotes dropped; \\includecode references resolved by appending the book's 7 code files from erlang/ (app_deps, count, dispcount, drop, stats, useragent, window). text.tex master preamble not included."
+}

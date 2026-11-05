@@ -1,0 +1,564 @@
+{
+  "title": "Snefru: Learning Programming with C",
+  "authors": [
+    "Salma Emara"
+  ],
+  "source_repo": "salma-emara/aps105-book",
+  "source_branch": "main",
+  "source_url": "https://learningc.org/",
+  "licence": "GPL-3.0",
+  "licence_detail": "GNU General Public License version 3.0 (GPL-3.0), Copyright 2022-2025 Salma Emara, as stated on the book's own cover page (learningc.org/cover) and in the source repo's LICENSE file (GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007); GitHub repo licence metadata also reports GPL-3.0.",
+  "status": "proposed",
+  "approved": false,
+  "pushed": false,
+  "file": "snefru_learning_c.txt",
+  "chars": 511481,
+  "sha256": "65e25005f0c8de5ed529900f0edd97c00c741882ed4aab14ecd8d3b9b15e173b",
+  "chapters_assembled": 89,
+  "chapter_files": [
+    "cover.md",
+    "chapters/preface/intro.md",
+    "chapters/preface/principles.md",
+    "chapters/chapter01-computers/intro.md",
+    "chapters/chapter01-computers/basic-structure.md",
+    "chapters/chapter01-computers/main-memory.md",
+    "chapters/chapter01-computers/dev-cycle.md",
+    "chapters/chapter01-computers/simple-C-code.md",
+    "chapters/chapter02-variables/intro.md",
+    "chapters/chapter02-variables/data-types.md",
+    "chapters/chapter02-variables/storing-data.md",
+    "chapters/chapter02-variables/operations.md",
+    "chapters/chapter02-variables/math-library.md",
+    "chapters/chapter02-variables/random-number.md",
+    "chapters/chapter02-variables/exercises.md",
+    "chapters/chapter03-decision-making/intro.md",
+    "chapters/chapter03-decision-making/if-statement.md",
+    "chapters/chapter03-decision-making/multiple-conditions.md",
+    "chapters/chapter03-decision-making/nested-if.md",
+    "chapters/chapter03-decision-making/exercises.md",
+    "chapters/chapter04-loops/intro.md",
+    "chapters/chapter04-loops/while.md",
+    "chapters/chapter04-loops/do-while.md",
+    "chapters/chapter04-loops/for-loop.md",
+    "chapters/chapter04-loops/nested-loops.md",
+    "chapters/chapter04-loops/debugging-loops.md",
+    "chapters/chapter04-loops/exercises.md",
+    "chapters/chapter05-functions/intro.md",
+    "chapters/chapter05-functions/functions.md",
+    "chapters/chapter05-functions/communicate-from-function.md",
+    "chapters/chapter05-functions/variable-scope.md",
+    "chapters/chapter05-functions/pass-more-values.md",
+    "chapters/chapter05-functions/exercises.md",
+    "chapters/chapter06-pointers/intro.md",
+    "chapters/chapter06-pointers/why-pointers.md",
+    "chapters/chapter06-pointers/what-are-pointers.md",
+    "chapters/chapter06-pointers/how-to-use-pointers.md",
+    "chapters/chapter06-pointers/scope.md",
+    "chapters/chapter06-pointers/goldbach-conjecture-example.md",
+    "chapters/chapter06-pointers/exercises.md",
+    "chapters/chapter07-arrays/intro.md",
+    "chapters/chapter07-arrays/why-arrays.md",
+    "chapters/chapter07-arrays/what-are-arrays.md",
+    "chapters/chapter07-arrays/arrays-functions.md",
+    "chapters/chapter07-arrays/exercises.md",
+    "chapters/chapter08-dynamic-memory-allocation/intro.md",
+    "chapters/chapter08-dynamic-memory-allocation/why-how-dynamic-alloc.md",
+    "chapters/chapter08-dynamic-memory-allocation/exercises.md",
+    "chapters/chapter09-multi-dimensional-arrays/intro.md",
+    "chapters/chapter09-multi-dimensional-arrays/why-2d.md",
+    "chapters/chapter09-multi-dimensional-arrays/pass-2d-functions.md",
+    "chapters/chapter09-multi-dimensional-arrays/2d-dynamic-memory-alloc.md",
+    "chapters/chapter09-multi-dimensional-arrays/exercises.md",
+    "chapters/chapter10-strings/intro.md",
+    "chapters/chapter10-strings/what-are-strings.md",
+    "chapters/chapter10-strings/input-output-strings.md",
+    "chapters/chapter10-strings/string-functions.md",
+    "chapters/chapter10-strings/array-of-strings.md",
+    "chapters/chapter10-strings/exercises.md",
+    "chapters/chapter11-recursion/intro.md",
+    "chapters/chapter11-recursion/recursion-math.md",
+    "chapters/chapter11-recursion/recursion-in-patterns.md",
+    "chapters/chapter11-recursion/recursion-in-arrays.md",
+    "chapters/chapter11-recursion/exercises.md",
+    "chapters/chapter12-data-structures/intro.md",
+    "chapters/chapter12-data-structures/what-data-structure.md",
+    "chapters/chapter12-data-structures/pointers-to-data-structure.md",
+    "chapters/chapter12-data-structures/exercises.md",
+    "chapters/chapter13-linked-lists/intro.md",
+    "chapters/chapter13-linked-lists/why-linked-lists.md",
+    "chapters/chapter13-linked-lists/form-linked-list.md",
+    "chapters/chapter13-linked-lists/insert-find-observe-into-linkedlist.md",
+    "chapters/chapter13-linked-lists/delete-nodes.md",
+    "chapters/chapter13-linked-lists/exercises.md",
+    "chapters/chapter14-sorting/intro.md",
+    "chapters/chapter14-sorting/insertion-sort.md",
+    "chapters/chapter14-sorting/selection-sort.md",
+    "chapters/chapter14-sorting/bubble-sort.md",
+    "chapters/chapter14-sorting/exercises.md",
+    "chapters/chapter15-searching/intro.md",
+    "chapters/chapter15-searching/sequential-search.md",
+    "chapters/chapter15-searching/binary-search.md",
+    "chapters/chapter15-searching/exercises.md",
+    "chapters/appendix/appendix.md",
+    "chapters/appendix/setup-vscode.md",
+    "chapters/appendix/vscode-extensions.md",
+    "chapters/appendix/coding-style.md",
+    "chapters/appendix/debugging.md",
+    "chapters/appendix/unix-commands.md"
+  ],
+  "chapters_failed": [],
+  "sections": [
+    {
+      "section": "cover.md",
+      "chars": 2863,
+      "sha256": "51341ae335ecc58362a29032b383e79ce3771711f283d22897429083bba9caa2"
+    },
+    {
+      "section": "chapters/preface/intro.md",
+      "chars": 5489,
+      "sha256": "44615a1eef57cd1454c54462a033317b296ac97611802e04770f1aadca47da0b"
+    },
+    {
+      "section": "chapters/preface/principles.md",
+      "chars": 2239,
+      "sha256": "d2b09736db01d5c892208ec11b7c97196617cffe7b0f26ea4b17410a0693afb6"
+    },
+    {
+      "section": "chapters/chapter01-computers/intro.md",
+      "chars": 318,
+      "sha256": "6a78ddb6914510b9dfd7f4cdf2558f1324c5cd4c8ae737f00226bc1b95a7044d"
+    },
+    {
+      "section": "chapters/chapter01-computers/basic-structure.md",
+      "chars": 2243,
+      "sha256": "3a968fed602410ddfa9f3c740a7b6bb133d1a654330935c936a5f806c3b70479"
+    },
+    {
+      "section": "chapters/chapter01-computers/main-memory.md",
+      "chars": 6474,
+      "sha256": "c03121f880733c01eaf1050947720870dd614cd414f63eda52a95068cd33fd57"
+    },
+    {
+      "section": "chapters/chapter01-computers/dev-cycle.md",
+      "chars": 3382,
+      "sha256": "b402eec3720a42631b3c6b0de0b25b4ea17556975c176a969cb43ffe0efe3f79"
+    },
+    {
+      "section": "chapters/chapter01-computers/simple-C-code.md",
+      "chars": 6400,
+      "sha256": "50a410c9ee867203652b6fafaae700e4506a861129989e7040ddf8bed75c7edc"
+    },
+    {
+      "section": "chapters/chapter02-variables/intro.md",
+      "chars": 350,
+      "sha256": "53e245b7f924bb9fb9bae21b8b3c4c4cbc7006489c44fa1b4b05ee678bac461c"
+    },
+    {
+      "section": "chapters/chapter02-variables/data-types.md",
+      "chars": 4660,
+      "sha256": "f570764816eab916c88f293e2e50f2630f630c6b3508d633bfd8b241cc9e46e4"
+    },
+    {
+      "section": "chapters/chapter02-variables/storing-data.md",
+      "chars": 12220,
+      "sha256": "4caa8206407f43814387e3d86c458cdbf7036aa5e46a1d2a6b85ac48676ccba0"
+    },
+    {
+      "section": "chapters/chapter02-variables/operations.md",
+      "chars": 9955,
+      "sha256": "1cef68c01ceac0b4f8294f83c4742c0df2df099dc860f6df4a328b272c4143e7"
+    },
+    {
+      "section": "chapters/chapter02-variables/math-library.md",
+      "chars": 10814,
+      "sha256": "411c828a628bfd1bd4e67f1fa771420596a03568229d43fe38b5fc0ba47fdc83"
+    },
+    {
+      "section": "chapters/chapter02-variables/random-number.md",
+      "chars": 8501,
+      "sha256": "d2c034d21f595ab2d5b8c0db1f8c28d9d7dc85c7771891bb00736ff8a21e8ef0"
+    },
+    {
+      "section": "chapters/chapter02-variables/exercises.md",
+      "chars": 4377,
+      "sha256": "53fab6099612bd5e32250a0037e42fc391552f676efb1f4f9fa73e29d3d6369e"
+    },
+    {
+      "section": "chapters/chapter03-decision-making/intro.md",
+      "chars": 312,
+      "sha256": "5512f6eb48c70e6fd10d8466e1012963984288dd3bd68a0341eb099ac8fc6db2"
+    },
+    {
+      "section": "chapters/chapter03-decision-making/if-statement.md",
+      "chars": 5594,
+      "sha256": "c49df674694ca6c14711a3a6937425de19154e085365d445e02fbe1578a4f67d"
+    },
+    {
+      "section": "chapters/chapter03-decision-making/multiple-conditions.md",
+      "chars": 10016,
+      "sha256": "43bdba8ff92660ea34becd7715f038831b02a33c584dea87974c6f86da45e10f"
+    },
+    {
+      "section": "chapters/chapter03-decision-making/nested-if.md",
+      "chars": 5547,
+      "sha256": "95ecf7996484a924d4bef0d929268b4420c8da5a39cf83321e947a400a696621"
+    },
+    {
+      "section": "chapters/chapter03-decision-making/exercises.md",
+      "chars": 4010,
+      "sha256": "1e59c0aa86988e48aa7b2318f2862def2688f365e73401c59c668d8ff053e4b1"
+    },
+    {
+      "section": "chapters/chapter04-loops/intro.md",
+      "chars": 774,
+      "sha256": "b947d41b753b0ea36cec832d4e81c92c9274fd42c49f6044ce93443598061b54"
+    },
+    {
+      "section": "chapters/chapter04-loops/while.md",
+      "chars": 4534,
+      "sha256": "e58a73f4c197bf27423155045a5d7a6ee747c8f0b737433ea31f9f0d0f9dd593"
+    },
+    {
+      "section": "chapters/chapter04-loops/do-while.md",
+      "chars": 4177,
+      "sha256": "790785d30687f6fc457ae1b07225569f6c156aa37d236e7987f279eabdf13bf5"
+    },
+    {
+      "section": "chapters/chapter04-loops/for-loop.md",
+      "chars": 7645,
+      "sha256": "9ca6af19739b77b47d97cf6269a9ebf8824788e57db08faa1eec90cd54328df2"
+    },
+    {
+      "section": "chapters/chapter04-loops/nested-loops.md",
+      "chars": 7315,
+      "sha256": "b04f4b072e917e0a37e83b8f1d3caaca68af68915ccafd8baaa273bfdd132c35"
+    },
+    {
+      "section": "chapters/chapter04-loops/debugging-loops.md",
+      "chars": 5131,
+      "sha256": "8c61d7762725c8959774b8ede97a8e55b26da2729989f640b90487766e62184f"
+    },
+    {
+      "section": "chapters/chapter04-loops/exercises.md",
+      "chars": 6328,
+      "sha256": "e5f3190386cb1aa4123308a3e6e7a531454d97690d7e4e71ba60fbfd8d497f4e"
+    },
+    {
+      "section": "chapters/chapter05-functions/intro.md",
+      "chars": 696,
+      "sha256": "f000960464e67ec4954ac2c2ad7b6a983ad775675c805ee32f265641a59cbd6f"
+    },
+    {
+      "section": "chapters/chapter05-functions/functions.md",
+      "chars": 9091,
+      "sha256": "90ef7687495a9b7f882e48b15a7c5645f148fceef1363e296dad0e61a88d20dd"
+    },
+    {
+      "section": "chapters/chapter05-functions/communicate-from-function.md",
+      "chars": 1881,
+      "sha256": "34aed3ab94da12a8f361932803030f7f5a3663f6d9718e41ebaae0489072bb8e"
+    },
+    {
+      "section": "chapters/chapter05-functions/variable-scope.md",
+      "chars": 1902,
+      "sha256": "d0d55878b61eda397dd6a073989e2812f4e6e93fa67dd42dac8f96744618f816"
+    },
+    {
+      "section": "chapters/chapter05-functions/pass-more-values.md",
+      "chars": 7300,
+      "sha256": "919789a5d977d75978094fd4314ab525c92ba663a61cce487d68de2232a0677e"
+    },
+    {
+      "section": "chapters/chapter05-functions/exercises.md",
+      "chars": 4501,
+      "sha256": "997bc5b79f2e319e873f7a55f94e93d5909501ebb9c0e988a0ddf7b710543f61"
+    },
+    {
+      "section": "chapters/chapter06-pointers/intro.md",
+      "chars": 420,
+      "sha256": "a7cab0bc505317bdc2ad8348e951e8f772cb664e25d3b0cfcf66c0e8deb3acdc"
+    },
+    {
+      "section": "chapters/chapter06-pointers/why-pointers.md",
+      "chars": 5785,
+      "sha256": "924f143680e193cacc7f05b2f65e616e56c82223ad6e225153db454018cf4be6"
+    },
+    {
+      "section": "chapters/chapter06-pointers/what-are-pointers.md",
+      "chars": 3661,
+      "sha256": "ca8acf8e2ed89fc22d7c874c8cce7d982fa5c5afd81fc18285ad82b80e5713dd"
+    },
+    {
+      "section": "chapters/chapter06-pointers/how-to-use-pointers.md",
+      "chars": 8095,
+      "sha256": "87742510647f58342fac1df59dddd63b7811697983c4f3415f1b2ea537cba59a"
+    },
+    {
+      "section": "chapters/chapter06-pointers/scope.md",
+      "chars": 4044,
+      "sha256": "f0276803bbdba0fbd254ab023d327c2aa5eabccf3cc4d7ab4c9018a612944b42"
+    },
+    {
+      "section": "chapters/chapter06-pointers/goldbach-conjecture-example.md",
+      "chars": 14395,
+      "sha256": "3088d62d00b86c8075850c4903a68bd12e3a2844e33fb9098dfa23177f60db83"
+    },
+    {
+      "section": "chapters/chapter06-pointers/exercises.md",
+      "chars": 8451,
+      "sha256": "f98fd32a49c4d796c578441c01b943d22c64ff74bc8a68cbfac92f6662af90d3"
+    },
+    {
+      "section": "chapters/chapter07-arrays/intro.md",
+      "chars": 306,
+      "sha256": "8c25672276f4fe6fbccb7ad1c35e835b9bc587b7c401deacf033425a14d8d62f"
+    },
+    {
+      "section": "chapters/chapter07-arrays/why-arrays.md",
+      "chars": 10415,
+      "sha256": "ecc17b9128897bb9c8befeea8c2c14d2e1a152658c6c76aa30a7bbf93d94c560"
+    },
+    {
+      "section": "chapters/chapter07-arrays/what-are-arrays.md",
+      "chars": 4721,
+      "sha256": "f53bfea067a9cdf9a7ed35538e4d843f046a59b116e8a20c6fc3b2048b89eb78"
+    },
+    {
+      "section": "chapters/chapter07-arrays/arrays-functions.md",
+      "chars": 6181,
+      "sha256": "5fbca42f3c8c00a9ece56e6512e97e8450f17af8f2cdcb1868e448f9acc018df"
+    },
+    {
+      "section": "chapters/chapter07-arrays/exercises.md",
+      "chars": 15702,
+      "sha256": "f1d45393661332f1797c578ecd03c6f9812133ffc45b5612f3d488ff586bd252"
+    },
+    {
+      "section": "chapters/chapter08-dynamic-memory-allocation/intro.md",
+      "chars": 710,
+      "sha256": "964c5194564e6c11167be6aee02907862196e530b9665eaa7fba1bcc920ffd01"
+    },
+    {
+      "section": "chapters/chapter08-dynamic-memory-allocation/why-how-dynamic-alloc.md",
+      "chars": 16769,
+      "sha256": "7616e3e936c88a320d3332c27785b66520a3dfb46ba11b198f885f1d8beff2e2"
+    },
+    {
+      "section": "chapters/chapter08-dynamic-memory-allocation/exercises.md",
+      "chars": 914,
+      "sha256": "409f8eed0167edb4e89053121049a18544c8790276a4acc0eb38b8893a94820a"
+    },
+    {
+      "section": "chapters/chapter09-multi-dimensional-arrays/intro.md",
+      "chars": 1096,
+      "sha256": "b4312532e8044f9db663524d47026c11487c6e5a14a328cf3e05be40aa96eb3b"
+    },
+    {
+      "section": "chapters/chapter09-multi-dimensional-arrays/why-2d.md",
+      "chars": 8940,
+      "sha256": "7d1a242b5588fef73b1369fea473bf5bad650eaee00f45b92ecbb53b5cec83c1"
+    },
+    {
+      "section": "chapters/chapter09-multi-dimensional-arrays/pass-2d-functions.md",
+      "chars": 2809,
+      "sha256": "ce58213ef5072450d8316688a8275f2c184643959fdf055861e9969836aefed7"
+    },
+    {
+      "section": "chapters/chapter09-multi-dimensional-arrays/2d-dynamic-memory-alloc.md",
+      "chars": 7829,
+      "sha256": "01f3260449771a60d14df90a44e04c569bd801b8c9fdeb819797b5afa32e801c"
+    },
+    {
+      "section": "chapters/chapter09-multi-dimensional-arrays/exercises.md",
+      "chars": 14838,
+      "sha256": "e927bc7cd9db9c9cad1cd280de1e1d096d614ddd456a89bfc2a321d2c92d043c"
+    },
+    {
+      "section": "chapters/chapter10-strings/intro.md",
+      "chars": 541,
+      "sha256": "1644128897b6538310694dab1f50c2e2504825bdf8fb62f819864e6e8e955ab0"
+    },
+    {
+      "section": "chapters/chapter10-strings/what-are-strings.md",
+      "chars": 6969,
+      "sha256": "b6501f6ae8393bce4efbfeb97e0d36472d3320d07ef4ac4f85d6e03be7cc25ba"
+    },
+    {
+      "section": "chapters/chapter10-strings/input-output-strings.md",
+      "chars": 14960,
+      "sha256": "59048301d6e61a1a6751364118b06ea48aca216145718e4c3cbfe1dc8c5a7858"
+    },
+    {
+      "section": "chapters/chapter10-strings/string-functions.md",
+      "chars": 22475,
+      "sha256": "14c81b22520fe180531dfc194513a670c2f4b594c77fb1b6ca82f85dc0f72022"
+    },
+    {
+      "section": "chapters/chapter10-strings/array-of-strings.md",
+      "chars": 4934,
+      "sha256": "7437e640471a8514ac682e063c685cffc1031f6e1dd222d7a2f3b837812a5214"
+    },
+    {
+      "section": "chapters/chapter10-strings/exercises.md",
+      "chars": 9175,
+      "sha256": "fdd0c10e4b2566955254d66c1bdb93b3c8874eb99a754103905fccac7f88a56e"
+    },
+    {
+      "section": "chapters/chapter11-recursion/intro.md",
+      "chars": 792,
+      "sha256": "0134264586d42d89d91ea41d94947cd0737006c42158be8c08586ced8799c82c"
+    },
+    {
+      "section": "chapters/chapter11-recursion/recursion-math.md",
+      "chars": 5794,
+      "sha256": "e6cc21489e97e3fe0d5da46e9d20066758f29b7a17b01ae28333295262878389"
+    },
+    {
+      "section": "chapters/chapter11-recursion/recursion-in-patterns.md",
+      "chars": 11293,
+      "sha256": "ffffc73e5b6db7ab3a8796d53a5a6c02de9a27f8047d28d799bc058a2854ad82"
+    },
+    {
+      "section": "chapters/chapter11-recursion/recursion-in-arrays.md",
+      "chars": 3985,
+      "sha256": "7cfa579a1a2b2cbcba2fb0d22ab476321ee034f6cd7f7f191ceccd1a4d75844e"
+    },
+    {
+      "section": "chapters/chapter11-recursion/exercises.md",
+      "chars": 4164,
+      "sha256": "54f830d488fb0131ac2fde5f31a7598c8ee66caca5c426cb50cbfea69539bee9"
+    },
+    {
+      "section": "chapters/chapter12-data-structures/intro.md",
+      "chars": 328,
+      "sha256": "c7bb586dc42ad5d1a8663405933498c8e275087f6907393dd59ffec43d255dc6"
+    },
+    {
+      "section": "chapters/chapter12-data-structures/what-data-structure.md",
+      "chars": 6041,
+      "sha256": "f5406b371c41357e4f0dd10c11c9aed9e83b1ad73829fc33f93d2aa0c73f8cc9"
+    },
+    {
+      "section": "chapters/chapter12-data-structures/pointers-to-data-structure.md",
+      "chars": 2481,
+      "sha256": "f516c56100eda23edc5e24ffac31a4175124b24c66a60f02641cbaed65b86095"
+    },
+    {
+      "section": "chapters/chapter12-data-structures/exercises.md",
+      "chars": 5822,
+      "sha256": "8646a9ab4cde6324b7b6c1cb20d73b72cbe2a17c67aedb9efd43f0aea4b6f215"
+    },
+    {
+      "section": "chapters/chapter13-linked-lists/intro.md",
+      "chars": 453,
+      "sha256": "0267448c7a27d1d13e3b72873c8c4e3db69191d1c5410d20c7154681112ffa2b"
+    },
+    {
+      "section": "chapters/chapter13-linked-lists/why-linked-lists.md",
+      "chars": 2915,
+      "sha256": "1a0424b3d3ecb15df0505c34a177647aad3e73fb7cb73a1a187e398db92250ab"
+    },
+    {
+      "section": "chapters/chapter13-linked-lists/form-linked-list.md",
+      "chars": 5638,
+      "sha256": "dffa5b70c412945a16502464e7b3e6d5d2c270f009fb07e87bc44aa359d2acbb"
+    },
+    {
+      "section": "chapters/chapter13-linked-lists/insert-find-observe-into-linkedlist.md",
+      "chars": 25385,
+      "sha256": "cefa6bdd1c73070366d1d247cfc84073a4d121449042b114bc9ffd8bb5012172"
+    },
+    {
+      "section": "chapters/chapter13-linked-lists/delete-nodes.md",
+      "chars": 13421,
+      "sha256": "b8517dd810a586d00bbef0d6d5e2ed8258b327933ad0a1828ff509e8d26a2f1e"
+    },
+    {
+      "section": "chapters/chapter13-linked-lists/exercises.md",
+      "chars": 9179,
+      "sha256": "b326ce31e220a4f7c1d6f7d6c53e362904e468466137cea4f3bc493b3803e4f2"
+    },
+    {
+      "section": "chapters/chapter14-sorting/intro.md",
+      "chars": 872,
+      "sha256": "95634effeec5ae860d871fbbe98eb78da9850c4115f475859089fd092d92259e"
+    },
+    {
+      "section": "chapters/chapter14-sorting/insertion-sort.md",
+      "chars": 4536,
+      "sha256": "2272e65512419930348521dc26e1dbf0a11071117df96c3709b1c2596b96756f"
+    },
+    {
+      "section": "chapters/chapter14-sorting/selection-sort.md",
+      "chars": 4051,
+      "sha256": "5e3f61a87daa0ae676be21a61defb0abc6ac214c65a9e1efaac24c4f44cfeda2"
+    },
+    {
+      "section": "chapters/chapter14-sorting/bubble-sort.md",
+      "chars": 4098,
+      "sha256": "6f7653e5ae2eb341ed5f9f5a58323b493898732fcc01d406c62140873c71ee8a"
+    },
+    {
+      "section": "chapters/chapter14-sorting/exercises.md",
+      "chars": 8535,
+      "sha256": "64444801f9b737a5a109353318c0be428a37a6b0923eee607f56f83edbf7ec4c"
+    },
+    {
+      "section": "chapters/chapter15-searching/intro.md",
+      "chars": 321,
+      "sha256": "182497e5f84e908d41cfc96588af6c4a34528e258b99a158b932a003c5afca9b"
+    },
+    {
+      "section": "chapters/chapter15-searching/sequential-search.md",
+      "chars": 2252,
+      "sha256": "451761b1026055ece954c52e044701dc093d8240425ddac254e4f5732ab0561f"
+    },
+    {
+      "section": "chapters/chapter15-searching/binary-search.md",
+      "chars": 9692,
+      "sha256": "16b4c74f2dfaef6a61fe3ced9a25b759294549db501cfaee13668e0af03adfe2"
+    },
+    {
+      "section": "chapters/chapter15-searching/exercises.md",
+      "chars": 2556,
+      "sha256": "5f076f6d46ee72c0db4be7d0100ca658c1d1a6d27687b5b5a03560b87f6aefba"
+    },
+    {
+      "section": "chapters/appendix/appendix.md",
+      "chars": 501,
+      "sha256": "04f5d95e95a405b3ee2fe3ec6293bad395928eff17d6c6cceaefbcf962746d94"
+    },
+    {
+      "section": "chapters/appendix/setup-vscode.md",
+      "chars": 7014,
+      "sha256": "ab0fb8d493474ca3b731d7ef0e690c0b1b9218757cbc9df409fd110fa5288c7d"
+    },
+    {
+      "section": "chapters/appendix/vscode-extensions.md",
+      "chars": 1556,
+      "sha256": "c4dc529f8301705bc8f6d7684307331afad6726be477d4d592ff52743e53df7b"
+    },
+    {
+      "section": "chapters/appendix/coding-style.md",
+      "chars": 151,
+      "sha256": "b082c4b45a272c292ba7b904a9c2eec4f7ac474e3510c4259b46f16758395a1f"
+    },
+    {
+      "section": "chapters/appendix/debugging.md",
+      "chars": 27,
+      "sha256": "da652051da153cabacaba7d4da9ab835ad7acb34a223a566d4b5141d8a1033d2"
+    },
+    {
+      "section": "chapters/appendix/unix-commands.md",
+      "chars": 37,
+      "sha256": "766704d90c4e88ffab3523ff16bff572b434ca80e0b892dfa6d047347c5f997a"
+    }
+  ],
+  "notes": [
+    "Assembled in textbook/_toc.yml order (cover + preface + chapters 1-15 + appendix). First edition; textbook for APS105 Computer Fundamentals, University of Toronto.",
+    "CAVEAT (from the book's own cover page): 'Many parts of this textbook was written with help from GitHub Copilot, GPT-3.5 and GPT-4.' Primary author Salma Emara; based on course notes by Salma Emara, Baochun Li, Jonathan Rose, John Carter and Greg Steffan.",
+    "Adaptation: each chapter's testing-exercises.md is only a MyST stub ({{exercise_embed}}) pointing at the chapter's exercises.md, which holds the actual exercise questions and answers (many from past APS105 exams). The 14 testing-exercises.md stubs were therefore replaced by the corresponding exercises.md content; the separator labels record the exercises.md paths. No stub text was included.",
+    "Left out: chapter00-interactive-quizzes (in _toc.yml but its files do not exist in the repo and the pages 404 on learningc.org); chapter16-binary-search-trees (4 .md files exist in the repo but the chapter is not in _toc.yml and its pages 404 on learningc.org, i.e. unpublished/in-progress); textbook/exercises.md (hidden page holding only figure/image references for exercises, no prose); semantic-search.md (hidden search page).",
+    "Cleaning: MyST/JupyterBook directive fences (```{...}), {{...}} directives, image/link markup and HTML tags stripped; prose and code kept; 3+ blank lines collapsed. Two '{{' occurrences remain and are legitimate C nested array initialisers in code examples."
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "title": "Python Library Reference (part F of 6)",
+  "author": "Python Software Foundation / CPython contributors",
+  "source": "python/cpython, branch main, Doc/library/ (files listed in files)",
+  "edition": "main branch, commit 288cc2bfc83d30cac834abcb4e69c36eda1ef5cb (2026-11-05 snapshot)",
+  "licence": "PSF License Version 2 (documentation code additionally dual-licensed PSF License Version 2 / 0BSD from Python 3.8.6, per cpython LICENSE)",
+  "licence_verified_from": "python/cpython LICENSE, read via GitHub connector (verified by the library worker 2026-11-05)",
+  "files": [
+    "Doc/library/xml.etree.elementtree.rst",
+    "Doc/library/xml.rst",
+    "Doc/library/xml.sax.handler.rst",
+    "Doc/library/xml.sax.reader.rst",
+    "Doc/library/xml.sax.rst",
+    "Doc/library/xml.sax.utils.rst",
+    "Doc/library/xmlrpc.client.rst",
+    "Doc/library/xmlrpc.rst",
+    "Doc/library/xmlrpc.server.rst",
+    "Doc/library/zipapp.rst",
+    "Doc/library/zipfile.rst",
+    "Doc/library/zipimport.rst",
+    "Doc/library/zlib.rst",
+    "Doc/library/zoneinfo.rst"
+  ],
+  "file_count": 14,
+  "failed": [],
+  "failed_count": 0,
+  "chars": 215118,
+  "sha256": "ee20fa86b6ee1cd8f420fec98c47f7b125f0c099a09d71e5e3a62d281c6a0bc4",
+  "status": "assembled, not pushed (push is parent's job)",
+  "approval_note": "Eric approved the advanced Python batch (Library Reference + PEPs + DevGuide) on 2026-11-05; assembly is this subagent's job, push is the parent's job",
+  "notes": "Part F of 6 of the full Library Reference (329 .rst files, ~7.2M raw chars \u2014 far larger than the ~1.2M assumed in the task, so the prescribed two-file split was replaced by 6 ~1.2M-char parts at file boundaries, each pushable in one push-files call). Cleaning follows python_docs.txt: directive lines dropped, title adornments dropped, inline roles stripped, labels/comments/code kept, 3+ newlines collapsed. 21 non-text files in Doc/library/ (images, .dot, .inc, .html) excluded. Fetched by shallow git clone (sparse checkout Doc/library) after the GitHub connector rate-limited the first worker; the 40 files that worker fetched were re-fetched from the clone for consistency. Sections are in sorted path order."
+}

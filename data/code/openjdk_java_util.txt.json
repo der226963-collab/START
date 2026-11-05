@@ -1,0 +1,33 @@
+{
+  "title": "OpenJDK java.util (curated selection)",
+  "authors": [
+    "OpenJDK contributors / Oracle America, Inc. and affiliates"
+  ],
+  "source": "openjdk/jdk, branch master, commit 9d7642fcef5585432053959a074d180db0eb48e7 (2026-11-05), src/java.base/share/classes/java/util/",
+  "licence": "GNU General Public License version 2 only (GPL-2.0-only) with the \"CLASSPATH\" Exception",
+  "licence_verified_from": "openjdk/jdk LICENSE file (GPLv2 text plus the CLASSPATH Exception section), read via GitHub connector and git clone; each selected file's header designates it as subject to the Classpath exception",
+  "files": [
+    "util/ArrayList.java",
+    "util/HashMap.java",
+    "util/LinkedList.java",
+    "util/Objects.java",
+    "util/Optional.java",
+    "util/List.java",
+    "util/Map.java",
+    "util/Set.java",
+    "util/Collection.java",
+    "util/Iterator.java",
+    "util/ArrayDeque.java",
+    "util/HashSet.java",
+    "util/AbstractList.java",
+    "util/AbstractMap.java",
+    "util/AbstractCollection.java"
+  ],
+  "file_count": 15,
+  "failed": [],
+  "failed_count": 0,
+  "notes": "Curated real Java source: the core collections (ArrayList, HashMap, LinkedList, ArrayDeque, HashSet), the collection interfaces, and Objects/Optional. Code unmodified. Left out for the size budget: Arrays.java (392,765 chars), Collections.java (246,129), TreeMap.java (122,644), LinkedHashMap.java and others \u2014 candidates for a follow-up file.",
+  "chars": 630857,
+  "sha256": "6fdb7f24071a32db2560731e529b6649518cd291dd91b66741cfd830c4ea0350",
+  "status": "proposed"
+}

@@ -1,0 +1,33 @@
+{
+  "title": "OpenJDK java.lang (curated selection)",
+  "authors": [
+    "OpenJDK contributors / Oracle America, Inc. and affiliates"
+  ],
+  "source": "openjdk/jdk, branch master, commit 9d7642fcef5585432053959a074d180db0eb48e7 (2026-11-05), src/java.base/share/classes/java/lang/",
+  "licence": "GNU General Public License version 2 only (GPL-2.0-only) with the \"CLASSPATH\" Exception",
+  "licence_verified_from": "openjdk/jdk LICENSE file (GPLv2 text plus the CLASSPATH Exception section), read via GitHub connector and git clone; each selected file's header designates it as subject to the Classpath exception",
+  "files": [
+    "lang/Object.java",
+    "lang/String.java",
+    "lang/AbstractStringBuilder.java",
+    "lang/StringBuilder.java",
+    "lang/Integer.java",
+    "lang/Boolean.java",
+    "lang/Enum.java",
+    "lang/Comparable.java",
+    "lang/CharSequence.java",
+    "lang/Iterable.java",
+    "lang/Runnable.java",
+    "lang/Number.java",
+    "lang/Appendable.java",
+    "lang/AutoCloseable.java",
+    "lang/Cloneable.java"
+  ],
+  "file_count": 15,
+  "failed": [],
+  "failed_count": 0,
+  "notes": "Curated real Java source: the core language classes (Object, String, StringBuilder, Integer, Boolean, Enum) plus the small core interfaces. Code unmodified, joined with '--- SOURCE: <repo path> ---' separators. Left out for the size budget: Character.java (495,172 chars, mostly Unicode tables), Class.java (178,068), Thread.java (103,906), System.java (102,262), Math.java (147,087), Float/Short/Byte and other wrappers \u2014 candidates for a follow-up file.",
+  "chars": 508414,
+  "sha256": "cd4fdf548429268244ad1c633a886e1a6429db518021bac952a5e01cca0f0763",
+  "status": "proposed"
+}

@@ -175,3 +175,33 @@ copyrighted textbooks with no open licence are still excluded.
   Edition], 213,588 chars, sha256 61791b6b0fb4…,
   CC BY-NC-SA 4.0 International. Assembled corpus with
   this file: see split manifest for the new total.
+
+- PROGRAMMING LANGUAGES, 2026-11-04, LOCAL ONLY, NOT
+  YET PUSHED: rust_book.txt — The Rust Programming
+  Language, Steve Klabnik, Carol Nichols, and Chris
+  Krycho, with contributions from the Rust Community,
+  assembled from rust-lang/book, branch main, 111
+  chapter .md files in SUMMARY.md order, minimal
+  cleaning only (mdBook directives / HTML comments
+  stripped, code blocks and prose intact), 1,119,540
+  chars, sha256 d33ef85f6ef53c88e4521c0d04508ef8480
+  c8c06013b09f94351f71368dd5e81, provenance in
+  rust_book.txt.json (status proposed, approved false,
+  pushed false at assembly). Licence verified from
+  that repo's LICENSE-MIT: MIT, Copyright (c) 2010
+  The Rust Project Developers; Rust project is dual
+  MIT / Apache 2.0. This is the first programming-
+  language source, under Eric's 2026-11-04 decision
+  that programming languages are in scope because the
+  model needs to self-write code to improve itself,
+  with self-edit guardrails unchanged. Core languages
+  are Python (the project's own language) and Rust;
+  C and Java are the next wave Eric flagged as having
+  potential, with no C or Java source verified or
+  added yet. Rust assembled into data/expanded_corpus.txt
+  2026-11-04: corpus now 20,886,788 chars from 17 files,
+  sha256 295fae7a43ce8a237bad5af0b5fef92a41317a9167ac
+  92c49d23a714da31cb38. Medium test passed first
+  (20 steps, val 4.2860, pre-Rust corpus); a medium
+  Rust-inclusive training run was started in the
+  background after the push, generation check pending.

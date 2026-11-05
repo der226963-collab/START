@@ -66,6 +66,14 @@ def lr_at(step, total, base_lr, schedule):
 SIZES = {
     "tiny": dict(n_layer=2, n_head=4, n_embd=64, block_size=64),
     "small": dict(n_layer=4, n_head=4, n_embd=128, block_size=128),
+    # Medium, added 2026-11-04 for the programming-language
+    # wave (Python + Rust core, then C + Java): ~5M params
+    # with a ~850-token vocab (untied; ~4.8M tied), still
+    # CPU-trainable for short runs, but a 2,000-step run
+    # will take several times the small model's ~78 minutes
+    # — use it for smoke tests first, then a long run in
+    # the background, not as a quick foreground job.
+    "medium": dict(n_layer=6, n_head=8, n_embd=256, block_size=256),
 }
 
 
@@ -208,6 +216,17 @@ def main():
             torch.save(torch.tensor(train_parts + val_parts, dtype=torch.long), str(cache_path))
             cache_tok_path.write_text(tokenizer.to_json())
             print(f"Wrote token cache: {len(train_parts) + len(val_parts):,} tokens to {cache_path}")
+    # Clear error instead of a cryptic torch randint failure
+    # when the context is longer than the data (hit 2026-11-04
+    # testing medium, block_size 256, on the 3,302-char corpus:
+    # val was ~200 tokens, so get_batch crashed). Medium needs
+    # a large corpus, not a small smoke file.
+    _bs = SIZES[args.size]["block_size"]
+    if len(train_data) <= _bs or len(val_data) <= _bs:
+        raise SystemExit(
+            f"Data too small for block_size {_bs}: train {len(train_data)} tokens, "
+            f"val {len(val_data)} tokens. Use a larger corpus (e.g. --data-dir data) "
+            f"or a smaller --size.")
     if args.modern:
         cfg = ModernConfig(vocab_size=len(tokenizer), dropout=args.dropout,
                            qk_norm=args.qk_norm, tie_weights=args.tie_weights, **SIZES[args.size])

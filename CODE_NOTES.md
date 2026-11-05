@@ -140,3 +140,47 @@ Licences checked directly from each repo's LICENSE file:
 - Status: pushed 2026-11-04 as the batch after the
   code-improvement batch, at Eric's direction to
   integrate everything brought forward first.
+
+## 2026-11-04 — Programming languages: medium model, Rust, C/Java plan
+
+- Decision, recorded in SOURCES.md: programming
+  languages are now in scope, because the model needs
+  to self-write code to improve itself. Core languages
+  are Python and Rust; C and Java are the next wave
+  Eric flagged as having potential. No C or Java source
+  is verified or added yet. Guardrails are unchanged:
+  self-written code still goes through propose-and-
+  approve / tiered low-medium approval, guardrail files
+  remain human-only, and bypassing guardrails remains
+  blocked.
+- Medium size (`train_gpt.py`, SIZES["medium"]):
+  6 layers, 8 heads, 256-dim, 256 context, ~5M params
+  tied. A first smoke test on the 3,302-char corpus
+  crashed in get_batch because context 256 exceeds
+  the ~200-token validation split — fixed with a
+  clear SystemExit message instead of a cryptic torch
+  randint error. Medium therefore needs a large corpus.
+- Rust Book: assembled locally as
+  data/expanded/rust_book.txt (1,119,540 chars, 111
+  chapters, sha256 d33ef85f…71368dd5e81), licence
+  MIT / Apache 2.0 verified from rust-lang/book
+  LICENSE-MIT. Status at writing: proposed only, not
+  in the assembled corpus, not trained on, not pushed.
+  Next steps, in order: medium test passes, then
+  assemble Rust into the corpus, then a Rust training
+  check, then push code + Rust source + notes.
+- Medium test result, 2026-11-04: 20 steps, modern,
+  BPE 50 merges, batch 8, full expanded corpus
+  (pre-Rust), tied weights — train 4.5352, val 4.2860,
+  checkpoint saved to /tmp/medium-test.pt (local only).
+  Generation at 20 steps is gibberish, as expected;
+  this run validates that medium trains, not that it
+  is good yet. Test: tests/test_medium.py.
+- Rust assembled into the corpus, 2026-11-04:
+  data/expanded_corpus.txt is now 20,886,788 chars
+  from 17 files (was 19,767,249 from 16), sha256
+  295fae7a43ce8a237bad5af0b5fef92a41317a9167ac92c
+  49d23a714da31cb38. A medium Rust-inclusive training
+  run (100 steps, Muon lr 0.02, trapezoid, QK-norm,
+  tied) was started in the background after this
+  push; its generation check is pending, not claimed.

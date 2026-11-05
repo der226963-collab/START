@@ -1,0 +1,31 @@
+{
+  "author": "The Solidity Authors (Argot Collective; formerly Ethereum Foundation)",
+  "chars": 729806,
+  "edition": "master @ d2acac1a0109f88224896e8e6e6d41a6a8e53673 (2026-11-04)",
+  "failed": [],
+  "failed_count": 0,
+  "file_count": 14,
+  "files": [
+    "libsolidity/parsing/Parser.h",
+    "libsolidity/parsing/Parser.cpp",
+    "libsolidity/ast/AST.h",
+    "libsolidity/ast/AST.cpp",
+    "libsolidity/ast/Types.h",
+    "libsolidity/analysis/TypeChecker.h",
+    "libsolidity/analysis/TypeChecker.cpp",
+    "libsolidity/interface/CompilerStack.h",
+    "libsolidity/interface/CompilerStack.cpp",
+    "libsolidity/interface/StandardCompiler.h",
+    "libsolidity/interface/StandardCompiler.cpp",
+    "libsolidity/codegen/Compiler.h",
+    "libsolidity/codegen/ContractCompiler.cpp",
+    "libsolidity/codegen/CompilerUtils.cpp"
+  ],
+  "licence": "GPL-3.0",
+  "licence_verified_from": "ethereum/solidity LICENSE.txt read via GitHub connector (GNU GPL v3 full text)",
+  "notes": "Curated C++ core of the solc pipeline: parsing (Parser), AST + types (AST, Types), semantic analysis (TypeChecker), driver (CompilerStack, StandardCompiler) and code generation (ContractCompiler, CompilerUtils). Left out (libsolidity is 2,729,180 chars total): codegen/ir, formal/ (SMT/CHC), most of analysis/ and codegen/, and liblangutil. Teaches how Solidity is parsed, checked and compiled, not Solidity itself.",
+  "sha256": "598328b082a153b3e61a17b7e30eab900f5f9f0c13b57dacb767aa8aa49f0499",
+  "source": "ethereum/solidity, branch master, libsolidity/ (14 files listed in files)",
+  "status": "proposed",
+  "title": "Solidity Compiler Source (curated core pipeline)"
+}

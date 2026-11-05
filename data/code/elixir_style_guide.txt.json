@@ -1,0 +1,18 @@
+{
+  "title": "The Elixir Style Guide",
+  "author": "Elixir community contributors (Christopher Adams et al.)",
+  "edition": "master branch, commit 1f2fdf68fe54af49a92bf7c1e876dd7fc8c8b149 (2024-05-06 snapshot)",
+  "source": "christopheradams/elixir_style_guide, branch master, README.md",
+  "licence": "Creative Commons Attribution 3.0 Unported (CC BY 3.0)",
+  "licence_verified_from": "christopheradams/elixir_style_guide README.md, Copying / License section on the repo's own page ('This work is licensed under a Creative Commons Attribution 3.0 Unported License'); the repo has no LICENSE file",
+  "chars": 33519,
+  "sha256": "4de7a04080a913e6bcb3f0ecc8ebf7d5ea1be550651076a5ea089f1c5888b24b",
+  "file_count": 1,
+  "files": [
+    "README.md"
+  ],
+  "failed": [],
+  "failed_count": 0,
+  "status": "proposed",
+  "notes": "Community Elixir style guide (README.md only, 33,492 chars): source layout, syntax, naming, comments, modules, functions, and related conventions. Translations are NOT included. The guide notes its structure and examples were borrowed from the Ruby community style guide. Single file, joined with one '--- SOURCE: <repo path> ---' separator."
+}

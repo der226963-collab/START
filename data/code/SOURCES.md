@@ -104,17 +104,42 @@ sha256 b6fb4d79c0c19b17842a64766354f9e9188b12526e9628c1abaefa7730aaf5e9.
   023879c0ddecb341…. Licence PSF License Version 2.
   Docstrings intact; tests, generated files, C
   modules excluded.
-- Automate the Boring Stuff, 2nd edition, Al Sweigart:
-  licence VERIFIED from its own copyright page
-  (CC BY-NC-SA 3.0 United States, © 2020; the page
-  also carries standard No Starch "All rights
-  reserved" boilerplate above the CC licence line,
-  which is the operative grant for the online
-  edition), but NOT yet assembled — no official
-  GitHub source repo exists, chapters are website
-  HTML only, so it needs a browser download/assembly
-  step in a follow-up batch, not a text-fetch
-  assembly.
+- automate_boring_stuff_3e.txt — Automate the Boring
+  Stuff with Python, 3rd edition, Al Sweigart, No
+  Starch Press, official site automatetheboringstuff.com/3e/,
+  Chapter 0 + Chapters 1–24 + Appendices A–B,
+  27 sections, 1,145,046 chars, sha256
+  bba9017608b0dbfb30ab5a670cac4993504735f5843eeecaaf26ec68a260c61d.
+  Licence CC BY-NC-SA 4.0 International, © 2025.
+  This SUPERSEDES the 2nd edition below, at Eric's
+  2026-11-04 direction ("work with the official 3rd
+  edition, it may have updates that are more
+  important"): 3e is renumbered throughout (e.g.
+  Debugging now Ch. 5), and adds Ch. 12 Command
+  Line Programs, Ch. 16 SQLite Databases, Ch. 21
+  Graphs/Matplotlib, Ch. 22 Recognizing Text in
+  Images, Ch. 24 Text-to-Speech/Speech Recognition,
+  plus an AI/LLMs section in Ch. 0. Caveats in
+  provenance: Ch. 22's sample LLM prompt text is
+  missing from the fetched page (output included);
+  Appendix B ends at the Ch. 24 answers, index
+  excluded. Verified: SHA + 27 separators match
+  provenance, 0 chapters failed, no 429 hit.
+- SUPERSEDED, 2nd edition partial — Automate the
+  Boring Stuff, 2nd edition, Al Sweigart, licence
+  CC BY-NC-SA 3.0 United States, © 2020 (page also
+  carries No Starch "All rights reserved" boilerplate
+  above the CC line, the operative grant for the
+  online edition). Only 18 of 24 sections were
+  fetched from the official site before a browser
+  429 rate limit stopped the work (672,358 chars,
+  sha256 7c1d6278…); a 2e mirror search and a
+  mirror-verification worker were started, then
+  cancelled when Eric directed switching to 3e.
+  The partial file and its part files are kept in
+  data/code/superseded_2e/ (not in the corpus —
+  assemble_code.py only reads data/code/*.txt),
+  and are NOT pushed as the ATBS source.
 
 ## Not yet added
 - C and Java: flagged by Eric as having potential, no

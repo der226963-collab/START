@@ -1,0 +1,180 @@
+{
+  "title": "Automate the Boring Stuff with Python",
+  "author": "Al Sweigart",
+  "edition": "3rd",
+  "publisher": "No Starch Press",
+  "source": "automatetheboringstuff.com/3e/ (official online 3rd edition, chapter by chapter via browser.open page text)",
+  "licence": "CC BY-NC-SA 4.0 International, \u00a9 2025 Al Sweigart",
+  "status": "assembled, not pushed",
+  "note": "Eric directed switching to the official 3rd edition on 2026-11-04 because its updates may be more important than the 2nd edition. This file supersedes the partial 2nd-edition assembly (data/code/automate_boring_stuff.txt, 18 of 24 sections); the 2nd-edition files were not deleted or overwritten.",
+  "sections": 27,
+  "failed": 0,
+  "chars": 1145046,
+  "sha256": "bba9017608b0dbfb30ab5a670cac4993504735f5843eeecaaf26ec68a260c61d",
+  "per_chapter": [
+    {
+      "file": "part-00-introduction.txt",
+      "chapter": "Chapter 0 - Introduction",
+      "chars": 30642,
+      "sha256": "997e5c6a8094bb07b119ae5c432f8bfb83dbc268b2a44664993170b45b03cba9"
+    },
+    {
+      "file": "part-01-chapter1.txt",
+      "chapter": "Chapter 1 - Python Basics",
+      "chars": 42278,
+      "sha256": "8a2423280f79f8fd80b4bbaea0a72b143cecdb83b879eda31630d8a8cd93086c"
+    },
+    {
+      "file": "part-02-chapter2.txt",
+      "chapter": "Chapter 2 - if-else and Flow Control",
+      "chars": 27853,
+      "sha256": "e82e03ff0fd3a4af68417da35eb2854b5633e42fe26ff6191df6afa80637acbb"
+    },
+    {
+      "file": "part-03-chapter3.txt",
+      "chapter": "Chapter 3 - Loops",
+      "chars": 32519,
+      "sha256": "d7ac861f162a1b0876dbb82ff312794d47a5668786f94b5804e49d0c75346757"
+    },
+    {
+      "file": "part-04-chapter4.txt",
+      "chapter": "Chapter 4 - Functions",
+      "chars": 41683,
+      "sha256": "a7e58cfa869decebe1e7b8006dc25f2fc776c98b74757b52bf47ba3b55e5eed3"
+    },
+    {
+      "file": "part-05-chapter5.txt",
+      "chapter": "Chapter 5 - Debugging",
+      "chars": 27922,
+      "sha256": "22a2f7e017c6437fc650b632ff1e972125dca638412c80e9b67818fc49e519f1"
+    },
+    {
+      "file": "part-06-chapter6.txt",
+      "chapter": "Chapter 6 - Lists",
+      "chars": 51644,
+      "sha256": "be18e31e38985381259108b959c79c9522297af31ffeef96992bae7ab04336df"
+    },
+    {
+      "file": "part-07-chapter7.txt",
+      "chapter": "Chapter 7 - Dictionaries and Structuring Data",
+      "chars": 36831,
+      "sha256": "b2b0411ad98329a5535954d43bc560c4fad770e0bebdb6abc81615e28f7d2f36"
+    },
+    {
+      "file": "part-08-chapter8.txt",
+      "chapter": "Chapter 8 - Strings and Text Editing",
+      "chars": 42377,
+      "sha256": "7675e8203bcd663edcd2d52b8978d1dfd334a2f08d0e317ae51b69c3237292f0"
+    },
+    {
+      "file": "part-09-chapter9.txt",
+      "chapter": "Chapter 9 - Text Pattern Matching with Regular Expressions",
+      "chars": 64029,
+      "sha256": "def0686f8966107c5a7e347afb6a954863b1c4cc11d2369c337aa420e2e3058b"
+    },
+    {
+      "file": "part-10-chapter10.txt",
+      "chapter": "Chapter 10 - Reading and Writing Files",
+      "chars": 48691,
+      "sha256": "431690ee489235ecac087e8fc9a5f57bb3db7bc3489f373ac2c1ce85dc588763"
+    },
+    {
+      "file": "part-11-chapter11.txt",
+      "chapter": "Chapter 11 - Organizing Files",
+      "chars": 29118,
+      "sha256": "f06b2c6bf3481e858060a3655b595e119de1aee03548974800f7b28c5b51a5f9"
+    },
+    {
+      "file": "part-12-chapter12.txt",
+      "chapter": "Chapter 12 - Designing and Deploying Command Line Programs",
+      "chars": 70150,
+      "sha256": "991355f92cce7484bf328fee56c6d1bab3dc339092c386cc0f753d5f99ba06de"
+    },
+    {
+      "file": "part-13-chapter13.txt",
+      "chapter": "Chapter 13 - Web Scraping",
+      "chars": 89467,
+      "sha256": "7b319110e2ba9125da207360a858312a146190206667596578dac0ea3f330016"
+    },
+    {
+      "file": "part-14-chapter14.txt",
+      "chapter": "Chapter 14 - Excel Spreadsheets",
+      "chars": 48591,
+      "sha256": "3ca91ea02fb4a47878b9358ec766bbb76dd46228b6066f52c1462e7b0512e4ba"
+    },
+    {
+      "file": "part-15-chapter15.txt",
+      "chapter": "Chapter 15 - Google Sheets",
+      "chars": 48387,
+      "sha256": "98dd986d4b187e226fabc5ed8feebc0832c6974250f7d2b81162727ad180dccb"
+    },
+    {
+      "file": "part-16-chapter16.txt",
+      "chapter": "Chapter 16 - SQLite Databases",
+      "chars": 64425,
+      "sha256": "fd933a5de877d386d6a638aca0ecef01a89c0a389e216c5acfb7b7fa1a722b59"
+    },
+    {
+      "file": "part-17-chapter17.txt",
+      "chapter": "Chapter 17 - PDF and Word Documents",
+      "chars": 51155,
+      "sha256": "5b0f0c6fe57e1214776f289f040dd21f0d7d78049ce94b32f3287e9668387d82"
+    },
+    {
+      "file": "part-18-chapter18.txt",
+      "chapter": "Chapter 18 - CSV, JSON, and XML Files",
+      "chars": 47473,
+      "sha256": "a02541a8f7d942b5d7f07558893de9247eb623ab62c46ec87c0563b675937d51"
+    },
+    {
+      "file": "part-19-chapter19.txt",
+      "chapter": "Chapter 19 - Keeping Time, Scheduling Tasks, and Launching Programs",
+      "chars": 38482,
+      "sha256": "3c8703ad56df6145334c5f181d8cd4143146f2f26985f733661fc8789cf694a9"
+    },
+    {
+      "file": "part-20-chapter20.txt",
+      "chapter": "Chapter 20 - Sending Emails, Texts, and Push Notifications",
+      "chars": 28901,
+      "sha256": "8d0d1ac1f87a2b5f132a626296c56a3a1d6ab876bdf340c297b41eed0fcdf096"
+    },
+    {
+      "file": "part-21-chapter21.txt",
+      "chapter": "Chapter 21 - Making Graphs and Manipulating Images",
+      "chars": 55532,
+      "sha256": "224a518f1b4d1e43ac4aa70de3f8f6a00ff24a7d045fea2102c337c865b26099"
+    },
+    {
+      "file": "part-22-chapter22.txt",
+      "chapter": "Chapter 22 - Recognizing Text in Images",
+      "chars": 22978,
+      "sha256": "0a7171e75385ee75968def288860a32be6319d5e5d3eecab6ede643a9330fd22"
+    },
+    {
+      "file": "part-23-chapter23.txt",
+      "chapter": "Chapter 23 - Controlling the Keyboard and Mouse",
+      "chars": 47920,
+      "sha256": "a50244ce89d781ffb34ffdeba197dadcd135dc9246b909b228d706efba922196"
+    },
+    {
+      "file": "part-24-chapter24.txt",
+      "chapter": "Chapter 24 - Text-to-Speech and Speech Recognition Engines",
+      "chars": 23398,
+      "sha256": "c126d236767febd7aabbfd43b2310b8996442cb6c33575530bf4adf2cc10c609"
+    },
+    {
+      "file": "part-25-appendixa.txt",
+      "chapter": "Appendix A - Installing Third-Party Packages",
+      "chars": 6010,
+      "sha256": "826b43899b50137376e06c11c26a024774296fa27ab1dbdcb4049210b893b446"
+    },
+    {
+      "file": "part-26-appendixb.txt",
+      "chapter": "Appendix B - Answers to the Practice Questions",
+      "chars": 26590,
+      "sha256": "5a2d7a8565176b5e19a0f62c94735d99e775bbbe2db78b404cb4582d9b6ec47e"
+    }
+  ],
+  "cleaning": "Navigation/menu/footer stripped; standalone [Image N] marker lines and trailing Images: URL lists stripped; prose and code examples kept in order. Chapter 22 LLM sample prompt absent from the fetched page text (see worker note). Appendix B ends at Chapter 24 answers; the whole-book index and figure alt-text that follow on the Appendix B page were excluded as non-appendix material.",
+  "method_note": "Chapters 0-4 worker reported parsing the official pages' bodymatter HTML in document order rather than retyping paginated browser text; all other chapters were browser.open page-text fetches. All 27 part-file byte SHA-256 values were verified against the workers' reported SHAs and matched exactly."
+}

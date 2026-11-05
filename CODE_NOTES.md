@@ -221,6 +221,26 @@ Licences checked directly from each repo's LICENSE file:
   until a deletion is done another way; the local
   and code-corpus location data/code/rust_book.txt
   is authoritative.
+## 2026-11-04 — Automate the Boring Stuff, official 3rd edition (supersedes 2e)
+
+- Eric: "Let's work with the official 3rd edition
+  it may have updates that are more important."
+  The 2e mirror-verification worker was stopped,
+  and the 3e was assembled from the official site:
+  27 sections, 1,145,046 chars, sha256 bba90176…,
+  0 failed, no 429 hit, SHA + separator count
+  verified against provenance. Licence CC BY-NC-SA
+  4.0, © 2025 Sweigart. New vs 2e: CLI programs,
+  SQLite, graphs, text recognition, text-to-speech,
+  AI/LLMs section. The partial 2e file (18/24,
+  672,358 chars) was moved to data/code/superseded_2e/
+  (kept, excluded from assembly) rather than
+  deleted or mixed with 3e. Combined code corpus:
+  8,269,376 chars, 14 files, sha256 5575c6b6….
+- Pushed 2026-11-04, see commit below, on
+  verification + 58-test suite, no new training
+  run in this batch.
+
 ## 2026-11-04 — Python sources added to the code corpus
 
 - Eric: "Search for source material for Python…

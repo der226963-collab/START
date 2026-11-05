@@ -324,6 +324,41 @@ Licences checked directly from each repo's LICENSE file:
   ratio of 0.3). Local only (push declined
   2026-11-05, do not retry unless asked).
 
+## 2026-11-05 — Original Python samples (second of the nine-language samples series)
+
+- Eric: for the Python samples, write a compiler
+  and interpreter, a reverse engineering tool,
+  and custom transformers. Assembled by a
+  coordinator with three workers, verified by
+  the assistant (assembled file chars + SHA-256
+  + 18 separators, plus spot runs: compiler_vm
+  31/31, transform_pipeline OK, reversing_elf
+  demo passed). 18 programs, 634,882 chars,
+  stdlib only, original to the project.
+  Compiler: "Minnow", an original language —
+  lexer, parser, 31-opcode bytecode compiler
+  + disassembler, stack VM, tree-walking
+  interpreter, REPL; VM and tree-walk both
+  31/31, REPL agreement 31/31 byte-identical.
+  Reversing: .pyc reader/walker, dis reporter,
+  control-flow analyser, 9-rule static
+  scanner, pure-struct ELF parser; 251 demo
+  checks passing on real inputs. Transformers:
+  folding, dead-code elimination, logging
+  injection, loop optimisation, obfuscator/
+  minifier, annotation inference, chaining
+  pipeline with per-stage behaviour checks;
+  96/96 unit tests. Duplication note: the
+  compiler files are self-contained (lexer in
+  all 6, parser in 5), so unique compiler code
+  is ~110k of its 312,298 chars. Running
+  series total: Rust 719,018 + Python 634,882
+  = 1,353,900 chars of the ~4M target, leaving
+  ~2.65M for seven languages (~378k each).
+  Combined code corpus after this batch:
+  50,952,153 chars, 91 files. Pushed
+  2026-11-05.
+
 ## 2026-11-05 — Original Rust samples (first of the nine-language samples series)
 
 - Eric: write working samples for each language

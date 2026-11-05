@@ -35,32 +35,123 @@ class BPETokenizer:
 
     @classmethod
     def train(cls, text, num_merges=300):
-        tokens = list(text)
-        vocab = sorted(set(tokens))
+        """Train BPE with incremental pair counting.
+
+        2026-11-04, fast-tokenizer equivalent: Hugging Face
+        tokenizers (Apache 2.0, checked) is Rust and cannot be
+        dropped into this stdlib Python project, so this is
+        original Python code that produces the same effect —
+        fast BPE training — by a different route. The old
+        implementation rescanned the whole token list for
+        every merge (O(merges x corpus), the reason a 19M-char
+        corpus took most of a 43-minute run to tokenize).
+        This version keeps a linked list of tokens plus a
+        pair-count / pair-position index, and on each merge
+        only updates the pairs touching a merged token.
+        Cost is O(corpus + merges x occurrences), not
+        O(merges x corpus). Merge choice is the same rule:
+        most frequent pair, stopping when the best pair
+        occurs fewer than twice, with ties broken by
+        earliest first occurrence — so it produces the
+        same merges as the old full-rescan trainer.
+        """
+        if not text:
+            return cls([], [])
+        n = len(text)
+        tok = list(text)          # token string at each position
+        prev = [i - 1 for i in range(n)]
+        nxt = [i + 1 for i in range(n)]
+        nxt[-1] = -1
+        alive = [True] * n
+        vocab = sorted(set(tok))
+        vocab_set = set(vocab)
+
+        def add_pair(left):
+            if left < 0 or not alive[left]:
+                return
+            right = nxt[left]
+            if right < 0 or not alive[right]:
+                return
+            pair = (tok[left], tok[right])
+            pair_counts[pair] += 1
+            pair_pos.setdefault(pair, set()).add(left)
+
+        def remove_pair(left):
+            if left < 0 or not alive[left]:
+                return
+            right = nxt[left]
+            if right < 0 or not alive[right]:
+                return
+            pair = (tok[left], tok[right])
+            if pair in pair_counts:
+                pair_counts[pair] -= 1
+                if pair_counts[pair] <= 0:
+                    del pair_counts[pair]
+            if pair in pair_pos:
+                pair_pos[pair].discard(left)
+                if not pair_pos[pair]:
+                    del pair_pos[pair]
+
+        pair_counts = Counter()
+        pair_pos = {}
+        for i in range(n):
+            # Build the index without double-counting: add_pair
+            # needs pair_counts/pair_pos to exist, so seed them
+            # manually on the first pass.
+            if i < n - 1:
+                pair = (tok[i], tok[i + 1])
+                pair_counts[pair] += 1
+                pair_pos.setdefault(pair, set()).add(i)
+
         merges = []
         for _ in range(num_merges):
-            pairs = Counter()
-            for i in range(len(tokens) - 1):
-                pairs[(tokens[i], tokens[i + 1])] += 1
-            if not pairs:
+            if not pair_counts:
                 break
-            (a, b), count = pairs.most_common(1)[0]
-            if count < 2:
+            # Tie-break exactly like the naive scan: among the
+            # most frequent pairs, take the one whose first
+            # occurrence in the current token list is earliest.
+            # This makes the fast trainer produce the same
+            # merges as the old full-rescan trainer, not just
+            # a valid alternative set.
+            max_count = max(pair_counts.values())
+            if max_count < 2:
                 break
+            (a, b) = min(
+                (p for p, c in pair_counts.items() if c == max_count),
+                key=lambda p: min(pair_pos[p]))
+            count = max_count
             merged = a + b
             merges.append([a, b])
-            if merged not in vocab:
+            if merged not in vocab_set:
                 vocab.append(merged)
-            new_tokens = []
-            i = 0
-            while i < len(tokens):
-                if i < len(tokens) - 1 and tokens[i] == a and tokens[i + 1] == b:
-                    new_tokens.append(merged)
-                    i += 2
-                else:
-                    new_tokens.append(tokens[i])
-                    i += 1
-            tokens = new_tokens
+                vocab_set.add(merged)
+            # Merge every occurrence, left to right, skipping
+            # positions already consumed by an earlier merge
+            # in this same pass (e.g. "aaa" with pair (a,a)).
+            starts = sorted(pair_pos.get((a, b), ()))
+            for left in starts:
+                if not alive[left]:
+                    continue
+                right = nxt[left]
+                if right < 0 or not alive[right]:
+                    continue
+                if tok[left] != a or tok[right] != b:
+                    continue
+                before = prev[left]
+                after = nxt[right]
+                # Remove the three pairs that touch this merge.
+                remove_pair(before)
+                remove_pair(left)
+                remove_pair(right)
+                # Splice: left becomes the merged token, right dies.
+                tok[left] = merged
+                alive[right] = False
+                nxt[left] = after
+                if after >= 0:
+                    prev[after] = left
+                # Add the two new pairs touching the merged token.
+                add_pair(before)
+                add_pair(left)
         return cls(merges, vocab)
 
     def encode(self, text):

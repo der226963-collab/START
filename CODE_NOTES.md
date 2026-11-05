@@ -95,3 +95,48 @@ Tests for this batch: `tests/test_improvements.py`
 fetcher licence + Wikipedia parsing, per-file split rule).
 Full suite must be 44+ tests OK in both python envs
 before pushing; a flaky torch run is re-run, not ignored.
+
+## 2026-11-04 — Hugging Face emphasis: licences checked, equivalents compiled
+
+Licences checked directly from each repo's LICENSE file:
+- Hugging Face, emphasised: tokenizers, transformers,
+  datasets, smollm — all Apache 2.0. Direct copying
+  with the licence notice kept would have been allowed.
+- Others checked in the same pass: KellerJordan/Muon,
+  karpathy/nanoGPT, tanishqkumar/beyond-nanogpt — MIT;
+  openai/gpt-2 — Modified MIT. Also copyable with notice.
+- Conclusion: no clean-room was *legally* required for
+  these repos. We still wrote original equivalents where
+  copying would not fit, and the reasons are recorded:
+  tokenizers is Rust (cannot drop into stdlib Python),
+  and smollm's repo is model cards / transformers usage,
+  not a curation script to copy.
+- Equivalent code, original, in this batch:
+  - `mini_ai/gpt/bpe.py` — incremental BPE trainer.
+    Same merges as the old full-rescan trainer on
+    tested texts (ties broken by earliest occurrence),
+    round-trips exactly, and trains 200k chars in 0.66s
+    (100 merges) vs the old O(merges x corpus) scan
+    that dominated a 43-minute full-corpus run.
+  - `mini_ai/gpt/muon.py` — aligned to the canonical
+    KellerJordan Muon recipe (MIT, credited in code):
+    Nesterov momentum on by default, scaling
+    sqrt(max(1, rows/cols)) instead of our earlier
+    0.2*sqrt(max(rows, cols)), and the Newton-Schulz
+    step rewritten without an explicit identity matrix.
+    Note: this changes Muon effective LR vs old runs —
+    canonical lr is 0.02, use --muon-lr to set it.
+  - `tools/curate_text.py` — SmolLM-style curation in
+    original Python: paragraph deduplication by hash,
+    short / non-alphabetic / menu-like filtering.
+    It does NOT check licences and does NOT overwrite
+    sources; curated output is not training data until
+    a human approves it.
+- Tests: `tests/test_hf_equivalents.py` (BPE vs naive,
+  canonical Muon step, curation dedup/filter).
+  Full suite 53 tests OK in both envs after this batch
+  (one torch run flaked once, then passed three times
+  in a row — recorded, not hidden).
+- Status: pushed 2026-11-04 as the batch after the
+  code-improvement batch, at Eric's direction to
+  integrate everything brought forward first.

@@ -184,3 +184,53 @@ Licences checked directly from each repo's LICENSE file:
   run (100 steps, Muon lr 0.02, trapezoid, QK-norm,
   tied) was started in the background after this
   push; its generation check is pending, not claimed.
+## 2026-11-04 — Separate code corpus with a mixture ratio
+
+- Decision, by Eric's tap on the options widget:
+  separate code corpus with a mixture ratio, not
+  integrated at file-size ratio and not two models.
+- Layout: textbook sources stay in data/expanded/,
+  code sources move to data/code/ (Rust Book moved
+  there from data/expanded/; textbook corpus reverted
+  to 19,767,249 chars, 16 files, sha256 d2431943…,
+  verified identical to the pre-Rust corpus).
+  tools/assemble_code.py builds data/code_corpus.txt
+  (1,119,539 chars, 1 file, Rust only at writing),
+  data/code/SOURCES.md records code licences.
+- Training (`train_gpt.py`, --code-dir + --code-ratio):
+  BPE is trained on textbook + code text together, so
+  code tokens are learned; textbook tokens are kept,
+  code tokens are repeated/trimmed to reach the exact
+  ratio, and the repetition is printed, not hidden.
+  --token-cache is refused with --code-dir, because
+  a flat cache cannot represent a mixture. Checkpoint
+  JSON records code_ratio and code_files.
+- Tests: tests/test_mixture.py (ratio 0, 1, 0.5 with
+  repetition, empty code raises). Full suite 58 tests
+  OK in both envs after this batch (system python
+  skips torch-dependent tests, including mixture).
+- Mixture smoke test: tiny model, 20 steps, textbook
+  expanded corpus + code-dir data/code at ratio 0.5,
+  started in the background; result pending at push
+  time, to be reported when it finishes. Pushed
+  2026-11-04 at Eric's "Push" instruction, on the
+  strength of the 58-test suite, not on the smoke
+  result. Note for contributors: push-files cannot
+  delete, so the old remote copy at
+  data/expanded/rust_book.txt remains on GitHub
+  until a deletion is done another way; the local
+  and code-corpus location data/code/rust_book.txt
+  is authoritative.
+
+- Rust training result, 2026-11-04 (100 steps, ~20 min):
+  4,963,200 params, vocab 845, train 9,158,441 /
+  val 1,017,609 tokens, val 6.7721 at step 0 to best
+  4.8621 at step 99, train 4.2090, checkpoint
+  checkpoints/rust-medium-100.pt local only.
+  Rust generation check: prompting "fn main() {"
+  gave gibberish, not Rust code; Rust Book loss
+  5.2200, perplexity 184.9, worse than overall val.
+  Honest conclusion: 100 steps, with Rust at ~5%
+  of the corpus, does not teach Rust. A longer run
+  and/or Rust-heavy data is needed before any Rust
+  ability is claimed. Still toy-level.

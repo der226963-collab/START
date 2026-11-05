@@ -119,6 +119,50 @@ def evaluate(model, data, block_size, batches=20, batch_size=32):
     return total / batches
 
 
+def encode_parts(tokenizer, parts):
+    """Per-file 90/10 train/val split, as token id lists."""
+    train, val = [], []
+    for part_text in parts:
+        tokens = tokenizer.encode(part_text)
+        cut = int(0.9 * len(tokens))
+        train.extend(tokens[:cut])
+        val.extend(tokens[cut:])
+    return train, val
+
+
+def mix_tokens(textbook_train, textbook_val, code_train, code_val, ratio):
+    """Mix textbook and code tokens at an explicit ratio.
+
+    2026-11-04, separate code corpus: ratio is the fraction
+    of the final train (and val) tokens that should be code.
+    Textbook tokens are kept as-is; code tokens are repeated
+    (whole copies, then trimmed) if there are fewer code
+    tokens than the ratio needs, and trimmed if there are
+    more. Repeating is explicit and reported, not hidden:
+    a small code corpus at a high ratio will repeat, and
+    that repetition is a real overfitting risk the caller
+    should know about. Returns (train, val, code_used_train,
+    code_used_val) as lists.
+    """
+    if ratio <= 0:
+        return textbook_train, textbook_val, 0, 0
+    if ratio >= 1:
+        return code_train, code_val, len(code_train), len(code_val)
+    if not code_train or not code_val:
+        raise ValueError("Code corpus is empty, cannot mix at ratio > 0")
+
+    def _mix(base, code):
+        needed = int(len(base) * ratio / (1 - ratio))
+        if needed <= 0:
+            return base, 0
+        repeats = (needed + len(code) - 1) // len(code)
+        return base + (code * repeats)[:needed], needed
+
+    train, used_train = _mix(textbook_train, code_train)
+    val, used_val = _mix(textbook_val, code_val)
+    return train, val, used_train, used_val
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--size", choices=SIZES, default="tiny")
@@ -128,6 +172,12 @@ def main():
     parser.add_argument("--data", default="data/corpus.txt")
     parser.add_argument("--data-dir", default=None,
                         help="If set, train on all .txt files in this dir, sorted, instead of --data.")
+    parser.add_argument("--code-dir", default=None,
+                        help="Directory of code corpus .txt files (data/code/). "
+                             "Used only with --code-ratio > 0.")
+    parser.add_argument("--code-ratio", type=float, default=0.0,
+                        help="Fraction of train/val tokens that should be code (0.0-1.0, default 0.0 = no code). "
+                             "Code tokens are repeated if the code corpus is smaller than the ratio needs.")
     parser.add_argument("--dropout", type=float, default=0.0)
     parser.add_argument("--modern", action="store_true",
                         help="Use the modern transformer (RMSNorm, RoPE, SwiGLU) instead of the 2017-style model.")
@@ -172,6 +222,21 @@ def main():
         parts = [text]
         provenance = [{"file": str(data_path), "chars": len(text),
                        "sha256": hashlib.sha256(text.encode()).hexdigest()}]
+    if not (0.0 <= args.code_ratio <= 1.0):
+        raise SystemExit("--code-ratio must be between 0.0 and 1.0")
+    code_parts, code_provenance = [], []
+    if args.code_ratio > 0:
+        if not args.code_dir:
+            raise SystemExit("--code-ratio > 0 requires --code-dir")
+        code_files = sorted(Path(args.code_dir).glob("*.txt"))
+        if not code_files:
+            raise SystemExit(f"No .txt files in {args.code_dir}")
+        for f in code_files:
+            content = f.read_text()
+            code_parts.append(f"\n--- {f.name} ---\n" + content)
+            code_provenance.append({"file": str(f), "chars": len(content),
+                                    "sha256": hashlib.sha256(content.encode()).hexdigest()})
+    code_text = "".join(code_parts)
     # Token cache (BPE only): encoding 19M chars in Python is the
     # slowest part of a run, so a cache file lets repeat runs
     # skip both BPE training and encoding. The cache stores the
@@ -181,6 +246,10 @@ def main():
     # delete it after changing the corpus, or pass a new path.
     cache_path = Path(args.token_cache) if args.token_cache else None
     cache_tok_path = cache_path.with_suffix(".tokenizer.json") if cache_path else None
+    if cache_path and code_parts:
+        raise SystemExit("--token-cache cannot be used with --code-dir: "
+                         "a flat token cache cannot represent a mixture ratio. "
+                         "Drop --token-cache for mixture runs.")
     if cache_path and cache_path.exists() and cache_tok_path and cache_tok_path.exists():
         tokenizer = BPETokenizer.from_json(json.loads(cache_tok_path.read_text()))
         data = torch.load(str(cache_path), map_location="cpu", weights_only=True)
@@ -192,23 +261,32 @@ def main():
         train_data, val_data = data[:split], data[split:]
         print(f"Loaded cached tokens: {len(data):,} tokens from {cache_path}")
     else:
+        # BPE is trained on textbook + code text together, so
+        # code tokens (fn, let, ::, ->, etc.) are learned as
+        # tokens instead of being split character by character.
+        # The text is used once here, not at mixture ratio —
+        # the ratio applies to training tokens below, not to
+        # tokenizer training, so the tokenizer is not skewed
+        # by repeating the code corpus.
         if args.tokenizer == "bpe":
-            tokenizer = BPETokenizer.train(text, num_merges=args.bpe_merges)
+            tokenizer = BPETokenizer.train(text + code_text, num_merges=args.bpe_merges)
             print(f"BPE tokenizer: {len(tokenizer)} tokens from {args.bpe_merges} merges")
         else:
-            tokenizer = CharTokenizer(text)
+            tokenizer = CharTokenizer(text + code_text)
         # Per-file 90/10 split (2026-11-04 fix): the old code
         # split the concatenated text at 90%, which made
         # validation a contiguous slice near the end of the
         # corpus (mostly the last book), not a representative
         # sample. Splitting each file separately keeps every
         # book represented in both train and validation.
-        train_parts, val_parts = [], []
-        for part_text in parts:
-            tokens = tokenizer.encode(part_text)
-            cut = int(0.9 * len(tokens))
-            train_parts.extend(tokens[:cut])
-            val_parts.extend(tokens[cut:])
+        train_parts, val_parts = encode_parts(tokenizer, parts)
+        if code_parts:
+            code_train, code_val = encode_parts(tokenizer, code_parts)
+            train_parts, val_parts, used_train, used_val = mix_tokens(
+                train_parts, val_parts, code_train, code_val, args.code_ratio)
+            print(f"Mixture: code_ratio {args.code_ratio}, code train tokens used "
+                  f"{used_train:,} (unique {len(code_train):,}), "
+                  f"code val tokens used {used_val:,} (unique {len(code_val):,})")
         train_data = torch.tensor(train_parts, dtype=torch.long)
         val_data = torch.tensor(val_parts, dtype=torch.long)
         if cache_path and args.tokenizer == "bpe":
@@ -318,6 +396,7 @@ def main():
         "optimizer": args.optimizer, "lr_schedule": args.lr_schedule,
         "grad_accum": accum, "qk_norm": args.qk_norm,
         "tie_weights": args.tie_weights, "muon_lr": args.muon_lr,
+        "code_ratio": args.code_ratio, "code_files": code_provenance,
         "final_train_loss": final_train_loss, "best_val_loss": best_val,
         "intended_use": "Language assistance only. Not a planner, allocator, or decider. "
                        "Human assemblies decide; a separate planning layer checks allocations.",

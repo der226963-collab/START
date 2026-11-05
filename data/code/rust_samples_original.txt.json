@@ -1,0 +1,106 @@
+{
+  "title": "Original Rust code samples (written for START)",
+  "author": "START project (written for this project, 2026-11-05)",
+  "licence": "Original to this project; not copied from any book",
+  "source": "Written for START by the project's agents; standard library only, no external crates",
+  "status": "proposed",
+  "approved": false,
+  "pushed": false,
+  "chars": 719018,
+  "sha256": "8f2e3fd48e7d5ea7e60793dbc24fff836531d30c9866005482ee12a73f1776bc",
+  "file_count": 18,
+  "method": "Each program is original code written for this project (topics and standard techniques only; no book text or distinctive example copied). Every program was compiled with rustc 1.99.1 and run with its own assertions passing, and its #[cfg(test)] unit tests were run and passed. Verified independently by the coordinator after the workers reported: all 18 programs compile with 0 warnings, run with exit 0, 216/216 unit tests pass. Individual programs live in data/code/rust_samples/ (a subfolder, excluded from tools/assemble_code.py, which reads only data/code/*.txt).",
+  "verification": "rustc 1.99.1: compile exit 0, 0 warnings, run exit 0, rustc --test all pass \u2014 216 tests total across 18 programs. First verification sweep was interrupted by /tmp filling (512M tmpfs); binaries were moved to a workspace scratch dir and the sweep re-run clean.",
+  "programs": [
+    {
+      "file": "arena.rs",
+      "chars": 31496,
+      "sha256": "aed45c4f30203701f68f2c7a997be59c466c4602b5aa98fd8c65b4d4685c1db2"
+    },
+    {
+      "file": "binary_search_tree.rs",
+      "chars": 34306,
+      "sha256": "0e3cbbe91d922e8dff4cf09f084f0454e8437dda5732a90465394527ff93395c"
+    },
+    {
+      "file": "error_handling.rs",
+      "chars": 41187,
+      "sha256": "3780c922cf3283c4dfb1ecee3ccf15254f7ebbb12ab0f9fc9346679ed902c826"
+    },
+    {
+      "file": "expression_lang.rs",
+      "chars": 55713,
+      "sha256": "c68c83304d75da0bb2aa0b68d06751365c248c3bb78eab645cea8d6a32dcc290"
+    },
+    {
+      "file": "graph_algorithms.rs",
+      "chars": 38474,
+      "sha256": "e8a1497f321c9331f5576cfb162fe62f1c4771bd2028ff3490449e5b298f1a27"
+    },
+    {
+      "file": "grep_tool.rs",
+      "chars": 39164,
+      "sha256": "4752ee5bc436d99edac3d9225297bdda12a3f6c5c962536369e5f6fb7edb0004"
+    },
+    {
+      "file": "http_router.rs",
+      "chars": 38878,
+      "sha256": "e68d17474d556b03813980aa8e4312cb222c0b9d5f06192427e16d37bbc6b9f0"
+    },
+    {
+      "file": "json_value.rs",
+      "chars": 45230,
+      "sha256": "191a885888c2e86b410f02fb4c77f82c7ae60ffb29468a00af1e9373c9b603b2"
+    },
+    {
+      "file": "kv_store.rs",
+      "chars": 33303,
+      "sha256": "4898e10b1d0864646b8ed7fb02c4912c1802b8bbfc3774f7b53376d12df7c623"
+    },
+    {
+      "file": "lru_cache.rs",
+      "chars": 32377,
+      "sha256": "11b3bbd94abba9378096d9ac73c325627478539d4a0a4f2635135521b84c89a1"
+    },
+    {
+      "file": "mini_vm.rs",
+      "chars": 77360,
+      "sha256": "fd9e4579924fc74a619fde8786854ce8c62834de958b4b35aa2e9f44ca12aa8c"
+    },
+    {
+      "file": "ownership_pipeline.rs",
+      "chars": 32808,
+      "sha256": "1d98349ae0461a2bab2d037b773d23e35b3bbea6ee7f8de57b1e4d17d9f5b429"
+    },
+    {
+      "file": "producer_consumer.rs",
+      "chars": 43674,
+      "sha256": "ff9efeca7c111e9179709c9b306cbd8a98f9ec7a66bb03b59367cc5c622f3de2"
+    },
+    {
+      "file": "regex_engine.rs",
+      "chars": 38678,
+      "sha256": "21ce32f22544a0d69845ff314f6c9aaa572dc8eade59a5b0ed90b81ab457ed87"
+    },
+    {
+      "file": "shared_state.rs",
+      "chars": 39752,
+      "sha256": "9e46e739607875e33df4113bbbbada0e8fe3de73ce83e8e2449f7c092ff67e00"
+    },
+    {
+      "file": "sorting_search.rs",
+      "chars": 23606,
+      "sha256": "520c84ded45150e172c3b4b682b9bdf1b77c6c76634300aaccb7e8e2d8d8f23d"
+    },
+    {
+      "file": "thread_pool.rs",
+      "chars": 33495,
+      "sha256": "85ed131da87f6796989bb9f991316d9fa6e1e1ddadc568f9cb22ca801ad05407"
+    },
+    {
+      "file": "traits_macros.rs",
+      "chars": 38686,
+      "sha256": "13ad6543ff3bcde4889eb85ae5d01a2a0ccfc872bfa9ec28cbee7bfcac1d8ddd"
+    }
+  ]
+}

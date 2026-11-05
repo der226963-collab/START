@@ -263,6 +263,100 @@ Licences checked directly from each repo's LICENSE file:
   the same day once verified (see below).
   Pushed 2026-11-05, see commit(s) below.
 
+## 2026-11-05 — Large size + BPE sampling fix (for the 1,000-step standard run)
+
+- Eric set 1,000 steps as the standard run
+  length on 2026-11-05, and chose the optimal
+  path: medium first, large defined for later.
+  SIZES["large"] added to train_gpt.py: 12
+  layers, 8 heads, 512 width, 512 context,
+  ~38M params tied. First version used 12
+  heads, which fails the model's own assert
+  (512 does not divide by 12) — caught by the
+  new test, fixed to 8 heads, test passes.
+  Large is defined and tested, not yet trained.
+- BPE sampling fix, same day: the first
+  1,000-step medium mixture launch OOM-killed
+  (exit 137) before any training step, while
+  training BPE on the whole 69M-char corpus
+  (~30M tokens, pair index too big for the
+  8 GB VM). train_gpt.py now trains BPE on a
+  representative sample instead: new
+  --bpe-sample-chars (default 5,000,000) and
+  sample_text(), which takes contiguous blocks
+  from across the whole text so merges are
+  learned from every book and language, not
+  just the first N chars. The full corpus is
+  still encoded with the resulting tokenizer.
+  Test in tests/test_scaling.py. 60 tests OK
+  (18 skipped in system python).
+- The 1,000-step medium mixture run
+  (modern, BPE 300, ratio 0.3, Muon,
+  trapezoid, QK-norm, tied weights) finished
+  2026-11-05 10:19 EST in ~108 min, checkpoint
+  checkpoints/medium-mix-1000.pt (21 MB, local
+  only, never pushed): best val 3.0989 at step
+  999, train 2.6062, val falling at every
+  checkpoint, no plateau. Per-language eval
+  (5 batches each): textbook 2.6067 (ppl 13.6),
+  Elixir stdlib 2.71 (15.0), Rust Book 2.9489
+  (19.1, was 5.22 after the 100-step run),
+  Think Java 2.9563 (19.2), Python docs 3.0356
+  (20.8), Solidity docs 3.1351 (23.0), Modern
+  C 3.2326 (25.3). Generation still gibberish,
+  so still toy-level by strict fluency; the
+  unplateaued val curve points to a longer run
+  as the next lever. Note: the first launch of
+  this run was killed by a runtime restart with
+  no checkpoint; the relaunched run then
+  exposed the double-counting bug below, which
+  was fixed before the final launch — the
+  final run's combined corpus is 69,413,805
+  chars with BPE 559 tokens.
+- Double-counting fix, same day: --data-dir
+  data now excludes data/code_corpus.txt, the
+  assembled code corpus that tools/
+  assemble_code.py writes to the top level of
+  data/. Without the exclusion a mixture run
+  reads the code corpus as textbook text and
+  again via --code-dir (caught at 119,015,588
+  combined chars, ~80% code at a nominal
+  ratio of 0.3). Local only (push declined
+  2026-11-05, do not retry unless asked).
+
+## 2026-11-05 — Original Rust samples (first of the nine-language samples series)
+
+- Eric: write working samples for each language
+  one by one, +4M chars total across the whole
+  series, strict rule that every sample must be
+  working usable code, and (refinement) do not
+  keep samples simplistic — complex code allowed.
+  Rust first. rustc was not on the VM, so the
+  assistant installed it via rustup (1.99.1,
+  minimal profile) — that is how every sample
+  was verified. Assembled by a coordinator with
+  four workers, verified by the assistant
+  (assembled file chars + SHA-256 + 18
+  separators, plus spot compile+run and unit
+  tests: mini_vm 12, regex_engine 10,
+  thread_pool 14, kv_store and
+  graph_algorithms compile+run exit 0).
+  18 programs, 719,018 chars, std-only,
+  original to the project, 0 warnings, 216/216
+  unit tests passing. Highlights: a bytecode
+  VM (77,373 chars), a full regex engine, a
+  from-scratch thread pool, an LRU cache, a
+  generational arena, a persistent KV store
+  with checksum recovery, and a hand-written
+  JSON parser. Individual programs in
+  data/code/rust_samples/ (subfolder, not
+  assembled). Overshoot note: 719,018 chars
+  vs the planned ~450,000-char Rust share, so
+  the other eight languages share ~3.28M
+  (~410,000 each). Combined code corpus after
+  this batch: 50,317,272 chars, 90 files.
+  Pushed 2026-11-05.
+
 ## 2026-11-05 — Six more languages: Java, Mojo, Julia, Erlang, Elixir, Solidity
 
 - Eric: extensive deep search for Java, Mojo,

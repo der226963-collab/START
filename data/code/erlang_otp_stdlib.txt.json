@@ -1,0 +1,35 @@
+{
+  "title": "Erlang/OTP stdlib Source (curated selection)",
+  "authors": [
+    "Ericsson AB / Erlang/OTP contributors"
+  ],
+  "source_repo": "erlang/otp",
+  "source_branch": "master",
+  "source_commit": "a0bd80d9cbb7fb712e36c1d584eb33c5c8a7e4e6",
+  "licence": "Apache License 2.0",
+  "licence_detail": "Apache License 2.0",
+  "licence_verified_from": "erlang/otp LICENSE.txt, read via GitHub connector (full Apache 2.0 text)",
+  "status": "proposed",
+  "approved": false,
+  "pushed": false,
+  "file": "erlang_otp_stdlib.txt",
+  "chars": 1064550,
+  "sha256": "96d9dacef06984df846705b3e9aa01361627e92e45f64622724ef2ecb146ad12",
+  "file_count": 12,
+  "files": [
+    "lib/stdlib/src/gen_server.erl",
+    "lib/stdlib/src/gen_statem.erl",
+    "lib/stdlib/src/supervisor.erl",
+    "lib/stdlib/src/gen_event.erl",
+    "lib/stdlib/src/lists.erl",
+    "lib/stdlib/src/string.erl",
+    "lib/stdlib/src/ets.erl",
+    "lib/stdlib/src/maps.erl",
+    "lib/stdlib/src/queue.erl",
+    "lib/stdlib/src/sets.erl",
+    "lib/stdlib/src/gb_trees.erl",
+    "lib/stdlib/src/io_lib.erl"
+  ],
+  "failed": [],
+  "notes": "Curated real Erlang teaching the language and OTP behaviours: gen_server, gen_statem, supervisor, gen_event, lists, string, ets, maps, queue, sets, gb_trees, io_lib. Code unmodified. Left out for the ~1.1M budget: erl_lint, qlc, rand, dets, sofs, erl_eval, erl_scan, epp, shell, argparse, unicode, io, filename, calendar, dict/orddict/ordsets, re, zip, erl_tar, and the rest of lib/stdlib/src (96 .erl files total)."
+}

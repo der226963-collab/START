@@ -1,0 +1,545 @@
+--- SOURCE: README.md ---
+# Mojo Gym
+
+Small hands-on exercises to practice the basics of the Mojo programming language.
+Ideal for developers who are new to Mojo but know basics of Python.
+
+Inspired by [Rustlings](https://github.com/rust-lang/rustlings) project that has a similar approach to teach Rust.
+
+## Getting started
+
+1. [Install Mojo](https://docs.modular.com/mojo/manual/get-started/)
+2. Clone this repository or better yet, fork it and clone your fork.
+3. Install necessary Python packages to run the exercises:
+    ```bash
+    pip3 install -r requirements.txt
+    ```
+    Feel free to use virtualenv or any other tool to manage your Python packages.
+4. Run the exercises:
+    ```bash
+    python mojo_gym.py
+    ```
+5. Follow the instructions and have fun!
+
+## Learning approach
+
+This is an optional reading if you are interested in how mojo-gym structures the learning material.
+
+Because Mojo is very similar to Python, we omit some of the basic concepts that are shared between the two languages, for example, control flow statements. We focus on the concepts that are unique to Mojo.
+
+We start with variables, functions, and value ownership (+ mutability). This is a bit different from what Mojo documentation has. The reason is we try to avoid introducing new concepts and we also want to build new knowledlge on top of the previous exercises.
+
+When you are familiar with the previous topics, we move to structs, value lifecycle, metaprogramming and traits.
+
+We finish the learning with exercises on Python integration and modules/packages in Mojo.
+
+Hopefully, you will find this project useful and fun!
+--- SOURCE: mojo_gym.py ---
+import time
+import subprocess
+from pathlib import Path
+
+from rich.layout import Layout
+from rich.live import Live
+
+
+EXERCISES_FOLDER = Path('exercises')
+
+LESSONS = [
+    {
+        'folder': 'intro',
+        'files': [
+            'intro.mojo',
+        ]
+    },
+    {
+        'folder': 'variables',
+        'files': [
+            'variables1.mojo',
+            'variables2.mojo',
+            'variables3.mojo',
+            'variables4.mojo',
+            'variables5.mojo',
+        ]
+    },
+    {
+        'folder': 'functions',
+        'files': [
+            'functions1.mojo',
+            'functions2.mojo',
+            'functions3.mojo',
+            'functions4.mojo',
+            'functions5.mojo',
+        ]
+    },
+    {
+        'folder': 'value_ownership',
+        'files': [
+            'mutability1.mojo',
+            'mutability2.mojo',
+            'ownership1.mojo',
+            'ownership2.mojo',
+            'ownership3.mojo',
+        ]
+    },
+    {
+        'folder': 'structs',
+        'files': [
+            'structs1.mojo',
+            'structs2.mojo',
+        ]
+    }
+]
+
+
+def is_done(filename: str) -> bool:
+    with open(filename, 'r') as f:
+        return '# I AM NOT DONE' not in f.read()
+
+
+def compile_and_run(filename: Path) -> (bool, str):
+    mojo_run_result = subprocess.run(['mojo', 'run', filename], check=False, capture_output=True)
+    if mojo_run_result.returncode == 0:
+        output = mojo_run_result.stdout.decode()
+    else:
+        output = mojo_run_result.stderr.decode()
+    
+    return mojo_run_result.returncode == 0, output
+
+
+def main():
+    layout = Layout()
+    layout.split_column(
+        Layout(name='upper'),
+        Layout(name='lower')
+    )
+    layout['lower'].size = None
+    layout['lower'].ratio = 4
+    layout['lower'].update('Here you will see output of exercises.')
+    layout['upper'].update('Welcome to [red]Mojo Gym[/]!')
+    with Live(layout, refresh_per_second=2, screen=True):
+        try:
+            for lesson in LESSONS:
+                files = lesson['files']
+                file_index = 0
+                while file_index < len(files):
+                    filepath = EXERCISES_FOLDER / lesson['folder'] / files[file_index]
+                    layout['upper'].update(f'Current exercise [red]{filepath}[/]. Proceed to file and follow instructions.')
+                    if filepath.exists():
+                        is_ok, output = compile_and_run(filepath)
+                        if is_ok:
+                            layout['lower'].update(f'[green]Pass[/]. Remove "I AM NOT DONE" to continue to the next exercise. Output:\n\n{output}')
+                            if is_done(filepath):
+                                file_index += 1
+                        else:
+                            layout['lower'].update(f'[red]Failed[/]. Output:\n\n{output}')
+                    time.sleep(1)
+
+            layout['upper'].update('[red]Congratulations![/] You have finished all exercises. Press Ctrl+C to exit.')
+            layout['lower'].update('')
+            while True:
+                pass
+        except KeyboardInterrupt:
+            pass
+
+if __name__ == '__main__':
+    main()
+--- SOURCE: exercises/functions/README.md ---
+# Functions in Mojo
+
+You can read introduction to functions in [Mojo Language Basics](https://docs.modular.com/mojo/programming-manual.html#let-and-var-declarations). More detailed and recommend guide on functions in Mojo can be found in [Mojo Programming Manual](https://docs.modular.com/mojo/programming-manual.html#fn-definitions).
+--- SOURCE: exercises/functions/functions1.mojo ---
+# I AM NOT DONE
+
+def func1():
+    print('func1 here')
+
+
+fn func2():
+    print('func2 here')
+
+
+def main():
+    func1()
+    func2()
+--- SOURCE: exercises/functions/functions2.mojo ---
+# TASK
+# Fix an error and make file compile
+
+# I AM NOT DONE
+
+fn main():
+    x = 4
+    var y = 5
+    let z = 6
+    print('x + y + z =', x + y + z)
+--- SOURCE: exercises/functions/functions3.mojo ---
+# TASK
+# Fix error(s) and make file compile
+
+# I AM NOT DONE
+
+# Do not change "fn" to "def"
+fn add(a, b):
+    return a + b
+
+# Do not change anything below this line
+fn main():
+    let a: Int = 1
+    let b: Int = 2
+    let c: Int = add(a, b)
+    print('c =', c)
+--- SOURCE: exercises/functions/functions4.mojo ---
+# TASK
+# Make assert statement pass
+
+# I AM NOT DONE
+
+from testing import assert_true
+
+
+# only change definition of the function
+fn pow(base: Int, exp: Int) -> Int:
+    return base ** exp
+
+# do not change below this line
+fn main() raises:
+    let c = pow(3)
+    
+    if c != 9:
+        raise Error('z should equal 9')
+--- SOURCE: exercises/functions/functions5.mojo ---
+# TASK
+# Make assert statement pass
+
+# I AM NOT DONE
+
+from testing import assert_true
+
+
+# only change definition of the function
+fn add(x: Int = 2, y: Int) -> Int:
+    return x + y
+
+# do not change below this line
+fn main() raises:
+    let c = add()
+    
+    if c != 5:
+        raise Error('c should equal 5')
+--- SOURCE: exercises/intro/README.md ---
+# Introduction
+
+Mojo supports (or will support) a standard Python syntax. This means you can use a syntax that is familiar to you.
+--- SOURCE: exercises/intro/intro.mojo ---
+# About this `I AM NOT DONE` thing:
+# We sometimes encourage you to keep trying things on a given exercise, even
+# after you already figured it out. If you got everything working and feel
+# ready for the next exercise, remove the `I AM NOT DONE` comment below.
+
+# TASK:
+# Output the string "Hello, Mojo!" to the console.
+
+# I AM NOT DONE
+
+def main():
+    print('Hello {}')
+--- SOURCE: exercises/structs/README.md ---
+# Structs
+
+The [Mojo language basics guide](https://docs.modular.com/mojo/manual/basics/#structures) provides a good introduction to structs.
+More detailed information can be found in the [Mojo programming manual](https://docs.modular.com/mojo/programming-manual.html#struct-types).
+--- SOURCE: exercises/structs/structs1.mojo ---
+# TASK
+# Address all the TODOs to make the test pass
+
+# I AM NOT DONE
+
+struct ColorClassic:
+    # TODO: something goes here
+
+def main():
+    # TODO: create a ColorClassic struct
+    # let color = ...
+
+    if color.red != 0 or color.green != 255 or color.blue != 0:
+        raise Error('Color must be 0, 255, 0')
+    
+    print('Nicely done!')
+--- SOURCE: exercises/structs/structs2.mojo ---
+# TASK
+# Make tests pass
+
+# I AM NOT DONE
+
+struct Package:
+    var sender_country: String
+    var recipient_country: String
+    var weight_in_grams: Int
+
+    fn __init__(inout self, sender_country: String, recipient_country: String, weight_in_grams: Int) raises:
+        self.sender_country = sender_country
+        self.recipient_country = recipient_country
+        self.weight_in_grams = weight_in_grams
+        
+        if weight_in_grams < 10:
+            raise Error('Cannot transport packages less than 10 grams')
+    
+    fn is_international(inout self) -> ???:
+        # someting goes here...
+        pass
+    
+    fn get_fees(inout self, cents_per_gram: Int) -> ???:
+        # something goes here...
+        pass
+
+def main():
+    # test 1
+    var sender_country: String = 'Spain'
+    var recipient_country: String = 'Austria'
+    try:
+        var package = Package(sender_country, recipient_country, 5)
+        raise Error('Package is too small, cannot send')
+    except Error:
+        pass
+
+    # test 2 
+    sender_country = 'Spain'
+    recipient_country = 'UK'
+    var package = Package(sender_country, recipient_country, 1200)
+    
+    if not package.is_international():
+        raise Error('Package from Spain to UK is international')
+
+    # test 3 
+    sender_country = 'Canada'
+    recipient_country = 'Canada'
+    package = Package(sender_country, recipient_country, 1200)
+    
+    if package.is_international():
+        raise Error('Package within Canada is not international')
+    
+    # test 4
+    let cents_per_gram: Int = 3
+    package = Package(sender_country, recipient_country, 1500)
+
+    if package.get_fees(cents_per_gram) != 4500 or package.get_fees(cents_per_gram * 2) != 9000:
+        raise Error('Fees are not calculated properly')
+    
+    print('Great job')
+    
+--- SOURCE: exercises/value_ownership/README.md ---
+# Mutability and Ownership
+
+You can check short introduction on mutability and ownership in Mojo from [Language Basics](https://docs.modular.com/mojo/manual/basics/#argument-mutability-and-ownership) page. Or more detailed explanation in [Programming Manual](https://docs.modular.com/mojo/programming-manual.html#argument-passing-control-and-memory-ownership).
+--- SOURCE: exercises/value_ownership/mutability1.mojo ---
+# TASK
+# Run this file and see what happens
+
+# I AM NOT DONE
+
+
+# Both of these functions are equivalent
+fn add(x: Int, y: Int) -> Int:
+    return x + y
+
+fn add_borrowed(borrowed x: Int, borrowed y: Int) -> Int:
+    return x + y
+
+fn main():
+    let x = 1
+    let y = 2
+    let a = add(x, y)
+    let b = add_borrowed(x, y)
+    print('a = ', a)
+    print('b = ', a)
+--- SOURCE: exercises/value_ownership/mutability2.mojo ---
+# TASK
+# Compile program and make it pass tests
+
+# I AM NOT DONE
+
+fn add_mutate(x: Int, y: Int) -> Int:
+    x += 1
+    y += 1
+    return x + y
+
+
+# do not change code below this line
+fn add(x: Int, y: Int) -> Int:
+    return x + y
+
+
+fn main() raises:
+    var x = 1
+    var y = 2
+    print('x = ', x)
+    print('y = ', y)
+
+    let a = add(x, y)
+    print('a = ', a)
+
+    if a != 3:
+       raise Error('a should equal 3')
+    if x != 1:
+         raise Error('x should not be changed')
+    if y != 2:
+        raise Error('y should not be changed')
+
+    let b = add_mutate(x, y)
+    print('b = ', b)
+    print('x = ', x)
+    print('y = ', y)
+
+    if b != 5:
+        raise Error('b should equal 5')
+    if x != 2:
+        raise Error('x should be changed')
+    if y != 3:
+        raise Error('y should be changed')
+    
+--- SOURCE: exercises/value_ownership/ownership1.mojo ---
+# TASK
+# Make file compile with no errors
+
+# I AM NOT DONE
+
+fn set_fire(text: String) -> String:
+    text += "🔥"
+    return text
+
+# Do not modify below this line
+fn main() raises:
+    var a: String = "mojo"
+    let b = set_fire(a)
+
+    if a != "mojo":
+        raise Error("a should not be modified")
+    
+    if b != "mojo🔥":
+        raise Error("b should be on fire")
+--- SOURCE: exercises/value_ownership/ownership2.mojo ---
+# TASK
+# Make this file compile
+
+# I AM NOT DONE
+
+# Do not change this function
+fn take_value(owned x: Int):
+    x += 2
+    use_value(x)
+
+
+# Do not change this function
+fn use_value(x: Int):
+    print('value is', x)
+
+
+fn main():
+    var counter = 0
+    counter += 1
+    print('counter is', counter)
+
+    # the line below should not be changed
+    var new_counter = counter^
+
+    print('new_counter is ', new_counter)
+
+    counter += 1
+
+    new_counter += 1
+    print('new_counter is', new_counter)
+--- SOURCE: exercises/value_ownership/ownership3.mojo ---
+# TASK
+# Make file compile with no errors
+
+# I AM NOT DONE
+
+fn take_ptr(owned array: Pointer[Int]):
+    array.store(2, 23)
+
+
+fn main():
+    # this line just allocates pointer for 3 integers
+    # think about it as array with capacity of 3 integers
+    var array = Pointer[Int].alloc(3)
+
+    array.store(0, 1)
+    array.store(1, 2)
+
+    # this function call does not need any changes
+    take_ptr(array^)
+
+    array.store(1, 2)
+--- SOURCE: exercises/variables/README.md ---
+# Variables in Mojo
+
+Mojo provides to kinds of variables: mutable marked by `var` and immutable marked by `let`.
+Read more about variables in [Mojo docs](https://docs.modular.com/mojo/manual/variables.html).
+--- SOURCE: exercises/variables/variables1.mojo ---
+# TASK
+# The program should print the values of x, y, and z.
+
+# I AM NOT DONE
+
+def main():
+    x = 5
+    var y = 6
+    let z = 7
+    print('x = ', x)
+    print('y = ', y)
+    print('z = ', z)
+--- SOURCE: exercises/variables/variables2.mojo ---
+# TASK
+# Fix error(s) so the program compiles
+
+# I AM NOT DONE
+
+def main():
+    let x: Int
+    var y: Int
+
+    let c: Int
+    c = x + y
+    
+    if c == 5:
+        print("x is 5")
+    else:
+        print("x is not 5")
+--- SOURCE: exercises/variables/variables3.mojo ---
+# TASK
+# Fix error(s) and make file compile and run.
+
+# I AM NOT DONE
+
+def main():
+    let x = 5
+    print('x =', x)
+    x = 6  # don't change this line
+    print('x =', x)
+--- SOURCE: exercises/variables/variables4.mojo ---
+# TASK
+# Make file compile
+
+# I AM NOT DONE
+
+def main():
+    let x: Int = 4
+    var y: Int = 5
+    z: Int = 6
+    z += 1 # don't change this line
+    print('x + y + z = ', x + y + z)
+--- SOURCE: exercises/variables/variables5.mojo ---
+# TASK
+# Make file compile and test pass
+
+# I AM NOT DONE
+
+def main():
+    let x: Int = 4
+    let y: Int = 5
+    var z: Int = 6.5
+
+    # don't change below this line
+    if x + y + z != 15.5:
+        raise Error('x + y + z should be 15')

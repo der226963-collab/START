@@ -1,0 +1,36 @@
+{
+  "title": "Erlang Handbook",
+  "authors": [
+    "Bjarne Däcker",
+    "Robert Virding"
+  ],
+  "source_repo": "esl/erlang-handbook",
+  "source_branch": "master",
+  "source_commit": "0bf26c122846f89bedca9ca88b0d4e94e6648f4d",
+  "licence": "Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)",
+  "licence_detail": "Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)",
+  "licence_verified_from": "esl/erlang-handbook README.md, read via GitHub connector (Licence section: CC BY-SA 3.0)",
+  "status": "proposed",
+  "approved": false,
+  "pushed": false,
+  "file": "erlang_handbook.txt",
+  "chars": 63813,
+  "sha256": "c664d8773328c286a60f98f4e442627bd2731ac09b19913587473c428ae8fabc",
+  "file_count": 12,
+  "files": [
+    "chapters/01-background.tex",
+    "chapters/02-structure-of-an-erlang-program.tex",
+    "chapters/03-data-types.tex",
+    "chapters/04-pattern-matching.tex",
+    "chapters/05-functions.tex",
+    "chapters/06-processes.tex",
+    "chapters/07-error-handling.tex",
+    "chapters/08-distributed-erlang.tex",
+    "chapters/09-ports-and-port-drivers.tex",
+    "chapters/10-code-loading.tex",
+    "chapters/11-macros.tex",
+    "chapters/12-further-reading.tex"
+  ],
+  "failed": [],
+  "notes": "Concise summary of the Erlang language and runtime (12 English chapters). LaTeX markup stripped minimally with verbatim-protected code listings kept untouched; footnotes dropped. Russian translation (chapters-RU/) NOT included (same content, other language). ErlangHandbook.tex master preamble not included."
+}

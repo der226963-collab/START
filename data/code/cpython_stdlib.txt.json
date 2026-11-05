@@ -1,0 +1,32 @@
+{
+  "title": "CPython Standard Library (curated selection)",
+  "author": "Python Software Foundation / CPython contributors",
+  "source": "python/cpython, branch main, Lib/ (14 modules listed in files)",
+  "edition": "main branch (2026-11-05 snapshot; includes current main-branch syntax, e.g. lazy import)",
+  "licence": "PSF License Version 2",
+  "licence_verified_from": "python/cpython LICENSE, read via GitHub connector",
+  "files": [
+    "Lib/dataclasses.py",
+    "Lib/functools.py",
+    "Lib/heapq.py",
+    "Lib/bisect.py",
+    "Lib/contextlib.py",
+    "Lib/enum.py",
+    "Lib/json/__init__.py",
+    "Lib/textwrap.py",
+    "Lib/string.py",
+    "Lib/statistics.py",
+    "Lib/copy.py",
+    "Lib/pprint.py",
+    "Lib/collections/__init__.py",
+    "Lib/pathlib/__init__.py"
+  ],
+  "file_count": 14,
+  "failed": [],
+  "failed_count": 0,
+  "chars": 511653,
+  "sha256": "023879c0ddecb341dea2b74df7d329a4fd7633eef367f74a599af1335cd4d6d7",
+  "status": "assembled, not pushed (push is parent's job)",
+  "approval_note": "Eric approved inclusion 2026-11-04 (\"Search for source material for Python... Implement all sources you find viable and push\")",
+  "notes": "Curated real-world Python code with docstrings intact: dataclasses, functools, heapq, bisect, contextlib, enum, json/__init__, textwrap, string, statistics, copy, pprint, collections/__init__, pathlib/__init__. Tests, generated files, and C-extension modules excluded."
+}

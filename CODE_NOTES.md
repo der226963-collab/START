@@ -221,6 +221,32 @@ Licences checked directly from each repo's LICENSE file:
   until a deletion is done another way; the local
   and code-corpus location data/code/rust_book.txt
   is authoritative.
+## 2026-11-04 — Python sources added to the code corpus
+
+- Eric: "Search for source material for Python…
+  Implement all sources you find viable and push."
+  Five sources assembled by a subagent, independently
+  verified (byte SHA-256 against provenance,
+  separator counts = file counts): Python official
+  docs — Tutorial + Language Reference + How-To,
+  42 files, 1,289,825 chars, PSF License v2;
+  Think Python 2e, 22 chapters, 436,543 chars,
+  CC BY-NC 3.0; Python for Everybody, 17 files,
+  381,237 chars, CC BY-NC-SA 3.0; Dive Into Python 3,
+  18 files, 638,137 chars, CC BY-SA 3.0; CPython
+  stdlib curated (14 modules), 511,653 chars, PSF.
+  Combined code corpus: 7,124,330 chars, 13 files,
+  sha256 b6fb4d79…. No commercial books added.
+- Automate the Boring Stuff 2e: licence verified
+  (CC BY-NC-SA 3.0 US) but NOT assembled in this
+  batch — no official GitHub source, chapters are
+  website HTML only, so it needs a browser
+  download/assembly follow-up. Recorded in
+  data/code/SOURCES.md so it is not lost.
+- Pushed 2026-11-04, see commit below, on
+  verification + 58-test suite, no new training
+  run in this batch.
+
 ## 2026-11-04 — Advanced Rust books added to the code corpus
 
 - Eric: "Implement all of those and push" — all seven

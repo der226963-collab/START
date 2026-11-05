@@ -58,6 +58,64 @@ sha256 ec9164ec0ca267d8c83f8ebe7755e87c53f4a6bfa68e1d62c92e0cc4086409a1.
   Licence MPL 2.0 (permissive, modified files stay MPL —
   recorded here, unlike the MIT/Apache books above).
 
+## Python, added 2026-11-04 (Eric: "Implement all sources you find viable and push")
+Assembled by a subagent, independently verified
+(chars + byte SHA-256 against provenance, separator
+counts = file counts) before push. Combined code
+corpus after this batch: 7,124,330 chars, 13 files,
+sha256 b6fb4d79c0c19b17842a64766354f9e9188b12526e9628c1abaefa7730aaf5e9.
+- python_docs.txt — Python official documentation,
+  python/cpython branch main: Tutorial (17 files),
+  Language Reference (10), Python-focused How-To
+  guides (15), 42 files total, 1,289,825 chars,
+  sha256 1182d7afb7c94b70…. Licence PSF License
+  Version 2; documentation code additionally dual
+  PSF / 0BSD from Python 3.8.6. Library reference
+  NOT included (scope was tutorial + reference +
+  how-to); C-extension how-tos and legacy porting
+  guides excluded from the how-to subset.
+- think_python.txt — Think Python, 2nd edition,
+  Allen B. Downey, AllenDowney/ThinkPython2,
+  22 chapters, 436,543 chars, sha256 77163303ed3d74b1….
+  Licence CC BY-NC 3.0 Unported (book text, from
+  book/book.tex header; repo code MIT, © 2017).
+- python_for_everybody.txt — Python for Everybody
+  (Exploring Data Using Python 3), Charles Severance,
+  csev/py4e book3/AB-copyright.mkd, preface + ch. 1–16,
+  17 files, 381,237 chars, sha256 bb67a25fe50f5ac5….
+  Licence CC BY-NC-SA 3.0 Unported. Overlap with
+  Think Python expected (it is a remix); added value
+  is regex, network, web services, objects, databases,
+  visualisation.
+- dive_into_python3.txt — Dive Into Python 3, Mark
+  Pilgrim, diveintomark/diveintopython3, 18 files,
+  638,137 decoded chars, byte sha256 662852fa0a3c3a5e….
+  Licence CC BY-SA 3.0 (prose/graphics; original code
+  MIT; stdlib code PSF 2.0; chardet LGPL 2.1+).
+  Counting note: text-mode recount gives 636,328
+  chars because universal-newline translation
+  collapses 1,809 CR-LF sequences; byte SHA is
+  authoritative.
+- cpython_stdlib.txt — CPython standard library,
+  curated, python/cpython Lib/: dataclasses, functools,
+  heapq, bisect, contextlib, enum, json, textwrap,
+  string, statistics, copy, pprint, collections,
+  pathlib, 14 modules, 511,653 chars, sha256
+  023879c0ddecb341…. Licence PSF License Version 2.
+  Docstrings intact; tests, generated files, C
+  modules excluded.
+- Automate the Boring Stuff, 2nd edition, Al Sweigart:
+  licence VERIFIED from its own copyright page
+  (CC BY-NC-SA 3.0 United States, © 2020; the page
+  also carries standard No Starch "All rights
+  reserved" boilerplate above the CC licence line,
+  which is the operative grant for the online
+  edition), but NOT yet assembled — no official
+  GitHub source repo exists, chapters are website
+  HTML only, so it needs a browser download/assembly
+  step in a follow-up batch, not a text-fetch
+  assembly.
+
 ## Not yet added
 - C and Java: flagged by Eric as having potential, no
   source verified or added yet. Each will need its own

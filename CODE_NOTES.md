@@ -259,9 +259,26 @@ Licences checked directly from each repo's LICENSE file:
   (all ND), The C Book (licence unclear),
   commercial books. musl libc was still being
   assembled by the code worker when this batch
-  was pushed; it follows in a later push once
-  verified. Pushed 2026-11-05, see commit(s)
-  below.
+  was pushed; it followed in a separate push
+  the same day once verified (see below).
+  Pushed 2026-11-05, see commit(s) below.
+
+## 2026-11-05 — musl libc (follow-up to the C batch)
+
+- musl_c_source.txt, 335 files, 345,899 chars,
+  sha256 db24418b…, MIT License, verified from
+  the mirror's own COPYRIGHT (identical MIT text
+  also verified in kraj/musl COPYRIGHT). Source:
+  ifduyue/musl, mirror of git.musl-libc.org,
+  commit 7813e911. Contents: all of src/string,
+  src/stdio, src/stdlib, src/ctype, double-
+  precision math core plus float/long-double
+  variants of sqrt/fabs/floor/ceil/Bessel,
+  src/prng/rand.c, src/malloc/mallocng/malloc.c.
+  Verified by the assistant (chars + SHA +
+  335 separators = 335 files). Combined code
+  corpus after musl: 14,325,421 chars, 27 files.
+  Pushed 2026-11-05.
 
 ## 2026-11-04 — Original advanced Python chapters (facts only, not a rewrite)
 

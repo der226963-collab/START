@@ -175,7 +175,32 @@ sha256 b6fb4d79c0c19b17842a64766354f9e9188b12526e9628c1abaefa7730aaf5e9.
 - cpython_c_source.txt — CPython C source, curated, python/cpython branch main (2026-11-05 snapshot), 13 files (Objects/object.c, listobject.c, dictobject.c, tupleobject.c, boolobject.c, floatobject.c; Include/object.h, listobject.h, dictobject.h, tupleobject.h; Python/errors.c; Modules/_bisectmodule.c, _heapqmodule.c), 747,501 chars, sha256 bb947466232ede246af4a09427a7c9c4e42ffae335043b272e80738ea00855b1. Licence PSF License Version 2, verified from python/cpython LICENSE.
 - sqlite_c_source.txt — SQLite C source, curated, sqlite/sqlite branch master (Git mirror of Fossil trunk, 2026-11-05 snapshot), 13 files (src/tokenize.c, util.c, hash.c, printf.c, mem1.c, mem2.c, malloc.c, treeview.c, status.c, fault.c, build.c, vdbeaux.c, sqlite3ext.h), 694,779 chars, sha256 38ba50db02e68c3d5185c74e94f27cfc0f69d9fe7ccff32b3855b52bccbe55af. Licence public domain (SQLite public-domain dedication, verified from the repo README and the dedication header in src/fault.c). Amalgamation excluded (~9 MB, too large).
 - linux_kernel_c_source.txt — Linux kernel C source, curated teaching subset, torvalds/linux branch master, 13 files (lib/string.c, vsprintf.c, sort.c, list_sort.c, rbtree.c, radix-tree.c, ctype.c, cmdline.c, hexdump.c, bsearch.c, kstrtox.c; kernel/panic.c, kernel/printk/printk.c), 395,109 chars, sha256 403b9ec6f0a76a4e2f75fc9353e366ffd596c2877681e20c7ba0343d1acc102e. Licence GPL-2.0 WITH Linux-syscall-note, verified from torvalds/linux COPYING.
-- musl libc — NOT yet added; the real-C-code worker was still running when this batch was pushed (2026-11-05), with musl outstanding. It will follow in a later push once assembled and verified.
+- musl_c_source.txt — musl libc, curated, ifduyue/musl branch
+  master (unofficial mirror of git://git.musl-libc.org/musl),
+  commit 7813e9119eb5fe681b6750b8a033a0490bca0941 (HEAD at
+  fetch time 2026-11-05), 335 files, 345,899 chars, sha256
+  db24418b9cde301ed6a9c21c0aba415448e0cee7ac53195e6e5b377d67e0829d.
+  Licence MIT License, verified from that mirror's own
+  COPYRIGHT file ("musl as a whole is licensed under the
+  following standard MIT license", Copyright © 2005-2020
+  Rich Felker, et al.); identical MIT text also verified
+  in kraj/musl COPYRIGHT. Contents: all of src/string
+  (74 .c), all of src/stdio (116 .c), all of src/stdlib
+  (22 .c), all of src/ctype (37 .c), double-precision math
+  core (73 .c) plus float/long-double variants of sqrt,
+  fabs, floor, ceil and Bessel j0/j1/jn, plus
+  src/prng/rand.c and src/malloc/mallocng/malloc.c
+  (neither lives in src/stdlib). Excluded: math *_data
+  tables and __rem_pio2_large.c, other float/long-double
+  math variants, .h data-table headers, arch-specific
+  subdirectories. Caveat, from COPYRIGHT: much of the
+  math code is derived from Sun/FreBSD sources under
+  permissive terms, labelled in the individual files.
+  Fetch note: parallel requests hit a transient GitHub
+  MCP rate limit; the worker backed off and resumed
+  sequentially with a delay, 335 files fetched, 0 failed.
+  Assembled 2026-11-05, NOT yet pushed — follows in a
+  later push once the parent verifies it.
 - Excluded C sources (do not add): Beej's Guide to C (CC BY-NC-ND 3.0), Thinking in C (CC BY-NC-ND 2.5), The C Book (licence convoluted/unclear), K&R, C: A Modern Approach, Learn C the Hard Way (commercial/copyrighted). Modern C 1st edition (CC BY-NC-ND 4.0) also excluded.
 
 ## Not yet added

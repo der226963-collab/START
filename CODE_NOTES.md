@@ -221,6 +221,48 @@ Licences checked directly from each repo's LICENSE file:
   until a deletion is done another way; the local
   and code-corpus location data/code/rust_book.txt
   is authoritative.
+## 2026-11-05 — C sources: 8 books + 3 real C code sets
+
+- Eric: "Add C books plus real C code too" and
+  "Make sure to include all C sources", then
+  "use the one we already obtained and push" for
+  Modern C. Assembled by two workers in parallel,
+  verified by the assistant (chars + SHA-256
+  against provenance for all 11 files; separator
+  counts match). Books, 3,853,764 chars: cppreference
+  C 180,139 (CC BY-SA 3.0/GFDL, header-level only),
+  Build Your Own Lisp 249,444 (CC BY-NC-SA 3.0,
+  code BSD-3 not included), Wikibooks C Programming
+  979,532 (CC BY-SA 4.0, from the official dump
+  after a live-API 429), A Little C Primer 110,524
+  (CC BY-SA 4.0/GFDL; public-domain original no
+  longer reachable), GNU C Reference Manual 149,341
+  (GFDL 1.3, no invariant sections), GNU C
+  Programming Tutorial 490,377 (GFDL 1.1+),
+  Snefru 511,481 (GPL-3.0; cover page says many
+  parts were written with Copilot/GPT-3.5/GPT-4),
+  Modern C 3rd ed. 1,182,926 (CC BY-NC, verified
+  from the PDF's own front matter; the PDF copy
+  came from an unofficial mirror, tilde.town, and
+  Eric directed using the copy already obtained).
+  Real C code, 1,837,389 chars: CPython C 747,501
+  (PSF 2, 13 files), SQLite 694,779 (public
+  domain, 13 files), Linux kernel lib/ subset
+  395,109 (GPL-2.0 WITH Linux-syscall-note,
+  13 files). Combined code corpus after this
+  batch: 13,979,522 chars, 26 files. GFDL,
+  GPL-3.0 and CC BY-NC were not in the fetcher's
+  earlier allowed list; they are included here
+  at Eric's "include all C sources" direction,
+  with licences recorded exactly. Excluded:
+  Beej's Guide, Thinking in C, Modern C 1st ed.
+  (all ND), The C Book (licence unclear),
+  commercial books. musl libc was still being
+  assembled by the code worker when this batch
+  was pushed; it follows in a later push once
+  verified. Pushed 2026-11-05, see commit(s)
+  below.
+
 ## 2026-11-04 — Original advanced Python chapters (facts only, not a rewrite)
 
 - Eric: "create genuine material from facts only

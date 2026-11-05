@@ -1,0 +1,222 @@
+{
+  "title": "Modern C",
+  "authors": [
+    "Jens Gustedt"
+  ],
+  "edition": "Third Edition (Covers the C23 standard)",
+  "publisher": "Manning Publications Co., Shelter Island, NY",
+  "source_repo": "N/A (Manning print/eBook edition PDF)",
+  "source_url": "https://tilde.town/~fiore/tmp/modern-c-third-edition.pdf",
+  "licence": "CC BY-NC",
+  "licence_detail": "Verified from the PDF's own front matter (copyright page, PDF p. 5): '\u00a9 2025 Jens Gustedt. Jens Gustedt has released the manuscript of this work under a Creative Commons license for non-commercial use (CC BY NC). Jens Gustedt has granted to Manning Publications the exclusive commercial right to publish this work in print and electronic formats throughout the world.' Title page: 'Modern C, Third Edition, Covers the C23 standard, Jens Gustedt, Manning'. ISBN 9781633437777.",
+  "status": "proposed",
+  "approved": false,
+  "pushed": false,
+  "file": "modern_c.txt",
+  "chars": 1182926,
+  "sha256": "6eda9085405ba1c4d017bcadcf4e42ecbb3d739241a5bdf8ba848c8a433d0acb",
+  "chapters_assembled": 32,
+  "chapter_files": [
+    "front-matter/copyright",
+    "front-matter/preface",
+    "front-matter/acknowledgments",
+    "front-matter/about-this-book",
+    "front-matter/about-the-author",
+    "front-matter/about-the-cover-illustration",
+    "chapter01-getting-started",
+    "chapter02-principal-structure-of-a-program",
+    "chapter03-everything-is-about-control",
+    "chapter04-expressing-computations",
+    "chapter05-basic-values-and-data",
+    "chapter06-derived-data-types",
+    "chapter07-functions",
+    "chapter08-c-library-functions",
+    "chapter09-style",
+    "chapter10-organization-and-documentation",
+    "chapter11-pointers",
+    "chapter12-the-c-memory-model",
+    "chapter13-storage",
+    "chapter14-more-involved-processing-and-io",
+    "chapter15-program-failure",
+    "chapter16-performance",
+    "chapter17-function-like-macros",
+    "chapter18-type-generic-programming",
+    "chapter19-variations-in-control-flow",
+    "chapter20-threads",
+    "chapter21-atomic-access-and-memory-consistency",
+    "appendix-a-transitional-code",
+    "appendix-b-c-compilers",
+    "appendix-c-c-libraries",
+    "takeaways",
+    "selected-bibliography"
+  ],
+  "chapters_failed": [],
+  "sections": [
+    {
+      "section": "front-matter/copyright",
+      "chars": 2797,
+      "sha256": "5927900ab99424fb8dd0d3c8151cf32bfd1ed184cdd0bab0eff905b62951c24c"
+    },
+    {
+      "section": "front-matter/preface",
+      "chars": 3643,
+      "sha256": "f688789f8e319e6c245b35c048939aa287d08ae33d07223e81cf980deff8b3ea"
+    },
+    {
+      "section": "front-matter/acknowledgments",
+      "chars": 1064,
+      "sha256": "c02c03e82679a5f0a5691fdadd05d8d856a2f33ea0a004e77e0baf269167b675"
+    },
+    {
+      "section": "front-matter/about-this-book",
+      "chars": 10822,
+      "sha256": "91ae75c9c00417daee9bac6c993d9575c781ac86d7b17344f67f7e29b3d383aa"
+    },
+    {
+      "section": "front-matter/about-the-author",
+      "chars": 1190,
+      "sha256": "5cc0472c1c2303277e62fadd7ca1a126e7ccff042aae821f0c385a031250ba3d"
+    },
+    {
+      "section": "front-matter/about-the-cover-illustration",
+      "chars": 613,
+      "sha256": "2ee08497ccf3240be228a0a763f434bcd184228fcf873917ddb62a56a9f10391"
+    },
+    {
+      "section": "chapter01-getting-started",
+      "chars": 18020,
+      "sha256": "90689ca57332e87bd612e3baf0c081fc90bda51dc82e0faf2e816c1f4da3ae6c"
+    },
+    {
+      "section": "chapter02-principal-structure-of-a-program",
+      "chars": 35481,
+      "sha256": "6c6850d2b95cf6a1616562de31eb20af869ebfb8f1faf4263f6d6ec720f6472c"
+    },
+    {
+      "section": "chapter03-everything-is-about-control",
+      "chars": 23067,
+      "sha256": "2d6791643c4941dd14eaab36960e62689e4177b22f8882c231ea783b76e2968f"
+    },
+    {
+      "section": "chapter04-expressing-computations",
+      "chars": 27352,
+      "sha256": "c8b7c8987fcd3a8aefaa75ca7ecc37b4f37fb1dc51e6fd27ea9c7e9c7794f0a7"
+    },
+    {
+      "section": "chapter05-basic-values-and-data",
+      "chars": 104956,
+      "sha256": "b42d7d77a15831160034960d4608ed9a4d9ed89e9b568a6ae4e1b0ab38e6887a"
+    },
+    {
+      "section": "chapter06-derived-data-types",
+      "chars": 49879,
+      "sha256": "5473902ba51211a169e3dad30f5cfe695549bee7493e72a0237e05f953fd4b22"
+    },
+    {
+      "section": "chapter07-functions",
+      "chars": 30040,
+      "sha256": "65825bf5fc266d4b3758ebd6966a397c8b1de51ae26bfa7defe6a36eabac5752"
+    },
+    {
+      "section": "chapter08-c-library-functions",
+      "chars": 104740,
+      "sha256": "75c3591f4bfb6822978e386ee88d0779f5d8415b5f251d296ae58dcfa876e2db"
+    },
+    {
+      "section": "chapter09-style",
+      "chars": 26472,
+      "sha256": "00ca5369c3d781f5dba0dd3e7bb1a2967bb396f02ccb4610db9628271c104aab"
+    },
+    {
+      "section": "chapter10-organization-and-documentation",
+      "chars": 35025,
+      "sha256": "39389688ce70dc8b965481cae64a5f458eb65d4733e03b3d1a39d96ac4191108"
+    },
+    {
+      "section": "chapter11-pointers",
+      "chars": 52111,
+      "sha256": "456d515d43e47e8b3089657e7328d75c09df1704a2be2969d8a748bfa9fa3471"
+    },
+    {
+      "section": "chapter12-the-c-memory-model",
+      "chars": 34522,
+      "sha256": "609a0d60e0cfbda3bbe593c31542a070ca685eaadfde16f955152e72e107fb61"
+    },
+    {
+      "section": "chapter13-storage",
+      "chars": 78698,
+      "sha256": "9ab5b16b9639187871dc55a14a37b6149d89e896a4ad32432a563952b20c3528"
+    },
+    {
+      "section": "chapter14-more-involved-processing-and-io",
+      "chars": 68661,
+      "sha256": "ae04f98ce911d1cfb0e5828d1f94242b52010dfc1b4a228f516d1b9f00b92ec8"
+    },
+    {
+      "section": "chapter15-program-failure",
+      "chars": 55363,
+      "sha256": "424d10ad159269d017963d52785b6a1f842a8ed4617ee26eea7c49e0f941de3f"
+    },
+    {
+      "section": "chapter16-performance",
+      "chars": 57019,
+      "sha256": "20de5251e2cf00046abca5acdc39b4febe68cf7aa74ae169ae68994c8051d919"
+    },
+    {
+      "section": "chapter17-function-like-macros",
+      "chars": 60155,
+      "sha256": "dfaa44579641b2b8e41b8582faba6e77a3e16db1ab61363066e88d05de7fb4c2"
+    },
+    {
+      "section": "chapter18-type-generic-programming",
+      "chars": 71603,
+      "sha256": "ef9385ec4b8878c2c9e7ca5a53662a2b49ff8d76e5d2b86bc8247a628d9d592e"
+    },
+    {
+      "section": "chapter19-variations-in-control-flow",
+      "chars": 65313,
+      "sha256": "8a334bfcb39a7f379c3cb7e461f11e60d24943a8cffebe8947e21f092bbf7044"
+    },
+    {
+      "section": "chapter20-threads",
+      "chars": 54974,
+      "sha256": "4297c5e4232560f71f79c38feeda0552729dfbad9c19ab0fa031ba6cf30d0783"
+    },
+    {
+      "section": "chapter21-atomic-access-and-memory-consistency",
+      "chars": 31329,
+      "sha256": "816ad7ee5221ca50298933b157177a8a40a617d3be34317b510ab9c77f09136c"
+    },
+    {
+      "section": "appendix-a-transitional-code",
+      "chars": 6772,
+      "sha256": "cc29f806c95d695ec0d6651b7d90bfdc9425c7684749b83d8631e368b3903e54"
+    },
+    {
+      "section": "appendix-b-c-compilers",
+      "chars": 5778,
+      "sha256": "ba726b588e39c7e90be1cbf489ea8acf1b0d0d359d90d779b74d4aebe1155e1e"
+    },
+    {
+      "section": "appendix-c-c-libraries",
+      "chars": 5085,
+      "sha256": "f71d04051a8b1cbf780096caf2c3ba2802ac88b0fe0896fddf40c3112cb05b31"
+    },
+    {
+      "section": "takeaways",
+      "chars": 55640,
+      "sha256": "4c7507646df63e4cc271c8d12ebf3d1b119c9f63278d2ab2afd9e9eaa6141304"
+    },
+    {
+      "section": "selected-bibliography",
+      "chars": 3316,
+      "sha256": "e09a0f0d63d15c5ee7268e8c482396c43bf3f54cff4710d19c2c4b6ca774b13f"
+    }
+  ],
+  "notes": [
+    "3rd edition ONLY (not the 1st edition, which was CC BY-NC-ND 4.0 and is excluded). The 2nd edition (2020, ISBN 9781617295812) carries the same CC BY-NC front-matter wording; the 3rd edition was used as the newest.",
+    "SOURCE CAVEAT: the PDF was obtained from an unofficial mirror (tilde.town/~fiore/tmp/modern-c-third-edition.pdf). The file itself is the Manning 3rd edition: title page, copyright page, ISBN 9781633437777 and contents all match Manning's listing for Modern C, Third Edition (Aug/Sep 2025). The author's own free HAL version (hal.inria.fr/hal-02383654, most recent Oct 15 2024) is a DIFFERENT licence \u2014 the author's site states its licence as CC BY-NC-ND 4.0 \u2014 so the HAL version was NOT used; only the Manning edition's CC BY-NC text is assembled here.",
+    "Coverage: front matter (copyright page, preface, acknowledgments, about this book, about the author, about the cover illustration), chapters 1-21, appendices A-C, Takeaways, Selected bibliography. PDF pp. 1-4 (cover/praise/title) and pp. 6-13 (brief contents/contents, navigation) excluded; book index (PDF pp. 528-548) excluded as page-reference-only material. 7 PDF pages in the assembled ranges were blank in the source PDF and contributed nothing (pp. 47, 199, 201, 351, 495, 505, 525).",
+    "Cleaning: pdftotext -layout extraction; running headers/footers stripped (page numbers, 'N CHAPTER M Title' headers, section-title + page-number headers in chapters); line-break hyphenation rejoined where the next line starts lowercase; 3+ blank lines collapsed. The Takeaways appendix's 'takeaway + book page number' lines were kept as genuine content. Chapter ranges were mapped book-page + 23 = PDF page and each chapter-start page was spot-checked against its heading."
+  ]
+}

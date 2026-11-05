@@ -1,0 +1,35 @@
+{
+  "title": "Introduction to Programming in Julia (ENCCS lesson)",
+  "authors": [
+    "ENCCS and individual contributors"
+  ],
+  "source_repo": "ENCCS/julia-intro",
+  "source_branch": "main",
+  "source_commit": "0a6d6a3420c92e1309da01969f10109719096e5d",
+  "source": "ENCCS/julia-intro, main, README.md + content/*.rst",
+  "licence": "CC BY 4.0 International",
+  "licence_detail": "Creative Commons Attribution 4.0 International for the lesson text (LICENSE file); example programs/code in the repo are under the MIT licence per LICENSE.code and the lesson licence page",
+  "licence_verified_from": "ENCCS/julia-intro LICENSE (full CC BY 4.0 text), read via GitHub connector; lesson licence page at enccs.github.io/julia-intro/ states the same",
+  "notes": "Sphinx/reStructuredText lesson source, unmodified: motivation, setup, syntax intro, scientific computing, development (packages, testing, performance), guide, overview, quick reference. A compact modern intro aimed at researchers; complements Think Julia (beginner) and the official manual.",
+  "file": "enccs_julia_intro.txt",
+  "chars": 92013,
+  "sha256": "34680ee663875d36f2c6902cac774939c6993b1ffbf5ab35409be83e6985b3e0",
+  "files": [
+    "README.md",
+    "content/development.rst",
+    "content/guide.rst",
+    "content/index.rst",
+    "content/motivation.rst",
+    "content/overview.rst",
+    "content/quick-reference.rst",
+    "content/scientific-computing.rst",
+    "content/setup.rst",
+    "content/syntax-intro.rst"
+  ],
+  "file_count": 10,
+  "failed": [],
+  "failed_count": 0,
+  "status": "proposed",
+  "approved": false,
+  "pushed": false
+}

@@ -1,0 +1,29 @@
+{
+  "author": "Loom Network / CryptoZombies contributors",
+  "chars": 4734,
+  "edition": "master @ 48780337b77defa35bc70f9410517af4373a4752 (2019-11-27)",
+  "failed": [],
+  "failed_count": 0,
+  "file_count": 12,
+  "files": [
+    "lesson-1/chapter-10/Contract.sol",
+    "lesson-1/chapter-11/Contract.sol",
+    "lesson-1/chapter-12/Contract.sol",
+    "lesson-1/chapter-13/Contract.sol",
+    "lesson-1/chapter-2/Contract.sol",
+    "lesson-1/chapter-3/Contract.sol",
+    "lesson-1/chapter-4/Contract.sol",
+    "lesson-1/chapter-5/Contract.sol",
+    "lesson-1/chapter-6/Contract.sol",
+    "lesson-1/chapter-7/Contract.sol",
+    "lesson-1/chapter-8/Contract.sol",
+    "lesson-1/chapter-9/Contract.sol"
+  ],
+  "licence": "GPL-3.0",
+  "licence_verified_from": "CryptozombiesHQ/cryptozombies-lesson-code LICENSE read via GitHub connector (GNU GPL v3 full text); README also states GPL-3.0",
+  "notes": "Beginner incremental build of a ZombieFactory contract (structs, arrays, events, keccak randomness), Solidity ^0.4.25 \u2014 old version, kept as-is for the progression value. Honest subset: only lesson-1 has non-empty .sol files (12 files, 4,120 chars of code). The repo's lesson-2..6 .sol files are all 0 bytes, lessons 7-9 were removed per the README, and lessons 10-11 contain no .sol files (JS tests/config only). The separate lesson-content repo CryptozombiesHQ/cryptozombie-lessons is 'Copyright Loom Network 2025. All rights reserved' and was NOT included.",
+  "sha256": "c529f4800ee7616b05ee6a9bdd9f40794e4613f9c6fb9457b878c9d528113982",
+  "source": "CryptozombiesHQ/cryptozombies-lesson-code, branch master, lesson-1/ (12 non-empty .sol files, see files)",
+  "status": "proposed",
+  "title": "CryptoZombies Lesson Code (Lesson 1 only \u2014 the only non-empty part)"
+}

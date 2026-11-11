@@ -1,259 +1,136 @@
-# AI Starter — a small, local, auditable beginning
+# START core spine — first local assembly
 
-This is a separate side project from the PCAC blueprint. It is not a
-frontier chatbot, and it does not call an external AI API.
+Date: 2026-11-10. Assembled locally at `~/workspace/start-assembly/core-spine/`,
+pushed to der226963-collab/START under `start-assembly/core-spine/` on 2026-11-11
+(commit 674f6abc7478bbd497c8459ceec8e4a3d553ba2b).
+Nothing here touches `~/workspace/ai-starter`, the v0.3.2 review copy,
+or START guardrails / self-edit / safety files.
 
-It is a minimal AI you can actually read, train, and change:
+## What this is
 
-1. A tiny neural network written from scratch in NumPy (`mini_ai/neural_net.py`)
-   — one hidden layer, ReLU, softmax, manual back-propagation.
-2. A tiny intent classifier on top of it (`mini_ai/assistant.py`)
-   — it learns a handful of intents from a few example sentences each.
-3. A command-line chat loop (`main.py`) — type, get a response, type `quit`.
+The first assembly of the core spine from Eric's Final Locked-In
+START Architecture Blueprint, after the repo triage
+(`~/workspace/v032-review/blueprint-triage/REPO_TRIAGE.md`:
+64/70 candidates exist as named, 6 do not). Only the core spine
+was assembled; the deferred modules (heavyweight LLM platforms,
+Mojo inference, Modules 8, 16–19, 23–25, the 6 non-existent names)
+were NOT assembled here.
 
-## Run it
+Status rules, from the v0.3.2 review (REVIEW.md ISSUE-02, ISSUE-16)
+and the planning-package draft (`blocker-work/planning-package/models.py`):
+five internal states PASS / FAIL / UNKNOWN / NOT_CHECKED / INCOMPLETE;
+consumer tri-state pass / fail / indeterminate (INCOMPLETE, UNKNOWN,
+NOT_CHECKED → indeterminate; FAIL wins); empty checks → NOT_CHECKED,
+never PASS; UNKNOWN / INCOMPLETE are never converted into PASS.
 
-```bash
-cd ai-starter
-pip install -r requirements.txt
-python main.py
-```
+## Architecture map
 
-Try: `hello`, `can you help me plan something?`, `thanks`, `bye`
+| Component | Module | Repo (exact) | Licence | Role in START | Status |
+|---|---|---|---|---|---|
+| HiGHS (via SciPy `linprog`) | 14 Optimisation | ERGO-Code/HiGHS | MIT | LP solver for the food-planning LP | assembled |
+| CPMpy | 14 Optimisation | CPMpy/cpmpy | Apache-2.0 | CP modelling layer; HiGHS backend here | assembled |
+| CVXPY | 14 Optimisation | cvxpy/cvxpy | Apache-2.0 | Convex modelling layer; HiGHS backend here | assembled |
+| JuMP.jl | 18 Systems Planning | jump-dev/JuMP.jl | MPL-2.0 | Julia modelling layer for planning LPs | assembled 1.32.1 (Julia 1.13.3) |
+| Agents.jl | 10 World Modelling | JuliaDynamics/Agents.jl | MIT | Agent-based world modelling | assembled 7.1.0 (Julia 1.13.3) |
+| ModelingToolkit.jl | 10 World Modelling | SciML/ModelingToolkit.jl | MIT | Equation-based structural physics | assembled 11.46.1 (Julia 1.13.3) |
+| Symbolics.jl | 12 Math & Computing | JuliaSymbolics/Symbolics.jl | MIT | Symbolic algebra / e-graph rewriting | assembled 7.48.0 (Julia 1.13.3) |
+| Turing.jl | 12 Math & Computing | TuringLang/Turing.jl | MIT | Bayesian inference | assembled 0.49.0 (Julia 1.13.3) |
+| DifferentialEquations.jl | 12 Math & Computing | SciML/DifferentialEquations.jl | NOASSERTION — confirm before adopting | Continuous physical systems | assembled 8.1.1 (Julia 1.13.3) |
+| AlphaZero.jl | 4 Reasoning & Planning | jonathan-laurent/AlphaZero.jl | MIT | MCTS + self-play search (board-game core) | assembled 0.5.6 (git clone, CPU only, no training) |
+| PlanningSearch (MCTS + game interface copied from AlphaZero.jl) | 4 Reasoning & Planning | jonathan-laurent/AlphaZero.jl (source, MIT) | MIT (copied files) | Standalone planning search: MCTS over partial plans, rollout oracle + learned linear oracle, candidate only — never verified by the search; original training loop (verified samples only, held-out replacement rule) | assembled 2026-11-11, 75/75 + 53/53 + 86/86 + 25/25 Julia tests PASS, finds the 600/50 t optimum |
 
-## Run the tests
+## Canonical Julia environment (adopted 2026-11-11 by Eric)
 
-```bash
-python -m unittest discover -s tests
-# Planning tests are plain functions, run them by import:
-python -c "import importlib.util; s=importlib.util.spec_from_file_location('t','tests/test_planning.py'); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); [getattr(m,f)() for f in dir(m) if f.startswith('test_')]"
-```
+`julia-current/` is the canonical Julia environment for this spine:
+Julia 1.13.3, Agents 7.1.0, ModelingToolkit 11.46.1, Symbolics 7.48.0,
+Turing 0.49.0, DifferentialEquations 8.1.1, JuMP 1.32.1, HiGHS 1.26.1,
+AlphaZero 0.5.6 (separate env in `alphazero/`). Spine 16/16 PASS,
+Julia checks 268/268 passed, 0 failed (29 spine/smokes/AlphaZero +
+75 planning-search + 53 LP cross-check + 86 training loop +
+25 training loop LP-split). The original pinned envs
+`julia/` and `julia-1.11/` are evidence only — they fail to precompile
+5 dependencies and are NOT canonical; do not use them for new work.
+| LangGraph | 5 Orchestration | langchain-ai/langgraph | MIT | Stateful plan → verify → report graph | assembled |
+| Cedar | 2 Governance & Security | cedar-policy/cedar | Apache-2.0 | Formal authorisation policy engine | assembled (Rust) + Python stub evaluator |
+| egg | 4 Reasoning & Planning | egraphs-good/egg | MIT | E-graph symbolic rewrites | assembled (Rust) |
+| Tonic / gRPC | 21 Interoperability | grpc/grpc-rust | MIT | Contract-driven RPC | stub only (Rust); runnable gRPC is Python grpcio over a Unix socket |
+| Apache Arrow | 21 Interoperability | apache/arrow | Apache-2.0 | Zero-copy in-memory table sharing | assembled (pyarrow) |
+| DeepEval | 22 Evaluation & Learning | confident-ai/deepeval | Apache-2.0 | Evaluation framework | local non-LLM metrics only; LLM-as-judge deferred |
+| ODYM | 17 Resource Accounting | IndEcol/ODYM | MIT | Stock-flow resource accounting | assembled 0.1.0, git pin 9792c23 (never published to PyPI); dependency only, no code copied; adapter `adapters/resource_accounting.py`, 16/16 tests PASS; outputs are model results only (verified=false, needs_human_decision=true) |
 
-## Step 2 — MiniGPT: a larger model that generates text
+## Layout
 
-v1 classified a sentence. MiniGPT (`mini_ai/gpt/`) predicts the
-next character, which is how a language model actually works:
+- `adapters/` — thin Python adapters, no vendored engine code:
+  `statuses.py` (status model), `optimisation.py` (HiGHS/CPMpy/CVXPY),
+  `interop.py` (Arrow + gRPC), `governance.py` (Cedar stub evaluator),
+  `orchestration.py` (LangGraph plan → verify → report),
+  `evaluation.py` (DeepEval non-LLM metrics only),
+  `resource_accounting.py` (ODYM stock-flow accounting, Module 17 —
+  dependency only, synthetic case, outputs are model results only).
+- `helpers/` — borrowed helpers, the ONLY vendored candidate code in
+  this assembly: `borrowed_helpers.py` (Cognee `chunk_by_word` +
+  `chunk_id`, Crawl4AI `normalize_url`, Apache-2.0 notices kept,
+  stdlib-only, `PROVENANCE.md` in the same folder). Untrusted-input
+  utilities only — NOT wired into any verify, governance, or decision
+  path. Tests `tests/test_borrowed_helpers.py` — 24/24 PASS.
+- `tests/test_spine.py` — the test suite. Run: `.venv/bin/python -m unittest discover -s tests -v`
+- `rust/` — Cargo crate: real Cedar evaluation, egg rewrites, Tonic stub.
+  Run: `export PATH="$HOME/.cargo/bin:$PATH" && cargo test` (rustc 1.99.1).
+- `julia-current/` — canonical Julia env (`Project.toml`, `Manifest.toml`, `spine.jl`, `spine_lp.jl`, `spine_ode.jl`, smokes, logs). Run it, not `julia/`.
+- `julia-current/planning-search/` — standalone planning-search module
+  (`PlanningSearch.jl`, copied `mcts.jl` + `game.jl` with MIT notices,
+  original `planning_domain.jl` + `verify.jl`, `PROVENANCE.md`,
+  `test/runtests.jl` — 75/75 PASS). MCTS finds the 600/50 t optimum
+  on the synthetic domain; every result is a CANDIDATE only
+  (`verified=false`, `needs_human_decision=true`) until the separate
+  verify step passes AND a human approves. `verify_lp.jl` (original,
+  JuMP+HiGHS) wires that verify step to a second, independent LP
+  cross-check — combined verdict PASS only if both pass; a
+  candidate claiming better than the optimum (delivered 650 /
+  shortage 0) passes the constraint verify alone and fails the LP
+  check. Runner `run_verify_lp.jl`; tests `test/verify_lp.jl` —
+  53/53 PASS (standalone script, not in `test/runtests.jl`, so the
+  standalone tests stay JuMP-free). `training_loop.jl` (original,
+  replaces the AlphaZero training loop — no opponent, no win/loss,
+  no network library) keeps only verify+LP PASS candidates as
+  training samples, fits a linear value model as a learned oracle,
+  and replaces the current oracle only on a held-out
+  verified-PASS rate at least as high with a mean shortage no
+  worse. Runner `run_training_loop.jl` — TRAINING_LOOP RESULT:
+  PASS (3 iterations, 12 kept, 0 rejected; final held-out learned
+  mean shortage 117.5 t vs rollout 167.5 t at tied PASS rates of
+  1.0). Tests `test/training_loop.jl` — 86/86 PASS — and
+  `test/training_loop_lp.jl` — 25/25 PASS.
+- `julia/` and `julia-1.11/` — original pinned envs, kept untouched as evidence only (fail to precompile).
+- `proto/constraint_evaluation.proto` — the gRPC wire contract (schema 1.0.0).
+- `policies.cedar` — the authoritative Cedar policies.
+- `examples/` — (reserved; the synthetic example lives in `adapters/optimisation.py`).
+- `LICENCES.md`, `ASSEMBLY_REPORT.md`, `CHECKPOINT.md`.
 
-- Token + position embeddings, then stacked pre-norm transformer
-  blocks: causal multi-head self-attention, then a 4x feed-forward
-  network, with residual connections around both.
-- Default tiny config: 2 layers, 64-dim, ~100k parameters — small
-  enough to train on a CPU in minutes.
-- `small` config: 4 layers, 128-dim, ~800k parameters.
+## Synthetic example (all solvers must agree)
 
-```bash
-pip install -r requirements-gpt.txt   # PyTorch, CPU build is fine
-python train_gpt.py                   # tiny, 500 steps by default
-python train_gpt.py --size small --steps 2000
-python generate_gpt.py --prompt "The garden " --length 200
-```
+1 site, 2 crops, water binding. Wheat 4 t/ha, 1,200 m³/ha, demand 250 t;
+Potato 20 t/ha, 2,000 m³/ha, demand 400 t; land 100 ha, water 100,000 m³.
+Loss-free cross-solver totals: **delivered 600 t, shortage 50 t,
+production 600 t, land 70 ha, water 100,000 m³**.
+With a 5% distribution loss (SciPy/HiGHS only): delivered 583.33 t,
+shortage 66.67 t, production 614.04 t. Synthetic only — not a real
+region, diet, or advice.
 
-Training now uses a 90/10 train / validation split, cosine
-learning-rate decay, gradient clipping, and saves the best
-validation checkpoint — not just the last step. The checkpoint
-JSON records the corpus file, its SHA-256, seed, config, and
-losses, so a model can be traced back to its exact training text.
-New: `--data-dir data` trains on all ideal-model text files with
-per-file provenance, `--dropout` regularises larger runs, and
-`evaluate_gpt.py` reports loss and perplexity on any held-out file.
-
-The planning layer now also has `check_plan_limits()` — a plan
-is checked against stored boundaries (phosphorus, food need,
-48-hour work threshold) and anything without a stored boundary
-is reported as unknown, not passed — and `backtest_climate()`,
-which fits a linear trend to 1999 and tests it on 2000-2025 as
-a baseline any fancier predictive model must beat.
-
-## General-agent foundations — not AGI
-
-This is the beginning of a more general model, not AGI, which
-has not been achieved. The foundations, all original code
-inspired by published patterns (ReAct, Yao et al. 2022;
-retrieval-augmented generation; Alpaca instruction format;
-RMSNorm, RoPE, SwiGLU modern transformer recipe):
-
-- `mini_ai/agent.py` — a ReAct loop: retrieve first, call a
-  planning tool, observe, self-critique, then answer with
-  `needs_human_decision=True`. It cannot decide, allocate,
-  edit files, or spend anything. Run it with:
-  `python -m mini_ai.agent "What is the phosphorus limit?"`
-- `mini_ai/gpt/model_modern.py` — a modern transformer variant
-  (RMSNorm, RoPE, SwiGLU) to compare with the classic model.
-  Train it with `train_gpt.py --modern --data-dir data`.
-- `data/instructions.txt` — Alpaca-style instruction/response
-  pairs, original text, for instruction-following training.
-- `tests/test_general.py` — the agent and modern model tests.
-  A scaffold that routes to the wrong tool, or claims AGI, fails.
-
-Guardrails are unchanged: planning stays separate from language,
-decisions stay with human assemblies, and self-edit protections
-still apply.
-
-## How this fits PCAC
-
-This repo is the language-assistance layer only, in PCAC terms:
-
-- **People decide.** A human assembly sets goals and hard limits
-  (land, water, energy, carbon) and makes the final decision.
-- **A separate layer checks plans.** Allocation is checked by a
-  planning / simulation calculation, not by a language model.
-  PCAC v2's planning engine is that kind of layer; MiniGPT is not.
-- **The language model drafts and summarises.** It can help write
-  a plan draft, explain a tradeoff, or summarise a meeting. It
-  must not be treated as a plan, an allocation, or a decision.
-- **Narrow AI now.** No AGI is assumed. Small, local, auditable
-  models first, for food, energy, housing, and care pilots.
-
-The v1 classifier now has an `explain_ai` intent that says this
-in plain language, and a `planning` response that asks for needs,
-hard limits, labour and care shared fairly, a first step, and
-who decides.
-
-## Self-editing, with guardrails — not bypassed
-
-`mini_ai/self_edit.py` lets an AI write and replace code in this
-project, safely:
-
-1. `propose_edit()` returns a diff. Nothing is written.
-2. A human reads the diff and approves it.
-3. `apply_edit(approved=True)` writes it, keeps a backup, runs
-   tests, and rolls back automatically if tests fail.
-4. `revert()` restores the backup at any time.
-
-It cannot edit its own file, safety files, secrets, checkpoints,
-or anything outside the project root, and it cannot approve its
-own edit. There is no `approved=True` call left in `self_edit.py`
-itself — a human approves from outside the model.
-
-Protected, uneditable by the model, even with approval:
-- `mini_ai/self_edit.py` — the approval / guardrail code itself
-- `SAFETY.md` — the written safety rules
-- `APPROVAL_POLICY.md` — the tiered approval policy itself
-- `.gitignore` — so changes cannot be hidden from review / pushes
-- `tests/test_self_edit.py`, `tests/test_tiered_approval.py`
-  — so the model cannot weaken its own tests
-- `self_edit_audit.jsonl` — the audit log, append-only through
-  the module, never editable through a proposal
-
-## Tiered self-approval — low and medium only
-
-Full policy: `APPROVAL_POLICY.md`.
-
-- **Low, self-approvable:** at most 20 changed lines, no new
-  imports, no dangerous patterns, not a data file, tests pass.
-- **Medium, self-approvable with second verification:** at most
-  100 changed lines, standard-library imports only, no dangerous
-  patterns, tests pass, and a second pass re-classifies it from
-  scratch. Logged as pending human review.
-- **High, human only:** larger, non-standard-library imports,
-  dangerous patterns, or anything not in low/medium.
-- **Never:** guardrails, safety, approval policy, audit log —
-  human edits those directly, never through self-edit.
-
-The tier is always recomputed from the diff, never claimed by
-the proposer. A model cannot approve a change to its own scope.
-
-Removing those guardrails would break PCAC corrigibility
-— transparency, evaluability, and human oversight — so they are
-not removable from inside a model-generated edit. A human edits
-those files directly, in an editor, if the guardrails themselves
-ever need to change, with a commit message saying so.
-
-Train it on your own text by replacing `data/corpus.txt` — the
-model can only learn patterns that are actually in its training
-text, so a tiny corpus gives toy output, not coherent stories.
-That limitation is the point: it makes the data -> model link
-visible.
-
-## Ideal-model data — science, maths, climate, modelling, engineering
-
-New training data is kept only if it serves the intended goal:
-science, mathematics, climate change, predictive modelling, and
-engineering for planning within planetary limits. See
-`data/IDEAL_MODEL_DATA_NOTES.md`.
-
-- `data/science_math_climate_modelling.txt` (8,663 characters,
-  63 distinct characters, original text) — science method,
-  maths with worked examples, climate, and predictive modelling.
-- `data/engineering.txt` (original text) — energy systems,
-  materials, buildings, transport, water, and systems engineering.
-- `data/weather.txt` (original text) — weather vs climate,
-  variables, forecasting, extremes, and weather impacts on
-  food, energy, buildings, health, and transport.
-- `data/soil.txt` (original text) — soil science and nutrient
-  understanding: texture, pH, NPK, cycles, balance, degradation,
-  and nitrogen/phosphorus boundaries.
-- `data/water_land.txt`, `data/housing.txt`,
-  `data/health_care.txt`, `data/transport_logistics.txt`,
-  `data/labour_care.txt` (original text) — water, land,
-  housing, health, care, transport, logistics, and labour
-  time, with a small selected time-series file
-  `data/time_series.csv`, and a full climate series
-  `data/climate_time_series_full.csv` (GISTEMP 1880-2025,
-  Mauna Loa CO2 1959-2025).
-- `data/local_pilot_template.md` and
-  `data/local_pilot_example.csv` — consent checklist and
-  SYNTHETIC teaching example only. No real community data.
-- `data/corpus.txt` — PCAC planning language, kept.
-- A Shakespeare drama sample was considered, then removed:
-  it does not serve this goal, so it is not training data here.
-
-## Real planning data and allocations — separate layer
-
-`mini_ai/planning.py` is a calculation layer, not MiniGPT:
+## How to run
 
 ```bash
-python -m mini_ai.planning
+cd ~/workspace/start-assembly/core-spine
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python -m unittest discover -s tests -v
+export PATH="$HOME/.cargo/bin:$PATH"
+cargo test --manifest-path rust/Cargo.toml
 ```
 
-It uses `data/real_planning_data.csv`, an aggregated global
-snapshot with sources in `data/real_planning_sources.md`:
-UN population 8.2 billion in 2024; FAO food supply 2,985
-kcal per capita per day in 2022, primary crops 9.9 billion
-tonnes and cereals 3.1 billion tonnes in 2023 (FAOSTAT,
-CC-BY-4.0); renewables just over 30% of world electricity in
-2023 (OWID/Ember) and 14.6% of primary energy (Energy
-Institute); 510 GW renewable capacity added in 2023 (IEA);
-steel 1,892 million tonnes in 2023. It computes a global food
-energy balance, an electricity allocation by CO2 intensity,
-and a steel/cement scale summary — with warnings that a
-global average does not allocate to a real community and
-does not decide anything. People decide; this checks.
-
-## How to grow it — in order
-
-1. **Add intents:** add examples in `mini_ai/data.py`, retrain. This is
-   the fastest way to make it yours.
-2. **Understand the maths:** read the back-prop code in `neural_net.py`
-   line by line, then look at the GitHub references below.
-3. **Make it generate text, not just classify:** done — see MiniGPT
-   above. Next is better data and tokenization, not just more layers.
-4. **Make it useful locally:** plug a small open model in via Ollama or
-   llama.cpp for real language, and keep this classifier as the
-   small, auditable router in front of it. That matches the
-   cooperative / local-first idea: small auditable models first,
-   big models only where needed.
-
-## GitHub references found useful (study, don't just copy)
-
-- **Karpathy — micrograd / nanoGPT lineage:** the canonical
-  from-scratch path. Start with autograd, then a tiny MLP, then a
-  transformer. Notes repo:
-  https://github.com/chizkidd/Karpathy-Neural-Networks-Zero-to-Hero
-- **karpathy-microgpt** — a GPT in 243 lines of pure Python, no
-  PyTorch, no NumPy, hand-rolled autograd, attention and Adam:
-  https://github.com/kibotu/karpathy-microgpt
-  Good next step after this starter if you want text generation
-  from scratch.
-- **LiteGPT** — a 124M small language model, pre-trained and
-  fine-tuned, in the nanoGPT style:
-  https://github.com/kmkrofficial/LiteGPT
-  Good example of what "small but real" looks like after the toy stage.
-- **Local AI assistants via Ollama:** for running a small model
-  fully locally instead of training one:
-  https://github.com/ritiksharma33/local-ai-assistant
-  and for private retrieval (RAG) with local models:
-  https://github.com/jonfairbanks/local-rag
-
-Check each repo's licence before reusing its code. The code in
-this folder is original and intentionally tiny.
+Julia (canonical env, Julia 1.13.3 at `~/.juliaup/bin/julia`):
+```bash
+export PATH="$HOME/.juliaup/bin:$PATH"
+JULIA_NUM_THREADS=1 JULIA_NUM_PRECOMPILE_TASKS=1 julia --project=julia-current -e 'import Pkg; Pkg.instantiate()'
+JULIA_NUM_THREADS=1 julia --project=julia-current --heap-size-hint=3G julia-current/spine.jl   # 16/16 PASS
+```

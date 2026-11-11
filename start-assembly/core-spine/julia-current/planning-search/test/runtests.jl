@@ -6,6 +6,7 @@
 # ModelingToolkit, or AlphaZero.jl is loaded here.
 
 using Test
+using JSON
 
 include(joinpath(@__DIR__, "..", "PlanningSearch.jl"))
 using .PlanningSearch
@@ -297,4 +298,87 @@ end
         FoodPlanSpec(), (60.0, 20.0, 2))
     @test bad.water_m3 == 112_000.0
     @test verify_candidate(bad).status == "FAIL"
+end
+
+@testset "shared test-vectors.json: agreed outcomes (2026-11-11 integration)" begin
+    # Consuming test for interop/test-vectors.json (ISSUE-04). The file
+    # records all four 2026-11-11 decisions; this testset PARSES the
+    # real file with JSON.jl and drives every case through the fixed
+    # evaluator in units.jl, so a disagreement between the file and
+    # the evaluator is a FAILURE. JSON.jl became a direct dependency
+    # of the canonical env on 2026-11-11 (v1.13.4 — already the
+    # resolved transitive version, so the resolved set is unchanged).
+    # The previous hand-transcribed table is gone: every request,
+    # expected status and version case below comes from the parsed
+    # file, so transcription drift is impossible now.
+    vectors_path = joinpath(@__DIR__, "..", "..", "..", "..", "..",
+                            "v032-review", "start_v03_work",
+                            "interop", "test-vectors.json")
+    @test isfile(vectors_path)
+    vectors = JSON.parsefile(vectors_path)
+    # The file's shape is pinned: 8 wire cases, 3 version cases,
+    # 2 aggregation cases.
+    @test length(vectors["cases"]) == 8
+    @test length(vectors["version_cases"]) == 3
+    @test length(vectors["aggregation_cases"]) == 2
+    # No case carries "open_decision" as its conformance value —
+    # checked on the PARSED data, not on raw text. The
+    # conformance_kinds legend no longer lists open_decision at
+    # all (cleaned up 2026-11-11, now that no case uses it).
+    for case in vectors["cases"]
+        @test case["conformance"] != "open_decision"
+    end
+    for case in vectors["version_cases"]
+        @test case["conformance"] != "open_decision"
+    end
+    for case in vectors["aggregation_cases"]
+        @test case["conformance"] != "open_decision"
+    end
+    @test !haskey(vectors["conformance_kinds"], "open_decision")
+
+    # The 8 wire cases, driven from the parsed file: each request
+    # goes through evaluate_constraint, and the status must match
+    # BOTH the Julia expectation and the Python expectation recorded
+    # in the file — the three languages must agree.
+    for case in vectors["cases"]
+        req = case["request"]
+        bound = get(req, "bound", nothing)
+        low = get(req, "bound_low", nothing)
+        high = get(req, "bound_high", nothing)
+        status, reason = evaluate_constraint(
+            constraint_id=req["constraint_id"], operator=req["operator"],
+            value=Float64(req["value"]),
+            bound=bound === nothing ? nothing : Float64(bound),
+            value_unit=req["value_unit"], bound_unit=req["bound_unit"],
+            tolerance=Float64(get(req, "tolerance", 0)),
+            bound_low=low === nothing ? nothing : Float64(low),
+            bound_high=high === nothing ? nothing : Float64(high))
+        @test status == case["julia_expected"]["status"]
+        @test status == case["python_expected"]["status"]
+        @test case["julia_expected"]["status"] ==
+              case["python_expected"]["status"]
+    end
+    # The discriminating m3/L pair from the file's decision note:
+    # 0.02 m3 = 20 L > 10 L FAILs (a no-conversion evaluator passes it).
+    @test evaluate_constraint(constraint_id="vol", operator="<=",
+                              value=0.02, bound=10.0,
+                              value_unit="m3", bound_unit="L")[1] == "FAIL"
+    # The 3 version cases, through check_schema_version. The file's
+    # own expected outcome and the Julia expectation must agree,
+    # and the evaluator must match both.
+    for case in vectors["version_cases"]
+        accepted, reason = check_schema_version(case["request_schema_version"])
+        @test accepted == case["julia_expected"]["accepted"]
+        @test accepted == case["expected"]["accepted"]
+        if haskey(case["julia_expected"], "error")
+            @test reason == case["julia_expected"]["error"]
+            @test reason == case["expected"]["error"]
+        end
+    end
+    # The 2 aggregation cases, through overall_status.
+    for case in vectors["aggregation_cases"]
+        checks = String.(case["input"]["checks"])
+        @test overall_status(checks) == case["julia_expected"]["status"]
+        @test overall_status(checks) == case["python_expected"]["status"]
+    end
 end

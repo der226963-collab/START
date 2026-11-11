@@ -9,10 +9,10 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 ## Headline
 
 - **Components: 21 total — 20 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 256/256 passed, Rust 40/40 passed, Julia 650/650 checks passed — 946 passed, 0 failed**
+- **Tests: Python 256/256 passed, Rust 40/40 passed, Julia 774/774 checks passed — 1,070 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
-- Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
+- Julia spine: `julia-current/spine.jl` **19/19 checks PASS** (food 2800>=2500 PASS,
   LP delivered 600 t / shortage 50 t, ODE steady state 99.9952 t vs 100 t)
 
 ## Per-component status
@@ -30,7 +30,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | DifferentialEquations.jl | SciML/DifferentialEquations.jl | 8.1.1 | assembled | smoke PASS (S(10)=36.78795 vs 36.78794) + spine_ode PASS | Pinned 7.17.0 fails to precompile on Julia 1.13 and 1.11 (SteadyStateDiffEq/DiffEqBase); current 8.1.1 passes. Licence NOASSERTION — confirm before adopting |
 | NetworkDynamics.jl | JuliaDynamics/NetworkDynamics.jl | 1.3.0 | assembled | **31/31 Julia tests PASS** (see "NetworkDynamics.jl (Module 10)" below) | First networked domain model built first (synthetic 3-node resource network), then the dependency added — per the sweep's condition. Sweep said 1.4.0; the General registry latest is 1.3.0 (verified, see section). Dependency only, no code copied. Graphs.jl 1.15.0 added as a direct dependency for the network graph (already in the Manifest as transitive, resolved set otherwise unchanged). |
 | AlphaZero.jl | jonathan-laurent/AlphaZero.jl | 0.5.6 | assembled | smoke 9/9 checks PASS | Git clone (not General registry); own env in `alphazero/` (Flux 0.16.12, CUDA 5.11.1, Plots 1.41.7, cuDNN 1.4.7). ConnectFour init + one move, CPU only, no training. Log `alphazero/logs/smoke-alphazero.log` |
-| PlanningSearch (MCTS + game interface, copied from AlphaZero.jl) | jonathan-laurent/AlphaZero.jl (source) | 0.5.6, commit 177a6eb | assembled | **84/84 + 53/53 + 86/86 + 25/25 + 208/208 + 134/134 Julia tests PASS** | Standalone in `julia-current/planning-search/` (no AlphaZero.jl import; Distributions 0.25.134 only). MCTS + game interface copied with full MIT notice, re-expressed in planning terms (states = partial plans, reward = plan quality, not win probability). Original START code: `planning_domain.jl` (1-site 2-crop synthetic), `verify.jl`, `verify_lp.jl` (JuMP+HiGHS LP cross-check, separate file so `verify.jl` stays Distributions-only), `training_loop.jl` (original planning training loop — verified samples only, linear value model, held-out replacement rule; no network library), `dynamics_search.jl` (original learned-dynamics search, INSPIRATION-REBUILD of MuZero.jl's design — no MuZero.jl code copied, no Flux/CUDA; see "Learned-dynamics search" below), and `spineopt_patterns.jl` (original SpineOpt planning patterns, INSPIRATION-REBUILD — no SpineOpt code copied, no SpineOpt dependency; see "SpineOpt planning patterns (Module 18)" below). Search finds the known optimum — delivered 600 t / shortage 50 t — candidate only, never verified by the search; the LP cross-check catches candidates that beat the optimum. See "Planning-search module" below |
+| PlanningSearch (MCTS + game interface, copied from AlphaZero.jl) | jonathan-laurent/AlphaZero.jl (source) | 0.5.6, commit 177a6eb | assembled | **179/179 + 53/53 + 86/86 + 25/25 + 208/208 + 134/134 Julia tests PASS** | Standalone in `julia-current/planning-search/` (no AlphaZero.jl import; Distributions 0.25.134 only). MCTS + game interface copied with full MIT notice, re-expressed in planning terms (states = partial plans, reward = plan quality, not win probability). Original START code: `planning_domain.jl` (1-site 2-crop synthetic), `verify.jl`, `verify_lp.jl` (JuMP+HiGHS LP cross-check, separate file so `verify.jl` stays Distributions-only), `training_loop.jl` (original planning training loop — verified samples only, linear value model, held-out replacement rule; no network library), `dynamics_search.jl` (original learned-dynamics search, INSPIRATION-REBUILD of MuZero.jl's design — no MuZero.jl code copied, no Flux/CUDA; see "Learned-dynamics search" below), and `spineopt_patterns.jl` (original SpineOpt planning patterns, INSPIRATION-REBUILD — no SpineOpt code copied, no SpineOpt dependency; see "SpineOpt planning patterns (Module 18)" below). Search finds the known optimum — delivered 600 t / shortage 50 t — candidate only, never verified by the search; the LP cross-check catches candidates that beat the optimum. See "Planning-search module" below |
 | SpineOpt planning patterns (rebuild only, Module 18) | spine-tools/SpineOpt.jl (inspiration only, NOT adopted) | n/a — nothing adopted | assembled (patterns only) | **134/134 new Julia tests PASS** (Julia suite now 650/650) | Original Julia in `julia-current/planning-search/spineopt_patterns.jl` (JuMP+HiGHS, standalone script like `verify_lp.jl`): rolling-horizon / representative-period time slices, stochastic normal-vs-low-yield scenarios, Benders master/subproblem split with objective-upperbound cuts (converges in 2 iterations, agrees with the direct LP optimum 600/50 t), nodal balance generalised to any flow-conservation constraint, MGA surfacing 2 distinct near-optimal alternatives for human choice (never auto-selected). No SpineOpt code copied, no SpineOpt dependency, no SpineInterface, no Spine DB; SpineOpt itself is DROP (energy-only, GPL/LGPL contradiction, monolithic build-solve-write). Every result is a CANDIDATE only until the separate verify step + human approval. See "SpineOpt planning patterns (Module 18)" below |
 | Borrowed helpers (Cognee chunk_by_word + chunk_id, Crawl4AI normalize_url) | topoteretes/cognee, unclecode/crawl4ai | Apache-2.0 | assembled | **24/24 Python tests PASS** | `helpers/borrowed_helpers.py`, stdlib-only, Apache-2.0 notices kept, provenance in `helpers/PROVENANCE.md`. Untrusted-input utilities only — not wired into any verify, governance, or decision path. Crawl4AI's own test file does not match the cloned function in 4 of 20 cases (recorded in PROVENANCE.md); tests assert actual behaviour. See "Borrowed helpers" below |
 | LangGraph | langchain-ai/langgraph | 1.2.20 | assembled | 1/1 (+ pipeline tests) | Real StateGraph plan → verify → report; report refuses without verification |
@@ -3609,3 +3609,69 @@ no network, no downloads, no real data).
   (`a2ui-core`, `a2ui-agent-sdk`) — a whole-file string
   check would fail on its own documentation. The guard
   still catches any real import or dependency in code.
+
+## JSON.jl as a direct dependency + file-parsing test-vectors consuming test (2026-11-11)
+
+Follow-up to the four test-vector decisions (all four implemented
+2026-11-11, three-way agreed, test-vectors.json with no `open_decision`
+conformance left; Julia suite then 750/750). The Julia consuming test
+added by that job drove a hand-transcribed copy of the case table,
+because JSON.jl was only a transitive dependency in the canonical
+env and `using JSON` failed. Eric approved adding it ("Yes, add
+JSON.jl so Julia parses the file").
+
+- **What was added:** JSON.jl **1.13.4** (JuliaIO/JSON.jl, MIT) as a
+  direct dependency of the canonical env `julia-current/` only
+  (`Project.toml` + compat bound 1.13.4, the resolved version).
+  It was already in the Manifest as a transitive dependency at
+  1.13.4, so Pkg reported "Manifest No packages added to or
+  removed" — the resolved set is unchanged, and no other package
+  version moved. No other new dependency. The pinned envs `julia/`
+  and `julia-1.11/` are untouched (evidence only).
+- **Comment loss, caught and repaired:** `Pkg.add` rewrites
+  `Project.toml` and drops all comments — the header (UUID
+  correction history, licence notes, package list) and the trailing
+  NOTES were stripped. They were restored verbatim from the
+  pre-add content before pushing, with a JSON.jl entry added to
+  the package list and to the trailing notes, plus a WARNING
+  comment at the top so the next `Pkg.add` does not silently lose
+  them again. The pushed `Project.toml` therefore still carries
+  the full provenance.
+- **The consuming test now parses the real file:**
+  `planning-search/test/runtests.jl`, testset "shared
+  test-vectors.json: agreed outcomes (2026-11-11 integration)",
+  uses `JSON.parsefile` on the review-copy
+  `interop/test-vectors.json` and drives all 8 wire cases, all 3
+  version cases and both aggregation cases from the parsed data
+  — requests, expected statuses, version acceptances and error
+  strings all come from the file, so transcription drift is
+  impossible. The testset also pins the file's shape (8/3/2),
+  asserts on the PARSED conformance values that no case carries
+  `"open_decision"`, asserts the `conformance_kinds` legend no
+  longer lists it, and asserts the parsed Julia expectation
+  equals the parsed Python expectation on every wire and
+  aggregation case (the three languages must agree). The
+  discriminating 0.02 m³ FAIL case is kept. The testset is now
+  **55/55** (was 31/31 hand-transcribed); the full
+  `runtests.jl` is **179/179**.
+- **Legend cleanup (local only, review copy, never pushed):** the
+  `conformance_kinds` legend in `test-vectors.json` no longer
+  lists `open_decision` — it was stale now that no case uses it.
+  Applied identically to the shared-test-vectors draft and the
+  `interop/` copy; the two files remain byte-identical, still
+  valid JSON, and now contain zero occurrences of
+  `open_decision` anywhere.
+- **Full Julia suite re-run after this work: 774/774, 0 failed**
+  (was 750/750: +24 net — the 31-test hand-transcribed testset
+  replaced by the 55-test parsing testset). Breakdown:
+  runtests 179, verify-lp 53, training-loop 86,
+  training-loop-lp 25, dynamics 208, spineopt 134, network 31,
+  spine 19, spine-lp 38, spine-ode 1. Logs:
+  `julia-current/logs/suite-json-*.log`. The 4 smoke scripts and
+  the AlphaZero smoke are reported separately and are not counted
+  in the suite total. Spine totals now: Python 256/256, Rust
+  40/40, Julia 774/774 — **1,070 passed, 0 failed**.
+- **Governance:** nothing about the evaluator changed — the same
+  `units.jl` registry, the same UNKNOWN-never-PASS rule, the same
+  verify-then-approve flow. Only the test's input source changed
+  (parsed file instead of a transcribed table).

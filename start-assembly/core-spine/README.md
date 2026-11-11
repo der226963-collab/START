@@ -38,21 +38,23 @@ never PASS; UNKNOWN / INCOMPLETE are never converted into PASS.
 | Turing.jl | 12 Math & Computing | TuringLang/Turing.jl | MIT | Bayesian inference | assembled 0.49.0 (Julia 1.13.3) |
 | DifferentialEquations.jl | 12 Math & Computing | SciML/DifferentialEquations.jl | NOASSERTION — confirm before adopting | Continuous physical systems | assembled 8.1.1 (Julia 1.13.3) |
 | AlphaZero.jl | 4 Reasoning & Planning | jonathan-laurent/AlphaZero.jl | MIT | MCTS + self-play search (board-game core) | assembled 0.5.6 (git clone, CPU only, no training) |
-| PlanningSearch (MCTS + game interface copied from AlphaZero.jl) | 4 Reasoning & Planning | jonathan-laurent/AlphaZero.jl (source, MIT) | MIT (copied files) | Standalone planning search: MCTS over partial plans, rollout oracle + learned linear oracle + learned-dynamics oracle (original MuZero.jl-design rebuild, no MuZero.jl code copied, no Flux/CUDA), candidate only — never verified by the search; original training loop (verified samples only, held-out replacement rule); original SpineOpt planning patterns (time slices, stochastic scenarios, Benders split, nodal balance, MGA for human choice — no SpineOpt code copied, no SpineOpt dependency) | assembled 2026-11-11, 84/84 + 53/53 + 86/86 + 25/25 + 208/208 + 134/134 Julia tests PASS, finds the 600/50 t optimum |
-| SpineOpt planning patterns (rebuild only) | 18 Systems Planning | spine-tools/SpineOpt.jl (inspiration only, NOT adopted) | n/a — nothing adopted | SpineOpt planning patterns rebuilt as original Julia: rolling-horizon / representative-period time slices, stochastic normal-vs-low-yield scenarios, Benders master/subproblem split with objective-upperbound cuts (2 iterations, agrees with the direct LP optimum 600/50 t), nodal balance generalised to any flow-conservation constraint, MGA surfacing distinct near-optimal alternatives for human choice, never auto-selecting | assembled 2026-11-11, 134/134 tests PASS; original Julia in `julia-current/planning-search/spineopt_patterns.jl`, JuMP+HiGHS; no SpineOpt code copied, no SpineOpt dependency, no Spine DB; SpineOpt itself is DROP (energy-only, GPL/LGPL contradiction, monolithic build-solve-write); every result CANDIDATE-only until the separate verify step + human approval (Julia 650/650) |
+| PlanningSearch (MCTS + game interface copied from AlphaZero.jl) | 4 Reasoning & Planning | jonathan-laurent/AlphaZero.jl (source, MIT) | MIT (copied files) | Standalone planning search: MCTS over partial plans, rollout oracle + learned linear oracle + learned-dynamics oracle (original MuZero.jl-design rebuild, no MuZero.jl code copied, no Flux/CUDA), candidate only — never verified by the search; original training loop (verified samples only, held-out replacement rule); original SpineOpt planning patterns (time slices, stochastic scenarios, Benders split, nodal balance, MGA for human choice — no SpineOpt code copied, no SpineOpt dependency) | assembled 2026-11-11, 179/179 + 53/53 + 86/86 + 25/25 + 208/208 + 134/134 Julia tests PASS, finds the 600/50 t optimum |
+| SpineOpt planning patterns (rebuild only) | 18 Systems Planning | spine-tools/SpineOpt.jl (inspiration only, NOT adopted) | n/a — nothing adopted | SpineOpt planning patterns rebuilt as original Julia: rolling-horizon / representative-period time slices, stochastic normal-vs-low-yield scenarios, Benders master/subproblem split with objective-upperbound cuts (2 iterations, agrees with the direct LP optimum 600/50 t), nodal balance generalised to any flow-conservation constraint, MGA surfacing distinct near-optimal alternatives for human choice, never auto-selecting | assembled 2026-11-11, 134/134 tests PASS; original Julia in `julia-current/planning-search/spineopt_patterns.jl`, JuMP+HiGHS; no SpineOpt code copied, no SpineOpt dependency, no Spine DB; SpineOpt itself is DROP (energy-only, GPL/LGPL contradiction, monolithic build-solve-write); every result CANDIDATE-only until the separate verify step + human approval (Julia 774/774) |
 
 ## Canonical Julia environment (adopted 2026-11-11 by Eric)
 
 `julia-current/` is the canonical Julia environment for this spine:
 Julia 1.13.3, Agents 7.1.0, ModelingToolkit 11.46.1, Symbolics 7.48.0,
 Turing 0.49.0, DifferentialEquations 8.1.1, JuMP 1.32.1, HiGHS 1.26.1,
-NetworkDynamics 1.3.0, Graphs 1.15.0,
-AlphaZero 0.5.6 (separate env in `alphazero/`). Spine 16/16 PASS,
-Julia checks 650/650 passed, 0 failed (29 spine/smokes/AlphaZero +
-84 planning-search + 53 LP cross-check + 86 training loop +
+NetworkDynamics 1.3.0, Graphs 1.15.0, JSON 1.13.4,
+AlphaZero 0.5.6 (separate env in `alphazero/`). Spine 19/19 PASS,
+Julia checks 774/774 passed, 0 failed (179 planning-search runtests +
+53 LP cross-check + 86 training loop +
 25 training loop LP-split + 208 learned-dynamics search +
 134 SpineOpt planning patterns +
-31 NetworkDynamics networked model). The original pinned envs
+31 NetworkDynamics networked model + 19 spine + 38 spine-lp +
+1 spine-ode; the 4 smoke scripts and the AlphaZero smoke are
+reported separately and are not counted in the suite total). The original pinned envs
 `julia/` and `julia-1.11/` are evidence only — they fail to precompile
 5 dependencies and are NOT canonical; do not use them for new work.
 | LangGraph | 5 Orchestration | langchain-ai/langgraph | MIT | Stateful plan → verify → report graph | assembled |

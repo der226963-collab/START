@@ -57,6 +57,7 @@ Julia checks 268/268 passed, 0 failed (29 spine/smokes/AlphaZero +
 | Apache Arrow | 21 Interoperability | apache/arrow | Apache-2.0 | Zero-copy in-memory table sharing | assembled (pyarrow) |
 | DeepEval | 22 Evaluation & Learning | confident-ai/deepeval | Apache-2.0 | Evaluation framework | local non-LLM metrics only; LLM-as-judge deferred |
 | ODYM | 17 Resource Accounting | IndEcol/ODYM | MIT | Stock-flow resource accounting | assembled 0.1.0, git pin 9792c23 (never published to PyPI); dependency only, no code copied; adapter `adapters/resource_accounting.py`, 16/16 tests PASS; outputs are model results only (verified=false, needs_human_decision=true) |
+| Pymrio | 17 Resource Accounting | IndEcol/pymrio | LGPL-3.0 | Footprint / consumption-based accounting | assembled 0.7.0 (PyPI); dependency only, never copied, library unmodified and replaceable; adapter `adapters/footprint_accounting.py`, 15/15 tests PASS; outputs are model results only (verified=false, needs_human_decision=true); no downloads — synthetic in-memory MRIO only |
 
 ## Layout
 
@@ -66,7 +67,10 @@ Julia checks 268/268 passed, 0 failed (29 spine/smokes/AlphaZero +
   `orchestration.py` (LangGraph plan → verify → report),
   `evaluation.py` (DeepEval non-LLM metrics only),
   `resource_accounting.py` (ODYM stock-flow accounting, Module 17 —
-  dependency only, synthetic case, outputs are model results only).
+  dependency only, synthetic case, outputs are model results only),
+  `footprint_accounting.py` (pymrio footprint accounting, Module 17 —
+  dependency only, synthetic in-memory MRIO, no downloads, outputs
+  are model results only).
 - `helpers/` — borrowed helpers, the ONLY vendored candidate code in
   this assembly: `borrowed_helpers.py` (Cognee `chunk_by_word` +
   `chunk_id`, Crawl4AI `normalize_url`, Apache-2.0 notices kept,

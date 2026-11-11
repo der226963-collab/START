@@ -8,4 +8,5 @@ langgraph==1.2.20
 numpy==2.5.4
 odym @ git+https://github.com/IndEcol/ODYM@9792c23b1faced9515b425033694328aa8301c0f
 pyarrow==26.0.1
+pymrio==0.7.0
 scipy==1.18.1

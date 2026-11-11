@@ -8,8 +8,8 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 
 ## Headline
 
-- **Components: 18 total — 17 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 75/75 passed, Rust 9/9 passed, Julia 268/268 checks passed — 352 passed, 0 failed**
+- **Components: 19 total — 18 assembled, 1 stub-only, 0 blocked, 0 not run**
+- **Tests: Python 90/90 passed, Rust 9/9 passed, Julia 268/268 checks passed — 367 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
 - Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
@@ -38,6 +38,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | Apache Arrow | apache/arrow | pyarrow 26.0.1 | assembled | 1/1 | Arrow round-trip lossless on constraint-result table |
 | DeepEval | confident-ai/deepeval | 4.3.3 | assembled | 1/1 (+ local metric tests) | ExactMatchMetric only, no API key: scores [1,1,1,0], accuracy 0.75. LLM-as-a-judge metrics deferred, not run |
 | ODYM | IndEcol/ODYM | 0.1.0, git pin 9792c23 | assembled | **16/16 Python tests PASS** | Stock-flow resource accounting (Module 17). Dependency only, no code copied; never published to PyPI, installed from git pinned to the sweep's audited commit (see item 9). Thin original adapter `adapters/resource_accounting.py` over a synthetic 1-site 2-crop material flow (3 years, balance PASS, residual 0.0 t). Outputs are model results only — verified=false, needs_human_decision=true. See "ODYM (Module 17)" below |
+| Pymrio | IndEcol/pymrio | 0.7.0 (PyPI) | assembled | **15/15 Python tests PASS** | Footprint / consumption-based accounting (Module 17). Dependency only, never copied, library unmodified and replaceable (LGPL-3.0; README badge wrongly says GPL v3 — LICENSE file authoritative). Thin original adapter `adapters/footprint_accounting.py` over a synthetic 2-region x 2-sector in-memory MRIO (footprint identity PASS, residual 2.2e-16 t). No downloads — no pymrio download/load/parse function is ever called. Outputs are model results only — verified=false, needs_human_decision=true. See "Pymrio (Module 17)" below |
 
 ## Exact versions installed (venv `.venv`, Python 3.12.3)
 
@@ -368,15 +369,71 @@ with `git ls-remote` before installing; HEAD is not tracked.
 - Rust and Julia suites were not re-run for this change: nothing
   they touch was modified. Python suite after this work: 75/75.
 
+## Pymrio (Module 17) (added 2026-11-11)
+
+pymrio (IndEcol/pymrio, LGPL-3.0) as a dependency only — **no
+pymrio code was copied into this assembly, and the library is
+unmodified and replaceable**. Installed from PyPI as pymrio==0.7.0
+(verified on PyPI first — HTTP 200, version 0.7.0 — after the ODYM
+surprise; the sweep's install claim is never trusted without
+checking). Sweep clone HEAD c22b419 (2026-10-22), 11,254 lines,
+227 stars.
+
+- Licence: the LICENSE file contains the full GNU Lesser General
+  Public License v3 text, Copyright (c) 2014 Konstantin Stadler,
+  and the PyPI classifier agrees ("GNU Lesser General Public
+  License v3 (LGPLv3)") — verified in the installed wheel's
+  dist-info. **Inconsistency recorded, LICENSE authoritative:**
+  the README.rst badge says "License-GPL v3" and links to
+  gpl-3.0. The LICENSE file is authoritative; the badge is wrong.
+- Thin original adapter `adapters/footprint_accounting.py`: builds
+  a small synthetic IOSystem entirely in memory — 2 regions
+  (R1, R2) x 2 sectors (Agriculture, Manufacturing), one stressor
+  (CO2, t), one Households final-demand column per region — and
+  runs pymrio's calc_all(). Total output x = [53, 57, 59, 67] t.
+  Synthetic numbers only, not a real region or a real database.
+- No downloads, ever: the adapter never calls any pymrio
+  download, load, or parse function (no load_exiobase, load_wiod,
+  load_eora26, download_*, parse_*, load_all, load_test,
+  get_repo_content). Any real EXIOBASE / WIOD / EORA database
+  would go through START's data-fetch approval and provenance
+  path, never as an unreviewed side effect. Enforced by tests:
+  an AST check that no such call name appears in the adapter,
+  and a build + check that still passes with the network socket
+  blocked and every pymrio download function monkeypatched to
+  raise.
+- Footprint-consistency check under the spine's status rules:
+  per-region identity D_pba[r] = D_cba[r] + D_exp[r] - D_imp[r]
+  and global total D_pba = total D_cba (trade cancels). Synthetic
+  case PASS with residual 2.2e-16 t (tolerance 1e-9 t):
+  D_pba = [3.0, 0.7] t, D_cba = [2.44025416, 1.25974584] t,
+  totals 3.7 t each. A deliberately tampered account (D_cba cell
+  +1.0 t after calculation) FAILs; missing, empty, or non-finite
+  inputs are UNKNOWN, never PASS.
+- Governance: pymrio computes accounts; its outputs are model
+  results, NOT verified plans. `accounts_to_dict()` returns plain
+  JSON-able data with verified=false and
+  needs_human_decision=true, and the accounts must still go
+  through START's separate verify step.
+- Tests `tests/test_footprint_accounting.py`: **15/15 PASS** —
+  dependency/version/pin, LGPL classifier in installed metadata,
+  system build, identity PASS, production = consumption total,
+  per-region accounts, tampered FAIL, missing/empty/non-finite
+  UNKNOWN, tolerance boundary, governance flags, JSON-ability,
+  AST no-download check, network-blocked build.
+- Rust and Julia suites were not re-run for this change: nothing
+  they touch was modified. Python suite after this work: 90/90.
+
 ## Test results (verified by running them here)
 
 - Python: `.venv/bin/python -m unittest discover -s tests -v`
-  → **Ran 75 tests, OK** (7.1 s). Breakdown: statuses 10, SciPy
+  → **Ran 90 tests, OK** (6.8 s). Breakdown: statuses 10, SciPy
   optimisation 5, CVXPY 1, CPMpy 1, Arrow 1, gRPC 2, governance 7,
   orchestration 5, evaluation 3, borrowed helpers 24 (chunk_by_word 8,
   chunk_id 7, normalize_url 9 — including 16 upstream Crawl4AI cases
-  as subTests), resource accounting 16. Before the helpers were added
-  the suite was 35 tests; before ODYM it was 59 tests.
+  as subTests), resource accounting 16, footprint accounting 15.
+  Before the helpers were added the suite was 35 tests; before ODYM
+  it was 59 tests; before Pymrio it was 75 tests.
 - Rust: `cargo test` in `rust/` → **9 passed, 0 failed**
   (4 Cedar, 2 egg, 3 Tonic-stub). Binary `target/debug/start-spine`
   also prints PASS on all 5 checks, exit 0.
@@ -735,3 +792,11 @@ Still unverified / not run:
     Pymrio as a pip dependency only (LGPL-3.0, never copy), per the
     sweep's ADJUST list; and DeepEval deterministic metrics
     (PatternMatch, JsonCorrectness — no API key).
+11. **Done 2026-11-11:** Pymrio (item 10, above) — 0.7.0 from PyPI
+    (verified on PyPI first), thin original adapter
+    `adapters/footprint_accounting.py`, 15/15 tests PASS, LICENCES.md
+    and README.md updated. Full suite after this work: Python 90/90,
+    Rust 9/9, Julia 268/268 — 367 passed, 0 failed. Next in the
+    sweep's order, when directed: DeepEval deterministic metrics
+    (PatternMatch, JsonCorrectness — no API key), then the real
+    Tonic server (tonic 0.12 → 0.14.x).

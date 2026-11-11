@@ -27,13 +27,12 @@ this file is a triage record, not legal advice.
 | Apache Arrow | apache/arrow | Apache-2.0 | Used here via pyarrow. |
 | DeepEval | confident-ai/deepeval | Apache-2.0 | |
 | ODYM | IndEcol/ODYM | MIT (LICENSE.txt, Copyright (c) 2025 International Society for Industrial Ecology and Contributors) | **Added 2026-11-11 as a dependency only — no ODYM code copied.** Installed from git, pinned to commit 9792c23 (2025-09-26), version 0.1.0, because ODYM was never published to PyPI (`pip install ODYM` fails, pypi.org 404; see ASSEMBLY_REPORT.md item 9). Cautions: xlwt/xlrd are legacy Excel deps — the adapter never calls any ODYM Excel read/write (in-memory only); MFAsystem uses mutable default arguments (ProcessList=[], FlowDict={}) — the adapter always passes explicit, freshly built collections. Governance: ODYM computes accounts; outputs are model results, not verified plans — verified=false, needs_human_decision=true, through the separate verify step. |
+| Pymrio | IndEcol/pymrio | LGPL-3.0 (LICENSE file contains the full GNU Lesser General Public License v3 text, Copyright (c) 2014 Konstantin Stadler; PyPI classifier agrees: "GNU Lesser General Public License v3 (LGPLv3)") | **Added 2026-11-11 as a dependency only — no pymrio code copied, library unmodified and replaceable.** pymrio==0.7.0 from PyPI (verified on PyPI first — HTTP 200, version 0.7.0 — after the ODYM surprise). **Licence inconsistency recorded, LICENSE authoritative:** the README.rst badge says "License-GPL v3" and links to gpl-3.0, while the LICENSE file and the classifier say LGPL-3.0. ADJUST conditions honoured: (1) dependency only, never copy into MIT-licensed START code; (2) no automatic downloads of EXIOBASE/WIOD/EORA — the adapter never calls any pymrio download/load/parse function, builds a synthetic in-memory MRIO only, and the tests prove it (AST source check + network-blocked build); any real database would go through START's data-fetch approval and provenance path; (3) computed accounts are model results, not verified plans — verified=false, needs_human_decision=true, through the separate verify step; (4) this inconsistency is recorded here. |
 
 ## Not in this spine (and why their licence cautions do not apply here)
 
 - **MAX Engine / Modular** — not used. Triage: MAX portions are under
   the MAX License (source-available, not OSI open source).
-- **Pymrio** — not in the spine. Triage: licence wording inconsistent
-  (LGPL-3.0 vs GPL v3 vs NOASSERTION).
 - **AI-Scientist** — not used. Triage: custom restrictive source licence.
 - **Delibera, Agent-O1** — not used. Triage: no licence stated at all.
 

@@ -9,7 +9,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 ## Headline
 
 - **Components: 20 total — 19 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 119/119 passed, Rust 20/20 passed, Julia 513/513 checks passed — 652 passed, 0 failed**
+- **Tests: Python 119/119 passed, Rust 30/30 passed, Julia 513/513 checks passed — 662 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
 - Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
@@ -42,6 +42,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | Pymrio | IndEcol/pymrio | 0.7.0 (PyPI) | assembled | **15/15 Python tests PASS** | Footprint / consumption-based accounting (Module 17). Dependency only, never copied, library unmodified and replaceable (LGPL-3.0; README badge wrongly says GPL v3 — LICENSE file authoritative). Thin original adapter `adapters/footprint_accounting.py` over a synthetic 2-region x 2-sector in-memory MRIO (footprint identity PASS, residual 2.2e-16 t). No downloads — no pymrio download/load/parse function is ever called. Outputs are model results only — verified=false, needs_human_decision=true. See "Pymrio (Module 17)" below |
 | Graphiti (temporal schema only) | getzep/graphiti | Apache-2.0 (no version installed — nothing adopted) | assembled | **17/17 Python tests PASS** | Temporal knowledge fields only (Module 6): `adapters/temporal.py`, original Python, stdlib only — episodes with valid_from/valid_to, superseded_by, episode links. No Graphiti code copied; the system, LLM extraction, graph DB and telemetry were NOT adopted. See "Temporal knowledge (Graphiti rebuild, Module 6)" below |
 | ash-flare | ashforge-rs/ash-flare | 3.0.0 (crates.io) | assembled | **6/6 new Rust tests PASS** (Rust suite now 20/20) | Local supervision of execution workers only (Module 24). Dependency only, no code copied, default features only (`python` OFF), distributed mode OFF by non-use. Supervisor core audited first. See "ash-flare (Module 24)" below |
+| BehaviorTree.rs (node types + typed blackboard only) | ncrothers/behaviortree-rs | MIT (no version installed — nothing adopted) | assembled | **10/10 new Rust tests PASS** (Rust suite now 30/30) | Original Rust orchestration (Module 4): Sequence / Fallback / Inverter + Succeeder decorators / Action / Condition + typed blackboard, trees in JSON. No BehaviorTree.rs code copied; crate NOT a dependency. Verify is a hard gate — report refuses without a passed verify in the same run. See "Behavior-tree orchestration (BehaviorTree.rs rebuild, Module 4)" below |
 
 ## Exact versions installed (venv `.venv`, Python 3.12.3)
 
@@ -1859,3 +1860,136 @@ rebuild adds both instead of inheriting their absence.
   was set by the real verify step + human approval or written
   in by hand. The guarantee is only that this layer never sets
   it and never presents a superseded record as verified-current.
+
+## Behavior-tree orchestration (BehaviorTree.rs rebuild, Module 4)
+
+**Inspiration source and licence.** BehaviorTree.rs
+(ncrothers/behaviortree-rs, MIT — verified in the sweep from the
+repo's own LICENSE file, copyright (c) 2023 Nicholas Crothers,
+Cargo.toml also declares `license = "MIT"`; 6,450 lines of Rust,
+last commit 2024-02-05, v0.2.1, 14 stars, single author, inactive
+2+ years). The sweep's verdict was INSPIRATION-REBUILD: the node
+taxonomy is standard (it mirrors BehaviorTree.CPP) and small
+enough to rebuild originally, but the crate itself is a stale,
+unproven WIP and is NOT a dependency. **No BehaviorTree.rs code
+was copied** — `rust/src/behavior_tree.rs` was written from
+scratch from the node-type design only. The crate's XML tree
+format and its `#[bt_node]` derive macro were not rebuilt:
+trees here are defined in JSON (never XML from an untrusted
+source, never pickle), and nodes are a plain Rust enum, not
+macro-generated types.
+
+**What was rebuilt.** `rust/src/behavior_tree.rs` (wired into
+`rust/src/lib.rs` as `pub mod behavior_tree`), plus
+`rust/tests/behavior_tree_tests.rs`:
+- Node types: `Sequence`, `Fallback`, `Inverter` and `Succeeder`
+  decorators, `Action`, `Condition`. Statuses `Success` /
+  `Failure` / `Running`.
+- Typed blackboard: one key holds one typed value (`Bool` /
+  `Int` / `Float` / `Text`); reading with the wrong type is a
+  `BlackboardError::WrongType` and a missing key is
+  `BlackboardError::Missing` — never a silent coercion, never a
+  default.
+- JSON tree format (original): `{"type": "sequence" |
+  "fallback", "children": [...]}`, `{"type": "inverter" |
+  "succeeder", "child": {...}}`, `{"type": "action" |
+  "condition", "step": "<name>"}`. Parsed with `serde_json`,
+  which was ALREADY a direct dependency in `rust/Cargo.toml`
+  (`serde_json = "1"`, via the ash-flare item) — no new
+  dependency was added and `Cargo.toml` is unchanged.
+- Action steps are stubs that record what they did on the
+  blackboard: `plan` produces the synthetic candidate
+  (delivered 600 t / shortage 50 t / demand 650 t, the same
+  totals as the Python pipeline); `verify` re-derives the check
+  through the existing `tonic_stub::LocalEvaluator` (delivered +
+  shortage must equal demand within 0.01 t, checked in both
+  directions, and delivered non-negative) and records
+  `verify_ran` / `verify_passed`; `report` emits the report.
+  `fail` / `succeed` are test steps; `defer_once` returns
+  `Running` on its first tick and `Success` on the next.
+  Conditions: `verify_passed`, `plan_produced` (missing or
+  wrong-typed key = failed condition, never a default).
+
+**What was checked — exact test cases and results.** 10 new
+tests in `rust/tests/behavior_tree_tests.rs`, all passing; full
+Rust suite after this work **30/30, 0 failed** (was 20/20:
+14 spine + 6 supervision + 10 behaviour-tree). Python and
+Julia suites NOT re-run — nothing they touch changed. Spine
+totals now **662 passed, 0 failed** (Python 119/119, Rust
+30/30, Julia 513/513).
+- End-to-end (1): the JSON Sequence plan → verify → report
+  runs all three steps in order (trace `["plan", "verify",
+  "report"]`), report succeeds only after verify passed, and
+  the blackboard records each step (`plan_produced`,
+  `verify_ran`, `verify_passed`, `report_emitted`,
+  `report_status = "PASS"`, `needs_human_decision = true`);
+  there is no `verified` key anywhere in the module.
+- Fallback (2): Fallback `[fail, succeed]` returns Success and
+  runs the second child (trace `["fail", "succeed"]`); Fallback
+  `[fail, fail]` returns Failure.
+- Verify gate (2): a JSON tree with the verify node removed
+  (Sequence plan → report) returns Failure, trace
+  `["plan", "report_refused"]`, and the blackboard has NO
+  `report_emitted` entry; a lone report Action also refuses.
+  A plan whose numbers do not add up (delivered 500 t +
+  shortage 50 t vs demand 650 t) fails verify
+  (`verify_passed = false`) and the report is not emitted.
+- Typed blackboard (1): all four types round-trip; reading a
+  float key as bool and a bool key as float are `WrongType`
+  errors; missing keys are `Missing` errors.
+- Decorators (2): Inverter turns fail→Success, succeed→
+  Failure, and an unset `verify_passed` condition→Success;
+  Succeeder turns fail→Success and passes Success through.
+  Decorators chosen: **Inverter (primary) and Succeeder** —
+  both implemented and tested.
+- Running (1): `defer_once` returns `Running` on its first
+  tick and `Success` on the next; a Sequence containing it
+  returns `Running` on the first tick without running the
+  following child, and `Success` on the second tick.
+- Errors (1): invalid JSON, an unknown node type
+  (`"parallel"`), and an Action with no `step` are parse
+  errors; an unknown step name parses but fails at run time
+  (never a silent skip).
+- Build note: `/tmp` is a 512M tmpfs (see the Tonic section);
+  cargo was run with `TMPDIR=$HOME/workspace/.tmp` (roomy
+  disk) for this item.
+
+**Governance rule.** Trees orchestrate, never verify. The
+verify Action calls the existing local evaluator and records
+whether it passed; it writes no `verified` key and no tree can
+produce one. The report Action is a hard gate mirroring
+`adapters/orchestration.py`: it refuses (Failure, nothing
+emitted, trace `report_refused`) unless `verify_ran = true`
+AND `verify_passed = true` on the blackboard in the same run.
+A tree that skips verification, or a JSON tree with the verify
+node removed, fails explicitly at the report step — never a
+silent success. Every emitted report records
+`needs_human_decision = true`.
+
+**Limitations / known gaps.**
+- `Running` is genuinely exercised by `defer_once`, but there
+  is no async tick loop and no background scheduler: `tick`
+  is a single synchronous pass, and a caller wanting a later
+  tick must call `tick` again. No node other than `defer_once`
+  returns `Running`.
+- The Action steps are stubs: `plan` always produces the same
+  synthetic 600/50/650 t candidate and `verify` checks only
+  that candidate's arithmetic via the local evaluator. There
+  is no real planner, no LP cross-check, and no connection to
+  the Julia planning-search or the LangGraph pipeline — this
+  is the Rust-side orchestration shape only.
+- The verify check uses the local evaluator's `<=` / `>=`
+  operators with a 0.01 t tolerance in both directions to
+  express equality; it is an arithmetic re-derivation, not a
+  second solver.
+- JSON trees are trusted input in this item: `parse_tree`
+  validates structure and step names, but there is no schema
+  version field, no size/depth limit on nesting, and no
+  allow-listing of step names beyond the run-time failure for
+  unknown steps. A tree from an untrusted source would need
+  those before being accepted.
+- No persistence: the blackboard and trace live only for the
+  run; there is no checkpointing, no resume, and no
+  supervision/restart of a tree (that is ash-flare's job, and
+  a restarted worker must never re-emit a verified verdict —
+  this module emits none).

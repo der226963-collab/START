@@ -14,6 +14,7 @@
 //!   features only, distributed mode OFF by non-use, `Transient`
 //!   restart policy. Supervision is liveness, never verification.
 
+pub mod behavior_tree;
 pub mod cedar_eval;
 pub mod egg_demo;
 pub mod proto;

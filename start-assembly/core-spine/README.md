@@ -63,6 +63,7 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
 | ODYM | 17 Resource Accounting | IndEcol/ODYM | MIT | Stock-flow resource accounting | assembled 0.1.0, git pin 9792c23 (never published to PyPI); dependency only, no code copied; adapter `adapters/resource_accounting.py`, 16/16 tests PASS; outputs are model results only (verified=false, needs_human_decision=true) |
 | Pymrio | 17 Resource Accounting | IndEcol/pymrio | LGPL-3.0 | Footprint / consumption-based accounting | assembled 0.7.0 (PyPI); dependency only, never copied, library unmodified and replaceable; adapter `adapters/footprint_accounting.py`, 15/15 tests PASS; outputs are model results only (verified=false, needs_human_decision=true); no downloads — synthetic in-memory MRIO only |
 | Graphiti (temporal schema only) | 6 Knowledge & Memory | getzep/graphiti | Apache-2.0 | Temporal knowledge fields (valid-from/valid-to, superseded-by, episode links) | assembled 2026-11-11, 17/17 tests PASS; original Python in `adapters/temporal.py`, stdlib only; no Graphiti code copied, system/LLM-extraction/graph-DB/telemetry NOT adopted; verified flag carried unchanged, never set by this module |
+| BehaviorTree.rs (node types + typed blackboard only) | 4 Reasoning & Planning | ncrothers/behaviortree-rs | MIT | Behaviour-tree orchestration of plan → verify → report | assembled 2026-11-11, 10/10 tests PASS; original Rust in `rust/src/behavior_tree.rs`, trees in JSON; no BehaviorTree.rs code copied, crate NOT a dependency; verify is a hard gate, report refuses without a passed verify in the same run (Rust 30/30) |
 
 ## Layout
 
@@ -96,10 +97,14 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
   supervision of execution workers (`src/supervision.rs`,
   ash-flare 3.0.0, default features only, distributed OFF,
   `Transient` + `OneForOne`; supervision is liveness, never
-  verification). Run:
+  verification), and behaviour-tree orchestration
+  (`src/behavior_tree.rs` — original Rust rebuild of the
+  BehaviorTree.rs node types + typed blackboard, trees in JSON;
+  verify is a hard gate, report refuses without a passed verify
+  in the same run). Run:
   `export PATH="$HOME/.cargo/bin:$PATH" && cargo test` (rustc 1.99.1)
-  — 20/20 PASS, including 4 wire tests against the real server
-  over a Unix socket and 6 supervision tests. Run the server:
+  — 30/30 PASS, including 4 wire tests against the real server
+  over a Unix socket, 6 supervision tests and 10 behaviour-tree tests. Run the server:
   `cargo run --bin start-tonic-server -- /tmp/tonic.sock` (Unix
   socket only, no TLS/auth — local only).
 - `julia-current/` — canonical Julia env (`Project.toml`, `Manifest.toml`, `spine.jl`, `spine_lp.jl`, `spine_ode.jl`, smokes, logs). Run it, not `julia/`. Networked domain model: `network_model.jl` (synthetic 3-node resource network + hand-derived closed form, plain DifferentialEquations — the independent check) and `network_dynamics.jl` (the same network run through NetworkDynamics.jl 1.3.0), tests `test_network_dynamics.jl` — 31/31 PASS.

@@ -1,0 +1,21 @@
+# Toy Q&A task for the mini_ai/eval registry.
+#
+# Hand-written, 4 items. Answers are stored in canonical form
+# (stripped, lowercase) because this task's filters normalise model
+# outputs that way before scoring. The stub scorer in
+# tests/test_eval_registry.py answers 3 of 4 correctly, so the
+# expected scores are exact_match 0.75 and accuracy 0.75.
+name: qa_toy
+description: "Toy hand-written general-knowledge Q&A: capital, arithmetic, chemistry symbol, planet."
+prompt_template: "Question: {question}\nAnswer:"
+metrics: [exact_match, accuracy]
+filters: [strip, lowercase]
+items:
+  - question: "What is the capital of France?"
+    answer: "paris"
+  - question: "What is 2 + 3?"
+    answer: "5"
+  - question: "What is the chemical symbol for water?"
+    answer: "h2o"
+  - question: "What is the largest planet in the solar system?"
+    answer: "jupiter"

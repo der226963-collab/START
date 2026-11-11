@@ -89,6 +89,132 @@ Guardrails are unchanged: planning stays separate from language,
 decisions stay with human assemblies, and self-edit protections
 still apply.
 
+## mini_ai/eval — task/metric registry (Module 3, rebuilt from lm-eval inspiration)
+
+The top INSPIRATION-REBUILD item from the 70-candidate borrowing
+sweep (see `start-assembly/core-spine/source-audit/
+ALL_CANDIDATES_BORROWING_PLAN.md`, item 1): LM-Eval-Harness
+(EleutherAI/lm-evaluation-harness, MIT, 107,463 lines) is an
+evaluation framework whose real value for START is its design — a
+task registry of YAML-defined eval tasks, a metric registry, and a
+filter pipeline. It was NOT adopted as a dependency (107k lines for
+a job `evaluate_gpt.py` already does in miniature, and it has no
+adapter for a from-scratch toy model). Instead the idea was rebuilt
+as original Python in `mini_ai/eval/`. No lm-eval code was read or
+copied, there is no lm-eval dependency, and there is no paid API —
+a scorer is a caller-supplied callable, and in tests it is a stub.
+
+File layout (all original code, stdlib only — no new dependency):
+
+- `mini_ai/eval/__init__.py` — public API exports.
+- `mini_ai/eval/tasks.py` — task registry: register tasks by name,
+  load a task definition from a YAML file or a plain dict
+  (`EvalTask`, `TASK_REGISTRY`, `load_task`, `load_builtin_tasks`).
+  A task has a name, description, `prompt_template`
+  (`str.format`, e.g. `"Question: {question}\nAnswer:"`), inline
+  `items` (each with an `answer` reference plus the template's
+  fields), metric names, and filter specs. The `answer` field is
+  never passed to the template, so a prompt cannot leak its
+  reference. Unknown metric/filter names fail at load time, not
+  mid-run.
+- `mini_ai/eval/tasks/qa_toy.yaml` — the shipped example task: 4
+  hand-written Q&A items (capital of France, 2 + 3, water's symbol,
+  largest planet), answers stored canonical (stripped, lowercase),
+  metrics `[exact_match, accuracy]`, filters `[strip, lowercase]`.
+- `mini_ai/eval/metrics.py` — metric registry (`METRIC_REGISTRY`,
+  `register_metric`): `exact_match` (pairwise, strict equality —
+  normalisation is the filters' job), `accuracy` (aggregate: mean
+  of the per-item exact-match scores), `perplexity` (logprob:
+  `exp(-mean log-probs)` or `exp(mean token losses)`; exactly one
+  convention must be supplied, and a log-prob above 0 or a loss
+  below 0 is rejected). Hand-check: log-probs
+  `[ln(0.5), ln(0.25)]` give `sqrt(8) ≈ 2.828427`.
+- `mini_ai/eval/filters.py` — filter registry (`FILTER_REGISTRY`,
+  `register_filter`) and pipeline (`apply_filters`, applied in
+  order, so order is part of a task's definition): `strip`,
+  `lowercase`, `take_first_line`, `collapse_whitespace`,
+  `extract_after_marker` (marker argument, case-sensitive, returns
+  the text unchanged when the marker is absent). A filter spec is a
+  plain name or a `{"name": ..., <arg>: ...}` dict.
+- `mini_ai/eval/runner.py` — `run_task(task, scorer)` runs a task
+  end-to-end: the scorer maps prompt -> output text, or
+  `{"text": ..., "log_probs": [...]}` when it can supply log-probs.
+  Returns a plain JSON-able results dict (per-item prompts, raw and
+  filtered predictions, references, exact-match flags; aggregate
+  metric values; `needs_human_decision: true`,
+  `verified: false`). Perplexity is the mean of the per-item
+  perplexities over items that supplied log-probs, and `None` with
+  a note when none did — a missing measurement is reported as
+  missing, never invented.
+- `mini_ai/eval/yaml_subset.py` — a tiny original YAML-subset
+  parser, so task files need no new dependency: PyYAML (6.0.1) is
+  present in the dev environment but is NOT declared in
+  `requirements.txt`, and adding a dependency for a handful of small
+  task files would be the wrong trade. Supported: `#` comments,
+  mappings by indentation (spaces only), block sequences of scalars
+  or mappings, inline flow lists, null/bool/int/float/plain/quoted
+  scalars. NOT supported (raises `YamlSubsetError` with a line
+  number): block scalars, anchors/aliases/tags, inline flow
+  mappings, tabs. If a task file ever needs full YAML, that is a
+  deliberate decision to add PyYAML to `requirements.txt`.
+
+Use it:
+
+```python
+from mini_ai.eval import load_builtin_tasks, run_task_by_name
+
+load_builtin_tasks()
+results = run_task_by_name("qa_toy", lambda prompt: "paris")
+print(results["metrics"])  # {"exact_match": ..., "accuracy": ...}
+print(results["needs_human_decision"], results["verified"])  # True False
+```
+
+Tests: `tests/test_eval_registry.py`, 32 tests, all passing
+(2026-11-11): YAML-subset parser (7: plain mapping/scalars,
+comments and quoted strings, inline list + nested mapping, list of
+mappings, block-scalar rejection, duplicate-key rejection, empty
+document rejection); registries (5: task/metric/filter round-trips,
+unknown-task KeyError, built-ins present); filters (5: strip then
+lowercase, order matters — lowercase-before-extract breaks the
+case-sensitive marker while extract-before-lowercase works,
+take-first-line + collapse-whitespace, unknown filter KeyError,
+non-string input TypeError); metrics (5: exact-match match/no-match
+including case-sensitivity, accuracy 3/4 = 0.75 on a hand-scored
+set, perplexity from log-probs = sqrt(8), perplexity from token
+losses = sqrt(8), perplexity rejects empty/positive-log-prob/
+negative-loss/neither/both inputs); task loading (4: qa_toy YAML
+loads with 4 items, built-in loader, dict validation — missing
+answer / unknown metric / unknown filter — prompt never leaks the
+answer); runner (6: end-to-end toy task with stub scorer —
+exact_match 0.75, accuracy 0.75, 3 of 4 right; end-to-end on the
+qa_toy YAML — same 0.75 scores; perplexity 2.0 from a log-prob
+scorer; perplexity None with a note when the scorer supplies no
+log-probs; unknown metric raises before any item is scored;
+results JSON round-trip). Full ai-starter suite after this change:
+92 tests OK (60 before + 32 new), 18 skipped.
+
+Governance rule: eval scores are model results, never verified
+plans. Every run result carries `needs_human_decision: true` and
+`verified: false`; nothing in this package marks anything verified,
+no score here bypasses the verify step, and there is no model
+backend or paid API in the package at all.
+
+Limitations / known gaps:
+
+- The runner only knows the three built-in metric kinds
+  (pairwise reported as a mean rate, aggregate applied to the
+  per-item exact-match scores, logprob averaged over items with
+  log-probs); a custom pairwise metric works, but there is no
+  generic per-item metric column beyond exact-match.
+- The YAML subset is deliberately small — no block scalars, no
+  anchors, no multi-line strings — so task files must stay simple
+  or move to JSON dicts.
+- No scorer for a real model is included: wiring MiniGPT (or any
+  model) in as a scorer is a separate step, and its log-probs would
+  need to come from the model, not from this package.
+- Perplexity is a mean of per-item perplexities, not a
+  token-weighted aggregate across the whole task.
+
 ## How this fits PCAC
 
 This repo is the language-assistance layer only, in PCAC terms:

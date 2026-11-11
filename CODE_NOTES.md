@@ -619,3 +619,20 @@ Licences checked directly from each repo's LICENSE file:
 - Coordinator (spawned 2026-11-05) completed all three workers but ended without assembling or reporting; the assistant did the consolidation, verification, fix, and assembly itself. A runtime restart during verification wiped the /tmp check logs, but the loop had printed DONE with 18 pass / 7 fail, and the 7 failures were re-reproduced individually afterwards.
 - Code corpus after assembly: 51,916,364 chars, 92 files, sha256 9ec8d437ec79e6c818ce15172ab299c8d9fa74f4f2df69e70288175f407227 (assembler cleaned count 51,912,730). Series total: Rust 719,018 + Python 634,882 + Mojo 960,578 = 2,314,478 chars.
 - v0.3.2 review (separate, chat-only, no GitHub update yet): Eric decided 2026-11-05 to pursue the START v0.3.2 multi-language foundation route (zip at workspace/user/files/START_v0.3.2_multilanguage_foundation_0_zkay.zip, unzipped to ~/workspace/v032-review/start_v03_work/). An independent review coordinator is running; findings to be tracked as numbered issues, bugs reproduced before fixing.
+
+## mini_ai/eval registry (LM-Eval-Harness rebuild), 2026-11-11
+- Top INSPIRATION-REBUILD item from the 70-candidate sweep: rebuilt
+  lm-eval's task/metric registry + filter pipeline as original
+  Python in mini_ai/eval/ (tasks.py, metrics.py, filters.py,
+  runner.py, yaml_subset.py, tasks/qa_toy.yaml). No lm-eval code
+  read or copied, no lm-eval dependency, no paid API. Stdlib only:
+  PyYAML is present in the env (6.0.1) but is NOT in
+  requirements.txt, so task YAML is read by a tiny original
+  YAML-subset parser (documented subset; anything outside it raises
+  YamlSubsetError). Toy task: 4 hand-written Q&A items, stub scorer
+  right on 3 of 4 -> exact_match 0.75, accuracy 0.75. Perplexity
+  hand-checked: log-probs [ln 0.5, ln 0.25] -> sqrt(8) ~ 2.828427.
+  Results always carry needs_human_decision=true, verified=false.
+- Tests: tests/test_eval_registry.py, 32 tests OK. Full ai-starter
+  suite: 92 tests OK (was 60), 18 skipped. Core-spine Python suite
+  untouched, still 102/102.

@@ -56,6 +56,7 @@ Julia checks 268/268 passed, 0 failed (29 spine/smokes/AlphaZero +
 | Tonic / gRPC | 21 Interoperability | grpc/grpc-rust | MIT | Contract-driven RPC | assembled — real Rust server (tonic 0.14.9) over a Unix socket, called over the wire by Rust + Python clients (PASS + FAIL cases); Python grpcio in-process server also runnable |
 | Apache Arrow | 21 Interoperability | apache/arrow | Apache-2.0 | Zero-copy in-memory table sharing | assembled (pyarrow) |
 | DeepEval | 22 Evaluation & Learning | confident-ai/deepeval | Apache-2.0 | Evaluation framework | local non-LLM metrics only (ExactMatch, PatternMatch, JsonCorrectness — 11/11 tests PASS); JsonCorrectness is key-free only via eval_mode="system_one" (default construction needs an OpenAI key); LLM-as-judge deferred |
+| ash-flare | 24 Resilience & Continuity | ashforge-rs/ash-flare | Apache-2.0 | Local supervision of execution workers | assembled 3.0.0, default features only (`python` OFF — no pyo3), distributed mode OFF by non-use (no `distributed` feature flag exists in 3.0.0; `ash_flare::distributed` never imported); supervisor core audited first; `Transient` + `OneForOne` only; supervision is liveness, never verification — restarted output stays unverified, a crashed worker is reported failed (6/6 tests PASS, Rust 20/20) |
 | ODYM | 17 Resource Accounting | IndEcol/ODYM | MIT | Stock-flow resource accounting | assembled 0.1.0, git pin 9792c23 (never published to PyPI); dependency only, no code copied; adapter `adapters/resource_accounting.py`, 16/16 tests PASS; outputs are model results only (verified=false, needs_human_decision=true) |
 | Pymrio | 17 Resource Accounting | IndEcol/pymrio | LGPL-3.0 | Footprint / consumption-based accounting | assembled 0.7.0 (PyPI); dependency only, never copied, library unmodified and replaceable; adapter `adapters/footprint_accounting.py`, 15/15 tests PASS; outputs are model results only (verified=false, needs_human_decision=true); no downloads — synthetic in-memory MRIO only |
 
@@ -83,10 +84,14 @@ Julia checks 268/268 passed, 0 failed (29 spine/smokes/AlphaZero +
   Tonic server (`src/server.rs`, binary `start-tonic-server`,
   tonic 0.14.9, prost 0.14.5, tokio 1.54.1; codegen from
   `proto/constraint_evaluation.proto` via tonic-prost-build,
-  protoc from grpc_tools — see `rust/build.rs`). Run:
+  protoc from grpc_tools — see `rust/build.rs`), and local
+  supervision of execution workers (`src/supervision.rs`,
+  ash-flare 3.0.0, default features only, distributed OFF,
+  `Transient` + `OneForOne`; supervision is liveness, never
+  verification). Run:
   `export PATH="$HOME/.cargo/bin:$PATH" && cargo test` (rustc 1.99.1)
-  — 14/14 PASS, including 4 wire tests against the real server
-  over a Unix socket. Run the server:
+  — 20/20 PASS, including 4 wire tests against the real server
+  over a Unix socket and 6 supervision tests. Run the server:
   `cargo run --bin start-tonic-server -- /tmp/tonic.sock` (Unix
   socket only, no TLS/auth — local only).
 - `julia-current/` — canonical Julia env (`Project.toml`, `Manifest.toml`, `spine.jl`, `spine_lp.jl`, `spine_ode.jl`, smokes, logs). Run it, not `julia/`.

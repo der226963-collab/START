@@ -9,7 +9,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 ## Headline
 
 - **Components: 19 total — 18 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 90/90 passed, Rust 9/9 passed, Julia 268/268 checks passed — 367 passed, 0 failed**
+- **Tests: Python 102/102 passed, Rust 20/20 passed, Julia 268/268 checks passed — 390 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
 - Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
@@ -39,6 +39,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | DeepEval | confident-ai/deepeval | 4.3.3 | assembled | **11/11 Python tests PASS** (3 ExactMatch + 8 new) | Deterministic metrics only, no API key: ExactMatch scores [1,1,1,0], accuracy 0.75; PatternMatch (fullmatch) scores [1.0, 0.0, 0.0] on pattern `\d+ tonnes`; JsonCorrectness scores [1, 0, 0, 0, 0] against original schema PlanJsonSchema. Sweep correction: JsonCorrectness is key-free ONLY via eval_mode="system_one" — default construction builds an OpenAI model and raises without a key. LLM-as-a-judge metrics deferred, not run. See "DeepEval deterministic metrics (Module 22)" below |
 | ODYM | IndEcol/ODYM | 0.1.0, git pin 9792c23 | assembled | **16/16 Python tests PASS** | Stock-flow resource accounting (Module 17). Dependency only, no code copied; never published to PyPI, installed from git pinned to the sweep's audited commit (see item 9). Thin original adapter `adapters/resource_accounting.py` over a synthetic 1-site 2-crop material flow (3 years, balance PASS, residual 0.0 t). Outputs are model results only — verified=false, needs_human_decision=true. See "ODYM (Module 17)" below |
 | Pymrio | IndEcol/pymrio | 0.7.0 (PyPI) | assembled | **15/15 Python tests PASS** | Footprint / consumption-based accounting (Module 17). Dependency only, never copied, library unmodified and replaceable (LGPL-3.0; README badge wrongly says GPL v3 — LICENSE file authoritative). Thin original adapter `adapters/footprint_accounting.py` over a synthetic 2-region x 2-sector in-memory MRIO (footprint identity PASS, residual 2.2e-16 t). No downloads — no pymrio download/load/parse function is ever called. Outputs are model results only — verified=false, needs_human_decision=true. See "Pymrio (Module 17)" below |
+| ash-flare | ashforge-rs/ash-flare | 3.0.0 (crates.io) | assembled | **6/6 new Rust tests PASS** (Rust suite now 20/20) | Local supervision of execution workers only (Module 24). Dependency only, no code copied, default features only (`python` OFF), distributed mode OFF by non-use. Supervisor core audited first. See "ash-flare (Module 24)" below |
 
 ## Exact versions installed (venv `.venv`, Python 3.12.3)
 
@@ -49,7 +50,9 @@ PyPI — see item 9). Full list in `requirements.txt`.
 Rust: rustc/cargo 1.99.1 (`~/.cargo/bin`, not on PATH);
 cedar-policy 4.14.1, egg 0.10.0, tonic 0.14.9, tonic-prost 0.14.9,
 tonic-prost-build 0.14.9, prost 0.14.5, prost-build 0.14.5,
-tokio 1.54.1, tokio-stream 0.1.19, hyper-util 0.1.21, tower 0.5.3
+tokio 1.54.1, tokio-stream 0.1.19, hyper-util 0.1.21, tower 0.5.3,
+ash-flare 3.0.0 (default features only, `python` OFF — no pyo3 in the
+resolved tree), async-trait 0.1.92
 (see `rust/Cargo.lock`).
 Julia: 1.13.3 (release channel) at `/home/hatch/.juliaup/bin/julia`
 (juliaup, `~/.juliaup`); also 1.11.9 installed via `juliaup add 1.11`
@@ -846,6 +849,16 @@ Still unverified / not run:
     the sweep's order, when directed: ash-flare as a dependency
     (audit the supervisor core first, default features only,
     local supervision only, distributed mode OFF).
+15. **Done 2026-11-11:** ash-flare as a dependency (Module 24, sweep
+    top-10 item 5) — ash-flare 3.0.0, default features only, local
+    supervision only, distributed mode OFF, supervisor core audited
+    first from the v3.0.0 source. Full suite after this work:
+    Python 102/102, Rust 20/20 (was 14/14: +6 supervision tests),
+    Julia 268/268 (NOT re-run — nothing Julia touches changed) —
+    **390 passed, 0 failed**. See "ash-flare (Module 24)" below.
+    Next in the sweep's order, when directed: NetworkDynamics.jl
+    (Module 10) — only when the first networked domain model is
+    built.
 
 ## DeepEval deterministic metrics (Module 22)
 
@@ -1113,3 +1126,191 @@ own.
   need `TMPDIR` pointed at roomy disk (the Python test does
   this for its on-demand build). The probe target in /tmp was
   removed after use.
+
+## ash-flare (Module 24)
+
+**Version and licence.** ash-flare **3.0.0**, ashforge-rs/ash-flare,
+Apache-2.0 — verified from the crate's own LICENSE file ("Copyright
+2026 ashforge-rs Contributors", full Apache-2.0 text) and from its
+`Cargo.toml` (`license = "Apache-2.0"`); crates.io metadata carries
+no licence field, so the LICENSE file is authoritative (recorded in
+LICENCES.md). Existence at 3.0.0 verified before trusting the sweep:
+crates.io API `max_version`/`max_stable_version` 3.0.0 with versions
+`[3.0.0, 2.3.3, 2.3.2, 2.2.0, 2.0.0, 1.1.0, 1.0.4, 1.0.3, 1.0.2,
+1.0.1, 1.0.0]`; `cargo search ash-flare` returns `ash-flare =
+"3.0.0"`; `cargo add 'ash-flare@3' --dry-run` resolves to v3; `cargo
+info ash-flare` reports version 3.0.0, licence Apache-2.0,
+rust-version 1.88, features `default = []` and `python`. No ODYM
+repeat: nothing was assumed from the sweep's version claim.
+Dependency only — no ash-flare code copied anywhere. Rust:
+rustc/cargo 1.99.1. Resolved in `rust/Cargo.lock` as ash-flare
+3.0.0 (checksum
+`05c8cd625d9e39a40eec9ae8a4fa3ed74911e67511714da36c017b3c49449234`),
+with `async-trait` 0.1.92 added as a direct dependency (needed to
+implement the `Worker` trait, which is itself `#[async_trait]`).
+
+**What it is used for.** Local supervision of execution workers
+only: start a worker, restart it if it crashes, give up loudly if
+it keeps crashing. Nothing else. Original START wrapper in
+`rust/src/supervision.rs` (`WorkerLedger`, `ExecutionWorker`,
+`execution_supervisor_spec`, `start_supervised_execution`,
+`supervisor_is_stopped`); tests in
+`rust/tests/supervision_tests.rs`.
+
+**Supervisor-core audit** (done FIRST, before adopting, as the
+sweep required; source: depth-1 clone of ashforge-rs/ash-flare at
+tag `v3.0.0`, commit `11beb3d3018b260eaaae983688e0d90d95210e62`,
+kept in `source-audit/sweep/scratch/ash-flare/` — audit clone, not
+vendored code, not pushed).
+- *What the supervisor does.* OTP-style supervision tree:
+  `SupervisorSpec` builds a tree of workers/nested supervisors;
+  `SupervisorHandle::start` spawns the runtime; children report
+  termination over a command channel as `ChildExitReason`
+  (Normal / Abnormal / Shutdown). Strategies: `OneForOne`
+  (restart only the failed child — the default, and the only one
+  START uses), `OneForAll`, `RestForOne`. A supervisor-initiated
+  stop is reported as `Shutdown` and is explicitly NOT treated as
+  a failure (it must not consume restart budget or trigger a
+  restart round). On shutdown, workers are asked to stop
+  cooperatively via a `ShutdownSignal` and get their `shutdown`
+  hook run; a worker that ignores the signal is aborted after
+  the shutdown timeout (default 5 s) and does NOT get the hook.
+- *Restart policy.* Per child: `Permanent` (restart on ANY
+  termination, including a clean normal exit), `Temporary`
+  (never restart — the child is dropped from supervision),
+  `Transient` (restart only on abnormal exit). The decision
+  lives in one shared function, `decide_restart`
+  (`supervisor_common.rs`), used by both the stateless and the
+  stateful supervisor runtimes, so the two cannot drift apart.
+  Nested supervisors have no policy of their own and are always
+  treated as permanent.
+- *Backoff.* Default exponential 100 ms doubling, capped at
+  30 s (`RestartBackoff::default()`), tracked per child, and
+  reset once a child has stayed up for at least the cap — an
+  occasional failure does not inherit an old crash loop's delay.
+  `RestartBackoff::none()` restores immediate restart; START
+  never uses it.
+- *Max restarts / permanent failure.* Restart intensity default
+  3 restarts within 5 s, sliding window (`RestartTracker`).
+  Exceeding it escalates: the runtime shuts down all children
+  and stops the supervisor itself, returning an abnormal exit
+  so a parent supervisor observes the failure (`Escalate` in
+  `runtime.rs`). A permanently failing worker therefore ends in
+  a STOPPED supervisor, observable because `which_children()`
+  then errors (`ShuttingDown`) — never in a silent success.
+- *Governance concerns and how they are handled.*
+  (1) Can it restart a worker without a human decision? Yes —
+  that is the point of supervision, and it is allowed ONLY for
+  execution workers: restarts apply to execution liveness, never
+  to a verification or planning step, and never to anything that
+  could approve a result. (2) Can it mask a failure as success?
+  No by construction here: every crash is counted in the
+  `WorkerLedger` (failures, attempts), a crashed worker's
+  `verified` field stays `false`, and budget exhaustion stops
+  the supervisor visibly. (3) Can a restarted worker re-run
+  something that should have stayed failed? A restart creates
+  a FRESH worker instance from the factory and re-runs `run()`
+  from scratch — so a worker must never be a verifier: a
+  restarted worker must never re-emit, carry over, or inherit a
+  verified verdict. Verification results live in the separate
+  verify step and are re-derived there. START uses `Transient`
+  (never `Permanent`) for execution workers, because `Permanent`
+  restarts even a worker that completed successfully — a trap
+  for run-once work, pinned by a test below.
+
+**Feature set (default only, distributed OFF).** `ash-flare = "3"`
+in `rust/Cargo.toml` with no features named. The crate's only
+optional feature is `python` (pyo3 bindings) — OFF: `cargo tree
+-i ash-flare` shows only feature `default`, and the resolved tree
+contains no pyo3/pythonize. The sweep's "distributed mode OFF"
+needs a correction, recorded honestly: there is NO `distributed`
+feature flag in 3.0.0 — `pub mod distributed` is always compiled
+(rkyv is a non-optional dependency) and its protocol has no
+authentication, authorization or encryption (stated in
+`src/distributed.rs`: any peer that can connect can enumerate
+children, terminate a child, or shut the whole tree down).
+"Distributed OFF" is therefore enforced by non-use: no START code
+imports `ash_flare::distributed`, nothing listens for supervision
+commands, and the wire format stays JSON. The resolved
+ash-flare dependencies are async-trait, dashmap, rand, rkyv,
+serde, serde_json, thiserror, time, tokio, tracing.
+
+**Exact test cases and results** (6 new tests in
+`rust/tests/supervision_tests.rs`, all passing; Rust suite 14/14
+→ 20/20; test backoff is 10 ms doubling to a 1 s cap so the tests
+stay fast while still exercising exponential growth — production
+use must pick its own backoff, not inherit the test value).
+- `transient_worker_restarts_then_completes_but_stays_unverified`:
+  worker fails twice then succeeds (Transient, budget 5 in 60 s).
+  Observed: attempts 3, failures 2, completed true,
+  verified false; after completion attempts stay at 3 (no
+  restart on normal exit) and the child leaves supervision
+  (Drop removes it — the first version of this test wrongly
+  asserted the child stays listed, and the failure taught the
+  correct behaviour: Transient + Normal ⇒ Drop).
+- `always_failing_worker_hits_intensity_limit_and_supervisor_stops`:
+  worker always fails (budget 3 in 60 s). Observed: attempts 4
+  (1 initial + 3 restarts), failures 4, completed false,
+  verified false; then `which_children()` errors — the
+  supervisor stopped on escalation. Permanent failure is
+  visible, never silent success.
+- `temporary_worker_is_never_restarted`: Temporary policy,
+  always-failing worker. Observed: attempts 1, failures 1,
+  children list empty after the Drop.
+- `documented_backoff_and_intensity_defaults_match`: pins the
+  library defaults so a future upgrade that changes them fails
+  loudly — backoff delays 100/200/400 ms then capped at 30 s;
+  `RestartBackoff::none()` is zero; default intensity is 3
+  restarts in 5 s.
+- `permanent_policy_restarts_even_on_normal_completion`:
+  Permanent policy, worker that returns `Ok` immediately.
+  Observed: attempts reach 3+ while completed is true — the
+  trap is real, which is why START never uses Permanent for
+  execution workers.
+- `spec_builder_uses_transient_one_for_one`: the START spec
+  builder is pinned — Transient policy, OneForOne strategy,
+  one child listed.
+
+**Governance rule.** Supervision is about process liveness, not
+verification: a restarted worker's output is still unverified
+until the separate verify step (constraint verify + JuMP/HiGHS LP
+cross-check) passes AND a human approves
+(`needs_human_decision=true`). A crashed worker is reported as
+failed, never silently as success. Restarts apply to execution
+workers only; no verification, planning, or governance step is
+ever supervised into re-running, and no supervised worker can
+mark anything verified — the `WorkerLedger.verified` field exists
+precisely to assert it stays `false`.
+
+**Limitations / known gaps.**
+- `ChildInfo` from `which_children()` carries only id, child
+  type and restart policy — no restart count, no last exit
+  reason, no running/failed state. Restart history is NOT
+  queryable from ash-flare; START tracks it itself in the
+  `WorkerLedger`, and treats a stopped supervisor as the
+  permanent-failure signal.
+- A panic inside a worker's `run()` is NOT delivered to the
+  supervisor as an abnormal exit: `run_worker` has no
+  `catch_unwind`, so a panicking task unwinds without sending
+  `WorkerTermination` (only the linked-init path detects a
+  panic, via the closed init channel). The
+  `ChildExitReason::Abnormal` doc says "error or panic", but
+  the run path only delivers errors. START workers must
+  therefore return `Err` on failure, never panic — the workers
+  here do, and a panic would leave a dead child listed as
+  supervised.
+- Single author, very low adoption (2 stars at audit time).
+  The supervisor core was audited first, as required, and the
+  dependency is small and replaceable: only `supervision.rs`
+  and its tests touch ash-flare.
+- The `distributed` module ships in the crate (always compiled)
+  with an unauthenticated, unencrypted rkyv protocol; it is
+  inert only because nothing calls it. A future grep for
+  `ash_flare::distributed` / `distributed::` in `rust/src`
+  must stay empty; if distributed supervision is ever wanted,
+  it needs its own audit and Eric's approval.
+- `OneForAll` / `RestForOne` restart healthy siblings too;
+  START uses `OneForOne` only.
+- Build note: `/tmp` is a 512M tmpfs (see the Tonic section);
+  `TMPDIR` was pointed at `~/workspace/.tmp` for the cargo
+  builds here, as in item 2.

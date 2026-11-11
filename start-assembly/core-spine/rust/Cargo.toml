@@ -2,7 +2,7 @@
 name = "start-core-spine"
 version = "0.1.0"
 edition = "2021"
-description = "START core-spine Rust kernels: Cedar governance, egg e-graph rewrites, real Tonic gRPC server"
+description = "START core-spine Rust kernels: Cedar governance, egg e-graph rewrites, real Tonic gRPC server, ash-flare local supervision"
 license = "MIT OR Apache-2.0"
 
 [lib]
@@ -20,6 +20,16 @@ path = "src/bin/tonic_server.rs"
 [dependencies]
 cedar-policy = "4"
 egg = "0.10"
+# ash-flare 3.0.0 (ashforge-rs/ash-flare, Apache-2.0): local supervision
+# of execution workers only, Module 24. DEFAULT FEATURES ONLY — the
+# crate's only optional feature is `python` (pyo3 bindings), which stays
+# OFF, so no Python linkage is compiled. There is NO `distributed`
+# feature flag in 3.0.0: the distributed module (rkyv wire format, no
+# auth/encryption) is always compiled in but is inert unless code calls
+# it — START never imports `ash_flare::distributed` and never listens
+# on TCP/Unix for supervision. Distributed mode is OFF by non-use.
+ash-flare = "3"
+async-trait = "0.1"
 tonic = "0.14"
 tonic-prost = "0.14"
 prost = "0.14"

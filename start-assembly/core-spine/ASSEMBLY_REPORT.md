@@ -8,8 +8,8 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 
 ## Headline
 
-- **Components: 20 total — 19 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 136/136 passed, Rust 30/30 passed, Julia 513/513 checks passed — 679 passed, 0 failed**
+- **Components: 21 total — 20 assembled, 1 stub-only, 0 blocked, 0 not run**
+- **Tests: Python 155/155 passed, Rust 30/30 passed, Julia 513/513 checks passed — 698 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
 - Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
@@ -44,6 +44,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | ash-flare | ashforge-rs/ash-flare | 3.0.0 (crates.io) | assembled | **6/6 new Rust tests PASS** (Rust suite now 20/20) | Local supervision of execution workers only (Module 24). Dependency only, no code copied, default features only (`python` OFF), distributed mode OFF by non-use. Supervisor core audited first. See "ash-flare (Module 24)" below |
 | BehaviorTree.rs (node types + typed blackboard only) | ncrothers/behaviortree-rs | MIT (no version installed — nothing adopted) | assembled | **10/10 new Rust tests PASS** (Rust suite now 30/30) | Original Rust orchestration (Module 4): Sequence / Fallback / Inverter + Succeeder decorators / Action / Condition + typed blackboard, trees in JSON. No BehaviorTree.rs code copied; crate NOT a dependency. Verify is a hard gate — report refuses without a passed verify in the same run. See "Behavior-tree orchestration (BehaviorTree.rs rebuild, Module 4)" below |
 | Beam-Telemetry (event bus only) | beam-telemetry/telemetry | Apache-2.0 (no version installed — nothing adopted) | assembled | **17/17 new Python tests PASS** (Python suite now 136/136) | Original Python monitoring bus (Module 8): `adapters/event_bus.py`, stdlib only — execute/attach/detach, events carrying licence/provenance + verified flag + needs_human_decision. No Beam-Telemetry code copied; Erlang library NOT a dependency. Handlers never mark a result verified — promotion attempts are rejected and logged. See "Monitoring event bus (Beam-Telemetry rebuild, Module 8)" below |
+| Collective-Intelligence-Library (pure transforms only) | eq-network/Collective-Intelligence-Library | MIT (no version installed — nothing adopted) | assembled | **19/19 new Python tests PASS** (Python suite now 155/155) | Original Python mechanism simulation (Module 19): `adapters/mechanism_simulation.py`, stdlib only — effect-declared pure transforms over immutable graph state, pipeline compiled from the read/write DAG, plurality-vote mechanism over a synthetic 5-node graph. No Collective-Intelligence-Library code copied; JAX NOT a dependency. Every result carries verified=false and needs_human_decision=true. See "Mechanism simulation (Collective-Intelligence-Library rebuild, Module 19)" below |
 
 ## Exact versions installed (venv `.venv`, Python 3.12.3)
 
@@ -2168,3 +2169,152 @@ does not touch self-edit or guardrail files.
   version check on incoming events, no size limit on payloads,
   and no allow-listing of event names. An event from an
   untrusted source would need those before being accepted.
+
+## Mechanism simulation (Collective-Intelligence-Library rebuild, Module 19)
+
+**Inspiration source and licence.** Collective-Intelligence-Library
+(eq-network/Collective-Intelligence-Library, MIT — verified in the
+sweep from the repo's own LICENSE file, Copyright (c) 2026 Jonas
+Hallgren; 21,348 lines of JAX-native Python, per
+`source-audit/sweep/group-c.json`). The sweep's verdict was
+INSPIRATION-REBUILD: rebuild effect-declared pure transforms over
+immutable graph state as original Python (JAX-free), results
+unverified until the verify step. **No
+Collective-Intelligence-Library code was copied** — this module
+was written from the design idea only (state as an immutable
+graph, every step a pure function, each transform declaring its
+reads/writes, the pipeline compiled from the read/write DAG).
+The library itself was NOT adopted as a dependency: JAX would be
+a new heavy dependency for a peripheral module, and the codebase
+is very new and unproven (7 stars, single maintainer). Its
+source was never read to transcribe it. Nothing was installed:
+no new dependency, `requirements.txt` unchanged. No network,
+no real data — synthetic test data only.
+
+**What was rebuilt.** `adapters/mechanism_simulation.py`
+(original Python, stdlib only) plus
+`tests/test_mechanism_simulation.py`:
+- `GraphState` — an immutable graph state (nodes with a
+  preference and a positive weight, directed edges, a globals
+  map). Construction deep-copies its inputs, every accessor
+  returns a deep copy, and there is no mutating method at all;
+  `with_globals()` / `with_nodes()` return *new* states.
+  `to_json()` is the canonical serialisation (sorted keys), so
+  "unchanged" is checkable byte-for-byte; equality and hashing
+  are defined on that canonical JSON.
+- `Transform` — a pure function `GraphState -> GraphState`
+  plus a declared effect (`reads` / `writes` as field paths
+  such as `"nodes"` or `"globals.tally"`).
+- `compile_pipeline()` — derives execution order from the
+  read/write DAG (a transform runs after every transform that
+  writes a field it reads); among transforms ready at the same
+  time, order is alphabetical by name, so compilation is
+  deterministic regardless of listing order. A write conflict
+  (two transforms writing the same field), a duplicate name,
+  or a cycle raises `ValueError` at compile time, never
+  silently resolved at run time.
+- The plurality-vote mechanism, three transforms:
+  `tally_preferences` (reads `nodes`, writes `globals.tally`
+  — weighted count of each preference), `compute_shares`
+  (reads `globals.tally`, writes `globals.shares` — each
+  tally divided by the total weight), `aggregate_outcome`
+  (reads `globals.tally`, writes `globals.outcome` and
+  `globals.tied` — plurality winner, ties broken by the
+  lexicographically smallest option name). `plurality_pipeline()`
+  compiles exactly these three in DAG order.
+- `run_pipeline()` runs a compiled pipeline and returns a
+  plain JSON-able result envelope (schema_version "1.0.0",
+  mechanism, steps actually run, final state, licence,
+  provenance) with `verified=false` and
+  `needs_human_decision=true`. `synthetic_state()` is the
+  hand-computed demo graph: 5 nodes voting on a crop.
+
+**What was checked — exact test cases and results.** 19 new
+tests in `tests/test_mechanism_simulation.py`, all passing; full Python
+suite after this work **155/155, 0 failed** (was 136/136;
+breakdown: statuses 10, optimisation 5, CVXPY 1, CPMpy 1,
+Arrow 1, gRPC 6 (2 + 4 wire), governance 7, orchestration 5,
+evaluation 11, borrowed helpers 24, resource accounting 16,
+footprint accounting 15, temporal 17, event bus 17, mechanism
+simulation 19). Rust and Julia suites NOT re-run — nothing they
+touch changed. Spine totals now **698 passed, 0 failed**
+(Python 155/155, Rust 30/30, Julia 513/513).
+- Immutability (4): a step leaves the input state byte-identical
+  (`to_json()` equal before/after) and returns a genuinely new
+  state object carrying the tally while the input still has
+  empty globals; a full pipeline run leaves the input state
+  unchanged (JSON and deep-copied dict both equal) while the
+  result carries outcome "wheat"; mutating the dicts returned
+  by `nodes()` / `globals()` changes nothing (a fresh tally
+  still counts wheat 3 / rice 2, n1 still wheat weight 1);
+  the constructor deep-copies its inputs, so mutating the
+  caller's nodes dict afterwards does not change the state.
+- Determinism (2): running the same pipeline on the same
+  synthetic input twice gives byte-identical result JSON;
+  the tally is identical regardless of node insertion order
+  (forward vs reversed nodes map).
+- Hand-computed cases (4): the synthetic 5-node vote —
+  tally {"rice": 2, "wheat": 3}, shares rice 0.4 / wheat 0.6,
+  winner "wheat", tied ["wheat"], steps in DAG order
+  ["tally_preferences", "aggregate_outcome", "compute_shares"];
+  a weighted tie (wheat weight 2 vs rice 1+1) — tally
+  {"rice": 2, "wheat": 2}, shares 0.5 / 0.5, winner "rice"
+  (lexicographically smallest tied name), tied
+  ["rice", "wheat"]; an empty graph — tally {}, shares {},
+  outcome None, tied []; tallying an already-tallied state
+  recomputes the same tally (idempotent, same canonical JSON).
+- Pipeline compilation (3): transforms listed backwards still
+  compile to tally first, then the two tally-readers
+  alphabetically; a second transform writing `globals.tally`
+  is rejected at compile time with a ValueError naming the
+  write conflict; two transforms reading each other's writes
+  are rejected with a ValueError naming the cycle.
+- Governance (3): every result carries verified=false (as a
+  JSON boolean, not just falsy) and needs_human_decision=true,
+  and the final state's globals contain no "verified" key at
+  all; a JSON round-trip of the result keeps both flags and
+  the outcome "wheat" and licence "MIT"; edges and nodes
+  survive the pipeline unchanged.
+- Validation (3): an empty or missing preference is rejected;
+  weight 0, negative, or non-numeric is rejected; a state
+  round-trips through canonical JSON with equal value, equal
+  hash, and equal JSON.
+
+**Governance rule.** Outputs are model results, never verified
+plans. The flags are set by `run_pipeline()` on the result
+envelope, never by any transform, and transforms never see or
+touch them — there is no code path in this module that sets
+verified True, and no transform can promote a result. Results
+must still go through START's separate verify step and human
+approval like any other model output. The module does not
+touch self-edit or guardrail files, and the wire format stays
+JSON (states, results and run records are plain JSON-able
+dicts).
+
+**Limitations / known gaps.**
+- One mechanism only (plurality vote over a single preference
+  per node): no ranked-choice / Borda / approval voting, no
+  multi-round deliberation, no delegation or learning — those
+  would be further transforms on the same immutable-state
+  shape, not changes to it.
+- Single-threaded, in-memory, no persistence: no concurrency
+  control (concurrent pipeline runs on shared state objects
+  are safe only because states are immutable, but there is no
+  shared store), no cross-process delivery, no JAX / batched
+  sweeps over seeds — the source library's simulation scale
+  was deliberately not rebuilt.
+- The tie-break (lexicographically smallest name) is a
+  determinism choice, not a fairness claim: it is documented
+  in the code and tested, but a real collective decision would
+  need an explicit, human-approved tie rule rather than a
+  default.
+- Input validation covers node preferences/weights and edge
+  shape, but globals are an open dict: a transform reading a
+  globals key that no earlier transform wrote sees an empty
+  default (tally {} / shares {} / outcome None) rather than
+  an error. A pipeline that forgets its tally step therefore
+  reports "no outcome" instead of failing loudly.
+- `verified` on a result is a flag set by this module, not a
+  proof: the guarantee is only that this module always sets
+  it false and never lets a transform change it. The real
+  verify step + human approval still decide verification.

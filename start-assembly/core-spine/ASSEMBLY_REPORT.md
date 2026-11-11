@@ -9,7 +9,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 ## Headline
 
 - **Components: 21 total — 20 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 155/155 passed, Rust 30/30 passed, Julia 513/513 checks passed — 698 passed, 0 failed**
+- **Tests: Python 173/173 passed, Rust 40/40 passed, Julia 513/513 checks passed — 726 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
 - Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
@@ -45,6 +45,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | BehaviorTree.rs (node types + typed blackboard only) | ncrothers/behaviortree-rs | MIT (no version installed — nothing adopted) | assembled | **10/10 new Rust tests PASS** (Rust suite now 30/30) | Original Rust orchestration (Module 4): Sequence / Fallback / Inverter + Succeeder decorators / Action / Condition + typed blackboard, trees in JSON. No BehaviorTree.rs code copied; crate NOT a dependency. Verify is a hard gate — report refuses without a passed verify in the same run. See "Behavior-tree orchestration (BehaviorTree.rs rebuild, Module 4)" below |
 | Beam-Telemetry (event bus only) | beam-telemetry/telemetry | Apache-2.0 (no version installed — nothing adopted) | assembled | **17/17 new Python tests PASS** (Python suite now 136/136) | Original Python monitoring bus (Module 8): `adapters/event_bus.py`, stdlib only — execute/attach/detach, events carrying licence/provenance + verified flag + needs_human_decision. No Beam-Telemetry code copied; Erlang library NOT a dependency. Handlers never mark a result verified — promotion attempts are rejected and logged. See "Monitoring event bus (Beam-Telemetry rebuild, Module 8)" below |
 | Collective-Intelligence-Library (pure transforms only) | eq-network/Collective-Intelligence-Library | MIT (no version installed — nothing adopted) | assembled | **19/19 new Python tests PASS** (Python suite now 155/155) | Original Python mechanism simulation (Module 19): `adapters/mechanism_simulation.py`, stdlib only — effect-declared pure transforms over immutable graph state, pipeline compiled from the read/write DAG, plurality-vote mechanism over a synthetic 5-node graph. No Collective-Intelligence-Library code copied; JAX NOT a dependency. Every result carries verified=false and needs_human_decision=true. See "Mechanism simulation (Collective-Intelligence-Library rebuild, Module 19)" below |
+| Tumult (experiment pattern only) | mwigge/tumult | Apache-2.0 (no version installed — nothing adopted) | assembled | **18/18 new Python tests PASS + 10/10 new Rust tests PASS** (Python suite now 173/173, Rust suite now 40/40) | Original Rust + Python fault-injection test tooling (Module 24): `rust/src/fault_injection.rs` + `adapters/fault_injection.py`, stdlib only (+ serde_json in Rust) — hypothesis → baseline → fault → recovery measurement → evidence journal, three fault kinds (worker_crash, delayed_response, corrupted_value), same taxonomy and report shape in both halves. No Tumult code copied; the Tumult platform (daemon, UI, MCP server) NOT adopted. A fault run can never report PASS (Rust `RunOutcome` has no Pass variant) and never sets verified=true. See "Fault-injection experiments (Tumult rebuild, Module 24)" below |
 
 ## Exact versions installed (venv `.venv`, Python 3.12.3)
 
@@ -2318,3 +2319,208 @@ dicts).
   proof: the guarantee is only that this module always sets
   it false and never lets a transform change it. The real
   verify step + human approval still decide verification.
+
+## Fault-injection experiments (Tumult rebuild, Module 24)
+
+**Inspiration source and licence.** Tumult (mwigge/tumult,
+Apache-2.0 — verified in the sweep from its own LICENSE file;
+151,498 lines, per `source-audit/sweep/group-a.json`: a
+Rust-native chaos-engineering platform, v2.22.0, with a daemon,
+web UI, MCP server, ClickHouse/K8s integrations, OpenTelemetry
+export, and an optional AI tutor behind paid LLM keys). The
+sweep's verdict was INSPIRATION-REBUILD: rebuild the
+experiment pattern (hypothesis → baseline → fault → recovery
+measurement → evidence journal) as original small Rust/Python
+test tooling; the full platform is deferred as heavyweight and
+is NOT adopted. **No Tumult code was copied** — both halves
+below were written from the pattern description only. No new
+dependency was added (Rust half uses serde_json, already in
+the crate; Python half is stdlib only). No downloads, no real
+data — synthetic test data only.
+
+**What was rebuilt.** Two halves with the same fault taxonomy
+and the same report shape, so a result means the same thing
+in either language:
+- Fault taxonomy (identical strings both sides):
+  `worker_crash`, `delayed_response`, `corrupted_value`.
+- Report shape (identical keys): schema_version "1.0.0",
+  experiment_id, hypothesis, baseline (delivered_t 600 /
+  shortage_t 50 — the spine's known LP optimum), fault_kind,
+  injected, detected, outcome, verified, needs_human_decision,
+  recovery {restarted, restarts, timed_out, timeout_ms},
+  licence, provenance, synthetic. The Python report adds a
+  `result` field (the accepted candidate, or None when the
+  result was rejected); the Rust report is built from an
+  observed supervision outcome rather than a returned
+  candidate, so it has no `result` field — the one deliberate
+  difference, recorded in the Rust shape test.
+- Rust half, `rust/src/fault_injection.rs` (registered in
+  `rust/src/lib.rs`): `FaultKind` / `Fault` (crash; delay with
+  delay_ms + timeout_ms; corruption with expected_t +
+  received_t), `RunOutcome` with exactly two variants, `Fail`
+  and `Unknown` — there is NO `Pass` variant, so a fault run
+  cannot report a pass by construction, not by convention.
+  `FaultReport::for_crash` / `for_delay` / `for_corruption`
+  constructors; `delay_exceeds_timeout` (strict `>`) and
+  `value_is_corrupted` (any difference) as pure functions;
+  `EvidenceJournal`, append-only (no remove method), recording
+  the five phases hypothesis → baseline → fault_injected →
+  recovery_measured → verdict. Reports and journal serialise
+  to JSON via serde_json.
+- Python half, `adapters/fault_injection.py`: `make_fault()`
+  (validates kind and parameters), `run_experiment()` — the
+  runner injects the fault around a clean worker callable
+  (`synthetic_worker()` returns the baseline 600/50 candidate;
+  the worker is never asked to fail, delay, or corrupt itself).
+  Crash: the harness fails the first `fail_attempts` attempts
+  before calling the worker, restarting it each time up to
+  `max_restarts` restarts. Delay: the harness really sleeps
+  `delay_ms` and measures elapsed time against `timeout_ms`
+  with a monotonic clock. Corruption: the harness alters the
+  returned candidate's `delivered_t` in transit, then the
+  detector compares it against the baseline. `validate_outcome()`
+  accepts only "FAIL" / "UNKNOWN" and rejects "PASS";
+  `EvidenceJournal` with the same five phases, append-only
+  (entries returned as a deep copy, no delete/remove method).
+- Supervised-run behaviour under each fault:
+  - Crash: supervisor restarts the worker (Transient policy,
+    OneForOne). One crash → 1 restart, worker completes, outcome
+    UNKNOWN (recovered but unverified — its output still needs
+    the verify step). Budget exhausted → FAIL, and the
+    supervisor stops, which is observable (the permanent-failure
+    signal, never silent success).
+  - Delay: a response past the timeout is detected, timed out,
+    outcome UNKNOWN, and the result is NOT accepted (None).
+    A response inside the timeout is not detected — but the run
+    is still UNKNOWN, never PASS.
+  - Corruption: a value differing from the baseline is detected,
+    rejected (result None), outcome FAIL — never PASS. An
+    unaltered value is not detected, and the run is still
+    UNKNOWN.
+
+**What was checked — exact test cases and results.** 18 new
+Python tests in `tests/test_fault_injection.py` and 10 new Rust
+tests in `rust/tests/fault_injection_tests.rs`, all passing;
+full Python suite after this work **173/173, 0 failed** (was
+155/155; breakdown: statuses 10, optimisation 5, CVXPY 1,
+CPMpy 1, Arrow 1, gRPC 6 (2 + 4 wire), governance 7,
+orchestration 5, evaluation 11, borrowed helpers 24, resource
+accounting 16, footprint accounting 15, temporal 17, event bus
+17, mechanism simulation 19, fault injection 18); full Rust
+suite after this work **40/40, 0 failed** (was 30/30:
+behaviour tree 10, fault injection 10, spine 14, supervision
+6). Julia suite NOT re-run — nothing it touches changed.
+Spine totals now **726 passed, 0 failed** (Python 173/173,
+Rust 40/40, Julia 513/513).
+- Python crash (4): one crash restarts once, worker completes
+  with the 600/50 result, outcome UNKNOWN, verified False,
+  needs_human_decision True; 5 crashes against a budget of 2
+  restarts → FAIL with restarts 2 and result None; zero restart
+  budget → FAIL with 0 restarts; the injected crash happens
+  before the worker is called (a tracking worker sees only
+  attempt 3 after 2 injected crashes).
+- Python delay (3): 150 ms delay vs 100 ms timeout → detected,
+  timed out, outcome UNKNOWN, verified False, result None;
+  50 ms vs 100 ms → not detected, result accepted, outcome
+  still UNKNOWN, verified False; boundary is strict
+  (100 vs 100 not a timeout, 101 vs 100 is).
+- Python corruption (3): received 650 t vs baseline 600 t →
+  detected, FAIL, verified False, result None; the detector
+  itself is exact (600 vs 650 and 50 vs 51 corrupt, 600 vs 600
+  clean); received 600 t → not detected, outcome UNKNOWN,
+  verified False.
+- Python governance (4): `validate_outcome("PASS")` and
+  ("pass") raise ValueError; an unknown fault kind
+  ("drop_message") is rejected by both `make_fault()` and
+  `run_experiment()`; the injector's own source contains no
+  `verified = True` / `verified=True` / `"verified": True`
+  (only `"verified": False`); a report JSON round-trip keeps
+  verified False, outcome FAIL, fault_kind corrupted_value,
+  baseline 600/50, and exactly the 16 keys the Rust half
+  shares (plus `result`).
+- Python journal (4): five phases recorded in order
+  (hypothesis → baseline → fault_injected → recovery_measured
+  → verdict) with the verdict entry carrying
+  "outcome=UNKNOWN" and "verified=false"; all entries
+  verified False, append-only (mutating the returned copy
+  does not change the log; no delete/remove method; unknown
+  phase rejected); JSON round-trip preserves both entries and
+  verified False; bad experiment inputs rejected (empty id,
+  empty hypothesis, non-callable worker).
+- Rust crash (2, against the REAL ash-flare supervisor): a
+  worker failing once (FailNTimes(1), budget 5) → 2 attempts,
+  1 failure, 1 restart, completes, report UNKNOWN, verified
+  false; a worker always failing (budget 3) → 4 attempts, then
+  the supervisor stops (observed via `which_children()`
+  erroring), report FAIL with 3 restarts, verified false.
+- Rust delay (2, real `tokio::time::timeout`): 150 ms sleep vs
+  100 ms timeout → timeout fires, detected, timed_out, outcome
+  UNKNOWN, verified false; 50 ms vs 100 ms → arrives, not
+  detected, still UNKNOWN and unverified; strict boundary
+  (100 vs 100 not a timeout).
+- Rust corruption (1): detector exact (600 vs 650 corrupt,
+  50 vs 51 corrupt, 600 vs 600 clean); corrupted report FAIL
+  and verified false; clean report not detected, UNKNOWN,
+  verified false.
+- Rust cross-half / governance (4): taxonomy strings match the
+  Python half exactly ("worker_crash", "delayed_response",
+  "corrupted_value"); `RunOutcome` serialises as "FAIL" /
+  "UNKNOWN" and has no Pass variant; the journal records five
+  phases in order, all verified false, JSON round-trip keeps
+  verified false on all 5 entries, and `entries()` returns a
+  slice (append-only); the report JSON carries the same keys
+  as the Python half (minus `result`, documented above) with
+  verified false, outcome "FAIL", fault_kind
+  "corrupted_value", baseline 600/50; the injector's own
+  source (read via `include_str!`) contains no
+  "verified: true" / "verified = true" and does contain
+  "verified: false"; journal phase strings match the Tumult
+  pattern order.
+
+**Governance rule.** This is TEST-ONLY tooling: it never runs
+outside tests, never touches real plans, and never calls the
+verify step. Its output is a report about supervision
+behaviour, never a plan verdict. `verified` is always false on
+every report and journal entry — in Rust the constructors set
+it false and there is no setter and no code path writes true
+(pinned by a source-reading test); in Python it is the literal
+`False` in the report constructor and no function sets it True
+(pinned the same way). The outcome vocabulary itself excludes
+PASS: Rust `RunOutcome` has no Pass variant, and Python
+`validate_outcome()` rejects "PASS". Recovery never promotes
+anything: a worker that recovers after a restart reports
+UNKNOWN, not PASS, and a corrupted value is rejected and
+reported FAIL. The module does not touch self-edit or
+guardrail files, and the wire format stays JSON (reports and
+journal entries are plain JSON-able dicts).
+
+**Limitations / known gaps.**
+- Only three fault kinds (crash, delay, corrupt): the sweep
+  also named "drop a message" as a possible fault, which is
+  NOT implemented — a dropped-message fault would need a
+  message-passing harness to drop from, and none exists in
+  the spine yet; an unknown kind is rejected rather than
+  silently accepted.
+- The Python delay is a real sleep but the timeout decision
+  is made after the worker returns: the runner waits out the
+  full delay (tests use ≤150 ms) rather than cancelling the
+  worker mid-flight. A production timeout would need
+  cancellation; here the point under test is that a late
+  result is detected and not accepted.
+- The Rust half builds reports from observed supervision
+  outcomes (attempts/restarts from the ledger) rather than
+  driving the fault itself: the crash tests inject the fault
+  through the worker's behaviour (`FailNTimes` / `AlwaysFail`),
+  while the Python half injects through the runner. The two
+  halves therefore demonstrate the same taxonomy and report
+  shape, but the injection point differs — Rust via the
+  supervised worker, Python via the harness.
+- The baseline is fixed (delivered 600 t / shortage 50 t):
+  there is no per-experiment baseline override, so a fault
+  run against a different expected candidate cannot be
+  expressed without changing the module.
+- `verified` on a report is a flag set by this module, not a
+  proof: the guarantee is only that this module always sets
+  it false, never lets a fault run report PASS, and never
+  calls verify. The real verify step + human approval still
+  decide verification.

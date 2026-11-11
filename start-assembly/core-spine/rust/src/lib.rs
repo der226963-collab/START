@@ -13,10 +13,15 @@
 //!   of execution workers only (`supervision` module). Default
 //!   features only, distributed mode OFF by non-use, `Transient`
 //!   restart policy. Supervision is liveness, never verification.
+//! * Tumult experiment pattern (mwigge/tumult, Apache-2.0): rebuilt
+//!   as original fault-injection test tooling (`fault_injection`
+//!   module) — hypothesis → baseline → fault → recovery measurement
+//!   → evidence journal. Test-only; a fault run can never verify.
 
 pub mod behavior_tree;
 pub mod cedar_eval;
 pub mod egg_demo;
+pub mod fault_injection;
 pub mod proto;
 pub mod server;
 pub mod supervision;

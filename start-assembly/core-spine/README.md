@@ -66,6 +66,7 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
 | BehaviorTree.rs (node types + typed blackboard only) | 4 Reasoning & Planning | ncrothers/behaviortree-rs | MIT | Behaviour-tree orchestration of plan → verify → report | assembled 2026-11-11, 10/10 tests PASS; original Rust in `rust/src/behavior_tree.rs`, trees in JSON; no BehaviorTree.rs code copied, crate NOT a dependency; verify is a hard gate, report refuses without a passed verify in the same run (Rust 30/30) |
 | Beam-Telemetry (event bus only) | 8 Observation & Monitoring | beam-telemetry/telemetry | Apache-2.0 | Monitoring event bus: execute/attach/detach, events carrying licence/provenance + verified flag | assembled 2026-11-11, 17/17 tests PASS; original Python in `adapters/event_bus.py`, stdlib only; no Beam-Telemetry code copied, Erlang library NOT a dependency; handlers never mark a result verified — promotion attempts are rejected and logged (Python 136/136) |
 | Collective-Intelligence-Library (pure transforms only) | 19 Collective Intelligence | eq-network/Collective-Intelligence-Library | MIT | Mechanism simulation: effect-declared pure transforms over immutable graph state, pipeline compiled from the read/write DAG, plurality-vote mechanism | assembled 2026-11-11, 19/19 tests PASS; original Python in `adapters/mechanism_simulation.py`, stdlib only; no Collective-Intelligence-Library code copied, JAX NOT a dependency; every result verified=false, needs_human_decision=true (Python 155/155) |
+| Tumult (experiment pattern only) | 24 Resilience & Continuity | mwigge/tumult | Apache-2.0 | Fault-injection test tooling: hypothesis → baseline → fault → recovery measurement → evidence journal; three fault kinds (worker_crash, delayed_response, corrupted_value) | assembled 2026-11-11, 18/18 Python + 10/10 Rust tests PASS; original Rust in `rust/src/fault_injection.rs` and original Python in `adapters/fault_injection.py`, stdlib only; no Tumult code copied, Tumult platform (daemon, UI, MCP server) NOT adopted; a fault run can never report PASS and never sets verified=true (Python 173/173, Rust 40/40) |
 
 ## Layout
 
@@ -95,7 +96,14 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
   no code copied, no JAX; plurality vote over a synthetic
   5-node graph, pipeline compiled from the read/write DAG;
   every result verified=false, needs_human_decision=true;
-  19/19 tests PASS).
+  19/19 tests PASS),
+  `fault_injection.py` (fault-injection test tooling, Module 24 —
+  original Python, stdlib only, Tumult experiment pattern as
+  design inspiration only, no code copied, no Tumult platform;
+  hypothesis → baseline → fault → recovery measurement →
+  evidence journal; fault kinds worker_crash / delayed_response /
+  corrupted_value; outcome is always FAIL or UNKNOWN, verified
+  always false; 18/18 tests PASS).
 - `helpers/` — borrowed helpers, the ONLY vendored candidate code in
   this assembly: `borrowed_helpers.py` (Cognee `chunk_by_word` +
   `chunk_id`, Crawl4AI `normalize_url`, Apache-2.0 notices kept,
@@ -111,14 +119,17 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
   supervision of execution workers (`src/supervision.rs`,
   ash-flare 3.0.0, default features only, distributed OFF,
   `Transient` + `OneForOne`; supervision is liveness, never
-  verification), and behaviour-tree orchestration
+  verification), fault-injection test tooling
+  (`src/fault_injection.rs` — original Rust rebuild of the
+  Tumult experiment pattern, test-only, a fault run can never
+  report PASS and never sets verified=true), and behaviour-tree orchestration
   (`src/behavior_tree.rs` — original Rust rebuild of the
   BehaviorTree.rs node types + typed blackboard, trees in JSON;
   verify is a hard gate, report refuses without a passed verify
   in the same run). Run:
   `export PATH="$HOME/.cargo/bin:$PATH" && cargo test` (rustc 1.99.1)
-  — 30/30 PASS, including 4 wire tests against the real server
-  over a Unix socket, 6 supervision tests and 10 behaviour-tree tests. Run the server:
+  — 40/40 PASS, including 4 wire tests against the real server
+  over a Unix socket, 6 supervision tests, 10 behaviour-tree tests and 10 fault-injection tests. Run the server:
   `cargo run --bin start-tonic-server -- /tmp/tonic.sock` (Unix
   socket only, no TLS/auth — local only).
 - `julia-current/` — canonical Julia env (`Project.toml`, `Manifest.toml`, `spine.jl`, `spine_lp.jl`, `spine_ode.jl`, smokes, logs). Run it, not `julia/`. Networked domain model: `network_model.jl` (synthetic 3-node resource network + hand-derived closed form, plain DifferentialEquations — the independent check) and `network_dynamics.jl` (the same network run through NetworkDynamics.jl 1.3.0), tests `test_network_dynamics.jl` — 31/31 PASS.

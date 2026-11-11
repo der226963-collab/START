@@ -7,7 +7,10 @@ Never claim a test passed unless it ran here.
 
 import importlib.util
 import os
+import subprocess
 import sys
+import tempfile
+import time
 import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -179,6 +182,140 @@ class TestInteropGrpc(unittest.TestCase):
             "bound": 10, "bound_unit": "kg", "tolerance": 0})
         self.assertEqual(r2["status"], "UNKNOWN")
         self.assertEqual(r2["reason_code"], "INCOMPATIBLE_UNIT")
+
+
+@unittest.skipUnless(_has("grpc"), "grpcio not installed")
+@unittest.skipUnless(_has("grpc_tools"), "grpcio-tools not installed")
+class TestTonicServer(unittest.TestCase):
+    """Python grpcio client -> REAL Rust Tonic server, over the wire.
+
+    One `start-tonic-server` process is started for the class on a
+    Unix socket in a temp dir; every assertion below crosses that
+    socket as a real protobuf gRPC call. The server is the Rust
+    binary built by `cargo build --bin start-tonic-server` (built
+    on demand here if it is not already present).
+    """
+
+    _server = None
+    _tmp = None
+    _sock = None
+
+    @classmethod
+    def _binary(cls):
+        root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+        binary = os.path.join(
+            root, "rust", "target", "debug", "start-tonic-server")
+        if os.path.exists(binary):
+            return binary
+        env = dict(os.environ)
+        env["PATH"] = (os.path.expanduser("~/.cargo/bin") + ":"
+                       + env.get("PATH", ""))
+        with tempfile.TemporaryDirectory(
+                prefix="start-spine-cargo-tmp-", dir=root) as tmpdir:
+            # cc writes temp files to $TMPDIR; /tmp is a small tmpfs
+            # in this VM and has filled up during builds before.
+            env["TMPDIR"] = tmpdir
+            proc = subprocess.run(
+                ["cargo", "build", "--bin", "start-tonic-server"],
+                cwd=os.path.join(root, "rust"), env=env,
+                capture_output=True, text=True, timeout=900)
+        if proc.returncode != 0 or not os.path.exists(binary):
+            raise unittest.SkipTest(
+                "could not build start-tonic-server: "
+                + (proc.stderr or proc.stdout)[-2000:])
+        return binary
+
+    @classmethod
+    def setUpClass(cls):
+        binary = cls._binary()
+        cls._tmp = tempfile.TemporaryDirectory(
+            prefix="start-spine-tonic-test-")
+        cls._sock = os.path.join(cls._tmp.name, "tonic.sock")
+        log_path = os.path.join(cls._tmp.name, "server.log")
+        cls._log = open(log_path, "w")
+        cls._server = subprocess.Popen(
+            [binary, cls._sock], stdout=cls._log,
+            stderr=subprocess.STDOUT, text=True)
+        for _ in range(200):
+            if os.path.exists(cls._sock):
+                break
+            time.sleep(0.05)
+        else:
+            cls.tearDownClass()
+            raise AssertionError("Tonic server did not bind its socket")
+        # Bound is not yet serving: probe until a call succeeds.
+        last_err = None
+        for _ in range(100):
+            try:
+                interop.evaluate_remote_tonic({
+                    "schema_version": "1.0.0", "constraint_id": "probe",
+                    "operator": "<=", "value": 1, "value_unit": "t",
+                    "bound": 2, "bound_unit": "t", "tolerance": 0},
+                    cls._sock)
+                return
+            except Exception as exc:  # noqa: BLE001 - probe retry
+                last_err = exc
+                time.sleep(0.05)
+        cls.tearDownClass()
+        raise AssertionError(
+            f"Tonic server never answered a probe call: {last_err}")
+
+    @classmethod
+    def tearDownClass(cls):
+        if cls._server is not None:
+            cls._server.terminate()
+            try:
+                cls._server.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                cls._server.kill()
+            cls._server = None
+        if getattr(cls, "_log", None) is not None:
+            cls._log.close()
+        if cls._tmp is not None:
+            cls._tmp.cleanup()
+            cls._tmp = None
+
+    def _call(self, constraint_id, operator, value, unit, bound):
+        return interop.evaluate_remote_tonic({
+            "schema_version": "1.0.0", "constraint_id": constraint_id,
+            "operator": operator, "value": value, "value_unit": unit,
+            "bound": bound, "bound_unit": unit, "tolerance": 0},
+            self._sock)
+
+    def test_tonic_feasible_plan_passes(self):
+        # Feasible plan: 30,000 m3 water vs 40,000 m3 available,
+        # 18 ha land vs 20 ha available.
+        r = self._call("water", "<=", 30000, "m3", 40000)
+        self.assertEqual(r["status"], "PASS")
+        self.assertEqual(r["reason_code"], "OK")
+        r = self._call("land", "<=", 18, "ha", 20)
+        self.assertEqual(r["status"], "PASS")
+
+    def test_tonic_over_water_plan_fails(self):
+        # Over-water plan: 50,000 m3 against 40,000 m3 available.
+        r = self._call("water", "<=", 50000, "m3", 40000)
+        self.assertEqual(r["status"], "FAIL")
+        self.assertEqual(r["reason_code"], "OK")
+
+    def test_tonic_over_land_and_demand_shortfall_fail(self):
+        r = self._call("land", "<=", 25, "ha", 20)
+        self.assertEqual(r["status"], "FAIL")
+        # Demand shortfall: 550 t delivered vs 600 t demanded.
+        r = self._call("demand", ">=", 550, "t", 600)
+        self.assertEqual(r["status"], "FAIL")
+        # Demand met exactly: 600 t vs 600 t.
+        r = self._call("demand", ">=", 600, "t", 600)
+        self.assertEqual(r["status"], "PASS")
+
+    def test_tonic_incompatible_units_unknown(self):
+        r = interop.evaluate_remote_tonic({
+            "schema_version": "1.0.0", "constraint_id": "vol",
+            "operator": "<=", "value": 5, "value_unit": "L",
+            "bound": 10, "bound_unit": "kg", "tolerance": 0},
+            self._sock)
+        self.assertEqual(r["status"], "UNKNOWN")
+        self.assertEqual(r["reason_code"], "INCOMPATIBLE_UNIT")
+        self.assertNotEqual(r["status"], "PASS")
 
 
 class TestGovernance(unittest.TestCase):

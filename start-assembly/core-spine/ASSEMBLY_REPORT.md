@@ -34,7 +34,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | LangGraph | langchain-ai/langgraph | 1.2.20 | assembled | 1/1 (+ pipeline tests) | Real StateGraph plan → verify → report; report refuses without verification |
 | Cedar | cedar-policy/cedar | 4.14.1 (Rust) | assembled | 4/4 Rust | Real Cedar engine evaluates policies.cedar; Python adapter is a documented stub evaluator for the same two policies |
 | egg | egraphs-good/egg | 0.10.0 | assembled | 2/2 Rust | `(+ x 0) -> x`, `(* y 1) -> y` |
-| Tonic / gRPC | grpc/grpc-rust | tonic 0.12.3 (compiled, stub only) | stub_only | 3/3 Rust (stub evaluator) | No Tonic server run. Runnable gRPC here is Python grpcio 1.85.1 over a Unix socket (see below); 2/2 Python gRPC tests pass |
+| Tonic / gRPC | grpc/grpc-rust | tonic 0.14.9 (real server) | assembled | **14/14 Rust tests PASS** (4 Cedar, 2 egg, 3 stub evaluator, 4 wire + 1 server unit) + **4/4 new Python wire tests PASS** | Real Rust Tonic server (`rust/src/server.rs`, binary `start-tonic-server`) serves `proto/constraint_evaluation.proto` over a Unix socket; Python grpcio client calls it over the wire (PASS + FAIL cases). See "Real Tonic server (Module 21)" below |
 | Apache Arrow | apache/arrow | pyarrow 26.0.1 | assembled | 1/1 | Arrow round-trip lossless on constraint-result table |
 | DeepEval | confident-ai/deepeval | 4.3.3 | assembled | **11/11 Python tests PASS** (3 ExactMatch + 8 new) | Deterministic metrics only, no API key: ExactMatch scores [1,1,1,0], accuracy 0.75; PatternMatch (fullmatch) scores [1.0, 0.0, 0.0] on pattern `\d+ tonnes`; JsonCorrectness scores [1, 0, 0, 0, 0] against original schema PlanJsonSchema. Sweep correction: JsonCorrectness is key-free ONLY via eval_mode="system_one" — default construction builds an OpenAI model and raises without a key. LLM-as-a-judge metrics deferred, not run. See "DeepEval deterministic metrics (Module 22)" below |
 | ODYM | IndEcol/ODYM | 0.1.0, git pin 9792c23 | assembled | **16/16 Python tests PASS** | Stock-flow resource accounting (Module 17). Dependency only, no code copied; never published to PyPI, installed from git pinned to the sweep's audited commit (see item 9). Thin original adapter `adapters/resource_accounting.py` over a synthetic 1-site 2-crop material flow (3 years, balance PASS, residual 0.0 t). Outputs are model results only — verified=false, needs_human_decision=true. See "ODYM (Module 17)" below |
@@ -47,7 +47,10 @@ grpcio-tools 1.85.1, langgraph 1.2.20, cpmpy 1.1.1, cvxpy 1.9.3,
 highspy 1.15.1, deepeval 4.3.3, odym 0.1.0 (git pin 9792c23, not
 PyPI — see item 9). Full list in `requirements.txt`.
 Rust: rustc/cargo 1.99.1 (`~/.cargo/bin`, not on PATH);
-cedar-policy 4.14.1, egg 0.10.0, tonic 0.12.3 (see `rust/Cargo.lock`).
+cedar-policy 4.14.1, egg 0.10.0, tonic 0.14.9, tonic-prost 0.14.9,
+tonic-prost-build 0.14.9, prost 0.14.5, prost-build 0.14.5,
+tokio 1.54.1, tokio-stream 0.1.19, hyper-util 0.1.21, tower 0.5.3
+(see `rust/Cargo.lock`).
 Julia: 1.13.3 (release channel) at `/home/hatch/.juliaup/bin/julia`
 (juliaup, `~/.juliaup`); also 1.11.9 installed via `juliaup add 1.11`
 (invoked as `julia +1.11`). Working env is `julia-current/` (current
@@ -436,7 +439,10 @@ checking). Sweep clone HEAD c22b419 (2026-10-22), 11,254 lines,
   it was 59 tests; before Pymrio it was 75 tests.
 - Rust: `cargo test` in `rust/` → **9 passed, 0 failed**
   (4 Cedar, 2 egg, 3 Tonic-stub). Binary `target/debug/start-spine`
-  also prints PASS on all 5 checks, exit 0.
+  also prints PASS on all 5 checks, exit 0. (After the Module 21
+  work below: **14 passed, 0 failed** — the 9 above plus 4 Tonic
+  wire tests and 1 server unit test; binary
+  `target/debug/start-tonic-server` added.)
 - Runner: `.venv/bin/python examples/run_spine.py`
   → ALL ASSEMBLED ADAPTERS PASS (HiGHS/CVXPY/CPMpy all 600/50 t,
   Arrow round-trip, gRPC PASS, governance deny, orchestration PASS
@@ -605,9 +611,10 @@ Still unverified / not run:
   invented statuses) are NOT fixed by this assembly — the spine
   script is written to avoid repeating them and its checks pass, but
   the review-copy Julia module itself was not rewritten here.
-- Tonic (Rust) server: the crate compiles and the stub evaluator
-  passes, but no Tonic server was started and no Tonic client call
-  was made. The runnable gRPC here is Python grpcio.
+- Tonic (Rust) server: **done, see "Real Tonic server (Module 21)"
+  below** — real server over a Unix socket, Rust and Python wire
+  tests passing. The Python grpcio in-process server remains as the
+  Python-side gRPC round-trip.
 - DeepEval LLM-as-a-judge metrics (G-Eval, hallucination, answer
   relevancy): deferred, need an LLM API key, not run, not claimed.
 - Real (non-synthetic) data, real planning limits (ISSUE-01),
@@ -716,11 +723,12 @@ Still unverified / not run:
    each other — the ISSUE-04 fix this spine is built to support.
    (Julia now has a toolchain, so the Julia consuming test is
    unblocked once the decisions are made.)
-3. Run a real Tonic server (Rust) against the Python grpcio
-   client using `proto/constraint_evaluation.proto`, so the
-   Rust side of Module 21 is exercised over the wire, not just
-   as a stub evaluator — then re-run the full suite and update
-   this report.
+3. **Done 2026-11-11:** run a real Tonic server (Rust) against
+   the Python grpcio client using `proto/constraint_evaluation.proto`
+   over a Unix socket, upgrading tonic 0.12 → 0.14.9 — see
+   "Real Tonic server (Module 21)" below. Full suite after this
+   work: Python 102/102, Rust 14/14, Julia 268/268 — 384 passed,
+   0 failed.
 4. **Done 2026-11-11:** copy AlphaZero MCTS + game interface
    into `julia-current/planning-search/` (75/75 tests, optimum
    600/50 t found, candidate-only rule enforced, LP regression
@@ -825,6 +833,19 @@ Still unverified / not run:
     — 375 passed, 0 failed. Rust and Julia suites were NOT re-run:
     nothing they touch changed. Next in the sweep's order, when
     directed: the real Tonic server (tonic 0.12 → 0.14.x).
+14. **Done 2026-11-11:** real Tonic server (Module 21, sweep
+    top-10 item 3) — `rust/src/server.rs` + binary
+    `start-tonic-server`, tonic 0.12.3 → 0.14.9, real protobuf
+    codegen from `proto/constraint_evaluation.proto`, served over
+    a Unix socket and called over the wire by both the Rust
+    generated client (4 wire tests) and the Python grpcio client
+    (4 wire tests, PASS + FAIL cases). Full suite after this work:
+    Python 102/102, Rust 14/14, Julia 268/268 — 384 passed,
+    0 failed. Julia suite was NOT re-run: nothing it touches
+    changed. See "Real Tonic server (Module 21)" below. Next in
+    the sweep's order, when directed: ash-flare as a dependency
+    (audit the supervisor core first, default features only,
+    local supervision only, distributed mode OFF).
 
 ## DeepEval deterministic metrics (Module 22)
 
@@ -937,3 +958,158 @@ already-verified outputs.
 - Scores are 0/1 only for both new metrics; there is no partial
   credit, and the threshold is forced to 1 in strict mode
   (JsonCorrectness default).
+
+## Real Tonic server (Module 21)
+
+**Version adopted and what was checked.** tonic **0.14.9** (the
+highest 0.14.x at the time), prost **0.14.5**, tokio **1.54.1**,
+tonic-prost **0.14.9**, tonic-prost-build **0.14.9**,
+prost-build 0.14.5, h2 0.4.20, hyper 1.12.0, tokio-stream 0.1.19,
+hyper-util 0.1.21, tower 0.5.3 — all from `rust/Cargo.lock`.
+Checked before adopting: `cargo update` in a scratch crate
+resolved tonic 0.14.9 as the highest 0.14.x, and a scratch
+`cargo build` of tonic 0.14.9 + prost 0.14.5 + tokio 1.54.1
+compiled cleanly (41.9 s); a web search corroborated 0.14.9 as
+the latest 0.14.x (0.14.7 released 2026-10-27; 0.14.6, 2026-05-07;
+0.14.5, 2026-02-19). No fallback was needed: 0.14.x built here
+on the first attempt, so no 0.12.x fallback was taken. (Direct
+`curl` to the crates.io API returned HTTP 403 through the VM
+proxy, so the version was established by cargo's own registry
+resolution plus the web search, not by the API.) Two 0.14
+differences from the 0.12 setup were found by building, not by
+assuming: (1) `tonic_build::configure()` no longer exists in
+tonic-build 0.14 — codegen moved to the `tonic-prost-build`
+crate (`tonic_prost_build::configure().build_server(true)
+.build_client(true).compile_protos(...)`); (2) the generated
+code references `tonic_prost::ProstCodec`, so `tonic-prost`
+0.14.9 is a direct dependency, not just a transitive one.
+`rustc`/`cargo` 1.99.1; tonic 0.14's MSRV (1.88) is met.
+
+**What the server does.** `rust/src/server.rs` +
+`rust/src/bin/tonic_server.rs` (binary `start-tonic-server`,
+`start-tonic-server [SOCKET_PATH]`, default
+`/tmp/start-spine-tonic-<pid>.sock`). The service is code-
+generated by tonic-prost-build from START's own
+`proto/constraint_evaluation.proto` (`build.rs`; no candidate
+code copied, nothing vendored). For each `Evaluate` request the
+server runs the same logic as the Python adapter
+(`adapters/interop.py::_evaluate_local`): schema-version
+("1.0.0") and constraint-id validation, non-finite and
+incompatible-unit checks, then the `<=` / `>=` / `==`
+comparison with tolerance — and returns a real PASS / FAIL /
+UNKNOWN verdict with reason code (OK / NON_FINITE /
+UNKNOWN_UNIT / INCOMPATIBLE_UNIT / INVALID_REQUEST). The pure
+evaluator core is the pre-existing `tonic_stub::LocalEvaluator`
+(3/3 stub tests kept as unit tests of that logic); the stub is
+replaced as the server — the wire tests below hit the real
+server, not the evaluator in-process. `proto/` header comment
+updated: it no longer says the Tonic server is a stub.
+
+**Build note — protoc.** tonic-prost-build needs a `protoc`
+binary; none is installed on this machine and none was
+installed for this work. `rust/build.rs` resolves one in this
+order: `$PROTOC`, a `protoc` on `PATH`, else the `grpc_tools`
+package already in the spine venv
+(`../.venv/bin/python -m grpc_tools.protoc`, libprotoc 35.1)
+via a wrapper script written into `OUT_DIR`. That third route
+is the one used here (build prints a `cargo:warning` saying
+so). No system install was attempted and no `protoc` binary
+was vendored.
+
+**Exact wire test cases and verdicts.** Two independent wire
+paths, both over a Unix socket in a temp dir, both passing:
+- Rust generated client → Rust server
+  (`rust/tests/spine_tests.rs`, 4 tests, each starting the
+  real server and calling it with the generated
+  `ConstraintEvaluationClient` over the socket):
+  - water feasible, 30,000 m3 `<=` 40,000 m3 → **PASS** / OK.
+  - water over-limit, 50,000 m3 `<=` 40,000 m3 → **FAIL** / OK.
+  - land over-allocation, 25 ha `<=` 20 ha → **FAIL** / OK;
+    demand shortfall, 550 t `>=` 600 t → **FAIL** / OK;
+    demand met, 600 t `>=` 600 t → **PASS** / OK.
+  - incompatible units, 5 L `<=` 10 kg → **UNKNOWN** /
+    INCOMPATIBLE_UNIT (never PASS).
+  Plus 1 server unit test (no wire): schema version "2.0.0"
+  → UNKNOWN / INVALID_REQUEST.
+- Python grpcio client → Rust server
+  (`tests/test_spine.py::TestTonicServer`, 4 tests; the class
+  starts one `start-tonic-server` subprocess on a temp-dir
+  socket and calls `adapters/interop.evaluate_remote_tonic()`,
+  which generates real protobuf stubs from the .proto with
+  grpcio-tools at runtime):
+  - feasible plan, water 30,000 `<=` 40,000 m3 and land 18
+    `<=` 20 ha → **PASS** / OK (both calls).
+  - over-water plan, 50,000 `<=` 40,000 m3 → **FAIL** / OK.
+  - over-land 25 `<=` 20 ha → **FAIL**; demand shortfall
+    550 `>=` 600 t → **FAIL**; demand met 600 `>=` 600 t →
+    **PASS**.
+  - incompatible units, 5 L `<=` 10 kg → **UNKNOWN** /
+    INCOMPATIBLE_UNIT (never PASS).
+  Full suites after this work: Python **102/102**, Rust
+  **14/14** (was 9/9: +4 wire +1 unit), Julia 268/268
+  (NOT re-run — nothing Julia touches changed) — **384
+  passed, 0 failed**. The `start-spine` binary still prints
+  PASS on all 5 checks, exit 0.
+
+**Unix-socket reason.** Unix domain socket only, never TCP
+loopback: the VM's egress proxy intercepts TCP loopback and
+breaks gRPC HTTP/2 there (verified 2026-11-10 — grpcio client
+failed with "Failed parsing HTTP/2 ... frame type 101" while a
+raw socket showed correct HTTP/2). A Unix socket bypasses
+that. The Python in-process grpcio server in
+`adapters/interop.py` is unchanged and still works the same
+way; the new `evaluate_remote_tonic()` is the cross-language
+path to the Rust server.
+
+**The `:authority` interop catch (found by debugging, not
+assumed).** The first Python→Rust calls failed with
+`INTERNAL: Stream removed (RST_STREAM (Received RST_STREAM
+with error code 1))` while the Rust client worked and the
+server stayed alive with no panic. A Unix-socket tap proxy
+that dumped the HTTP/2 frames showed the server answering the
+complete, well-formed request with RST_STREAM PROTOCOL_ERROR
+(err 1) before the handler ran. Cause: grpcio's default
+`:authority` for a Unix-socket target is the percent-encoded
+socket path (e.g. `tmp%2Fstart-spine-tonic-123.sock`), and the
+Tonic/h2 server rejects that authority. Fix, verified:
+`grpc.default_authority` set to a plain hostname
+(`"localhost"` in `evaluate_remote_tonic()`). Pinned by
+experiment: `localhost` → PASS, `tonic-server` → PASS,
+`tmp%2Ftonic-smoke.sock` → same RST_STREAM error,
+`tmp/tonic-smoke.sock` (raw path) → same error. The Rust
+client is unaffected (it sends no such authority).
+
+**Governance rule.** The server evaluates; it does not verify
+a plan. A PASS from this server is one constraint check, not
+a verified plan: verified still means PASS *and* the separate
+verify step (constraint verify + JuMP/HiGHS LP cross-check)
+*and* human approval (`needs_human_decision=true`). The
+server never marks anything verified, never bypasses the
+verify step, and its verdict cannot approve anything on its
+own.
+
+**Limitations / known gaps.**
+- No TLS and no authentication on the Unix socket — local
+  only. Anyone who can reach the socket file can call
+  Evaluate, so the socket must live in a private directory
+  (the binary defaults to `/tmp` with a per-run name; tests
+  use a fresh temp dir). Do not expose the socket or put it
+  on a shared path.
+- Single unary RPC only (`Evaluate`); no streaming, no
+  health check, no reflection, no graceful shutdown — the
+  server runs until stopped (tests terminate the process).
+- The server does not convert units (value_unit must equal
+  bound_unit, same as the Python adapter); it does not
+  validate the plan as a whole — one constraint per call.
+- The Python test builds the Rust binary on demand if
+  `rust/target/debug/start-tonic-server` is missing (one
+  `cargo build --bin start-tonic-server`); if that build
+  fails the tests skip with the exact build error, they do
+  not fake a pass.
+- Build environment quirk, recorded for the next worker:
+  `/tmp` is a 512M tmpfs and was 100% full during this work
+  (other workers' audit dirs plus a probe target dir); `cc`
+  then fails with "No space left on device". Builds here
+  need `TMPDIR` pointed at roomy disk (the Python test does
+  this for its on-demand build). The probe target in /tmp was
+  removed after use.

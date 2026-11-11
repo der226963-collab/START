@@ -1,11 +1,11 @@
 // START core spine — constraint-evaluation service (proto3).
 // Mirrors interop/schemas/constraint-evaluation.schema.json (v1.0.0)
 // and constraint-evaluation-result.schema.json from the v0.3.2 review
-// copy. This is a wire contract only; the Tonic (Rust) server is a
-// stub in this assembly until a Rust toolchain run is verified, and
-// the Python grpcio server in adapters/interop.py is the runnable
-// local implementation. Status vocabulary is exactly
-// PASS, FAIL, UNKNOWN, NOT_CHECKED, INCOMPLETE.
+// copy. This is a wire contract only; the real Tonic (Rust) server
+// is in rust/src/server.rs (binary `start-tonic-server`, Unix
+// socket), and the Python grpcio server in adapters/interop.py is
+// the runnable local Python implementation. Status vocabulary is
+// exactly PASS, FAIL, UNKNOWN, NOT_CHECKED, INCOMPLETE.
 syntax = "proto3";
 
 package start.spine.v1;

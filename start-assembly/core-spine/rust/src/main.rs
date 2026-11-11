@@ -1,7 +1,7 @@
 //! start-spine binary: runs the Cedar and egg checks and prints
 //! one line per check. Exit code 0 only if every check passes.
-//! The Tonic service is a stub (see tonic_stub); this binary does
-//! not start a server.
+//! The real Tonic server lives in the separate `start-tonic-server`
+//! binary (see server.rs); this binary does not start a server.
 
 use start_core_spine::{cedar_eval, egg_demo};
 

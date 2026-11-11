@@ -1,22 +1,24 @@
-"""Interop adapter: Apache Arrow round-trip + gRPC stub/server.
+"""Interop adapter: Apache Arrow round-trip + gRPC servers.
 
 * Arrow: a constraint-result table (from adapters.statuses) is
   written to an in-memory Arrow table / IPC stream and read back.
   The round-trip must be lossless on constraint_id, status, verdict,
   actual/required values and unit. No data is sent anywhere.
-* gRPC: the .proto is in ../proto/constraint_evaluation.proto. If
-  grpcio is installed, `serve()` runs a real local in-process server
-  (port 0 = OS-assigned, localhost only) implementing Evaluate with
-  the same <= / >= / == logic as statuses.evaluate_le/ge, and
-  `evaluate_remote()` calls it. If grpcio is NOT installed, both
-  functions raise RuntimeError("grpcio not installed") and the
-  component is reported stub_only — the .proto alone is the stub.
-  The Tonic (Rust) side is a documented stub in rust/ (see
-  rust/src/main.rs); it is NOT claimed to run here unless cargo
-  test/build actually ran it.
+* gRPC: the .proto is in ../proto/constraint_evaluation.proto.
+  `serve()` / `evaluate_remote()` run the Python grpcio server
+  (in-process, Unix socket) implementing Evaluate with the same
+  <= / >= / == logic as statuses.evaluate_le/ge.
+  `evaluate_remote_tonic()` instead calls the REAL Rust Tonic
+  server (`start-tonic-server`, rust/src/server.rs) on a Unix
+  socket given by the caller, with real protobuf stubs generated
+  from the .proto by grpcio-tools. That is the cross-language wire
+  path: Python client -> Rust server -> real verdict.
+  If grpcio is NOT installed, the gRPC functions raise
+  RuntimeError("grpcio not installed").
 """
 
 import io
+import os
 
 from .statuses import ConstraintResult, InternalStatus
 
@@ -152,3 +154,94 @@ def evaluate_remote(request: dict) -> dict:
             _os.unlink(sock)
         except FileNotFoundError:
             pass
+
+
+_TONIC_STUBS = None
+
+
+def _load_tonic_stubs():
+    """Generate + import the protobuf stubs for the .proto once.
+
+    Uses grpcio-tools (`python -m grpc_tools.protoc`, bundled
+    libprotoc) into a fresh temp dir; no generated file is checked
+    in. Raises RuntimeError if grpcio-tools is not installed.
+    Returns (constraint_evaluation_pb2, constraint_evaluation_pb2_grpc).
+    """
+    global _TONIC_STUBS
+    if _TONIC_STUBS is not None:
+        return _TONIC_STUBS
+    import subprocess
+    import sys
+    import tempfile
+
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    outdir = tempfile.mkdtemp(prefix="start-spine-tonic-pb2-")
+    proc = subprocess.run(
+        [sys.executable, "-m", "grpc_tools.protoc",
+         "-I", os.path.join(root, "proto"),
+         "--python_out", outdir, "--grpc_python_out", outdir,
+         os.path.join(root, "proto", "constraint_evaluation.proto")],
+        capture_output=True, text=True, timeout=120)
+    if proc.returncode != 0:
+        raise RuntimeError(
+            "grpcio-tools protoc failed: " + (proc.stderr or proc.stdout))
+    sys.path.insert(0, outdir)
+    import constraint_evaluation_pb2 as pb2
+    import constraint_evaluation_pb2_grpc as pb2_grpc
+    _TONIC_STUBS = (pb2, pb2_grpc)
+    return _TONIC_STUBS
+
+
+def evaluate_remote_tonic(request: dict, socket_path: str) -> dict:
+    """Call the real Rust Tonic server over a Unix socket.
+
+    `socket_path` is the socket a `start-tonic-server` process is
+    listening on (the caller starts it; see tests/test_spine.py
+    TestTonicServer). `request` is the wire-contract dict
+    (schema_version "1.0.0", constraint_id, operator "<=" / ">=" /
+    "==", numeric value/bound, units, tolerance). Returns the same
+    dict shape as `_evaluate_local` / `evaluate_remote`.
+
+    Transport notes (verified 2026-11-11):
+    * Unix socket, never TCP: the VM's egress proxy intercepts TCP
+      loopback and breaks gRPC HTTP/2 there (verified 2026-11-10).
+    * The channel MUST set `grpc.default_authority` to a plain
+      hostname (here "localhost"). grpcio's default authority for a
+      Unix-socket target is the percent-encoded socket path
+      (e.g. `tmp%2Fstart-spine-tonic-123.sock`); the Tonic/h2
+      server rejects that `:authority` with RST_STREAM
+      PROTOCOL_ERROR (error code 1) before the handler ever runs —
+      reproduced with a socket-tap proxy that dumped the HTTP/2
+      frames, and confirmed fixed by the override (plain hostnames
+      `localhost` and `tonic-server` both work; the raw path
+      `tmp/tonic-smoke.sock` fails the same way).
+    * The verdict returned is one constraint check only. It does
+      NOT mark anything verified and does not bypass the verify
+      step or human approval.
+    """
+    try:
+        import grpc
+    except ImportError as exc:
+        raise RuntimeError("grpcio not installed: gRPC adapter is stub-only") from exc
+    pb2, pb2_grpc = _load_tonic_stubs()
+    channel = grpc.insecure_channel(
+        f"unix://{socket_path}",
+        options=(("grpc.default_authority", "localhost"),))
+    stub = pb2_grpc.ConstraintEvaluationStub(channel)
+    req = pb2.ConstraintRequest(
+        schema_version=request.get("schema_version", "1.0.0"),
+        constraint_id=request.get("constraint_id", ""),
+        operator=request.get("operator", ""),
+        value=float(request.get("value", 0.0)),
+        value_unit=request.get("value_unit", ""),
+        bound=float(request.get("bound", 0.0)),
+        bound_unit=request.get("bound_unit", ""),
+        tolerance=float(request.get("tolerance", 0.0)))
+    resp = stub.Evaluate(req, timeout=10)
+    return {"schema_version": resp.schema_version,
+            "constraint_id": resp.constraint_id,
+            "status": resp.status,
+            "normalized_value": resp.normalized_value,
+            "normalized_unit": resp.normalized_unit,
+            "reason_code": resp.reason_code,
+            "details": resp.details}

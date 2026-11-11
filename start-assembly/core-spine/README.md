@@ -53,7 +53,7 @@ Julia checks 268/268 passed, 0 failed (29 spine/smokes/AlphaZero +
 | LangGraph | 5 Orchestration | langchain-ai/langgraph | MIT | Stateful plan → verify → report graph | assembled |
 | Cedar | 2 Governance & Security | cedar-policy/cedar | Apache-2.0 | Formal authorisation policy engine | assembled (Rust) + Python stub evaluator |
 | egg | 4 Reasoning & Planning | egraphs-good/egg | MIT | E-graph symbolic rewrites | assembled (Rust) |
-| Tonic / gRPC | 21 Interoperability | grpc/grpc-rust | MIT | Contract-driven RPC | stub only (Rust); runnable gRPC is Python grpcio over a Unix socket |
+| Tonic / gRPC | 21 Interoperability | grpc/grpc-rust | MIT | Contract-driven RPC | assembled — real Rust server (tonic 0.14.9) over a Unix socket, called over the wire by Rust + Python clients (PASS + FAIL cases); Python grpcio in-process server also runnable |
 | Apache Arrow | 21 Interoperability | apache/arrow | Apache-2.0 | Zero-copy in-memory table sharing | assembled (pyarrow) |
 | DeepEval | 22 Evaluation & Learning | confident-ai/deepeval | Apache-2.0 | Evaluation framework | local non-LLM metrics only (ExactMatch, PatternMatch, JsonCorrectness — 11/11 tests PASS); JsonCorrectness is key-free only via eval_mode="system_one" (default construction needs an OpenAI key); LLM-as-judge deferred |
 | ODYM | 17 Resource Accounting | IndEcol/ODYM | MIT | Stock-flow resource accounting | assembled 0.1.0, git pin 9792c23 (never published to PyPI); dependency only, no code copied; adapter `adapters/resource_accounting.py`, 16/16 tests PASS; outputs are model results only (verified=false, needs_human_decision=true) |
@@ -79,8 +79,16 @@ Julia checks 268/268 passed, 0 failed (29 spine/smokes/AlphaZero +
   utilities only — NOT wired into any verify, governance, or decision
   path. Tests `tests/test_borrowed_helpers.py` — 24/24 PASS.
 - `tests/test_spine.py` — the test suite. Run: `.venv/bin/python -m unittest discover -s tests -v`
-- `rust/` — Cargo crate: real Cedar evaluation, egg rewrites, Tonic stub.
-  Run: `export PATH="$HOME/.cargo/bin:$PATH" && cargo test` (rustc 1.99.1).
+- `rust/` — Cargo crate: real Cedar evaluation, egg rewrites, real
+  Tonic server (`src/server.rs`, binary `start-tonic-server`,
+  tonic 0.14.9, prost 0.14.5, tokio 1.54.1; codegen from
+  `proto/constraint_evaluation.proto` via tonic-prost-build,
+  protoc from grpc_tools — see `rust/build.rs`). Run:
+  `export PATH="$HOME/.cargo/bin:$PATH" && cargo test` (rustc 1.99.1)
+  — 14/14 PASS, including 4 wire tests against the real server
+  over a Unix socket. Run the server:
+  `cargo run --bin start-tonic-server -- /tmp/tonic.sock` (Unix
+  socket only, no TLS/auth — local only).
 - `julia-current/` — canonical Julia env (`Project.toml`, `Manifest.toml`, `spine.jl`, `spine_lp.jl`, `spine_ode.jl`, smokes, logs). Run it, not `julia/`.
 - `julia-current/planning-search/` — standalone planning-search module
   (`PlanningSearch.jl`, copied `mcts.jl` + `game.jl` with MIT notices,

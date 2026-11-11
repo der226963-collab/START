@@ -8,8 +8,8 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 
 ## Headline
 
-- **Components: 17 total — 16 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 35/35 passed, Rust 9/9 passed, Julia 268/268 checks passed — 312 passed, 0 failed**
+- **Components: 18 total — 17 assembled, 1 stub-only, 0 blocked, 0 not run**
+- **Tests: Python 75/75 passed, Rust 9/9 passed, Julia 268/268 checks passed — 352 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
 - Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
@@ -37,12 +37,14 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | Tonic / gRPC | grpc/grpc-rust | tonic 0.12.3 (compiled, stub only) | stub_only | 3/3 Rust (stub evaluator) | No Tonic server run. Runnable gRPC here is Python grpcio 1.85.1 over a Unix socket (see below); 2/2 Python gRPC tests pass |
 | Apache Arrow | apache/arrow | pyarrow 26.0.1 | assembled | 1/1 | Arrow round-trip lossless on constraint-result table |
 | DeepEval | confident-ai/deepeval | 4.3.3 | assembled | 1/1 (+ local metric tests) | ExactMatchMetric only, no API key: scores [1,1,1,0], accuracy 0.75. LLM-as-a-judge metrics deferred, not run |
+| ODYM | IndEcol/ODYM | 0.1.0, git pin 9792c23 | assembled | **16/16 Python tests PASS** | Stock-flow resource accounting (Module 17). Dependency only, no code copied; never published to PyPI, installed from git pinned to the sweep's audited commit (see item 9). Thin original adapter `adapters/resource_accounting.py` over a synthetic 1-site 2-crop material flow (3 years, balance PASS, residual 0.0 t). Outputs are model results only — verified=false, needs_human_decision=true. See "ODYM (Module 17)" below |
 
 ## Exact versions installed (venv `.venv`, Python 3.12.3)
 
 numpy 2.5.4, scipy 1.18.1, pyarrow 26.0.1, grpcio 1.85.1,
 grpcio-tools 1.85.1, langgraph 1.2.20, cpmpy 1.1.1, cvxpy 1.9.3,
-highspy 1.15.1, deepeval 4.3.3. Full list in `requirements.txt`.
+highspy 1.15.1, deepeval 4.3.3, odym 0.1.0 (git pin 9792c23, not
+PyPI — see item 9). Full list in `requirements.txt`.
 Rust: rustc/cargo 1.99.1 (`~/.cargo/bin`, not on PATH);
 cedar-policy 4.14.1, egg 0.10.0, tonic 0.12.3 (see `rust/Cargo.lock`).
 Julia: 1.13.3 (release channel) at `/home/hatch/.juliaup/bin/julia`
@@ -321,14 +323,60 @@ notice kept and provenance in `helpers/PROVENANCE.md`:
   or decision path and cannot mark a plan verified, authorise
   anything, or change a verdict.
 
+## ODYM (Module 17) (added 2026-11-11)
+
+ODYM (Open Dynamic Material Systems Model, IndEcol/ODYM, MIT) as a
+dependency only — **no ODYM code was copied into this assembly**.
+Installed from git, pinned to the sweep's audited commit
+9792c23b1faced9515b425033694328aa8301c0f (2025-09-26), version
+0.1.0, because ODYM was never published to PyPI (item 9). The pin is
+recorded in `requirements.txt` as a direct reference
+(`odym @ git+https://github.com/IndEcol/ODYM@9792c23b...`) and was
+verified to round-trip through pip (`pip install --dry-run -r
+requirements.txt` resolves it). The commit was verified reachable
+with `git ls-remote` before installing; HEAD is not tracked.
+
+- Thin original adapter `adapters/resource_accounting.py`: builds a
+  small synthetic MFAsystem for the material stock-flow embodied in
+  the spine's 1-site 2-crop food system (fertiliser Environment ->
+  Field, harvest Field -> Storage, dispatch Storage ->
+  Environment, 3 years 2026–2028, unit t, one element "All"), with
+  field and storage net stock changes as part of the balance.
+  Synthetic numbers only, not a real region.
+- Balance check uses ODYM's own `MassBalance()` (inflows - outflows
+  - net stock change, per year/process/element) under the spine's
+  status rules: synthetic case PASS with residual exactly 0.0 t
+  (tolerance 1e-9 t); a deliberately unbalanced case (dispatch flow
+  removed) FAILs with residual 10.0 t; a missing system, an empty
+  system, and non-finite values are UNKNOWN, never PASS.
+- Cautions honoured: in-memory only — no ODYM Excel read/write
+  (xlwt/xlrd) is ever called; every collection is built fresh and
+  passed explicitly at construction, never MFAsystem's mutable
+  defaults (ProcessList=[], FlowDict={}) — a test proves two
+  independently built systems share no mutable state and do not
+  alias the constructor defaults.
+- Governance: ODYM computes accounts; its outputs are model results,
+  NOT verified plans. `accounts_to_dict()` returns plain JSON-able
+  data with verified=false and needs_human_decision=true, and the
+  accounts must still go through START's separate verify step.
+- Tests `tests/test_resource_accounting.py`: **16/16 PASS** —
+  dependency/version/pin, system build, balance PASS, ODYM
+  MassBalance zero everywhere, stock changes matching flow
+  differences, unbalanced FAIL (dispatch removed, 1 t stock error),
+  tolerance boundary, missing/empty/non-finite UNKNOWN,
+  governance flags, JSON-ability, explicit-arguments isolation.
+- Rust and Julia suites were not re-run for this change: nothing
+  they touch was modified. Python suite after this work: 75/75.
+
 ## Test results (verified by running them here)
 
 - Python: `.venv/bin/python -m unittest discover -s tests -v`
-  → **Ran 59 tests, OK** (11.6 s). Breakdown: statuses 10, SciPy
+  → **Ran 75 tests, OK** (7.1 s). Breakdown: statuses 10, SciPy
   optimisation 5, CVXPY 1, CPMpy 1, Arrow 1, gRPC 2, governance 7,
   orchestration 5, evaluation 3, borrowed helpers 24 (chunk_by_word 8,
   chunk_id 7, normalize_url 9 — including 16 upstream Crawl4AI cases
-  as subTests). Before the helpers were added the suite was 35 tests.
+  as subTests), resource accounting 16. Before the helpers were added
+  the suite was 35 tests; before ODYM it was 59 tests.
 - Rust: `cargo test` in `rust/` → **9 passed, 0 failed**
   (4 Cedar, 2 egg, 3 Tonic-stub). Binary `target/debug/start-spine`
   also prints PASS on all 5 checks, exit 0.
@@ -657,3 +705,33 @@ Still unverified / not run:
    - Run a real Tonic server against the Python grpcio client over a Unix socket, upgrading tonic 0.12 → 0.14.x (M21).
    - Add Pymrio as a pip dependency only, never copy, keeping the LGPL-3.0 notice and the library unmodified (M17).
    - Add ash-flare as a dependency, default features only and local supervision only, after auditing its supervisor core (M24).
+9. **Attempted 2026-11-11, BLOCKED — ODYM is not on PyPI:** the
+   sweep's top USE item said "pip install ODYM", but there is no
+   PyPI package named ODYM. `.venv/bin/pip install ODYM` (and
+   `odym`, pip is case-insensitive) fails with "ERROR: Could not
+   find a version that satisfies the requirement ODYM (from
+   versions: none) / ERROR: No matching distribution found for
+   ODYM", and https://pypi.org/pypi/ODYM/json returns HTTP 404.
+   The repo (IndEcol/ODYM) was never published to PyPI; GitHub
+   PR #9 added a setup.py to make it installable, and the
+   successor library is flodym (`pip install flodym`, an
+   adaptation of ODYM). No ODYM code was vendored or copied, no
+   dependency was added, requirements.txt is unchanged, and no
+   adapter or tests were written — the pip route is stopped, per
+   the task's stop condition. **Update 2026-11-11 — Eric chose the
+   git route:** ODYM 0.1.0 installed from git, pinned to the sweep's
+   audited commit 9792c23b1faced9515b425033694328aa8301c0f
+   (verified reachable with `git ls-remote` first; HEAD not
+   tracked), pin recorded in `requirements.txt`, thin original
+   adapter `adapters/resource_accounting.py` + 16/16 tests written,
+   adoption noted in LICENCES.md and README.md. The PyPI-blocked
+   finding above stands: there is still no PyPI package named ODYM.
+   Full suite after this work: Python 75/75, Rust 9/9, Julia
+   268/268 — 352 passed, 0 failed.
+10. **Done 2026-11-11:** ODYM from git (item 9, above) — 0.1.0
+    pinned to commit 9792c23, thin original adapter
+    `adapters/resource_accounting.py`, 16/16 tests PASS, LICENCES.md
+    and README.md updated. Next for Module 17, when directed:
+    Pymrio as a pip dependency only (LGPL-3.0, never copy), per the
+    sweep's ADJUST list; and DeepEval deterministic metrics
+    (PatternMatch, JsonCorrectness — no API key).

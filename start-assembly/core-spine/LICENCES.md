@@ -26,6 +26,7 @@ this file is a triage record, not legal advice.
 | Tonic / gRPC | grpc/grpc-rust | MIT | |
 | Apache Arrow | apache/arrow | Apache-2.0 | Used here via pyarrow. |
 | DeepEval | confident-ai/deepeval | Apache-2.0 | |
+| ODYM | IndEcol/ODYM | MIT (LICENSE.txt, Copyright (c) 2025 International Society for Industrial Ecology and Contributors) | **Added 2026-11-11 as a dependency only — no ODYM code copied.** Installed from git, pinned to commit 9792c23 (2025-09-26), version 0.1.0, because ODYM was never published to PyPI (`pip install ODYM` fails, pypi.org 404; see ASSEMBLY_REPORT.md item 9). Cautions: xlwt/xlrd are legacy Excel deps — the adapter never calls any ODYM Excel read/write (in-memory only); MFAsystem uses mutable default arguments (ProcessList=[], FlowDict={}) — the adapter always passes explicit, freshly built collections. Governance: ODYM computes accounts; outputs are model results, not verified plans — verified=false, needs_human_decision=true, through the separate verify step. |
 
 ## Not in this spine (and why their licence cautions do not apply here)
 

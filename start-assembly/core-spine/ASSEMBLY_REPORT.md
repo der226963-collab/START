@@ -9,7 +9,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 ## Headline
 
 - **Components: 21 total — 20 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 191/191 passed, Rust 40/40 passed, Julia 513/513 checks passed — 744 passed, 0 failed**
+- **Tests: Python 212/212 passed, Rust 40/40 passed, Julia 513/513 checks passed — 765 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
 - Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
@@ -47,6 +47,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | Collective-Intelligence-Library (pure transforms only) | eq-network/Collective-Intelligence-Library | MIT (no version installed — nothing adopted) | assembled | **19/19 new Python tests PASS** (Python suite now 155/155) | Original Python mechanism simulation (Module 19): `adapters/mechanism_simulation.py`, stdlib only — effect-declared pure transforms over immutable graph state, pipeline compiled from the read/write DAG, plurality-vote mechanism over a synthetic 5-node graph. No Collective-Intelligence-Library code copied; JAX NOT a dependency. Every result carries verified=false and needs_human_decision=true. See "Mechanism simulation (Collective-Intelligence-Library rebuild, Module 19)" below |
 | Tumult (experiment pattern only) | mwigge/tumult | Apache-2.0 (no version installed — nothing adopted) | assembled | **18/18 new Python tests PASS + 10/10 new Rust tests PASS** (Python suite now 173/173, Rust suite now 40/40) | Original Rust + Python fault-injection test tooling (Module 24): `rust/src/fault_injection.rs` + `adapters/fault_injection.py`, stdlib only (+ serde_json in Rust) — hypothesis → baseline → fault → recovery measurement → evidence journal, three fault kinds (worker_crash, delayed_response, corrupted_value), same taxonomy and report shape in both halves. No Tumult code copied; the Tumult platform (daemon, UI, MCP server) NOT adopted. A fault run can never report PASS (Rust `RunOutcome` has no Pass variant) and never sets verified=true. See "Fault-injection experiments (Tumult rebuild, Module 24)" below |
 | SciAgents Discovery (role pattern + 7-key proposal schema only) | lamm-mit/SciAgentsDiscovery | Apache-2.0 (no version installed — nothing adopted) | assembled | **18/18 new Python tests PASS** (Python suite now 191/191) | Original Python research roles (Module 9): `adapters/research_roles.py`, stdlib only — deterministic, rule-based Ontologist → Scientist → Critic over supplied text, proposal in exactly the 7-key schema (hypothesis, outcome, mechanisms, design_principles, unexpected_properties, comparison, novelty). No SciAgents code copied; the prototype (paid OpenAI key, Semantic Scholar API, GraphReasoning package) NOT adopted, no LLM, no new dependency. A proposal that fails the Critic is marked FAILED, never passed; no stage sets verified=true (verified=false, needs_human_decision=true on every result). See "Research roles (SciAgents rebuild, Module 9)" below |
+| Trace (feedback propagation only) | microsoft/Trace | MIT (no version installed — nothing adopted) | assembled | **21/21 new Python tests PASS** (Python suite now 212/212) | Original Python evaluation attribution (Module 22): `adapters/feedback_attribution.py`, stdlib only — a trace of steps (task, metric, input, component) and exact-match attribution of an evaluation result (e.g. a DeepEval deterministic metric score) back to the step that produced it; unknown, partial or ambiguous sources are reported UNATTRIBUTED, never guessed; cause is never inferred (`cause` always None). No Trace code copied; the tool (`trace-opt`, paid LLM API via LiteLLM) NOT adopted, no LLM, no optimiser, no new dependency. The verified flag is carried from the result handed in, verbatim, never set here; needs_human_decision is always true. See "Feedback attribution (Trace rebuild, Module 22)" below |
 
 ## Exact versions installed (venv `.venv`, Python 3.12.3)
 
@@ -2697,3 +2698,205 @@ critiques and pipeline results are plain JSON-able dicts).
   proof: the guarantee is only that this module always sets
   it false and never calls verify. The real verify step +
   human approval still decide verification.
+
+## Feedback attribution (Trace rebuild, Module 22)
+
+**Inspiration source and licence.** Trace / Microsoft
+(microsoft/Trace, MIT — verified in the sweep from the repo's
+own LICENSE file, Copyright (c) Microsoft Corporation;
+10,917 lines of Python in `opto/trace/` (nodes, modules,
+containers, broadcast, propagators, operators) and
+`opto/optimizers/` (OptoPrime, OptoPrimeMulti, TextGrad,
+OPRO), last commit 2025-08-14, per
+`source-audit/sweep/group-f.json`: a research implementation
+of the Trace paper (arXiv 2406.16218), an AutoDiff-like tool
+that optimises AI systems end-to-end with general feedback —
+numerical rewards, natural-language text, compiler errors —
+capturing execution traces, propagating feedback back through
+them, and rewriting prompts, code or parameters with
+optimisers, e.g. OptoPrime learning code that runs 1.3x
+faster). The sweep's verdict was DEFER: every optimisation
+step needs a paid LLM API via LiteLLM, the project is
+inactive since 2025-08 (authors no longer at Microsoft), and
+an optimiser that rewrites prompts or code has no fencing
+from governance, verification or self-edit files — an LLM
+rewriting the rules it is judged by would collapse the
+Planning / Evaluation / Verification / Governance trust
+boundary. So the whole tool is NOT adopted: no dependency, no
+`trace-opt` install, and **no Trace code was copied** — the
+module below was written from the design idea only
+(trace-based feedback propagation: recording which step of a
+plan's execution a failed verify or a bad score belongs to).
+No new dependency was added (stdlib only), no LLM, no paid
+API, no downloads, no real data — synthetic test data only.
+The sibling Module 22 candidate DeepEval is already assembled
+as a dependency for its deterministic metrics
+(`adapters/evaluation.py`); this module accepts a DeepEval
+deterministic metric score (ExactMatch, PatternMatch,
+JsonCorrectness) as an evaluation result, but it does not
+import or call DeepEval — the score is supplied by the caller.
+
+**What was rebuilt.** Original Python in
+`adapters/feedback_attribution.py` (stdlib only):
+- Trace, `new_trace(trace_id)` + `record_step(trace,
+  step_id, task_id, metric, input_id, component,
+  output_id=None)`: an ordered record of the steps that
+  produced the outputs being evaluated. Each step names the
+  task it belongs to, the metric that will judge it, the input
+  it ran on, and the component that produced it (for example
+  `"optimisation"` or `"planning-search"`). Duplicate step ids
+  are rejected with `ValueError` (two steps with one id would
+  make attribution ambiguous by construction); empty ids are
+  rejected the same way.
+- Evaluation result, `make_evaluation_result(task_id, metric,
+  input_id, score, threshold=1.0, verified=False)`: a plain
+  dict with `score` in [0, 1] (or `None` when no score was
+  produced) and `threshold`, the score at or above which the
+  result passes (default 1.0, exact-match semantics — any
+  miss fails). `passed` is `score is not None and score >=
+  threshold`; `status` is `"PASS"`, `"FAIL"` or `"UNKNOWN"`
+  (no score). Scores and thresholds outside [0, 1] raise
+  `ValueError` rather than being silently rescaled.
+  `is_failure(result)` is true only for status `"FAIL"` — a
+  missing score is missing evidence, not a failed check.
+- Attribution, `attribute(result, trace)`: propagates the
+  feedback back to its source by EXACT match on all three
+  keys at once — task, metric and input — against the steps
+  recorded in the trace. Exactly one matching step ->
+  ATTRIBUTED, naming that step (`step_id`, `component`,
+  `output_id`); no matching step -> UNATTRIBUTED, with
+  `step_id`/`component`/`output_id` all `None` and a reason
+  stating which keys found no step; more than one matching
+  step -> UNATTRIBUTED, with a reason stating how many steps
+  matched (the module never picks one of several identical
+  candidates arbitrarily); a result missing any of task,
+  metric or input -> UNATTRIBUTED, naming the missing key (a
+  partial key never attributes — a task-plus-metric match
+  with a different input is not the same source). Attributing
+  a failure to a step is not blaming that step: it says only
+  that the output judged by this score came from that step.
+- Batch, `propagate_feedback(results, trace)`: attributes a
+  list of results in order and returns an envelope with the
+  per-result attributions plus a hand-checkable summary
+  (total, failures, attributed, unattributed,
+  attributed failures, unattributed failures). Passing
+  results are attributed the same way as failing ones when
+  their source is known — attribution identifies a source,
+  it does not only fire on failure — but the feedback for a
+  passing result states there is no failure to propagate.
+- Synthetic example, `synthetic_trace()` (3 steps over the
+  spine's food-planning LP: `s1` food-lp / exact-match /
+  delivered-tonnes / optimisation / delivered-600t, `s2`
+  food-lp / exact-match / shortage-tonnes / optimisation /
+  shortage-50t, `s3` food-lp / pattern-match /
+  delivered-tonnes / evaluation / pattern-delivered),
+  `synthetic_failing_result()` (exact-match on
+  delivered-tonnes, score 0.0 against threshold 1.0, FAIL)
+  and `synthetic_passing_result()` (exact-match on
+  shortage-tonnes, score 1.0 against threshold 1.0, PASS).
+
+**What was checked — exact test cases and results.** 21 new
+Python tests in `tests/test_feedback_attribution.py`, all
+passing; full Python suite after this work **212/212, 0
+failed** (was 191/191; breakdown adds feedback attribution
+21). Rust and Julia suites NOT re-run — nothing they touch
+changed. Spine totals now **765 passed, 0 failed** (Python
+212/212, Rust 40/40, Julia 513/513).
+- Trace recording (3): synthetic trace has the 3 steps in
+  order with the fields above (s1 component optimisation,
+  output delivered-600t; s3 metric pattern-match, component
+  evaluation), trace verified False and
+  needs_human_decision True; duplicate step_id `s1` raises
+  ValueError and leaves 3 steps; empty ids and a non-trace
+  dict raise ValueError.
+- Evaluation result (4): failing result (score 0.0,
+  threshold 1.0) is status FAIL, passed False, is_failure
+  True, verified False; passing result is PASS; a partial
+  score 0.6 passes threshold 0.5 and fails threshold 1.0;
+  score None is UNKNOWN, passed False, not a failure;
+  scores 1.5 / -0.1, threshold 2.0 and score True raise
+  ValueError.
+- Attributing a failure (4): the hand-computed failing
+  result attributes to step `s1` (component optimisation,
+  output delivered-600t, task food-lp, metric exact-match,
+  input delivered-tonnes, score 0.0, threshold 1.0,
+  is_failure True, feedback naming s1 and 0.0); cause is
+  always None and cause_inferred always False, feedback
+  contains "cause not inferred" and no causal "because";
+  the passing result attributes to `s2` with "no failure to
+  propagate"; a pattern-match result on the same task and
+  input as s1 attributes to `s3` (evaluation), proving the
+  metric distinguishes steps on the same input.
+- Unattributed, never guessed (4): unknown task ->
+  UNATTRIBUTED, step/component/output all None, is_failure
+  still True, cause None; right task and metric with wrong
+  input ("water-tonnes") -> UNATTRIBUTED, reason naming the
+  input (no attribution to s1); result with input_id deleted
+  -> UNATTRIBUTED, reason naming input_id; two steps with
+  different ids but the same task/metric/input -> UNATTRIBUTED
+  with reason "2 steps" (no arbitrary pick).
+- Verified flag carried (3): verified False carried
+  unchanged; a result arriving with verified set carries it
+  through attribution unchanged (step s1, verified True,
+  needs_human_decision still True); a result with the flag
+  deleted defaults to verified False.
+- Batch propagation (2): [failing s1, passing s2, failing
+  unknown task] -> summary exactly {total 3, failures 2,
+  attributed 2, unattributed 1, attributed_failures 1,
+  unattributed_failures 1}, step ids [s1, s2, None],
+  envelope verified False; empty list -> all-zero summary;
+  non-list results and non-dict result raise ValueError.
+- Source pin (1): the module source contains no
+  "verified=True" / "verified = True" / '"verified": True',
+  does contain the carry line `carried_verified =
+  bool(result.get("verified", False))` and `"verified":
+  carried_verified`, and imports neither openai, requests,
+  litellm, opto nor trace.
+
+**Governance rule.** The verified flag is CARRIED, never
+set. `attribute()` copies the flag from the evaluation
+result it was handed, verbatim
+(`bool(result.get("verified", False))`); a result arriving
+without the flag is treated as unverified, and no code path
+in this module writes the flag affirmatively — pinned by the
+source-reading test above. A carried affirmative flag is a
+claim from outside this module, not a verdict of this module:
+`needs_human_decision` is always `True` on every result this
+module produces, including one carrying an affirmative flag,
+and the trace record itself and the `propagate_feedback()`
+envelope are new records made here, so they carry the flag as
+False. This module NEVER invents a cause: every attribution
+carries `cause` as `None` and `cause_inferred` as `False`,
+and the `feedback` string states only observed facts (score,
+threshold, attributed step or unattributed reason) — never
+why the score was low or what should change. This module
+never calls verify, never certifies an output, and never
+touches self-edit or guardrail files; the wire format stays
+JSON (traces, results, attributions and envelopes are plain
+JSON-able dicts).
+
+**Limitations / known gaps.**
+- Attribution is key equality, not provenance: a step is
+  identified only by (task, metric, input) strings. If two
+  genuinely different executions share all three keys, they
+  are indistinguishable here and the result is reported
+  unattributed as ambiguous — the module cannot tell them
+  apart, and it says so rather than guessing.
+- The module records no execution order beyond step
+  insertion order and no dependency between steps: it
+  attributes a score to the step that produced the judged
+  output, not to an upstream step that may have caused the
+  failure. Propagating blame upstream would be inventing a
+  cause, which this module refuses to do.
+- Scores are trusted as given: the module checks a score is
+  a number in [0, 1] but does not recompute it and does not
+  check it against the metric named — a caller supplying a
+  PatternMatch score under the label "exact-match" would be
+  attributed under that label. Score provenance stays the
+  caller's responsibility (the DeepEval adapter is the
+  existing place where scores are actually computed).
+- `verified` on a carried-affirmative attribution is a flag
+  copied from outside, not a proof: the guarantee is only
+  that this module never sets it and always still requires
+  a human decision. The real verify step + human approval
+  still decide verification.

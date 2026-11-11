@@ -68,6 +68,7 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
 | Collective-Intelligence-Library (pure transforms only) | 19 Collective Intelligence | eq-network/Collective-Intelligence-Library | MIT | Mechanism simulation: effect-declared pure transforms over immutable graph state, pipeline compiled from the read/write DAG, plurality-vote mechanism | assembled 2026-11-11, 19/19 tests PASS; original Python in `adapters/mechanism_simulation.py`, stdlib only; no Collective-Intelligence-Library code copied, JAX NOT a dependency; every result verified=false, needs_human_decision=true (Python 155/155) |
 | Tumult (experiment pattern only) | 24 Resilience & Continuity | mwigge/tumult | Apache-2.0 | Fault-injection test tooling: hypothesis → baseline → fault → recovery measurement → evidence journal; three fault kinds (worker_crash, delayed_response, corrupted_value) | assembled 2026-11-11, 18/18 Python + 10/10 Rust tests PASS; original Rust in `rust/src/fault_injection.rs` and original Python in `adapters/fault_injection.py`, stdlib only; no Tumult code copied, Tumult platform (daemon, UI, MCP server) NOT adopted; a fault run can never report PASS and never sets verified=true (Python 173/173, Rust 40/40) |
 | SciAgents Discovery (role pattern + 7-key proposal schema only) | 9 Multidisciplinary Intelligence | lamm-mit/SciAgentsDiscovery | Apache-2.0 | Research roles: deterministic, rule-based Ontologist → Scientist → Critic over supplied text; proposal in exactly the 7-key schema (hypothesis, outcome, mechanisms, design_principles, unexpected_properties, comparison, novelty) | assembled 2026-11-11, 18/18 tests PASS; original Python in `adapters/research_roles.py`, stdlib only; no SciAgents code copied, prototype (paid OpenAI key, Semantic Scholar API, GraphReasoning package) NOT adopted, no LLM; a proposal that fails the Critic is marked FAILED, never passed; no stage sets verified=true (Python 191/191) |
+| Trace (feedback propagation only) | 22 Evaluation & Learning | microsoft/Trace | MIT | Evaluation attribution: given an evaluation result (e.g. a DeepEval deterministic metric score), propagate the feedback back to the step that produced it — which task, which metric, which input — by exact match on all three; unknown, partial or ambiguous sources are reported UNATTRIBUTED, never guessed, and a cause is never invented | assembled 2026-11-11, 21/21 tests PASS; original Python in `adapters/feedback_attribution.py`, stdlib only; no Trace code copied, `trace-opt` tool (paid LLM API via LiteLLM, optimiser rewriting prompts/code) NOT adopted, no LLM; the verified flag is carried from the result handed in, verbatim, never set here; needs_human_decision always true (Python 212/212) |
 
 ## Layout
 
@@ -114,7 +115,18 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
   design_principles / unexpected_properties / comparison /
   novelty; a proposal that fails the Critic is marked FAILED;
   verified always false, needs_human_decision always true;
-  18/18 tests PASS).
+  18/18 tests PASS),
+  `feedback_attribution.py` (feedback attribution, Module 22 —
+  original Python, stdlib only, Trace feedback-propagation
+  idea as design inspiration only, no code copied, no
+  `trace-opt`, no LLM, no optimiser; trace of steps with
+  task / metric / input / component, exact-match attribution
+  of an evaluation result to the step that produced it;
+  unknown, partial or ambiguous sources reported
+  UNATTRIBUTED, never guessed; cause never inferred
+  (`cause` always None); verified flag carried from the
+  result handed in, verbatim, never set here;
+  needs_human_decision always true; 21/21 tests PASS).
 - `helpers/` — borrowed helpers, the ONLY vendored candidate code in
   this assembly: `borrowed_helpers.py` (Cognee `chunk_by_word` +
   `chunk_id`, Crawl4AI `normalize_url`, Apache-2.0 notices kept,

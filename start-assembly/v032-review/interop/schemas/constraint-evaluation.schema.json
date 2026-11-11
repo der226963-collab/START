@@ -1,0 +1,83 @@
+{
+  "$id": "https://start.invalid/schemas/constraint-evaluation.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Canonical version is 1.0.0 (interop/SCHEMA_VERSION). schema_version is a pattern, not a const, so the schema itself accepts any same-major 1.x.y version per interop/CONTRACT_VERSIONING.md (ISSUE-09/10 fix, 2026-11-11); the previous const \"1.0.0\" contradicted the same-major acceptance in the code.",
+  "additionalProperties": false,
+  "else": {
+    "required": [
+      "bound"
+    ]
+  },
+  "if": {
+    "properties": {
+      "operator": {
+        "const": "range"
+      }
+    },
+    "required": [
+      "operator"
+    ]
+  },
+  "properties": {
+    "bound": {
+      "type": "number"
+    },
+    "bound_high": {
+      "type": "number"
+    },
+    "bound_low": {
+      "type": "number"
+    },
+    "bound_unit": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "constraint_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "context": {
+      "additionalProperties": true,
+      "type": "object"
+    },
+    "operator": {
+      "enum": [
+        "<=",
+        ">=",
+        "==",
+        "range"
+      ]
+    },
+    "schema_version": {
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$"
+    },
+    "tolerance": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "value": {
+      "type": "number"
+    },
+    "value_unit": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "constraint_id",
+    "operator",
+    "value",
+    "value_unit",
+    "bound_unit",
+    "tolerance"
+  ],
+  "then": {
+    "required": [
+      "bound_low",
+      "bound_high"
+    ]
+  },
+  "title": "START Constraint Evaluation Request",
+  "type": "object"
+}

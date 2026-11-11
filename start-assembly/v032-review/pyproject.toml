@@ -1,0 +1,9 @@
+[project]
+name = "start-planning-core"
+version = "0.3.2"
+description = "Domain-independent deterministic planning prototype with a food pilot"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.unittest]
+# Tests use the Python standard library unittest runner.

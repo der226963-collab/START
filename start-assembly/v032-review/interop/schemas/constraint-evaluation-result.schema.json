@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://start.invalid/schemas/constraint-evaluation-result.schema.json",
+  "$comment": "Canonical version is 1.0.0 (interop/SCHEMA_VERSION). schema_version is a pattern, not a const, so the schema itself accepts any same-major 1.x.y version per interop/CONTRACT_VERSIONING.md (ISSUE-09/10 fix, 2026-11-11); the previous const \"1.0.0\" contradicted the same-major acceptance in the code. ISSUE-52/53 (2026-11-11): reason_code gains UNSUPPORTED_MAJOR_VERSION (already emitted by Rust and Julia for a major mismatch) and UNSUPPORTED_OPERATOR (Rust and Julia; Python raises ValueError for a bad operator at its boundary instead). ISSUE-53 definition of normalized_*: normalized_value is the request value converted into bound_unit (the constraint's unit), e.g. 0.008 m3 against a 10 L bound normalises to 8.0, NOT an echo of the input value; normalized_unit is the unit normalized_value is expressed in — always bound_unit when normalized_value is present, null otherwise; both are null when evaluation never reached a comparison.",
+  "title": "START Constraint Evaluation Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "constraint_id", "status", "normalized_value", "normalized_unit", "reason_code"],
+  "properties": {
+    "schema_version": {"pattern": "^1\\.[0-9]+\\.[0-9]+$"},
+    "constraint_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["PASS", "FAIL", "UNKNOWN", "NOT_CHECKED", "INCOMPLETE"]},
+    "normalized_value": {"type": ["number", "null"]},
+    "normalized_unit": {"type": ["string", "null"]},
+    "reason_code": {"enum": ["OK", "NON_FINITE", "UNKNOWN_UNIT", "INCOMPATIBLE_UNIT", "INVALID_REQUEST", "UNSUPPORTED_MAJOR_VERSION", "UNSUPPORTED_OPERATOR"]},
+    "details": {"type": "string"}
+  }
+}

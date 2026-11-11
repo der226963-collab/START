@@ -1,0 +1,17 @@
+name = "STARTPlanning"
+uuid = "c66db2a8-12c4-4817-bf56-e9079d279342"
+version = "0.1.0"
+authors = ["START contributors"]
+
+[deps]
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+
+[compat]
+JSON = "1.13.4"
+julia = "1.9"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

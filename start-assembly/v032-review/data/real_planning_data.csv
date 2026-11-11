@@ -1,0 +1,59 @@
+indicator,year,value,unit,source,licence_or_status,note
+world_population,2024,8.2,billion people,UN World Population Prospects 2024,UN publication,Peak about 10.3 billion in mid-2080s in same projection
+world_population_peak_projection,2080s,10.3,billion people,UN World Population Prospects 2024,UN publication,Projection not a fact
+global_food_supply_dietary_energy,2022,2985,kcal per capita per day,FAO Food Balance Sheets 2010-2022,FAO CC-BY-4.0 via FAOSTAT,Supply not intake; average hides distribution
+global_food_supply_dietary_energy,2023,3000,kcal per capita per day,FAO Food Balance Sheets 2010-2023,FAO CC-BY-4.0 via FAOSTAT,Historic milestone crossed in 2023; value is milestone not exact to 1 kcal
+global_primary_crops_production,2023,9900,million tonnes,FAO FAOSTAT Analytical Brief 96 2010-2023,CC-BY-4.0,Primary crops total
+global_cereals_production,2023,3100,million tonnes,FAO FAOSTAT Analytical Brief 96 2010-2023,CC-BY-4.0,Leading primary crop group
+global_sugar_crops_production,2023,2300,million tonnes,FAO FAOSTAT Analytical Brief 96 2010-2023,CC-BY-4.0,Rounded from brief figure
+global_vegetables_production,2023,1200,million tonnes,FAO FAOSTAT Analytical Brief 96 2010-2023,CC-BY-4.0,Rounded from brief figure
+global_oil_crops_production,2023,1200,million tonnes,FAO FAOSTAT Analytical Brief 96 2010-2023,CC-BY-4.0,Rounded from brief figure
+global_fruit_production,2023,1000,million tonnes,FAO FAOSTAT Analytical Brief 96 2010-2023,CC-BY-4.0,Rounded from brief figure
+global_roots_and_tubers_production,2023,900,million tonnes,FAO FAOSTAT Analytical Brief 96 2010-2023,CC-BY-4.0,Rounded from brief figure
+renewable_share_of_electricity,2023,30,percent,Our World in Data via Ember Global Electricity Review,OWID CC BY,Just over 30 percent in 2023
+renewable_share_of_primary_energy,2023,14.6,percent,Energy Institute Statistical Review of World Energy 2024,Secondary source reporting EI,Excludes some accounting differences; electricity share is higher than primary energy share
+renewable_capacity_added,2023,510,GW,IEA Renewables 2023,IEA report,Solar about three quarters of additions
+global_co2_per_capita,2023,4.7,tonnes per person,Our World in Data CO2 dataset via Global Carbon Project,OWID CC BY,Fossil CO2 per capita; just below 5 tonnes for over a decade in OWID summary
+global_steel_production,2023,1892,million tonnes,UN SDSN Iron and Steel brief citing IEA/World Steel,Secondary source,About 53.9 percent in China in same brief
+global_steel_co2,2023,2800,million tonnes CO2,UN SDSN Iron and Steel brief,Secondary source,About 8 percent of global GHG in same brief
+global_cement_co2,2023,2300,million tonnes CO2,Nature / IEA summary via secondary source,Secondary source,Use as order of magnitude not exact plant data
+cement_per_person_per_year,2023,530,kilograms per person per year,IEA via Nature summary,Secondary source,World average
+steel_per_person_per_year,2023,240,kilograms per person per year,IEA via Nature summary,Secondary source,World average
+global_temperature_anomaly_vs_1951_1980,2024,1.28,degrees Celsius,NASA GISTEMP,US government public data,Warmest year on record in NASA analysis
+global_temperature_anomaly_vs_1850_1900,2024,1.47,degrees Celsius,NASA GISTEMP,US government public data,About 1.47C above pre-industrial average in NASA estimate
+record_monthly_temperature_streak_months,2024,15,months,NASA,US government public data,June 2023 through August 2024 monthly records
+atmospheric_moisture_increase_per_degree,2023,7,percent per degree Celsius,IPCC via secondary summary,IPCC assessment,Approximate rule: air holds about 7 percent more moisture per 1C warming
+climate_normal_period_years,2020,30,years,WMO,WMO standard,Climatological standard normals use 30-year periods including 1991-2020
+global_soils_degraded_percent,2025,33,percent,FAO,FAO publication,Moderately to highly degraded global soils; FAO warns could rise to 90 percent by 2050 if trends continue
+food_grown_in_soil_percent,2025,95,percent,FAO,FAO publication,Share of world food grown in soil
+phosphorus_application_to_cropland,2025,18.2,teragrams P per year,Planetary Health Check 2025,PIK report,About 3 times regional boundary of 6.2 Tg P per year
+phosphorus_regional_boundary,2025,6.2,teragrams P per year,Planetary Health Check 2025,PIK report,Regional boundary for phosphorus application to cropland
+nitrogen_fixation,2025,165,teragrams N per year,Planetary Health Check 2025,PIK report,More than twice its boundary; high-risk zone in same report
+soil_typical_mineral_percent,2025,45,percent,General soil science,Textbook generalisation,Typical soil composition not exact for every soil
+soil_typical_organic_matter_percent,2025,5,percent,General soil science,Textbook generalisation,Typical soil composition not exact for every soil
+agriculture_share_freshwater_withdrawals,2025,70,percent,FAO AQUASTAT and UNESCO,FAO/UNESCO,Reported share; 2025 study warns range 45-90 percent with central 70-85 percent
+people_lacking_safely_managed_drinking_water,2022,2200,million people,UN,UN data,2.2 billion people in 2022
+people_lacking_safely_managed_sanitation,2022,3500,million people,UN,UN data,3.5 billion people
+people_severe_water_scarcity_at_least_one_month,2022,4000,million people,UN,UN data,4 billion people at least one month per year
+global_agricultural_land,2023,4800,million hectares,FAO Land Statistics 2001-2023,FAO CC-BY-4.0,More than one-third of global land area
+global_cropland,2023,1600,million hectares,FAO Land Statistics 2001-2023,FAO CC-BY-4.0,Within agricultural land
+global_forest_area,2025,4140,million hectares,FAO Global Forest Resources Assessment 2025,FAO,32 percent of global land area
+deforestation_rate,2025,10.9,million hectares per year,FAO Global Forest Resources Assessment 2025,FAO,Average 2015-2025 down from 17.6 in 1990-2000
+net_forest_loss_rate,2025,4.12,million hectares per year,FAO Global Forest Resources Assessment 2025,FAO,Average 2015-2025 down from 10.7 in 1990-2000
+buildings_share_global_energy,2023,32,percent,UNEP Global Status Report 2024-2025,UNEP,Buildings and construction
+buildings_share_global_co2,2023,34,percent,UNEP Global Status Report 2024-2025,UNEP,Buildings and construction
+buildings_operational_co2,2023,9800,million tonnes CO2,UNEP Global Status Report 2024-2025,UNEP,Operational emissions record in 2023
+people_lacking_adequate_housing,2026,3400,million people,UN-Habitat World Cities Report 2026,UN-Habitat,Up to 3.4 billion about 42 percent of humanity
+people_in_slums_informal_settlements,2024,1160,million people,UN SDG Indicators Goal 11,UN,1.16 billion urban residents almost one in four in 2024
+housing_deficit_units,2023,288,million units,UN-Habitat World Cities Report 2026,UN-Habitat,Up from 251 million in 2010
+heat_related_deaths_per_year,2019,489000,deaths per year,WMO,WMO estimate,Average 2000-2019; 45 percent Asia 36 percent Europe; under-reported
+unpaid_care_hours_per_day,2018,16400,million hours per day,ILO,ILO 2018,16.4 billion hours per day
+women_share_unpaid_care_work,2018,76.2,percent,ILO,ILO 2018,Women perform 76.2 percent of unpaid care work
+unpaid_care_value_share_gdp,2018,9,percent of global GDP,ILO,ILO 2018,About 11 trillion US dollars
+women_outside_labour_force_due_to_care,2023,708,million women,ILO,ILO 2024a,Aged 15 and over compared with 40 million men
+transport_co2,2023,8240,million tonnes CO2,Statista transport summary,Secondary summary,Transport CO2 grew almost 4 percent year-on-year in 2023
+transport_share_energy_related_co2,2023,23,percent,ITF Transport Outlook 2023 citing IEA,ITF/OECD,Transport share of world energy-related CO2
+road_share_transport_co2,2023,75,percent,Statista transport summary,Secondary summary,About three quarters of transport CO2 in 2023
+freight_co2,2023,3200,million tonnes CO2,ICCT,ICCT,Over 40 percent of transport CO2 and 10 percent of global CO2
+paid_work_hours_per_week_employed,2026,43,hours per week,Gethin and Saez IMF global dataset,IMF/World Bank/ILO surveys,160 countries 97 percent of world population; excludes unpaid home services
+paid_work_hours_per_week_all_adults,2026,25,hours per week,Gethin and Saez IMF global dataset,IMF/World Bank/ILO surveys,Average adult including those without employment

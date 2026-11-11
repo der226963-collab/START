@@ -1,0 +1,456 @@
+{
+  "$comment": "Shared cross-language test vectors for START v0.3.2 — ISSUE-04 fix, prepared 2026-11-09, DECIDED 2026-11-11. Status: decided — all four open decisions (m3/L conversion, kcal/day, range operator, same-major versions) were picked by Eric on 2026-11-11 and implemented in Python, Rust and Julia; every case below is now must_agree or already_agrees, with per-language verified values dated 2026-11-11. The *_2026-11-09 fields are HISTORICAL: they record the pre-decision behaviour verified on 2026-11-09 and must not be overwritten. Intended home: interop/test-vectors.json in the review copy, consumed by one test per language (Python, Rust, Julia). Nothing in the v0.3.2 review baseline, the START repo, or GitHub was changed by this file itself.",
+  "aggregation_cases": [
+    {
+      "conformance": "must_agree",
+      "id": "empty-checks",
+      "input": {
+        "checks": []
+      },
+      "issue": "ISSUE-02 / ISSUE-16",
+      "note": "v0.3.2 overall_from_checks([]) -> NOT_CHECKED, verified 2026-11-09. This is the safer rule and an intentional breaking change vs v0.3.1, where check_plan_limits({}) returned passes_checked_limits True. Rust evaluate_constraint can only return Pass/Fail/Unknown, so NOT_CHECKED/INCOMPLETE are currently dead variants there (ISSUE-07) — but Rust does have an overall_from_checks aggregation entry point (lib.rs) with consuming tests, added 2026-11-11; the earlier note saying it had none was corrected 2026-11-11. See docs/BREAKING_CHANGES.md.",
+      "python_expected": {
+        "status": "NOT_CHECKED"
+      },
+      "julia_expected": {
+        "status": "NOT_CHECKED"
+      },
+      "python_verified_2026-11-11": {
+        "status": "NOT_CHECKED"
+      },
+      "rust_verified_2026-11-11": {
+        "status": "NOT_CHECKED"
+      },
+      "julia_verified_2026-11-11": {
+        "status": "NOT_CHECKED"
+      }
+    },
+    {
+      "conformance": "must_agree",
+      "id": "unknown-only-checks",
+      "input": {
+        "checks": [
+          "UNKNOWN"
+        ]
+      },
+      "issue": "ISSUE-02 / ISSUE-16",
+      "note": "overall_from_checks(['UNKNOWN']) -> UNKNOWN, verified 2026-11-09. Unknown blocks an overall pass in v0.3.2; in v0.3.1 a nitrogen-only plan returned True with its single check 'unknown'.",
+      "python_expected": {
+        "status": "UNKNOWN"
+      },
+      "julia_expected": {
+        "status": "UNKNOWN"
+      },
+      "python_verified_2026-11-11": {
+        "status": "UNKNOWN"
+      },
+      "rust_verified_2026-11-11": {
+        "status": "UNKNOWN"
+      },
+      "julia_verified_2026-11-11": {
+        "status": "UNKNOWN"
+      }
+    }
+  ],
+  "cases": [
+    {
+      "conformance": "must_agree",
+      "id": "food-energy-adequacy",
+      "issue": "ISSUE-03",
+      "note": "Flagship food-domain constraint. PASS in Python, Rust and Julia, verified 2026-11-11. Historical 2026-11-09 Rust behaviour (UNKNOWN / UNKNOWN_UNIT) is in rust_current_2026-11-09.",
+      "python_expected": {
+        "status": "PASS"
+      },
+      "request": {
+        "bound": 2500,
+        "bound_unit": "kcal/capita/day",
+        "constraint_id": "food_energy_adequacy",
+        "operator": ">=",
+        "schema_version": "1.0.0",
+        "tolerance": 0,
+        "value": 2800,
+        "value_unit": "kcal/capita/day"
+      },
+      "rust_current_2026-11-09": {
+        "reason_code": "UNKNOWN_UNIT",
+        "status": "UNKNOWN"
+      },
+      "julia_expected": {
+        "status": "PASS"
+      },
+      "python_verified_2026-11-11": {
+        "status": "PASS"
+      },
+      "rust_verified_2026-11-11": {
+        "status": "PASS"
+      },
+      "julia_verified_2026-11-11": {
+        "status": "PASS"
+      }
+    },
+    {
+      "conformance": "must_agree",
+      "id": "mass-tonne",
+      "issue": "ISSUE-06",
+      "note": "8 t <= 10 t PASS in Python, Rust and Julia, verified 2026-11-11 (t/tonne mass factor 1000 in every registry). Historical 2026-11-09 Rust behaviour is in rust_current_2026-11-09.",
+      "python_expected": {
+        "status": "PASS"
+      },
+      "request": {
+        "bound": 10,
+        "bound_unit": "t",
+        "constraint_id": "mass",
+        "operator": "<=",
+        "schema_version": "1.0.0",
+        "tolerance": 0,
+        "value": 8,
+        "value_unit": "t"
+      },
+      "rust_current_2026-11-09": {
+        "reason_code": "UNKNOWN_UNIT",
+        "status": "UNKNOWN"
+      },
+      "julia_expected": {
+        "status": "PASS"
+      },
+      "python_verified_2026-11-11": {
+        "status": "PASS"
+      },
+      "rust_verified_2026-11-11": {
+        "status": "PASS"
+      },
+      "julia_verified_2026-11-11": {
+        "status": "PASS"
+      }
+    },
+    {
+      "conformance": "must_agree",
+      "id": "volume-m3-vs-litre",
+      "issue": "ISSUE-06",
+      "note": "DECIDED 2026-11-11: CONVERT. 0.008 m3 = 8 L <= 10 L PASS in Python, Rust and Julia; the discriminating pair 0.02 m3 = 20 L > 10 L FAILs in all three (a no-conversion evaluator would wrongly PASS it). Historical 2026-11-09 Rust behaviour is in rust_current_2026-11-09.",
+      "python_expected": {
+        "status": "PASS"
+      },
+      "request": {
+        "bound": 10,
+        "bound_unit": "L",
+        "constraint_id": "vol",
+        "operator": "<=",
+        "schema_version": "1.0.0",
+        "tolerance": 0,
+        "value": 0.008,
+        "value_unit": "m3"
+      },
+      "rust_current_2026-11-09": {
+        "reason_code": "INCOMPATIBLE_UNIT",
+        "status": "UNKNOWN"
+      },
+      "julia_expected": {
+        "status": "PASS"
+      },
+      "python_verified_2026-11-11": {
+        "status": "PASS"
+      },
+      "rust_verified_2026-11-11": {
+        "status": "PASS"
+      },
+      "julia_verified_2026-11-11": {
+        "status": "PASS"
+      }
+    },
+    {
+      "conformance": "must_agree",
+      "id": "kcal-per-day-invented-unit",
+      "issue": "ISSUE-06",
+      "note": "DECIDED 2026-11-11: kcal/day ADDED to Python's registry (factor 1.0, dimension food_energy_rate_per_capita). 2800 >= 2500 kcal/day PASS in Python, Rust and Julia. Historical 2026-11-09 behaviour (Python raised ValueError at construction; Rust passed) is in python_expected_2026-11-09 and rust_current_2026-11-09.",
+      "python_expected": {
+        "status": "PASS"
+      },
+      "request": {
+        "bound": 2500,
+        "bound_unit": "kcal/day",
+        "constraint_id": "kday",
+        "operator": ">=",
+        "schema_version": "1.0.0",
+        "tolerance": 0,
+        "value": 2800,
+        "value_unit": "kcal/day"
+      },
+      "rust_current_2026-11-09": {
+        "reason_code": "OK",
+        "status": "PASS"
+      },
+      "julia_expected": {
+        "status": "PASS"
+      },
+      "python_verified_2026-11-11": {
+        "status": "PASS"
+      },
+      "rust_verified_2026-11-11": {
+        "status": "PASS"
+      },
+      "julia_verified_2026-11-11": {
+        "status": "PASS"
+      },
+      "python_expected_2026-11-09": {
+        "error": "ValueError: unknown constraint unit: kcal/day (raised at Constraint construction)"
+      }
+    },
+    {
+      "conformance": "already_agrees",
+      "id": "equality-kg",
+      "issue": "ISSUE-04",
+      "note": "Baseline agreement case, verified both sides 2026-11-09.",
+      "python_expected": {
+        "status": "PASS"
+      },
+      "request": {
+        "bound": 10,
+        "bound_unit": "kg",
+        "constraint_id": "eq",
+        "operator": "==",
+        "schema_version": "1.0.0",
+        "tolerance": 0,
+        "value": 10,
+        "value_unit": "kg"
+      },
+      "rust_current_2026-11-09": {
+        "reason_code": "OK",
+        "status": "PASS"
+      },
+      "julia_expected": {
+        "status": "PASS"
+      },
+      "python_verified_2026-11-11": {
+        "status": "PASS"
+      },
+      "rust_verified_2026-11-11": {
+        "status": "PASS"
+      },
+      "julia_verified_2026-11-11": {
+        "status": "PASS"
+      }
+    },
+    {
+      "conformance": "already_agrees",
+      "id": "fail-litre",
+      "issue": "ISSUE-04",
+      "note": "Baseline agreement case, verified both sides 2026-11-09.",
+      "python_expected": {
+        "status": "FAIL"
+      },
+      "request": {
+        "bound": 10,
+        "bound_unit": "L",
+        "constraint_id": "fail",
+        "operator": "<=",
+        "schema_version": "1.0.0",
+        "tolerance": 0,
+        "value": 12,
+        "value_unit": "L"
+      },
+      "rust_current_2026-11-09": {
+        "reason_code": "OK",
+        "status": "FAIL"
+      },
+      "julia_expected": {
+        "status": "FAIL"
+      },
+      "python_verified_2026-11-11": {
+        "status": "FAIL"
+      },
+      "rust_verified_2026-11-11": {
+        "status": "FAIL"
+      },
+      "julia_verified_2026-11-11": {
+        "status": "FAIL"
+      }
+    },
+    {
+      "conformance": "already_agrees",
+      "id": "incompatible-units",
+      "issue": "ISSUE-06",
+      "note": "5 L vs 10 kg UNKNOWN in Python, Rust and Julia, verified 2026-11-11. Julia's reason is 'incompatible units: L and kg'; Rust's reason_code is INCOMPATIBLE_UNIT. Statuses agree; reason wording differs — do not assert reason equality for this case. Historical note: Julia's pre-fix evaluator wrongly PASSED this comparison (unit-free); see julia-results-2026-11-11.md.",
+      "python_expected": {
+        "status": "UNKNOWN"
+      },
+      "request": {
+        "bound": 10,
+        "bound_unit": "kg",
+        "constraint_id": "incomp",
+        "operator": "<=",
+        "schema_version": "1.0.0",
+        "tolerance": 0,
+        "value": 5,
+        "value_unit": "L"
+      },
+      "rust_current_2026-11-09": {
+        "reason_code": "INCOMPATIBLE_UNIT",
+        "status": "UNKNOWN"
+      },
+      "julia_expected": {
+        "status": "UNKNOWN"
+      },
+      "python_verified_2026-11-11": {
+        "status": "UNKNOWN"
+      },
+      "rust_verified_2026-11-11": {
+        "status": "UNKNOWN"
+      },
+      "julia_verified_2026-11-11": {
+        "status": "UNKNOWN"
+      }
+    },
+    {
+      "conformance": "must_agree",
+      "id": "range-operator",
+      "issue": "ISSUE-08",
+      "note": "DECIDED 2026-11-11: range ADDED to the wire schema (operator 'range' with bound_low/bound_high; see interop/schemas/constraint-evaluation.schema.json) and to every evaluator. 5 L in [2, 8] PASS, 1 L and 9 L FAIL, boundaries 2 L and 8 L PASS (inclusive, with tolerance). Historical 2026-11-09 wire shape (bound 10, no range bounds) is in request_2026-11-09; python_native_expected still records the native behaviour.",
+      "python_native_expected": {
+        "status": "PASS",
+        "via": "Constraint(operator='range', bound_low=2, bound_high=8).evaluate(5, 'L')"
+      },
+      "request": {
+        "bound_high": 8,
+        "bound_low": 2,
+        "bound_unit": "L",
+        "constraint_id": "rng",
+        "operator": "range",
+        "schema_version": "1.0.0",
+        "tolerance": 0,
+        "value": 5,
+        "value_unit": "L"
+      },
+      "rust_current_2026-11-09": {
+        "reason_code": "INVALID_REQUEST",
+        "status": "UNKNOWN"
+      },
+      "python_expected": {
+        "status": "PASS"
+      },
+      "julia_expected": {
+        "status": "PASS"
+      },
+      "python_verified_2026-11-11": {
+        "status": "PASS"
+      },
+      "rust_verified_2026-11-11": {
+        "status": "PASS"
+      },
+      "julia_verified_2026-11-11": {
+        "status": "PASS"
+      },
+      "request_2026-11-09": {
+        "bound": 10,
+        "bound_unit": "L",
+        "constraint_id": "rng",
+        "operator": "range",
+        "schema_version": "1.0.0",
+        "tolerance": 0,
+        "value": 5,
+        "value_unit": "L"
+      }
+    }
+  ],
+  "conformance_kinds": {
+    "already_agrees": "All languages already return this; a regression test.",
+    "documented_divergence": "Languages legitimately differ under a documented rule; the vector pins the difference so it cannot drift silently.",
+    "must_agree": "All languages must return this status once the cited fix lands; a mismatch is a bug."
+  },
+  "schema_version": "1.0.0",
+  "source_issues": [
+    "ISSUE-03",
+    "ISSUE-04",
+    "ISSUE-06",
+    "ISSUE-07",
+    "ISSUE-08",
+    "ISSUE-10",
+    "ISSUE-02",
+    "ISSUE-16"
+  ],
+  "version_cases": [
+    {
+      "conformance": "must_agree",
+      "documented_policy": "patch = clarifications/stricter validation; a compatible patch should be accepted",
+      "id": "version-patch",
+      "issue": "ISSUE-10",
+      "note": "DECIDED 2026-11-11: same-major 1.0.1 ACCEPTED in Python, Rust and Julia per interop/CONTRACT_VERSIONING.md. Historical 2026-11-09 Python behaviour (rejected: unsupported schema version) is in python_adapter_current_2026-11-09.",
+      "python_adapter_current_2026-11-09": "rejected: unsupported schema version",
+      "request_schema_version": "1.0.1",
+      "expected": {
+        "accepted": true
+      },
+      "julia_expected": {
+        "accepted": true
+      },
+      "python_verified_2026-11-11": {
+        "accepted": true
+      },
+      "rust_verified_2026-11-11": {
+        "accepted": true
+      },
+      "julia_verified_2026-11-11": {
+        "accepted": true
+      }
+    },
+    {
+      "conformance": "must_agree",
+      "documented_policy": "minor = additive optional fields only; a compatible minor should be accepted",
+      "id": "version-minor",
+      "issue": "ISSUE-10",
+      "python_adapter_current_2026-11-09": "rejected: unsupported schema version",
+      "request_schema_version": "1.1.0",
+      "expected": {
+        "accepted": true
+      },
+      "julia_expected": {
+        "accepted": true
+      },
+      "python_verified_2026-11-11": {
+        "accepted": true
+      },
+      "rust_verified_2026-11-11": {
+        "accepted": true
+      },
+      "julia_verified_2026-11-11": {
+        "accepted": true
+      },
+      "note": "DECIDED 2026-11-11: same-major 1.1.0 ACCEPTED in Python, Rust and Julia per interop/CONTRACT_VERSIONING.md. Historical 2026-11-09 Python behaviour (rejected: unsupported schema version) is in python_adapter_current_2026-11-09."
+    },
+    {
+      "conformance": "must_agree",
+      "documented_policy": "major = incompatible changes; must be rejected, with a distinct error from patch/minor handling once that is implemented",
+      "id": "version-major",
+      "issue": "ISSUE-10",
+      "python_adapter_current_2026-11-09": "rejected: unsupported schema version",
+      "request_schema_version": "2.0.0",
+      "expected": {
+        "accepted": false,
+        "error": "unsupported major schema version: 2.0.0 (supported major version 1)"
+      },
+      "julia_expected": {
+        "accepted": false,
+        "error": "unsupported major schema version: 2.0.0 (supported major version 1)"
+      },
+      "python_verified_2026-11-11": {
+        "accepted": false,
+        "error": "unsupported major schema version: 2.0.0 (supported major version 1)"
+      },
+      "rust_verified_2026-11-11": {
+        "accepted": false,
+        "error": "unsupported major schema version: 2.0.0 (supported major version 1)"
+      },
+      "julia_verified_2026-11-11": {
+        "accepted": false,
+        "error": "unsupported major schema version: 2.0.0 (supported major version 1)"
+      },
+      "note": "Major mismatch REJECTED in Python, Rust and Julia with the distinct error 'unsupported major schema version: 2.0.0 (supported major version 1)', verified 2026-11-11. Historical 2026-11-09 Python behaviour is in python_adapter_current_2026-11-09."
+    }
+  ],
+  "decisions_2026-11-11": {
+    "volume-m3-vs-litre": "CONVERT (Python's answer): m3 and L convert both directions; 0.008 m3 = 8 L <= 10 L PASS, 0.02 m3 = 20 L > 10 L FAIL.",
+    "kcal-per-day-invented-unit": "ADD kcal/day to Python's registry (factor 1.0, dimension food_energy_rate_per_capita, same as kcal/capita/day and kcal/person/day); 2800 >= 2500 PASS.",
+    "range-operator": "ADD range + bound_low/bound_high to the wire schema and to every evaluator; range is INCLUSIVE with tolerance (bound_low - tolerance <= value <= bound_high + tolerance).",
+    "versions": "ACCEPT same-major patch/minor versions per interop/CONTRACT_VERSIONING.md; only a major mismatch is rejected, with the distinct error 'unsupported major schema version: <v> (supported major version 1)'."
+  }
+}

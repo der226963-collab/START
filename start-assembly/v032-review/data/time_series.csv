@@ -1,0 +1,16 @@
+year,indicator,value,unit,source,note
+2010,global_temperature_anomaly_vs_1951_1980,0.72,degrees Celsius,NASA GISTEMP via secondary compilation,Selected year not full series
+2016,global_temperature_anomaly_vs_1951_1980,1.01,degrees Celsius,NASA GISTEMP via secondary compilation,Selected year not full series
+2020,global_temperature_anomaly_vs_1951_1980,1.01,degrees Celsius,NASA GISTEMP via secondary compilation,Selected year not full series
+2023,global_temperature_anomaly_vs_1951_1980,1.17,degrees Celsius,NASA GISTEMP via secondary compilation,Selected year not full series
+2024,global_temperature_anomaly_vs_1951_1980,1.28,degrees Celsius,NASA GISTEMP,Verified in NASA 2024 summary
+2025,global_temperature_anomaly_vs_1951_1980,1.18,degrees Celsius,NASA GISTEMP via secondary compilation,Selected year not full series; preliminary in some compilations
+2023,mauna_loa_co2_annual_mean,421.08,ppm,NOAA GML co2_annmean_mlo.csv,Full NOAA file value; earlier sample used 421.02 from a secondary compilation
+2024,mauna_loa_co2_annual_mean,424.61,ppm,NOAA GML co2_annmean_mlo.csv,Full NOAA file value; earlier sample used 424.60
+2024,global_co2_annual_mean,422.79,ppm,NOAA GML via secondary compilation,Marine surface sites global average
+2025,mauna_loa_co2_annual_mean,427.35,ppm,NOAA GML via secondary compilation,Annual mean as reported in 2026 compilations
+2025,global_co2_annual_mean,425.62,ppm,NOAA GML via secondary compilation,Marine surface sites global average
+2023,global_agricultural_land,4800,million hectares,FAO Land Statistics 2001-2023,See real_planning_data.csv for full land split
+2023,global_cropland,1600,million hectares,FAO Land Statistics 2001-2023,See real_planning_data.csv for full land split
+2023,global_forest_area,4050,million hectares,FAO Land Statistics 2001-2023,Forest area in land statistics; FRA 2025 gives 4140 million hectares in 2025 with different reference
+2025,global_forest_area,4140,million hectares,FAO Global Forest Resources Assessment 2025,32 percent of global land area

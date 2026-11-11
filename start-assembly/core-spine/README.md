@@ -62,6 +62,7 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
 | ash-flare | 24 Resilience & Continuity | ashforge-rs/ash-flare | Apache-2.0 | Local supervision of execution workers | assembled 3.0.0, default features only (`python` OFF — no pyo3), distributed mode OFF by non-use (no `distributed` feature flag exists in 3.0.0; `ash_flare::distributed` never imported); supervisor core audited first; `Transient` + `OneForOne` only; supervision is liveness, never verification — restarted output stays unverified, a crashed worker is reported failed (6/6 tests PASS, Rust 20/20) |
 | ODYM | 17 Resource Accounting | IndEcol/ODYM | MIT | Stock-flow resource accounting | assembled 0.1.0, git pin 9792c23 (never published to PyPI); dependency only, no code copied; adapter `adapters/resource_accounting.py`, 16/16 tests PASS; outputs are model results only (verified=false, needs_human_decision=true) |
 | Pymrio | 17 Resource Accounting | IndEcol/pymrio | LGPL-3.0 | Footprint / consumption-based accounting | assembled 0.7.0 (PyPI); dependency only, never copied, library unmodified and replaceable; adapter `adapters/footprint_accounting.py`, 15/15 tests PASS; outputs are model results only (verified=false, needs_human_decision=true); no downloads — synthetic in-memory MRIO only |
+| Graphiti (temporal schema only) | 6 Knowledge & Memory | getzep/graphiti | Apache-2.0 | Temporal knowledge fields (valid-from/valid-to, superseded-by, episode links) | assembled 2026-11-11, 17/17 tests PASS; original Python in `adapters/temporal.py`, stdlib only; no Graphiti code copied, system/LLM-extraction/graph-DB/telemetry NOT adopted; verified flag carried unchanged, never set by this module |
 
 ## Layout
 
@@ -75,7 +76,11 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
   dependency only, synthetic case, outputs are model results only),
   `footprint_accounting.py` (pymrio footprint accounting, Module 17 —
   dependency only, synthetic in-memory MRIO, no downloads, outputs
-  are model results only).
+  are model results only),
+  `temporal.py` (temporal knowledge, Module 6 — original Python,
+  stdlib only, Graphiti temporal-edge/episode schema as design
+  inspiration only, no code copied, no graph DB, no LLM; 17/17
+  tests PASS).
 - `helpers/` — borrowed helpers, the ONLY vendored candidate code in
   this assembly: `borrowed_helpers.py` (Cognee `chunk_by_word` +
   `chunk_id`, Crawl4AI `normalize_url`, Apache-2.0 notices kept,

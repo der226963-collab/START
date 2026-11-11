@@ -8,8 +8,8 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 
 ## Headline
 
-- **Components: 19 total — 18 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 102/102 passed, Rust 20/20 passed, Julia 513/513 checks passed — 635 passed, 0 failed**
+- **Components: 20 total — 19 assembled, 1 stub-only, 0 blocked, 0 not run**
+- **Tests: Python 119/119 passed, Rust 20/20 passed, Julia 513/513 checks passed — 652 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
 - Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
@@ -40,6 +40,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | DeepEval | confident-ai/deepeval | 4.3.3 | assembled | **11/11 Python tests PASS** (3 ExactMatch + 8 new) | Deterministic metrics only, no API key: ExactMatch scores [1,1,1,0], accuracy 0.75; PatternMatch (fullmatch) scores [1.0, 0.0, 0.0] on pattern `\d+ tonnes`; JsonCorrectness scores [1, 0, 0, 0, 0] against original schema PlanJsonSchema. Sweep correction: JsonCorrectness is key-free ONLY via eval_mode="system_one" — default construction builds an OpenAI model and raises without a key. LLM-as-a-judge metrics deferred, not run. See "DeepEval deterministic metrics (Module 22)" below |
 | ODYM | IndEcol/ODYM | 0.1.0, git pin 9792c23 | assembled | **16/16 Python tests PASS** | Stock-flow resource accounting (Module 17). Dependency only, no code copied; never published to PyPI, installed from git pinned to the sweep's audited commit (see item 9). Thin original adapter `adapters/resource_accounting.py` over a synthetic 1-site 2-crop material flow (3 years, balance PASS, residual 0.0 t). Outputs are model results only — verified=false, needs_human_decision=true. See "ODYM (Module 17)" below |
 | Pymrio | IndEcol/pymrio | 0.7.0 (PyPI) | assembled | **15/15 Python tests PASS** | Footprint / consumption-based accounting (Module 17). Dependency only, never copied, library unmodified and replaceable (LGPL-3.0; README badge wrongly says GPL v3 — LICENSE file authoritative). Thin original adapter `adapters/footprint_accounting.py` over a synthetic 2-region x 2-sector in-memory MRIO (footprint identity PASS, residual 2.2e-16 t). No downloads — no pymrio download/load/parse function is ever called. Outputs are model results only — verified=false, needs_human_decision=true. See "Pymrio (Module 17)" below |
+| Graphiti (temporal schema only) | getzep/graphiti | Apache-2.0 (no version installed — nothing adopted) | assembled | **17/17 Python tests PASS** | Temporal knowledge fields only (Module 6): `adapters/temporal.py`, original Python, stdlib only — episodes with valid_from/valid_to, superseded_by, episode links. No Graphiti code copied; the system, LLM extraction, graph DB and telemetry were NOT adopted. See "Temporal knowledge (Graphiti rebuild, Module 6)" below |
 | ash-flare | ashforge-rs/ash-flare | 3.0.0 (crates.io) | assembled | **6/6 new Rust tests PASS** (Rust suite now 20/20) | Local supervision of execution workers only (Module 24). Dependency only, no code copied, default features only (`python` OFF), distributed mode OFF by non-use. Supervisor core audited first. See "ash-flare (Module 24)" below |
 
 ## Exact versions installed (venv `.venv`, Python 3.12.3)
@@ -1061,6 +1062,27 @@ Still unverified / not run:
     (MuZero.jl rebuild)" above. Next in the sweep's order, when
     directed: Graphiti temporal-edge/episode schema as original
     Python (Module 6, sweep item 3).
+19. **Done 2026-11-11:** Graphiti temporal-edge/episode schema
+    rebuilt as original Python (Module 6, sweep
+    INSPIRATION-REBUILD item 3) — `adapters/temporal.py`:
+    episodes with valid_from / valid_to (None = still current),
+    superseded_by links, episode links (previous / next /
+    part_of) as plain JSON references; current at T means the
+    window covers T AND the episode is not superseded; a
+    superseded record is never returned as current, even inside
+    its original window or with verified=true stored; the
+    verified flag is carried unchanged and never set by this
+    module. No Graphiti code copied, no graph DB, no LLM
+    extraction, no telemetry, no new dependencies. 17 new tests
+    in `tests/test_temporal.py`, all passing. Full suite after
+    this work: Python 119/119 (was 102/102: +17 temporal
+    tests), Rust 20/20 (NOT re-run — nothing Rust touches
+    changed), Julia 513/513 (NOT re-run — nothing Julia touches
+    changed) — **652 passed, 0 failed**. See "Temporal
+    knowledge (Graphiti rebuild, Module 6)" below. Next in the
+    sweep's order, when directed: Aider repo map as original
+    Python in mini_ai/ alongside self-edit (Module 20, sweep
+    item 4).
 
 ## DeepEval deterministic metrics (Module 22)
 
@@ -1683,3 +1705,157 @@ first networked domain model now exists and runs through it.
   touched; no other file changed.
 - `/tmp` is a 512M tmpfs: `TMPDIR` was pointed at
   `~/workspace/.tmp` for the Julia work here, as in items 2–3.
+
+## Temporal knowledge (Graphiti rebuild, Module 6)
+
+**Inspiration source and licence.** Graphiti
+(getzep/graphiti, Apache-2.0 — verified in the batch-2 audit
+from the repo's own LICENSE file; `graphiti_core/` 40,844 lines
+of Python, HEAD `ebef986a0b2360211b65751c111cacb4a7d790eb`).
+The sweep's verdict for it was INSPIRATION-REBUILD: rewrite
+only the temporal-edge/episode field schema as original Python.
+**No Graphiti code was copied** — this module was written from
+the schema design only (`EntityEdge` temporal fields
+`fact`/`valid_at`/`invalid_at`/`expired_at`/`reference_time`/
+`attributes`/`episodes` and `EpisodicNode.valid_at`, as
+described in
+`source-audit/CEDAR_EGG_COGNEE_GRAPHITI_CRAWL4AI_AUDIT.md`
+§5/§7). The Graphiti system was NOT adopted: no Neo4j (or
+FalkorDB/Kuzu/Neptune) graph database, no LLM extraction (in
+Graphiti every temporal bound is LLM-extracted text processed
+by regex heuristics, with invalidation also LLM-decided), no
+PostHog telemetry (on by default in Graphiti). Nothing was
+installed: no new dependency, `requirements.txt` unchanged.
+The sweep entry names no file path for this rebuild; the module
+was placed at `adapters/temporal.py` because the existing
+adapter layout (`adapters/*.py`, thin Python adapters) is
+where a Python-layer Module 6 knowledge/memory piece belongs,
+and it is stdlib-only (`datetime`, `json`), like the other
+self-contained adapters.
+
+**What was rebuilt.** `adapters/temporal.py` (original code):
+- `Episode`: one temporal knowledge episode — `id`, `fact`,
+  `valid_from` / `valid_to` (valid_to None = still current /
+  open-ended), `superseded_by` (id of the replacing episode or
+  None), `links` (previous / next / part_of as plain string
+  references), `verified` (carried, never set), plus
+  `licence` / `provenance` / `synthetic` fields. Invalid
+  windows (valid_from after valid_to) and self-supersession
+  are rejected with ValueError at construction.
+- `is_current(episode, at)`: the window covers T (inclusive on
+  both ends) AND the episode is not superseded. Supersession
+  closes the episode even when valid_to is still open.
+- `TemporalStore`: in-memory dict of episodes (no database).
+  `add` rejects duplicate ids; `supersede(old, new)` records
+  the replacement (both must exist; the old one must not
+  already be superseded); `current(at)` / `current_verified(at)`
+  filter as above; `follow_chain(id)` follows superseded_by
+  links to the current episode; `validate_links()` lists broken
+  links; `to_dict` / `from_dict` / `store_to_json` /
+  `store_from_json` round-trip plain JSON.
+- `query_current(store, at, verified_only=False)`: JSON-able
+  result (`schema_version` "1.0.0", `query_time`, `episodes`,
+  `count`, `status` "ok", `verified` false,
+  `needs_human_decision` true).
+- Synthetic example store (`synthetic_store()`): a small
+  food-system knowledge timeline — wheat yield revised
+  4.0 → 4.2 t/ha mid-2026, potato yield revised 18 → 20 t/ha
+  with the OLD record stored as verified (to prove a superseded
+  verified record is still never current), water allocation
+  100,000 m³ in 2026 and 120,000 m³ in 2027. Synthetic only.
+
+**What was checked — exact test cases and results.**
+17 new tests in `tests/test_temporal.py`, all passing; full
+Python suite after this work **119/119, 0 failed** (was
+102/102; breakdown: statuses 10, optimisation 5, CVXPY 1,
+CPMpy 1, Arrow 1, gRPC 6 (2 + 4 wire), governance 7, orchestration 5,
+evaluation 11, borrowed helpers 24, resource accounting 16,
+footprint accounting 15, temporal 17). Rust and Julia suites
+NOT re-run — nothing they touch changed.
+- Supersession (4): superseded wheat episode never current
+  when queried "now" (2026-11-11 — wheat-b current, wheat-a
+  absent); never current when queried inside its original
+  window (2026-03-01 — wheat-a absent, wheat-b not yet valid,
+  so no wheat episode is current); `superseded_by` points at
+  the replacing episode; a 3-episode chain (c1→c2→c3) followed
+  to the current episode c3.
+- Temporal filtering (5): query 2026-06-01 returns water-2026
+  (not water-2027), query 2027-06-01 returns water-2027 (not
+  water-2026); query before all windows (2025-06-01) and after
+  all bounded windows (2028-06-01 on a bounded-only store)
+  returns an empty list — not an error, not a stale record;
+  empty store returns []; window boundaries inclusive
+  (2026-01-01 and 2026-12-31 return water-2026, 2027-01-01
+  does not); open-ended valid_to (None) is current at 2030.
+- Verified (3): superseded potato-old (stored verified=true)
+  is excluded from current results at 2026-06-01 while
+  potato-new is returned; `current_verified` is empty at
+  2026-06-01, 2026-11-11 and 2027-06-01 (the only
+  stored-verified episode is superseded, the current potato
+  episode is unverified); the temporal layer never sets
+  verified — an unverified episode stays unverified through
+  add, query, supersession and JSON round-trip, the query
+  result carries verified=false with needs_human_decision=true,
+  and a stored verified=true survives the round-trip unchanged
+  (carried, never invented).
+- Links and wire format (5): broken link (superseded_by to
+  "ep-missing") returns status "unknown" with episode None and
+  a reason naming the missing id, is listed by
+  `validate_links()`, and never resolves to a current record
+  (the broken episode is itself superseded, so current() is
+  empty); unknown starting id returns "unknown"; a
+  superseded_by cycle (x1→x2→x1) returns "unknown" with a
+  cycle reason (no infinite loop); JSON round-trip preserves
+  ids, windows, superseded_by, links and the verified flag,
+  and episode dicts are plain JSON with schema_version "1.0.0",
+  licence Apache-2.0 and provenance; invalid window,
+  self-supersession and duplicate id all raise ValueError.
+- One test failed on its first run and was fixed by correcting
+  the TEST, not the module: the "outside all windows" case
+  queried 2028-06-01 on the full synthetic store, but the
+  wheat-b and potato-new episodes are open-ended (valid_to
+  None) and are correctly current in 2028. The test now queries
+  before all windows (2025-06-01) on the full store and after
+  all bounded windows on a bounded-only store.
+
+**Governance rule.** Temporal records are knowledge, never
+verified plans: a current episode is not a verified fact, a
+verified flag is only ever read here (never set), and a
+superseded record can never be presented as verified-current —
+even one stored with verified=true. Query results carry
+verified=false and needs_human_decision=true and must still go
+through START's separate verify step like any other model
+output. The module has no function that sets verified, no
+graph database, no LLM, no network, no new dependency, and it
+does not touch self-edit or guardrail files. This matches the
+audit's core finding about Graphiti: it has no verified flag
+and no needs_human_decision anywhere in graphiti_core, so the
+rebuild adds both instead of inheriting their absence.
+
+**Limitations / known gaps.**
+- Times are calendar dates only (ISO "YYYY-MM-DD"); there is
+  no time-of-day, timezone, or interval-uncertainty handling —
+  a bound is exact or absent. Graphiti's `reference_time` /
+  future-tense normalisation idea (`temporal_edge_utils.py`)
+  was not rebuilt: bounds here are stated explicitly by the
+  caller, never inferred from fact text.
+- `superseded_by` is a single link: an episode has at most one
+  replacer, and branching histories (two competing replacers)
+  are not modelled — `supersede()` rejects re-superseding an
+  already-superseded episode.
+- A dangling superseded_by link is allowed at add time (ingest
+  order) and only reported by `follow_chain()` /
+  `validate_links()`; the store does not refuse it. That is
+  deliberate (episodes may arrive out of order), but callers
+  must check `validate_links()` after ingest rather than assume
+  all links resolve.
+- The store is in-memory only: no persistence, no concurrency,
+  no query language beyond "current at T" / "current verified
+  at T". A real knowledge store would still need a persistence
+  layer — but not a graph database by default, and not one
+  chosen by this item.
+- `verified` on an episode is a carried flag, not a proof: the
+  temporal layer cannot tell whether a stored verified=true
+  was set by the real verify step + human approval or written
+  in by hand. The guarantee is only that this layer never sets
+  it and never presents a superseded record as verified-current.

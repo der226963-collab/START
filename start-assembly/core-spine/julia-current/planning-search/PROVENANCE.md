@@ -242,3 +242,54 @@ DifferentialEquations 8.1.1, JuMP 1.32.1, HiGHS 1.26.1).
 - Full suite after this work: Python 35/35, Rust 9/9, Julia
   268/268 — 312 passed, 0 failed. Combined `spine.jl` 16/16
   PASS, `spine_lp.jl` 15/15 PASS, no regression.
+
+## SpineOpt planning patterns (2026-11-11, Julia 1.13.3, canonical env)
+
+- `spineopt_patterns.jl` is ORIGINAL START code, an
+  INSPIRATION-REBUILD of spine-tools/SpineOpt.jl (Module 18,
+  DROP in the replacements audit — energy-only JuMP
+  application, GPL-3.0 LICENSE vs LGPL-3.0-or-later
+  README/headers, Spine-DB I/O, monolithic build-solve-write).
+  The audit worker read `temporal_structure.jl`,
+  `stochastic_structure.jl`, `benders.jl`,
+  `constraint_nodal_balance.jl` and `run_spineopt_mga.jl` to
+  understand the patterns; NO code was copied from them, no
+  SpineOpt dependency was added, no SpineInterface, no Spine
+  DB. A test checks the file's code lines (comments excluded)
+  for `SpineOpt`, `SpineInterface`, `sqlite`, `run_spineopt`
+  and `verified=true` — none present.
+- Patterns rebuilt on the synthetic 1-site 2-crop domain:
+  rolling-horizon / representative-period time slices (3
+  periods, water budget split equally, aggregate delivered
+  1,000 t); stochastic normal-vs-low-yield scenarios (expected
+  delivered 580 t, shortage 70 t); Benders master/subproblem
+  split with objective-upperbound cuts (converges in 2
+  iterations, 1 cut, lower = upper = 50 t, agrees with the
+  direct LP optimum 600/50 t); nodal balance generalised to
+  any flow-conservation constraint (a liar claiming delivered
+  650 t fails; an over-water candidate passes its balances but
+  fails verification); MGA with slack 50 t surfacing 2 distinct
+  near-optimal alternatives (56.25/16.25 ha and 37.5/20 ha,
+  each 550 t delivered) for human choice — `selected` is always
+  `nothing` at creation and choosing without human approval
+  throws.
+- The Benders subproblem is evaluated in closed form for this
+  2-crop LP; the stochastic plan is a scenario fan with no
+  single "expected" plan. See ASSEMBLY_REPORT.md ("SpineOpt
+  planning patterns (Module 18)") for the limitations.
+- Tests: `test/spineopt_patterns.jl` — 134/134 PASS, 0 failed
+  (direct LP 12, time slices 23, stochastic 20, Benders 30,
+  nodal balance 15, MGA 25, no-SpineOpt guard 9). Runner
+  `run_spineopt_patterns.jl` → SPINEOPT_PATTERNS RESULT: PASS.
+  The file is NOT included by PlanningSearch.jl (it loads
+  JuMP+HiGHS, like verify_lp.jl); `test/runtests.jl` stays
+  JuMP-free, and its no-AlphaZero-import check now also covers
+  this file (84/84 PASS).
+- Fix forced by these tests: `verify.jl` land/water checks now
+  use a 1e-6 tolerance (was zero) — the low-yield scenario's
+  LP water total is 100,000.00000000001 m3 against a 100,000 m3
+  budget, floating-point noise, not an over-budget plan. An
+  over-budget candidate (112,000 m3) still fails by far.
+- Full suite after this work: Python 232/232 (NOT re-run —
+  nothing Python touches changed), Rust 40/40 (NOT re-run),
+  Julia 650/650 — 922 passed, 0 failed.

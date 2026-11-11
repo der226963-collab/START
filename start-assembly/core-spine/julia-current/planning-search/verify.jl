@@ -74,8 +74,14 @@ function verify_candidate(candidate::PlanningCandidate;
         push!(checks, status)
         return status
     end
-    check_one("land", "<=", candidate.land_ha, spec.land_max)
-    check_one("water", "<=", candidate.water_m3, spec.water_max)
+    # Land/water use a 1e-6 tolerance (not zero): LP solutions come
+    # back with floating-point noise — e.g. the low-yield scenario's
+    # water total is 100,000.00000000001 m3 against a 100,000 m3
+    # budget, a 1e-11 artefact that must not fail an otherwise exact
+    # candidate. 1e-6 ha / m3 is physically meaningless, and an
+    # over-budget candidate (e.g. 112,000 m3) still fails by far.
+    check_one("land", "<=", candidate.land_ha, spec.land_max; tolerance=1e-6)
+    check_one("water", "<=", candidate.water_m3, spec.water_max; tolerance=1e-6)
     check_one("delivered-plus-shortage", "==",
               candidate.delivered + candidate.shortage,
               sum(spec.demand); tolerance=1e-6)

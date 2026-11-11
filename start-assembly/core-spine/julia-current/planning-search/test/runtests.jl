@@ -29,7 +29,7 @@ end
     # substring search would trip on the comment itself.
     for f in ("PlanningSearch.jl", "mcts.jl", "game.jl",
               "planning_domain.jl", "verify.jl", "training_loop.jl",
-              "dynamics_search.jl")
+              "dynamics_search.jl", "spineopt_patterns.jl")
         lines = readlines(joinpath(PS_DIR, f))
         code = [l for l in lines if !startswith(strip(l), "#")]
         @test !any(l -> occursin(r"^\s*using\s+(\.\.)?AlphaZero\b", l), code)

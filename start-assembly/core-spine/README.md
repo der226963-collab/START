@@ -38,7 +38,8 @@ never PASS; UNKNOWN / INCOMPLETE are never converted into PASS.
 | Turing.jl | 12 Math & Computing | TuringLang/Turing.jl | MIT | Bayesian inference | assembled 0.49.0 (Julia 1.13.3) |
 | DifferentialEquations.jl | 12 Math & Computing | SciML/DifferentialEquations.jl | NOASSERTION — confirm before adopting | Continuous physical systems | assembled 8.1.1 (Julia 1.13.3) |
 | AlphaZero.jl | 4 Reasoning & Planning | jonathan-laurent/AlphaZero.jl | MIT | MCTS + self-play search (board-game core) | assembled 0.5.6 (git clone, CPU only, no training) |
-| PlanningSearch (MCTS + game interface copied from AlphaZero.jl) | 4 Reasoning & Planning | jonathan-laurent/AlphaZero.jl (source, MIT) | MIT (copied files) | Standalone planning search: MCTS over partial plans, rollout oracle + learned linear oracle + learned-dynamics oracle (original MuZero.jl-design rebuild, no MuZero.jl code copied, no Flux/CUDA), candidate only — never verified by the search; original training loop (verified samples only, held-out replacement rule) | assembled 2026-11-11, 81/81 + 53/53 + 86/86 + 25/25 + 208/208 Julia tests PASS, finds the 600/50 t optimum |
+| PlanningSearch (MCTS + game interface copied from AlphaZero.jl) | 4 Reasoning & Planning | jonathan-laurent/AlphaZero.jl (source, MIT) | MIT (copied files) | Standalone planning search: MCTS over partial plans, rollout oracle + learned linear oracle + learned-dynamics oracle (original MuZero.jl-design rebuild, no MuZero.jl code copied, no Flux/CUDA), candidate only — never verified by the search; original training loop (verified samples only, held-out replacement rule); original SpineOpt planning patterns (time slices, stochastic scenarios, Benders split, nodal balance, MGA for human choice — no SpineOpt code copied, no SpineOpt dependency) | assembled 2026-11-11, 84/84 + 53/53 + 86/86 + 25/25 + 208/208 + 134/134 Julia tests PASS, finds the 600/50 t optimum |
+| SpineOpt planning patterns (rebuild only) | 18 Systems Planning | spine-tools/SpineOpt.jl (inspiration only, NOT adopted) | n/a — nothing adopted | SpineOpt planning patterns rebuilt as original Julia: rolling-horizon / representative-period time slices, stochastic normal-vs-low-yield scenarios, Benders master/subproblem split with objective-upperbound cuts (2 iterations, agrees with the direct LP optimum 600/50 t), nodal balance generalised to any flow-conservation constraint, MGA surfacing distinct near-optimal alternatives for human choice, never auto-selecting | assembled 2026-11-11, 134/134 tests PASS; original Julia in `julia-current/planning-search/spineopt_patterns.jl`, JuMP+HiGHS; no SpineOpt code copied, no SpineOpt dependency, no Spine DB; SpineOpt itself is DROP (energy-only, GPL/LGPL contradiction, monolithic build-solve-write); every result CANDIDATE-only until the separate verify step + human approval (Julia 650/650) |
 
 ## Canonical Julia environment (adopted 2026-11-11 by Eric)
 
@@ -47,9 +48,10 @@ Julia 1.13.3, Agents 7.1.0, ModelingToolkit 11.46.1, Symbolics 7.48.0,
 Turing 0.49.0, DifferentialEquations 8.1.1, JuMP 1.32.1, HiGHS 1.26.1,
 NetworkDynamics 1.3.0, Graphs 1.15.0,
 AlphaZero 0.5.6 (separate env in `alphazero/`). Spine 16/16 PASS,
-Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
-81 planning-search + 53 LP cross-check + 86 training loop +
+Julia checks 650/650 passed, 0 failed (29 spine/smokes/AlphaZero +
+84 planning-search + 53 LP cross-check + 86 training loop +
 25 training loop LP-split + 208 learned-dynamics search +
+134 SpineOpt planning patterns +
 31 NetworkDynamics networked model). The original pinned envs
 `julia/` and `julia-1.11/` are evidence only — they fail to precompile
 5 dependencies and are NOT canonical; do not use them for new work.
@@ -172,7 +174,7 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
 - `julia-current/planning-search/` — standalone planning-search module
   (`PlanningSearch.jl`, copied `mcts.jl` + `game.jl` with MIT notices,
   original `planning_domain.jl` + `verify.jl`, `PROVENANCE.md`,
-  `test/runtests.jl` — 81/81 PASS). MCTS finds the 600/50 t optimum
+  `test/runtests.jl` — 84/84 PASS). MCTS finds the 600/50 t optimum
   on the synthetic domain; every result is a CANDIDATE only
   (`verified=false`, `needs_human_decision=true`) until the separate
   verify step passes AND a human approves. `verify_lp.jl` (original,
@@ -202,6 +204,25 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
   MCTS finds the 600/50 t optimum on all five seeds 1234, 7, 42, 99,
   2024; held-out dynamics PASS rate 1.0, mean shortage 117.5 t vs
   rollout 147.5 t).
+  `spineopt_patterns.jl` (original, INSPIRATION-REBUILD of
+  spine-tools/SpineOpt.jl's planning patterns, Module 18 — no SpineOpt
+  code copied, no SpineOpt dependency, no Spine DB; SpineOpt itself is
+  DROP). Rolling-horizon / representative-period time slices (3 periods,
+  aggregate delivered 1,000 t), stochastic normal-vs-low-yield scenarios
+  (expected delivered 580 t), Benders master/subproblem split with
+  objective-upperbound cuts (2 iterations, agrees with the direct LP
+  optimum 600/50 t), nodal balance generalised to any flow-conservation
+  constraint, and MGA surfacing 2 distinct near-optimal alternatives
+  (wheat 56.25 / potato 16.25 ha and wheat 37.5 / potato 20 ha, each
+  delivered 550 t) for human choice — never auto-selected. Every result
+  is a CANDIDATE only until the separate verify step + human approval.
+  Runner `run_spineopt_patterns.jl` — SPINEOPT_PATTERNS RESULT: PASS.
+  Tests `test/spineopt_patterns.jl` — 134/134 PASS (standalone script,
+  not in `test/runtests.jl`, so the standalone tests stay JuMP-free).
+  One fix the tests forced: `verify.jl` land/water checks now use a 1e-6
+  tolerance (was zero), because an LP solution's water total of
+  100,000.00000000001 m3 against a 100,000 m3 budget is floating-point
+  noise, not an over-budget plan.
 - `julia/` and `julia-1.11/` — original pinned envs, kept untouched as evidence only (fail to precompile).
 - `proto/constraint_evaluation.proto` — the gRPC wire contract (schema 1.0.0).
 - `policies.cedar` — the authoritative Cedar policies.

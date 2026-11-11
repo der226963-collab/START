@@ -9,7 +9,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 ## Headline
 
 - **Components: 21 total — 20 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 232/232 passed, Rust 40/40 passed, Julia 513/513 checks passed — 785 passed, 0 failed**
+- **Tests: Python 232/232 passed, Rust 40/40 passed, Julia 650/650 checks passed — 922 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
 - Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
@@ -30,7 +30,8 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | DifferentialEquations.jl | SciML/DifferentialEquations.jl | 8.1.1 | assembled | smoke PASS (S(10)=36.78795 vs 36.78794) + spine_ode PASS | Pinned 7.17.0 fails to precompile on Julia 1.13 and 1.11 (SteadyStateDiffEq/DiffEqBase); current 8.1.1 passes. Licence NOASSERTION — confirm before adopting |
 | NetworkDynamics.jl | JuliaDynamics/NetworkDynamics.jl | 1.3.0 | assembled | **31/31 Julia tests PASS** (see "NetworkDynamics.jl (Module 10)" below) | First networked domain model built first (synthetic 3-node resource network), then the dependency added — per the sweep's condition. Sweep said 1.4.0; the General registry latest is 1.3.0 (verified, see section). Dependency only, no code copied. Graphs.jl 1.15.0 added as a direct dependency for the network graph (already in the Manifest as transitive, resolved set otherwise unchanged). |
 | AlphaZero.jl | jonathan-laurent/AlphaZero.jl | 0.5.6 | assembled | smoke 9/9 checks PASS | Git clone (not General registry); own env in `alphazero/` (Flux 0.16.12, CUDA 5.11.1, Plots 1.41.7, cuDNN 1.4.7). ConnectFour init + one move, CPU only, no training. Log `alphazero/logs/smoke-alphazero.log` |
-| PlanningSearch (MCTS + game interface, copied from AlphaZero.jl) | jonathan-laurent/AlphaZero.jl (source) | 0.5.6, commit 177a6eb | assembled | **81/81 + 53/53 + 86/86 + 25/25 + 208/208 Julia tests PASS** | Standalone in `julia-current/planning-search/` (no AlphaZero.jl import; Distributions 0.25.134 only). MCTS + game interface copied with full MIT notice, re-expressed in planning terms (states = partial plans, reward = plan quality, not win probability). Original START code: `planning_domain.jl` (1-site 2-crop synthetic), `verify.jl`, `verify_lp.jl` (JuMP+HiGHS LP cross-check, separate file so `verify.jl` stays Distributions-only), `training_loop.jl` (original planning training loop — verified samples only, linear value model, held-out replacement rule; no network library), and `dynamics_search.jl` (original learned-dynamics search, INSPIRATION-REBUILD of MuZero.jl's design — no MuZero.jl code copied, no Flux/CUDA; see "Learned-dynamics search" below). Search finds the known optimum — delivered 600 t / shortage 50 t — candidate only, never verified by the search; the LP cross-check catches candidates that beat the optimum. See "Planning-search module" below |
+| PlanningSearch (MCTS + game interface, copied from AlphaZero.jl) | jonathan-laurent/AlphaZero.jl (source) | 0.5.6, commit 177a6eb | assembled | **84/84 + 53/53 + 86/86 + 25/25 + 208/208 + 134/134 Julia tests PASS** | Standalone in `julia-current/planning-search/` (no AlphaZero.jl import; Distributions 0.25.134 only). MCTS + game interface copied with full MIT notice, re-expressed in planning terms (states = partial plans, reward = plan quality, not win probability). Original START code: `planning_domain.jl` (1-site 2-crop synthetic), `verify.jl`, `verify_lp.jl` (JuMP+HiGHS LP cross-check, separate file so `verify.jl` stays Distributions-only), `training_loop.jl` (original planning training loop — verified samples only, linear value model, held-out replacement rule; no network library), `dynamics_search.jl` (original learned-dynamics search, INSPIRATION-REBUILD of MuZero.jl's design — no MuZero.jl code copied, no Flux/CUDA; see "Learned-dynamics search" below), and `spineopt_patterns.jl` (original SpineOpt planning patterns, INSPIRATION-REBUILD — no SpineOpt code copied, no SpineOpt dependency; see "SpineOpt planning patterns (Module 18)" below). Search finds the known optimum — delivered 600 t / shortage 50 t — candidate only, never verified by the search; the LP cross-check catches candidates that beat the optimum. See "Planning-search module" below |
+| SpineOpt planning patterns (rebuild only, Module 18) | spine-tools/SpineOpt.jl (inspiration only, NOT adopted) | n/a — nothing adopted | assembled (patterns only) | **134/134 new Julia tests PASS** (Julia suite now 650/650) | Original Julia in `julia-current/planning-search/spineopt_patterns.jl` (JuMP+HiGHS, standalone script like `verify_lp.jl`): rolling-horizon / representative-period time slices, stochastic normal-vs-low-yield scenarios, Benders master/subproblem split with objective-upperbound cuts (converges in 2 iterations, agrees with the direct LP optimum 600/50 t), nodal balance generalised to any flow-conservation constraint, MGA surfacing 2 distinct near-optimal alternatives for human choice (never auto-selected). No SpineOpt code copied, no SpineOpt dependency, no SpineInterface, no Spine DB; SpineOpt itself is DROP (energy-only, GPL/LGPL contradiction, monolithic build-solve-write). Every result is a CANDIDATE only until the separate verify step + human approval. See "SpineOpt planning patterns (Module 18)" below |
 | Borrowed helpers (Cognee chunk_by_word + chunk_id, Crawl4AI normalize_url) | topoteretes/cognee, unclecode/crawl4ai | Apache-2.0 | assembled | **24/24 Python tests PASS** | `helpers/borrowed_helpers.py`, stdlib-only, Apache-2.0 notices kept, provenance in `helpers/PROVENANCE.md`. Untrusted-input utilities only — not wired into any verify, governance, or decision path. Crawl4AI's own test file does not match the cloned function in 4 of 20 cases (recorded in PROVENANCE.md); tests assert actual behaviour. See "Borrowed helpers" below |
 | LangGraph | langchain-ai/langgraph | 1.2.20 | assembled | 1/1 (+ pipeline tests) | Real StateGraph plan → verify → report; report refuses without verification |
 | Cedar | cedar-policy/cedar | 4.14.1 (Rust) | assembled | 4/4 Rust | Real Cedar engine evaluates policies.cedar; Python adapter is a documented stub evaluator for the same two policies |
@@ -3175,3 +3176,242 @@ are plain JSON-able dicts, schema version "1.0.0").
   raises rather than updating. A tool that legitimately
   produces multiple results needs multiple sessions (or a
   future multi-result design), not a re-delivery.
+
+## SpineOpt planning patterns (Module 18)
+
+**Inspiration source + licence.** spine-tools/SpineOpt.jl
+(Module 18, sweep INSPIRATION-REBUILD item 6 — the last item
+of the final sweep batch; items 1–5 done and pushed before it:
+Collective-Intelligence-Library 608916b, Tumult 57e5af5,
+SciAgents f4670ed, Trace 27b105b, RAP hibernation 787b3c5).
+SpineOpt itself is DROP, per the replacements audit
+(`source-audit/REPLACEMENTS_AUDIT.md` §6): an energy-only JuMP
+application (82 stars, 23,225 lines in `src/`), redundant with
+the already assembled JuMP 1.32.1 + HiGHS 1.26.1, heavier via
+the Spine DB stack (SpineInterface, Arrow, Distributions,
+Graphs, MetaGraphsNext), copyleft with an unresolved
+contradiction (LICENSE file is GPL-3.0, README/headers say
+LGPL-3.0-or-later), and a monolithic `run_spineopt()`
+build-solve-write call with no separate verify step and no
+human gate. The audit worker read `temporal_structure.jl`,
+`stochastic_structure.jl`, `benders.jl`,
+`constraint_nodal_balance.jl` and `run_spineopt_mga.jl` in full
+to understand the PATTERNS; nothing was copied from them, and
+no SpineOpt dependency was added. What was rebuilt is original
+Julia in `julia-current/planning-search/spineopt_patterns.jl`
+(JuMP+HiGHS only — the already assembled solver layer),
+a standalone file NOT included by `PlanningSearch.jl`, exactly
+like `verify_lp.jl`, so `test/runtests.jl` stays JuMP-free.
+Runner `planning-search/run_spineopt_patterns.jl`.
+
+**What was rebuilt.** All five patterns, on the synthetic
+1-site 2-crop domain already in planning-search/ (never a real
+region), with a shared two-stage direct-LP helper
+(`solve_direct_lp`, which also returns the areas the patterns
+need to build candidates — cross-checked against
+`verify_lp.jl`'s `solve_food_lp_from_spec`, same 600/50 t
+optimum):
+- (a) Rolling-horizon / representative-period time slices
+  (`representative_slices`, `rolling_horizon_plan`): the annual
+  problem split into 3 periods; the shared annual water budget
+  is split equally across periods (water is the binding shared
+  resource), land is reusable each period so each slice keeps
+  the full land budget, demand repeats each period. Each slice
+  is solved by its own direct LP and is its own candidate.
+  Aggregate over 3 slices: delivered 1,000 t, shortage 950 t
+  (each slice 333.33 t delivered — water 33,333 m3 only waters
+  16.667 ha of potato).
+- (b) Stochastic scenario structure (`two_scenarios`,
+  `stochastic_plan`): normal yield (p=0.7) vs low yield
+  (yields 0.8x, p=0.3). Each scenario is solved by its own
+  direct LP and is its own candidate; the plan reports
+  probability-weighted expected totals (delivered 580 t,
+  shortage 70 t). A scenario fan, not a here-and-now
+  first-stage decision: no single "expected" plan is produced,
+  because a plan optimal on average need not be feasible in any
+  one scenario. Probabilities must each be in [0, 1] and sum to
+  1, or the call throws ArgumentError — never silently
+  normalised.
+- (c) Benders master/subproblem split (`benders_solve`,
+  `subproblem_shortage`): master chooses areas under
+  land/water budgets, per-crop no-overproduction caps
+  (yield * area <= demand — the same rule as the planning
+  domain), and a proxy variable theta for the subproblem cost
+  (total shortage), minimising theta; the subproblem evaluates
+  the master's areas (delivered = min(yield * area, demand)
+  per crop — this 2-crop subproblem has a closed form, so it is
+  evaluated directly rather than as a second JuMP model, and
+  the cut comes from its subgradient; in a larger model the
+  subproblem would be its own LP and the cut would come from
+  its duals — the shape, master proposes / subproblem evaluates
+  / cut returns, is the same). Cut at areas a: theta >=
+  shortage(a) + g . (area - a), with g_i = -yield_i where the
+  crop is under-delivered and 0 where it meets demand. The loop
+  stops when the best subproblem value (upper bound) minus the
+  master's theta (lower bound) is within 1e-6. It converges in
+  2 iterations (1 cut): lower = upper = 50 t, areas wheat 50 ha
+  / potato 20 ha — agreeing with the direct LP optimum
+  (delivered 600 t, shortage 50 t) field by field. The Benders
+  result runs INSIDE the existing verify-then-approve flow: it
+  proposes a candidate, and the test and the runner verify it
+  with `verify_candidate_with_lp`. There is no monolithic
+  run-solve-write call anywhere in this file.
+- (d) Nodal balance, generalised (`check_nodal_balance`,
+  `nodal_balance_for_candidate`): for any node,
+  sum(inflows) - sum(outflows) - net_demand == 0 within
+  tolerance — the pattern from
+  `constraint_nodal_balance.jl` stripped of its energy ontology
+  (unit_flow / node_state / gas / voltage). Applied to a
+  candidate: per crop, production == delivered + waste and
+  delivered + shortage == demand, with flows derived from the
+  candidate's AREAS via the spec, plus checks that the
+  candidate's CLAIMED production / delivered / shortage totals
+  match those derived flows (a liar claiming delivered 650 t
+  from 50/20 ha fails here). Empty node id and non-finite values
+  are UNKNOWN, never PASS.
+- (e) MGA (`mga_alternatives`, `choose_alternative`):
+  the direct LP optimum is solved first; each alternative is
+  then solved with total shortage <= optimum shortage + slack
+  (50 t, so <= 100 t) under a different diversity objective
+  (maximise wheat area, maximise potato area, minimise water
+  use, minimise wheat area), dropping duplicates of the optimum
+  or of earlier alternatives (areas within 1e-6). Exactly 2
+  distinct alternatives result: maximise-wheat gives wheat
+  56.25 ha / potato 16.25 ha (delivered 550 t, shortage 100 t),
+  maximise-potato gives wheat 37.5 ha / potato 20 ha (delivered
+  550 t, shortage 100 t); minimise-water and minimise-wheat both
+  land on the second point and are dropped as duplicates.
+  `MGAResult.selected` is always `nothing` at creation, and
+  `choose_alternative` throws ArgumentError without
+  human_approved=true — nothing is ever auto-selected, and a
+  chosen alternative is still a CANDIDATE only (choosing is not
+  verifying).
+
+**What was checked — exact test cases and results.** 134 new
+Julia tests in
+`julia-current/planning-search/test/spineopt_patterns.jl`, all
+passing; full Julia suite after this work **650/650, 0 failed**
+(was 513/513; breakdown adds 134 SpineOpt tests plus 3 from the
+widened no-AlphaZero-import check in `test/runtests.jl`, now
+84/84). Python and Rust suites NOT re-run — nothing they touch
+changed. Spine totals now **922 passed, 0 failed** (Python
+232/232, Rust 40/40, Julia 650/650).
+- Direct LP agrees with the verify_lp LP (12): two-stage LP
+  from the spec alone gives delivered 600.0 t, shortage 50.0 t,
+  production 600.0 t, land 70.0 ha, water 100,000.0 m3, areas
+  (50, 20) ha, matching `solve_food_lp_from_spec` on delivered
+  and shortage; an infeasible spec (land budget -1 ha) gives a
+  non-OPTIMAL status and non-finite delivered.
+- Time-sliced plan (23): 3 slices, 3 candidates, total weight
+  3.0; each slice candidate water <= 33,333.35 m3, land <= 100
+  ha, delivered ≈ 333.33 t; aggregate delivered ≈ 1,000 t,
+  shortage ≈ 950 t; plan verified=false, status CANDIDATE,
+  needs_human_decision=true; every slice candidate passes the
+  separate verify step with its own slice spec; one period
+  (nperiods=1) reproduces the base 600/50 t; nperiods=0 throws
+  ArgumentError.
+- Two-scenario stochastic plan (20): 2 scenarios, probabilities
+  sum to 1.0, ids normal / low-yield; normal candidate 600/50 t;
+  low-yield candidate delivered ≈ 533.33 t, shortage ≈ 116.67 t;
+  expected delivered ≈ 580.0 t, expected shortage ≈ 70.0 t;
+  plan verified=false, status CANDIDATE,
+  needs_human_decision=true; every scenario candidate passes
+  the separate verify step with its own scenario spec; bad
+  probabilities (sum 1.2, a negative probability, an empty
+  scenario list, p_normal=1.1) all throw ArgumentError.
+- Benders split agrees with the direct LP optimum (30):
+  subproblem at (0, 0) ha gives shortage 650 t, at (50, 20) ha
+  gives shortage 50 t / delivered 600 t; `benders_solve`
+  converges in 2 iterations with 1 cut, areas ≈ (50, 20) ha,
+  delivered 600.0 t, shortage 50.0 t, production 600.0 t, land
+  70.0 ha, water 100,000.0 m3; lower bound ≈ upper bound ≈ 50 t;
+  all five totals agree with the direct LP; candidate CANDIDATE,
+  verified=false, needs_human_decision=true; the separate
+  verify step passes it (constraint PASS, LP PASS, combined
+  PASS), and it counts as verified only with human approval.
+- Nodal balance (15): generic node inflows [100, 50] /
+  outflows [120] / net demand 30 gives PASS with residual 0;
+  outflows [100] gives FAIL with residual 20; empty node id
+  and NaN inflow give UNKNOWN; the optimum candidate passes
+  all 7 checks (2 per crop + 3 claimed-total checks) with all
+  residuals 0; a liar claiming delivered 650 t fails; an
+  over-water candidate (60/20 ha, 112,000 m3) PASSES its nodal
+  balances but FAILS the verify step — flow conservation is not
+  resource feasibility, and the tests assert that separation.
+- MGA (25): optimum 600/50 t, slack 50 t, at least 2
+  alternatives, all with shortage <= 100 t and delivered >=
+  550 t, all distinct from the optimum and from each other by
+  areas, all CANDIDATE / verified=false /
+  needs_human_decision=true; `selected === nothing`;
+  choosing without approval (or with human_approved=false)
+  throws ArgumentError; choosing with approval returns that
+  alternative, still CANDIDATE and unverified; choosing index
+  99 throws BoundsError; every alternative passes the separate
+  verify step; objectives line up with the alternatives; a
+  negative slack throws ArgumentError.
+- No-SpineOpt guard (9): the code lines of
+  `spineopt_patterns.jl` (comments excluded) contain no
+  `using SpineOpt`, `import SpineOpt`, `SpineInterface`,
+  `sqlite`, `run_spineopt`, `SpineOpt` at all, and no
+  `verified=true`; the file states it is ORIGINAL START code
+  with NO SpineOpt code copied.
+- Runner `planning-search/run_spineopt_patterns.jl` →
+  SPINEOPT_PATTERNS RESULT: PASS (3 slices each verify PASS;
+  both scenarios verify PASS; Benders 2 iterations, bounds
+  50/50 t, candidate verify PASS; nodal balance PASS with all
+  residuals 0.0; MGA 2 alternatives, selected=nothing, each
+  verify PASS).
+- Full Julia suite re-run after this work (see "Test results"):
+  spine 16/16, spine-lp 15/15, spine-ode, 4 smokes,
+  planning-search 84/84, LP cross-check 53/53, training loop
+  86/86, training loop LP-split 25/25, learned-dynamics 208/208,
+  NetworkDynamics 31/31, SpineOpt patterns 134/134, AlphaZero
+  smoke 9/9 — **650 passed, 0 failed, 0 not run**.
+
+**Governance rule.** Every pattern result is a CANDIDATE only:
+it goes through the separate verify step (constraint verify +
+JuMP+HiGHS LP cross-check) with needs_human_decision=true, and
+nothing is marked verified by the search/pattern code — a plan
+counts as verified only on a PASS verdict plus human approval.
+The Benders split is a proposer inside that flow, never a
+monolithic run-solve-write; MGA surfaces alternatives for a
+human to choose and never auto-selects (choosing without
+approval throws; choosing is not verifying). Nodal balance is
+flow conservation only and never certifies resource
+feasibility. This module never calls the verify step itself to
+certify output, never touches self-edit or guardrail files, and
+the wire format stays JSON (plain structs of numbers/strings/
+vectors — no Spine DB, no pickle, no SQLite).
+
+**Limitations / known gaps.**
+- The Benders subproblem is evaluated in closed form for this
+  2-crop LP (delivered = min(yield * area, demand)); in a larger
+  model the subproblem would be its own LP and the cut would
+  come from its duals. The decomposition shape is the same, but
+  the dual machinery is not exercised here.
+- The stochastic plan is a scenario fan, not a here-and-now
+  first-stage decision: there is no single plan that is
+  feasible in both scenarios, and no "expected" plan is
+  produced. A two-stage stochastic program with recourse would
+  be a further step, not built here.
+- MGA's diversity comes only from four fixed objectives; on
+  this domain two of them collapse onto the same point, so only
+  2 distinct alternatives result (the test requires >= 2, and
+  that is what the domain yields). A larger slack or more
+  objectives would surface more, but the near-optimality bound
+  (shortage <= 100 t) is what keeps the alternatives honest.
+- Time slices split the annual water budget equally and repeat
+  the full demand each period — a modelling choice for the
+  synthetic domain, not a claim about real seasonal demand or
+  real water rights. Land is treated as reusable each period;
+  a stored resource carried across periods (e.g. stored water
+  or stored grain) is not modelled.
+- Bug found and fixed by the tests (not papered over):
+  `verify_candidate` in `verify.jl` checked land/water with
+  zero tolerance, so the low-yield scenario candidate — whose
+  water total is 100,000.00000000001 m3 against a 100,000 m3
+  budget, a 1e-11 floating-point artefact of the LP solution —
+  failed verification. Land/water now use a 1e-6 tolerance
+  (ha / m3; physically meaningless, and an over-budget candidate
+  such as 112,000 m3 still fails by far). No other test outcome
+  changed: the full Julia suite re-run above is 650/650.

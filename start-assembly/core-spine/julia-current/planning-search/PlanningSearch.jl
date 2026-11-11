@@ -47,6 +47,24 @@
 #                       probability; the search is a candidate
 #                       generator only. Tests: test/dynamics_search.jl
 #                       (standalone).
+#   spineopt_patterns.jl ORIGINAL START code, NOT included here:
+#                       SpineOpt planning patterns, an
+#                       INSPIRATION-REBUILD of spine-tools/SpineOpt.jl
+#                       (Module 18, DROP in the replacements audit) —
+#                       no SpineOpt code copied, no SpineOpt
+#                       dependency. Rolling-horizon / representative-
+#                       period time slices, stochastic scenario
+#                       structure, a Benders master/subproblem split
+#                       with objective-upperbound cuts, the nodal
+#                       balance equation generalised to any
+#                       flow-conservation constraint, and MGA
+#                       (Modelling-to-Generate-Alternatives) for
+#                       human choice — never auto-selecting. Loads
+#                       JuMP+HiGHS, so it lives apart like
+#                       verify_lp.jl. Runner:
+#                       run_spineopt_patterns.jl; tests:
+#                       test/spineopt_patterns.jl (standalone script,
+#                       not included from test/runtests.jl)
 #
 # GUARDRAILS (non-negotiable):
 #  * A search result is a CANDIDATE only. It must go through the

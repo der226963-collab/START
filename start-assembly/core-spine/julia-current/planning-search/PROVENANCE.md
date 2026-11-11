@@ -1,6 +1,6 @@
 # Provenance — planning-search module
 
-Date: 2026-11-11. Local only; nothing pushed to GitHub.
+Date: 2026-11-11. Assembled locally; pushed to der226963-collab/START under `start-assembly/core-spine/` on 2026-11-11 (commit 674f6abc).
 
 ## Source
 

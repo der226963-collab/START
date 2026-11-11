@@ -1,9 +1,10 @@
 # START core spine — first local assembly
 
-Date: 2026-11-10. Local only: `~/workspace/start-assembly/core-spine/`.
+Date: 2026-11-10. Assembled locally at `~/workspace/start-assembly/core-spine/`,
+pushed to der226963-collab/START under `start-assembly/core-spine/` on 2026-11-11
+(commit 674f6abc7478bbd497c8459ceec8e4a3d553ba2b).
 Nothing here touches `~/workspace/ai-starter`, the v0.3.2 review copy,
-any GitHub repo, or START guardrails / self-edit / safety files.
-Nothing in this folder has been pushed anywhere.
+or START guardrails / self-edit / safety files.
 
 ## What this is
 

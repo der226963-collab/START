@@ -1,5 +1,5 @@
 # Core-spine assembly — checkpoint 1
-Date: 2026-11-10. Local only, no GitHub, no changes to ai-starter / v032-review / guardrails.
+Date: 2026-11-10. Assembled locally; pushed to der226963-collab/START under start-assembly/core-spine/ on 2026-11-11 (commit 674f6abc). No changes to ai-starter / v032-review / guardrails.
 Toolchains verified: Python 3.12.3, SciPy 1.11.4, NumPy 1.26.4; rustc/cargo 1.99.1 at ~/.cargo/bin (not on PATH); Julia NOT FOUND.
 Contracts read: REVIEW.md (54 issues), interop schemas 1.0.0, shared test-vectors + NOTE, planning-package models.py + NOTE, REPO_TRIAGE.md.
 Status rules adopted: five internal states PASS/FAIL/UNKNOWN/NOT_CHECKED/INCOMPLETE; FAIL wins, then INCOMPLETE/UNKNOWN/NOT_CHECKED -> indeterminate; empty checks -> NOT_CHECKED, never PASS.

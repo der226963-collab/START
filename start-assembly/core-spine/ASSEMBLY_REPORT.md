@@ -1,7 +1,9 @@
 # START core-spine — Assembly Report
 
 Date: 2026-11-10. Location: `~/workspace/start-assembly/core-spine/`
-(local only; nothing pushed to GitHub; `~/workspace/ai-starter`,
+(assembled locally; pushed to der226963-collab/START under
+`start-assembly/core-spine/` on 2026-11-11, commit
+674f6abc7478bbd497c8459ceec8e4a3d553ba2b; `~/workspace/ai-starter`,
 the v0.3.2 review copy, and START guardrails/safety files untouched).
 
 ## Headline
@@ -106,9 +108,11 @@ deprecated). `~/.julia` is ~7.6 GB (three envs + caches).
 
 ## Planning-search module (added 2026-11-11)
 
-Local only, in `julia-current/planning-search/` (standalone in the
+In `julia-current/planning-search/` (standalone in the
 canonical env; the `alphazero/` clone, `~/workspace/ai-starter`,
-the v0.3.2 review copy, and GitHub are untouched). Source audit
+and the v0.3.2 review copy are untouched; the module itself was
+pushed to der226963-collab/START under `start-assembly/core-spine/`
+on 2026-11-11, commit 674f6abc). Source audit
 (`source-audit/ALPHAZERO_LANGGRAPH_AUDIT.md`) verdicts followed:
 COPY `mcts.jl` + `game.jl`, REWRITE training loop, DEPENDENCY ONLY
 for the Flux/CUDA network.

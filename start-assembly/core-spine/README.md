@@ -67,6 +67,7 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
 | Beam-Telemetry (event bus only) | 8 Observation & Monitoring | beam-telemetry/telemetry | Apache-2.0 | Monitoring event bus: execute/attach/detach, events carrying licence/provenance + verified flag | assembled 2026-11-11, 17/17 tests PASS; original Python in `adapters/event_bus.py`, stdlib only; no Beam-Telemetry code copied, Erlang library NOT a dependency; handlers never mark a result verified — promotion attempts are rejected and logged (Python 136/136) |
 | Collective-Intelligence-Library (pure transforms only) | 19 Collective Intelligence | eq-network/Collective-Intelligence-Library | MIT | Mechanism simulation: effect-declared pure transforms over immutable graph state, pipeline compiled from the read/write DAG, plurality-vote mechanism | assembled 2026-11-11, 19/19 tests PASS; original Python in `adapters/mechanism_simulation.py`, stdlib only; no Collective-Intelligence-Library code copied, JAX NOT a dependency; every result verified=false, needs_human_decision=true (Python 155/155) |
 | Tumult (experiment pattern only) | 24 Resilience & Continuity | mwigge/tumult | Apache-2.0 | Fault-injection test tooling: hypothesis → baseline → fault → recovery measurement → evidence journal; three fault kinds (worker_crash, delayed_response, corrupted_value) | assembled 2026-11-11, 18/18 Python + 10/10 Rust tests PASS; original Rust in `rust/src/fault_injection.rs` and original Python in `adapters/fault_injection.py`, stdlib only; no Tumult code copied, Tumult platform (daemon, UI, MCP server) NOT adopted; a fault run can never report PASS and never sets verified=true (Python 173/173, Rust 40/40) |
+| SciAgents Discovery (role pattern + 7-key proposal schema only) | 9 Multidisciplinary Intelligence | lamm-mit/SciAgentsDiscovery | Apache-2.0 | Research roles: deterministic, rule-based Ontologist → Scientist → Critic over supplied text; proposal in exactly the 7-key schema (hypothesis, outcome, mechanisms, design_principles, unexpected_properties, comparison, novelty) | assembled 2026-11-11, 18/18 tests PASS; original Python in `adapters/research_roles.py`, stdlib only; no SciAgents code copied, prototype (paid OpenAI key, Semantic Scholar API, GraphReasoning package) NOT adopted, no LLM; a proposal that fails the Critic is marked FAILED, never passed; no stage sets verified=true (Python 191/191) |
 
 ## Layout
 
@@ -103,7 +104,17 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
   hypothesis → baseline → fault → recovery measurement →
   evidence journal; fault kinds worker_crash / delayed_response /
   corrupted_value; outcome is always FAIL or UNKNOWN, verified
-  always false; 18/18 tests PASS).
+  always false; 18/18 tests PASS),
+  `research_roles.py` (research roles, Module 9 — original
+  Python, stdlib only, SciAgents Ontologist → Scientist →
+  Critic role pattern and 7-key proposal schema as design
+  inspiration only, no code copied, no LLM, no paid API;
+  deterministic rule-based stages over supplied text; proposal
+  has exactly the 7 keys hypothesis / outcome / mechanisms /
+  design_principles / unexpected_properties / comparison /
+  novelty; a proposal that fails the Critic is marked FAILED;
+  verified always false, needs_human_decision always true;
+  18/18 tests PASS).
 - `helpers/` — borrowed helpers, the ONLY vendored candidate code in
   this assembly: `borrowed_helpers.py` (Cognee `chunk_by_word` +
   `chunk_id`, Crawl4AI `normalize_url`, Apache-2.0 notices kept,

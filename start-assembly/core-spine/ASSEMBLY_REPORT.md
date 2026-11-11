@@ -9,7 +9,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 ## Headline
 
 - **Components: 21 total — 20 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 173/173 passed, Rust 40/40 passed, Julia 513/513 checks passed — 726 passed, 0 failed**
+- **Tests: Python 191/191 passed, Rust 40/40 passed, Julia 513/513 checks passed — 744 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
 - Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
@@ -46,6 +46,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | Beam-Telemetry (event bus only) | beam-telemetry/telemetry | Apache-2.0 (no version installed — nothing adopted) | assembled | **17/17 new Python tests PASS** (Python suite now 136/136) | Original Python monitoring bus (Module 8): `adapters/event_bus.py`, stdlib only — execute/attach/detach, events carrying licence/provenance + verified flag + needs_human_decision. No Beam-Telemetry code copied; Erlang library NOT a dependency. Handlers never mark a result verified — promotion attempts are rejected and logged. See "Monitoring event bus (Beam-Telemetry rebuild, Module 8)" below |
 | Collective-Intelligence-Library (pure transforms only) | eq-network/Collective-Intelligence-Library | MIT (no version installed — nothing adopted) | assembled | **19/19 new Python tests PASS** (Python suite now 155/155) | Original Python mechanism simulation (Module 19): `adapters/mechanism_simulation.py`, stdlib only — effect-declared pure transforms over immutable graph state, pipeline compiled from the read/write DAG, plurality-vote mechanism over a synthetic 5-node graph. No Collective-Intelligence-Library code copied; JAX NOT a dependency. Every result carries verified=false and needs_human_decision=true. See "Mechanism simulation (Collective-Intelligence-Library rebuild, Module 19)" below |
 | Tumult (experiment pattern only) | mwigge/tumult | Apache-2.0 (no version installed — nothing adopted) | assembled | **18/18 new Python tests PASS + 10/10 new Rust tests PASS** (Python suite now 173/173, Rust suite now 40/40) | Original Rust + Python fault-injection test tooling (Module 24): `rust/src/fault_injection.rs` + `adapters/fault_injection.py`, stdlib only (+ serde_json in Rust) — hypothesis → baseline → fault → recovery measurement → evidence journal, three fault kinds (worker_crash, delayed_response, corrupted_value), same taxonomy and report shape in both halves. No Tumult code copied; the Tumult platform (daemon, UI, MCP server) NOT adopted. A fault run can never report PASS (Rust `RunOutcome` has no Pass variant) and never sets verified=true. See "Fault-injection experiments (Tumult rebuild, Module 24)" below |
+| SciAgents Discovery (role pattern + 7-key proposal schema only) | lamm-mit/SciAgentsDiscovery | Apache-2.0 (no version installed — nothing adopted) | assembled | **18/18 new Python tests PASS** (Python suite now 191/191) | Original Python research roles (Module 9): `adapters/research_roles.py`, stdlib only — deterministic, rule-based Ontologist → Scientist → Critic over supplied text, proposal in exactly the 7-key schema (hypothesis, outcome, mechanisms, design_principles, unexpected_properties, comparison, novelty). No SciAgents code copied; the prototype (paid OpenAI key, Semantic Scholar API, GraphReasoning package) NOT adopted, no LLM, no new dependency. A proposal that fails the Critic is marked FAILED, never passed; no stage sets verified=true (verified=false, needs_human_decision=true on every result). See "Research roles (SciAgents rebuild, Module 9)" below |
 
 ## Exact versions installed (venv `.venv`, Python 3.12.3)
 
@@ -2524,3 +2525,175 @@ journal entries are plain JSON-able dicts).
   it false, never lets a fault run report PASS, and never
   calls verify. The real verify step + human approval still
   decide verification.
+
+## Research roles (SciAgents rebuild, Module 9)
+
+**Inspiration source and licence.** SciAgents Discovery
+(lamm-mit/SciAgentsDiscovery, Apache-2.0 — verified in the sweep
+from the repo's own LICENSE file; 1,036 lines of Python across 5
+source files plus setup.py, last commit 2025-05-09, per
+`source-audit/sweep/group-c.json`: a research prototype from
+MIT's Buehler group that generates hypotheses in bio-inspired
+materials by sampling paths from an ontological knowledge graph
+and running an Ontologist -> Scientist -> Critic agent sequence
+via AG2/AutoGen, with a Semantic Scholar API call for novelty
+checking). The sweep's verdict was DEFER: the prototype needs a
+paid OpenAI API key, the Semantic Scholar API, and a separate
+lamm-mit/GraphReasoning package, and it is a narrow single-domain
+demo, not a library — so the whole prototype is NOT adopted. Its
+role pattern and its 7-key structured JSON proposal schema
+survive as a design note for original Python code. **No SciAgents
+code was copied** — the module below was written from the role
+pattern and the schema shape only. No new dependency was added
+(stdlib only), no LLM, no paid API, no downloads, no real
+literature — synthetic test data only. The sibling candidate
+SciAgent/OpenDCAI (Module 9) is a DROP: a withdrawn arXiv
+preprint with no code, so nothing was rebuilt from it.
+
+**What was rebuilt.** Original Python in
+`adapters/research_roles.py` (stdlib only), three deterministic,
+rule-based stages over supplied text:
+- Ontologist, `extract_ontology(text)`: tokenises the supplied
+  text, counts content words (length >= 4, stopwords removed),
+  and records co-occurrence relations between terms appearing
+  in the same sentence (order-independent pairs). A term's
+  "definition" is only the first source sentence it appears in
+  — the module never invents a definition. Empty text yields
+  empty terms and relations, never an error, never invented
+  content.
+- Scientist, `draft_proposal(ontology, question)`: builds a
+  proposal in exactly the 7-key schema. The 7 keys are the
+  seven aspects the SciAgents paper lists for a Scientist_1
+  proposal (Ghafarollahi & Buehler, Adv. Mater. 2025, PMC
+  article PMC12138853: "hypothesis, outcome, mechanisms,
+  design principles, unexpected properties, comparison, and
+  novelty"), as snake_case JSON keys: `hypothesis`, `outcome`,
+  `mechanisms`, `design_principles`, `unexpected_properties`,
+  `comparison`, `novelty`. The hypothesis is templated from the
+  ontology's three most frequent terms; mechanisms come from
+  its top relations; design principles from its top terms. Two
+  fields are honest about what the module cannot do:
+  `unexpected_properties` reports none was identified in the
+  supplied text, `novelty` states novelty is unassessed because
+  no literature check is performed, and `comparison` states no
+  baseline was supplied. The proposal dict itself is exactly
+  those 7 keys — no more, no fewer — and the governance flags
+  live in the pipeline envelope, not in the proposal.
+  `validate_proposal_schema()` returns the list of schema
+  problems (empty list = valid): wrong key set, empty values.
+- Critic, `critique_proposal(proposal, ontology)`: checks the
+  proposal against six explicit, deterministic criteria and
+  returns verdict "PASSED" only if every check passes,
+  "FAILED" otherwise. The checks are: (1) `schema_exact` —
+  exactly the 7 keys; (2) `all_fields_nonempty`; (3)
+  `hypothesis_grounded` — the hypothesis mentions at least one
+  ontology term; (4) `mechanisms_grounded` — every mechanism
+  mentions at least one ontology term and the list is
+  non-empty; (5) `novelty_not_asserted` — the novelty field
+  must state novelty is unassessed or not verified, never
+  assert novelty it cannot show; (6) `comparison_present`.
+  "PASSED" means only "passed these explicit rule checks" —
+  it is not verification of the science.
+- Pipeline, `run_pipeline(text, question, proposal_override=None)`:
+  Ontologist -> Scientist -> Critic, returning a plain
+  JSON-able envelope (ontology, proposal, critique, verdict).
+  The `proposal_override` path exists so a hand-made proposal
+  can be put through the Critic; the pipeline verdict is the
+  Critic's verdict.
+- Synthetic example, `synthetic_input()`: four original
+  sentences about silk fibres and energy (echoing the
+  SciAgents paper's own validation example — a knowledge graph
+  built from the words "silk" and "energy extensive") plus the
+  question "Can silk fibres improve the energy storage of a
+  composite?"
+
+**What was checked — exact test cases and results.** 18 new
+Python tests in `tests/test_research_roles.py`, all passing;
+full Python suite after this work **191/191, 0 failed** (was
+173/173; breakdown adds research roles 18). Rust and Julia
+suites NOT re-run — nothing they touch changed. Spine totals
+now **744 passed, 0 failed** (Python 191/191, Rust 40/40,
+Julia 513/513).
+- Ontologist (4): synthetic terms hand-counted (silk 4, fibres
+  4, energy/load/matrix/stiff 2 each, store 1; terms sorted by
+  occurrences descending then term, so fibres first, silk
+  second; silk's first sentence is "Silk fibres store elastic
+  energy."; 4 source sentences); relations hand-counted
+  (fibres-silk 4, energy-fibres 2, energy-silk 2,
+  fibres-load 2, all "co-occurs-with", top relation
+  fibres-silk); empty text yields empty terms/relations with
+  verified False and needs_human_decision True; non-string
+  text raises ValueError.
+- Scientist (5): proposal has exactly the 7 keys, no more, no
+  fewer, and `validate_proposal_schema` returns []; every
+  field non-empty, hypothesis mentions fibres, silk and energy
+  and contains the question, novelty says "Unassessed",
+  comparison says "No baseline"; mechanisms are 3, from the
+  top relations (first mentions fibres and silk with "4 shared
+  sentence(s)"); empty ontology or empty question raises
+  ValueError; JSON round-trip keeps the proposal identical
+  with exactly the 7 keys.
+- Critic (5): the drafted proposal passes all 6 checks,
+  verdict PASSED, failures []; empty mechanisms → FAILED with
+  mechanisms_grounded (and all_fields_nonempty) in failures;
+  a hypothesis mentioning no ontology term ("Combining
+  zirconium with titanium changes quantum foam.") → FAILED
+  with hypothesis_grounded in failures; a proposal missing
+  `comparison` and carrying an `extra_claim` key → FAILED with
+  schema_exact and comparison_present in failures, and the
+  schema validator lists both the missing and the extra key; a
+  novelty field asserting "This idea is highly novel and has
+  never been tried." → FAILED with novelty_not_asserted in
+  failures.
+- Pipeline (4): full pipeline on the synthetic input → verdict
+  PASSED, verified False, needs_human_decision True, proposal
+  exactly the 7 keys, critique PASSED, whole result JSON-able;
+  pipeline with a failing override (empty mechanisms, asserted
+  novelty) → verdict FAILED, verified False; pipeline with a
+  non-dict override → verdict FAILED, verified False;
+  governance source pin — the module source contains no
+  "verified=True" / "verified = True", does contain
+  '"verified": False', and imports neither openai nor requests
+  nor SciAgents.
+
+**Governance rule.** No stage may set verified to True. Every
+result this module produces — ontology, critique, pipeline
+envelope — carries verified False and needs_human_decision
+True, pinned by the source-reading test above (the source
+contains no code path that writes True, and the literal
+`"verified": False` is present in every constructor). A
+proposal that fails the Critic's checks is marked FAILED, never
+passed, and a Critic "PASSED" verdict means only that the six
+explicit rule checks passed — it is not verification of the
+science. A proposal is a model result, never a verified plan:
+the real verify step plus human approval still decide
+verification. The module does not touch self-edit or guardrail
+files, and the wire format stays JSON (ontologies, proposals,
+critiques and pipeline results are plain JSON-able dicts).
+
+**Limitations / known gaps.**
+- The Scientist_2 expansion step from the original prototype
+  (a second scientist agent expanding the draft with specific
+  experimental and simulation approaches) is NOT a separate
+  stage here: without a language model there is nothing to
+  expand with beyond the same deterministic templates, so the
+  Scientist stage drafts the full 7-key proposal directly.
+- The Ontologist is a word counter, not a semantic extractor:
+  terms are single content words (no multi-word phrases, no
+  stemming, no synonyms), relations are sentence
+  co-occurrence only, and "definitions" are source sentences,
+  not meanings. A hypothesis can therefore be grounded in a
+  term while being scientifically empty — grounding is a
+  string check, not a truth check.
+- The Critic's checks are syntactic: they verify shape,
+  non-emptiness, term overlap, and that novelty is not
+  asserted — they cannot judge whether a hypothesis is true,
+  plausible, or actually novel. The novelty check in
+  particular only looks for the words "unassessed" / "not
+  verified"; a proposal could pass it while being wrong in
+  every other respect, which is why "PASSED" is not
+  verification.
+- `verified` on a result is a flag set by this module, not a
+  proof: the guarantee is only that this module always sets
+  it false and never calls verify. The real verify step +
+  human approval still decide verification.

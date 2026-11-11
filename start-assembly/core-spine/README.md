@@ -64,6 +64,7 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
 | Pymrio | 17 Resource Accounting | IndEcol/pymrio | LGPL-3.0 | Footprint / consumption-based accounting | assembled 0.7.0 (PyPI); dependency only, never copied, library unmodified and replaceable; adapter `adapters/footprint_accounting.py`, 15/15 tests PASS; outputs are model results only (verified=false, needs_human_decision=true); no downloads — synthetic in-memory MRIO only |
 | Graphiti (temporal schema only) | 6 Knowledge & Memory | getzep/graphiti | Apache-2.0 | Temporal knowledge fields (valid-from/valid-to, superseded-by, episode links) | assembled 2026-11-11, 17/17 tests PASS; original Python in `adapters/temporal.py`, stdlib only; no Graphiti code copied, system/LLM-extraction/graph-DB/telemetry NOT adopted; verified flag carried unchanged, never set by this module |
 | BehaviorTree.rs (node types + typed blackboard only) | 4 Reasoning & Planning | ncrothers/behaviortree-rs | MIT | Behaviour-tree orchestration of plan → verify → report | assembled 2026-11-11, 10/10 tests PASS; original Rust in `rust/src/behavior_tree.rs`, trees in JSON; no BehaviorTree.rs code copied, crate NOT a dependency; verify is a hard gate, report refuses without a passed verify in the same run (Rust 30/30) |
+| Beam-Telemetry (event bus only) | 8 Observation & Monitoring | beam-telemetry/telemetry | Apache-2.0 | Monitoring event bus: execute/attach/detach, events carrying licence/provenance + verified flag | assembled 2026-11-11, 17/17 tests PASS; original Python in `adapters/event_bus.py`, stdlib only; no Beam-Telemetry code copied, Erlang library NOT a dependency; handlers never mark a result verified — promotion attempts are rejected and logged (Python 136/136) |
 
 ## Layout
 
@@ -81,7 +82,12 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
   `temporal.py` (temporal knowledge, Module 6 — original Python,
   stdlib only, Graphiti temporal-edge/episode schema as design
   inspiration only, no code copied, no graph DB, no LLM; 17/17
-  tests PASS).
+  tests PASS),
+  `event_bus.py` (monitoring event bus, Module 8 — original Python,
+  stdlib only, Beam-Telemetry execute/attach/detach as design
+  inspiration only, no code copied, no BEAM runtime; handlers
+  never mark a result verified, promotion attempts rejected and
+  logged; 17/17 tests PASS).
 - `helpers/` — borrowed helpers, the ONLY vendored candidate code in
   this assembly: `borrowed_helpers.py` (Cognee `chunk_by_word` +
   `chunk_id`, Crawl4AI `normalize_url`, Apache-2.0 notices kept,

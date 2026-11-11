@@ -9,7 +9,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 ## Headline
 
 - **Components: 20 total — 19 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 119/119 passed, Rust 30/30 passed, Julia 513/513 checks passed — 662 passed, 0 failed**
+- **Tests: Python 136/136 passed, Rust 30/30 passed, Julia 513/513 checks passed — 679 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
 - Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
@@ -43,6 +43,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | Graphiti (temporal schema only) | getzep/graphiti | Apache-2.0 (no version installed — nothing adopted) | assembled | **17/17 Python tests PASS** | Temporal knowledge fields only (Module 6): `adapters/temporal.py`, original Python, stdlib only — episodes with valid_from/valid_to, superseded_by, episode links. No Graphiti code copied; the system, LLM extraction, graph DB and telemetry were NOT adopted. See "Temporal knowledge (Graphiti rebuild, Module 6)" below |
 | ash-flare | ashforge-rs/ash-flare | 3.0.0 (crates.io) | assembled | **6/6 new Rust tests PASS** (Rust suite now 20/20) | Local supervision of execution workers only (Module 24). Dependency only, no code copied, default features only (`python` OFF), distributed mode OFF by non-use. Supervisor core audited first. See "ash-flare (Module 24)" below |
 | BehaviorTree.rs (node types + typed blackboard only) | ncrothers/behaviortree-rs | MIT (no version installed — nothing adopted) | assembled | **10/10 new Rust tests PASS** (Rust suite now 30/30) | Original Rust orchestration (Module 4): Sequence / Fallback / Inverter + Succeeder decorators / Action / Condition + typed blackboard, trees in JSON. No BehaviorTree.rs code copied; crate NOT a dependency. Verify is a hard gate — report refuses without a passed verify in the same run. See "Behavior-tree orchestration (BehaviorTree.rs rebuild, Module 4)" below |
+| Beam-Telemetry (event bus only) | beam-telemetry/telemetry | Apache-2.0 (no version installed — nothing adopted) | assembled | **17/17 new Python tests PASS** (Python suite now 136/136) | Original Python monitoring bus (Module 8): `adapters/event_bus.py`, stdlib only — execute/attach/detach, events carrying licence/provenance + verified flag + needs_human_decision. No Beam-Telemetry code copied; Erlang library NOT a dependency. Handlers never mark a result verified — promotion attempts are rejected and logged. See "Monitoring event bus (Beam-Telemetry rebuild, Module 8)" below |
 
 ## Exact versions installed (venv `.venv`, Python 3.12.3)
 
@@ -1993,3 +1994,177 @@ silent success. Every emitted report records
   supervision/restart of a tree (that is ash-flare's job, and
   a restarted worker must never re-emit a verified verdict —
   this module emits none).
+
+## Monitoring event bus (Beam-Telemetry rebuild, Module 8)
+
+**Inspiration source and licence.** Beam-Telemetry
+(beam-telemetry/telemetry, Apache-2.0 — verified in the sweep
+from the repo's own LICENSE file; `src/telemetry.erl` 482
+lines, whole repo 1,445 lines of Erlang, per
+`source-audit/sweep/group-a.json`). The sweep's verdict was
+INSPIRATION-REBUILD: rebuild the execute/attach/detach event
+bus as original Python, events carrying licence/provenance +
+verified/unverified flags, handlers never marking a result
+verified. **No Beam-Telemetry code was copied** — this module
+was written from the event-bus design only (execute an event
+by name, attach/detach handlers, handlers receive measurements
+plus a metadata map). The Erlang library was NOT adopted:
+START's v0.3.2 allocation has no BEAM runtime, so it cannot
+be used as a dependency as-is; there is no BEAM/Elixir
+component in the spine. Nothing was installed: no new
+dependency, `requirements.txt` unchanged, no network, no real
+telemetry backend. The module was placed at
+`adapters/event_bus.py` because the existing adapter layout
+(`adapters/*.py`, thin Python adapters) is where a
+Python-layer Module 8 observation/monitoring piece belongs,
+and it is stdlib-only (`copy`, `json`), like the other
+self-contained adapters.
+
+**What was rebuilt.** `adapters/event_bus.py` (original code):
+- `make_event(event_name, payload, licence, provenance,
+  verified=False, needs_human_decision=True, synthetic=True)`:
+  builds a plain JSON-able event dict (`schema_version`
+  "1.0.0", `"event"`, `"payload"`, `"licence"`,
+  `"provenance"`, `"verified"`, `"needs_human_decision"`,
+  `"synthetic"`); payload must be a dict and the event must
+  be JSON-able (checked by `json.dumps` at construction).
+- `EventBus.attach(event_name, handler)` /
+  `detach(event_name, handler)` / `execute(event_name,
+  event)`: handlers are plain callables taking one argument
+  (the event dict). Attach is idempotent — attaching the same
+  handler twice returns False and it is called once per
+  dispatch. Detaching a handler that was never attached is a
+  safe no-op returning False, never an error (chosen so
+  teardown / re-registration code cannot fail on a handler
+  that was already gone). `execute` dispatches to all handlers
+  of that event name in attach order and returns a dispatch
+  record (plain JSON-able dict: event name, verified flag,
+  needs_human_decision, licence, provenance, the event as
+  dispatched, `handlers_run`, per-handler `results`,
+  `status` "ok").
+- `execute` validates the event before dispatch: it must be a
+  dict with the fields `event` / `payload` / `licence` /
+  `provenance` / `verified` / `needs_human_decision`, must be
+  JSON-able, and its `"event"` name must equal the event name
+  it is executed under — a misrouted event raises ValueError
+  and nothing is dispatched or logged.
+- In-memory dispatch log (`log()` returns a deep copy,
+  `log_to_json()` serialises it, `clear_log()` empties it):
+  one entry per handler invocation with event name, handler
+  name, the verified flag as dispatched, and the outcome
+  (`"accepted"` / `"rejected"` / `"error"`) plus a detail
+  string. Promotion attempts are never silent.
+- Synthetic example bus (`synthetic_bus()`): a bus with a
+  logging handler (records deep copies of the events it saw)
+  and a metrics handler (counts events per name) attached to
+  `plan.verified` and `plan.candidate`. Both are observers
+  only.
+
+**What was checked — exact test cases and results.** 17 new
+tests in `tests/test_event_bus.py`, all passing; full Python
+suite after this work **136/136, 0 failed** (was 119/119;
+breakdown: statuses 10, optimisation 5, CVXPY 1, CPMpy 1,
+Arrow 1, gRPC 6 (2 + 4 wire), governance 7, orchestration 5,
+evaluation 11, borrowed helpers 24, resource accounting 16,
+footprint accounting 15, temporal 17, event bus 17). Rust and
+Julia suites NOT re-run — nothing they touch changed. Spine
+totals now **679 passed, 0 failed** (Python 136/136, Rust
+30/30, Julia 513/513).
+- Attach/detach (5): an attached handler receives events; after
+  detach it receives nothing and `attached()` is empty;
+  detaching a handler that was never attached (unknown event,
+  or a different handler on a known event) is a safe no-op
+  returning False; attaching the same handler twice returns
+  False the second time and it is called once per dispatch;
+  three handlers run in attach order.
+- Verified flag (2): an unverified event arrives with
+  verified=false — the handler saw verified=false, the
+  dispatch record and the log entry record verified=false,
+  and the record carries needs_human_decision=true; a stored
+  verified=true is carried unchanged through dispatch and the
+  log (carried, never invented, never cleared).
+- Promotion rejected (3): a handler returning a copy of the
+  event with verified=true is recorded "rejected" with a
+  detail naming the flag, its return is discarded, the dispatch
+  record and the stored event stay verified=false, and a
+  downstream handler attached after it still sees
+  verified=false; a handler mutating the verified flag of the
+  copy it was handed is likewise "rejected" (detail says
+  "mutated"), later handlers are unaffected, and a second
+  dispatch of the same event object still sees false (the
+  bus's stored copy was never touched); demoting a verified
+  event (returning verified=false) is rejected too — handlers
+  never change the flag in either direction.
+- Provenance and wire format (2): licence/provenance/payload
+  on the event the handler saw, on the dispatch record, and
+  on the event as dispatched are identical to the ones that
+  went in, and the caller's own event object is not modified
+  by dispatch; the dispatch record and the log serialise to
+  plain JSON and round-trip with the flag, licence and outcome
+  intact.
+- Handler errors (1): a raising handler is logged with outcome
+  "error" and a detail naming the exception type and message,
+  the two later handlers still run, the dispatch record still
+  carries the event (verified=false) with status "ok" — the
+  event is not lost.
+- Execute validation (3): executing an event under a different
+  name raises ValueError and logs nothing; an event missing
+  the licence field raises ValueError; executing with no
+  handlers attached returns status "ok" with handlers_run 0
+  and an empty log.
+- Synthetic bus (1): the logging handler saw both dispatched
+  events (unverified) and the metrics handler counted one of
+  each event name.
+
+**Governance rule.** Handlers are observers, never verifiers.
+The bus enforces this by construction, in three layers: (1)
+each handler receives a deep copy of the event, never the
+bus's own copy, so mutating its input cannot change what the
+bus stored or what later handlers see; (2) a handler's return
+value is never used as event data — a returned dict whose
+verified flag differs from the flag as dispatched is recorded
+"rejected" and discarded; (3) a handler that mutates the
+verified flag of its copy is recorded "rejected" with a
+detail string, and the attempt is visible in the dispatch log
+— promotion attempts are REJECTED, not silently ignored,
+because a silent ignore would hide a governance violation
+from audit. The choice of rejection over silent ignore is
+deliberate: the log is the audit trail, and a handler that
+tries to promote an event is a fact worth recording. The
+stored/logged flag stays exactly as dispatched in every case,
+so no downstream consumer can observe a verified=true version
+of an event that was dispatched unverified. Dispatch results
+carry verified=false and needs_human_decision=true and must
+still go through START's separate verify step like any other
+model output. The module has no function that sets verified,
+no network, no telemetry backend, no new dependency, and it
+does not touch self-edit or guardrail files.
+
+**Limitations / known gaps.**
+- The bus is in-memory only: no persistence, no concurrency
+  (a single-threaded caller is assumed; concurrent attach /
+  execute from two threads is not synchronised), no
+  cross-process delivery, and no real telemetry backend —
+  this is the dispatch shape only, not a monitoring system.
+- The dispatch log grows without bound until `clear_log()` is
+  called; there is no rotation, size cap, or persistence, so
+  a long-running caller must rotate it.
+- `verified` on an event is a carried flag, not a proof: the
+  bus cannot tell whether a stored verified=true was set by
+  the real verify step + human approval or written in by
+  hand. The guarantee is only that this bus never sets it,
+  never lets a handler change it, and records every attempt
+  to do so.
+- Mutations to fields other than `verified` in a handler's
+  copy are harmless by construction (the copy is discarded)
+  and do not change the outcome — only the verified flag is
+  guarded and logged. A handler that silently drops or
+  rewrites a payload field in its own copy has no effect on
+  the bus, but is also not logged; callers that need payload
+  integrity auditing should compare the handler's copy
+  against the dispatch record themselves.
+- Events are trusted input in this item: `execute` validates
+  structure and the name match, but there is no schema
+  version check on incoming events, no size limit on payloads,
+  and no allow-listing of event names. An event from an
+  untrusted source would need those before being accepted.

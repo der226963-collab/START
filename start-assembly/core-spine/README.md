@@ -69,6 +69,7 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
 | Tumult (experiment pattern only) | 24 Resilience & Continuity | mwigge/tumult | Apache-2.0 | Fault-injection test tooling: hypothesis → baseline → fault → recovery measurement → evidence journal; three fault kinds (worker_crash, delayed_response, corrupted_value) | assembled 2026-11-11, 18/18 Python + 10/10 Rust tests PASS; original Rust in `rust/src/fault_injection.rs` and original Python in `adapters/fault_injection.py`, stdlib only; no Tumult code copied, Tumult platform (daemon, UI, MCP server) NOT adopted; a fault run can never report PASS and never sets verified=true (Python 173/173, Rust 40/40) |
 | SciAgents Discovery (role pattern + 7-key proposal schema only) | 9 Multidisciplinary Intelligence | lamm-mit/SciAgentsDiscovery | Apache-2.0 | Research roles: deterministic, rule-based Ontologist → Scientist → Critic over supplied text; proposal in exactly the 7-key schema (hypothesis, outcome, mechanisms, design_principles, unexpected_properties, comparison, novelty) | assembled 2026-11-11, 18/18 tests PASS; original Python in `adapters/research_roles.py`, stdlib only; no SciAgents code copied, prototype (paid OpenAI key, Semantic Scholar API, GraphReasoning package) NOT adopted, no LLM; a proposal that fails the Critic is marked FAILED, never passed; no stage sets verified=true (Python 191/191) |
 | Trace (feedback propagation only) | 22 Evaluation & Learning | microsoft/Trace | MIT | Evaluation attribution: given an evaluation result (e.g. a DeepEval deterministic metric score), propagate the feedback back to the step that produced it — which task, which metric, which input — by exact match on all three; unknown, partial or ambiguous sources are reported UNATTRIBUTED, never guessed, and a cause is never invented | assembled 2026-11-11, 21/21 tests PASS; original Python in `adapters/feedback_attribution.py`, stdlib only; no Trace code copied, `trace-opt` tool (paid LLM API via LiteLLM, optimiser rewriting prompts/code) NOT adopted, no LLM; the verified flag is carried from the result handed in, verbatim, never set here; needs_human_decision always true (Python 212/212) |
+| RAP hibernation pattern (local-only only) | 1 Core Framework | hydro-project/infinity | Apache-2.0 | Hibernation state machine: fire-and-forget tool invocation with immediate ack, hibernate/wake over one canonical JSON envelope with a SHA-256 checksum, subscriptions persisting across hibernations, results delivered locally and held unverified until the separate verify step + human approval | assembled 2026-11-11, 20/20 tests PASS; original Python in `adapters/hibernation.py`, stdlib only; no Infinity code copied, `rap-protocol` crate NOT adopted and NOT copied; NO callback URL, listener or network delivery — local-only, `register_callback` always raises (a callback with a bad/missing auth token is rejected along with every other callback); a hibernated state never wakes as verified (Python 232/232) |
 
 ## Layout
 
@@ -126,7 +127,19 @@ Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
   UNATTRIBUTED, never guessed; cause never inferred
   (`cause` always None); verified flag carried from the
   result handed in, verbatim, never set here;
-  needs_human_decision always true; 21/21 tests PASS).
+  needs_human_decision always true; 21/21 tests PASS),
+  `hibernation.py` (RAP hibernation pattern, Module 1 —
+  original Python, stdlib only, hydro-project/infinity
+  hibernation pattern as design inspiration only, no code
+  copied, `rap-protocol` NOT adopted; fire-and-forget tool
+  invocation with immediate ack, hibernate/wake over one
+  canonical JSON envelope with a SHA-256 checksum,
+  subscriptions persisting across hibernations, results
+  delivered locally by `deliver_result` and held unverified
+  until the separate verify step + human approval; NO
+  callback URL, listener or network delivery — local-only,
+  `register_callback` always raises; a hibernated state
+  never wakes as verified; 20/20 tests PASS).
 - `helpers/` — borrowed helpers, the ONLY vendored candidate code in
   this assembly: `borrowed_helpers.py` (Cognee `chunk_by_word` +
   `chunk_id`, Crawl4AI `normalize_url`, Apache-2.0 notices kept,

@@ -9,7 +9,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 ## Headline
 
 - **Components: 21 total — 20 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 212/212 passed, Rust 40/40 passed, Julia 513/513 checks passed — 765 passed, 0 failed**
+- **Tests: Python 232/232 passed, Rust 40/40 passed, Julia 513/513 checks passed — 785 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
 - Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
@@ -48,6 +48,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | Tumult (experiment pattern only) | mwigge/tumult | Apache-2.0 (no version installed — nothing adopted) | assembled | **18/18 new Python tests PASS + 10/10 new Rust tests PASS** (Python suite now 173/173, Rust suite now 40/40) | Original Rust + Python fault-injection test tooling (Module 24): `rust/src/fault_injection.rs` + `adapters/fault_injection.py`, stdlib only (+ serde_json in Rust) — hypothesis → baseline → fault → recovery measurement → evidence journal, three fault kinds (worker_crash, delayed_response, corrupted_value), same taxonomy and report shape in both halves. No Tumult code copied; the Tumult platform (daemon, UI, MCP server) NOT adopted. A fault run can never report PASS (Rust `RunOutcome` has no Pass variant) and never sets verified=true. See "Fault-injection experiments (Tumult rebuild, Module 24)" below |
 | SciAgents Discovery (role pattern + 7-key proposal schema only) | lamm-mit/SciAgentsDiscovery | Apache-2.0 (no version installed — nothing adopted) | assembled | **18/18 new Python tests PASS** (Python suite now 191/191) | Original Python research roles (Module 9): `adapters/research_roles.py`, stdlib only — deterministic, rule-based Ontologist → Scientist → Critic over supplied text, proposal in exactly the 7-key schema (hypothesis, outcome, mechanisms, design_principles, unexpected_properties, comparison, novelty). No SciAgents code copied; the prototype (paid OpenAI key, Semantic Scholar API, GraphReasoning package) NOT adopted, no LLM, no new dependency. A proposal that fails the Critic is marked FAILED, never passed; no stage sets verified=true (verified=false, needs_human_decision=true on every result). See "Research roles (SciAgents rebuild, Module 9)" below |
 | Trace (feedback propagation only) | microsoft/Trace | MIT (no version installed — nothing adopted) | assembled | **21/21 new Python tests PASS** (Python suite now 212/212) | Original Python evaluation attribution (Module 22): `adapters/feedback_attribution.py`, stdlib only — a trace of steps (task, metric, input, component) and exact-match attribution of an evaluation result (e.g. a DeepEval deterministic metric score) back to the step that produced it; unknown, partial or ambiguous sources are reported UNATTRIBUTED, never guessed; cause is never inferred (`cause` always None). No Trace code copied; the tool (`trace-opt`, paid LLM API via LiteLLM) NOT adopted, no LLM, no optimiser, no new dependency. The verified flag is carried from the result handed in, verbatim, never set here; needs_human_decision is always true. See "Feedback attribution (Trace rebuild, Module 22)" below |
+| RAP hibernation pattern (local-only only) | hydro-project/infinity | Apache-2.0 (no version installed — nothing adopted) | assembled | **20/20 new Python tests PASS** (Python suite now 232/232) | Original Python hibernation state machine (Module 1): `adapters/hibernation.py`, stdlib only — fire-and-forget tool invocation with immediate ack, hibernate/wake over one canonical JSON envelope with a SHA-256 checksum, subscriptions persisting across hibernations, results delivered locally and held unverified until the separate verify step + human approval. No Infinity code copied; the `rap-protocol` crate NOT adopted and NOT copied; NO callback URL, listener or network delivery — local-only, `register_callback` always raises. A hibernated state never wakes as verified. See "RAP hibernation pattern (Infinity rebuild, Module 1)" below |
 
 ## Exact versions installed (venv `.venv`, Python 3.12.3)
 
@@ -2900,3 +2901,277 @@ JSON-able dicts).
   that this module never sets it and always still requires
   a human decision. The real verify step + human approval
   still decide verification.
+
+## RAP hibernation pattern (Infinity rebuild, Module 1)
+
+**Inspiration source and licence.** hydro-project/infinity
+(hydro-project/infinity, Apache-2.0 — verified in the
+replacements audit from its own `LICENSE.txt`, full Apache-2.0
+text, Copyright 2026 Hydro Contributors, initial developer of
+some parts Amazon Web Services; 57,969 lines of Rust across 21
+crates, last commit `e1a3e4b` 2026-11-06, 809 stars, 94 forks,
+created 2026-04-13). See
+`source-audit/REPLACEMENTS_AUDIT.md` (§1) and
+`source-audit/ALL_CANDIDATES_BORROWING_PLAN.md` (Module 1).
+The audit's verdict was DEFER: the runtime is a 21-crate,
+AWS-bound (Lambda + DynamoDB/SQS/Scheduler/DSQL) agent
+runtime whose scale-to-zero story is AWS Lambda, whose
+default model shape is a paid LLM (Bedrock Claude Sonnet via
+`StaticModel`, live tests use the same model), and whose
+autonomous agent loop has no governance hooks — no
+`needs_human_decision`, no verified/unverified distinction,
+no approval gate — in the wrong language for the v0.3.2
+allocation (orchestration is Python; Rust is for
+constraint/verification kernels). The blueprint's Wasm
+sandboxing and polyglot memory-mapping claims for Module 1 do
+not exist in it (zero hits for wasm/wasmtime/wasmer/mmap
+anywhere in `crates/`; sandboxing is git/jj worktrees plus
+optional `sandbox-exec`/`bwrap`). So the whole runtime is NOT
+adopted: no dependency, no `rap-protocol` install, and **no
+Infinity code was copied** — the module below was written
+from the design idea only (the RAP hibernation pattern:
+fire-and-forget tool invocation, immediate HTTP 200 ack,
+runtime persists state and exits, result delivered later to
+a callback URL, subscriptions persisting across
+hibernations). No new dependency was added (stdlib only), no
+LLM, no paid API, no downloads, no real data — synthetic test
+data only.
+
+**The local-only vs callback choice, and why.** LOCAL-ONLY —
+and local-only full stop, not local-only by default with a
+callback behind a flag. The audit refused the smallest
+copyable unit (`crates/rap-protocol/src/lib.rs`, 392 lines,
+`RapInvocation`/`RapCallback` JSON types) for a specific
+reason: `ToolCallId` semantics are provider-controlled
+(Bedrock `tooluse_*` IDs), callback URLs carry no
+auth/verification field, and it would drag RAP's
+anyone-holding-a-callback-URL-can-deliver-a-result trust
+model into START. Adding an auth token to a callback would
+not fix that model: the token would still be a bearer secret
+carried in the URL, START has no callback-listener
+infrastructure, no secret store for such tokens, and no
+consumer for remote delivery — and a delivered result must
+never be trusted on arrival anyway. So the pattern is rebuilt
+with the network half removed: a result is delivered by a
+LOCAL function call (`deliver_result`) in the same process,
+and `register_callback` unconditionally raises `ValueError`
+— there is no callback to register, and no URL is ever
+accepted, stored or fetched. The "callback with a bad/missing
+auth token is rejected" test case therefore does not apply as
+a token check: every callback, with or without a token, is
+rejected, which is strictly stronger. If remote delivery is
+ever wanted, it needs its own design (an authenticated,
+verified channel) and Eric's approval; this module is not
+that design.
+
+**What was rebuilt.** Original Python in
+`adapters/hibernation.py` (stdlib only — `json`, `hashlib`):
+- Invocation, `invoke_tool(session_id, tool_call_id,
+  tool_name, tool_args, subscriptions=())`: creates a session
+  in state `ACTIVE` and returns `(session, ack)`. The ack is
+  immediate (`acknowledged: True`, session and tool-call ids)
+  — the tool has NOT run and no result exists yet;
+  invocation is fire-and-forget. `tool_call_id` is an opaque
+  caller-supplied string with no provider semantics (unlike
+  RAP's Bedrock-controlled ids): it is only an identifier the
+  caller can match a later delivery against. `tool_args` must
+  be JSON-able; duplicate subscriptions are dropped, order
+  kept. Every record carries `verified` False and
+  `needs_human_decision` True.
+- State machine, `hibernate(session)` / `wake(text)`:
+  `ACTIVE` -> `HIBERNATING` -> `WOKEN` -> `HIBERNATING` ->
+  `WOKEN` ... `hibernate` returns the persisted state as ONE
+  canonical JSON string (sorted keys, compact separators)
+  including a SHA-256 `checksum` over the payload; the
+  runtime is then expected to exit. `wake` parses that
+  string, verifies the checksum and the schema version,
+  requires the stored state to be `HIBERNATING`, and returns
+  the session in state `WOKEN`. Any other transition raises
+  `ValueError`: hibernating an already-hibernating session,
+  waking a string whose state is not `HIBERNATING`, waking a
+  tampered string (checksum mismatch), waking a string with
+  the wrong schema version, or waking non-JSON / non-string
+  input. There are no timestamps, no random ids and no
+  insertion-order dependence in the envelope, so the round
+  trip is byte-identical.
+- Subscriptions, `subscribe(session, subscriber_id)` /
+  `unsubscribe(session, subscriber_id)`: an ordered list of
+  subscriber-id strings (e.g. `"planner"`, `"verifier"`)
+  naming the parties to be told when a result arrives. They
+  are part of the persisted state, so they survive
+  hibernation and wake unchanged, in order, with no
+  duplicates (subscribing twice is a no-op; unsubscribing an
+  absent id is a no-op). Subscribing to a hibernating session
+  raises `ValueError` — persisted state is not mutated in
+  place; wake it first.
+- Delivery, `deliver_result(session, payload, status)`:
+  records a result on an `ACTIVE` or `WOKEN` session.
+  `status` must be `"PASS"`, `"FAIL"` or `"UNKNOWN"`;
+  `payload` must be JSON-able. A second delivery to the same
+  session raises `ValueError` (one invocation, one result —
+  a re-delivery is a protocol error, not an update).
+  Delivering to a hibernating session raises `ValueError`.
+  A delivered result is ALWAYS held unverified:
+  `result["verified"]` is `False` and
+  `result["needs_human_decision"]` is `True`, whatever the
+  status — even `"PASS"`. Delivery is not verification.
+- Verification, `verify_result(session, verdict,
+  human_approved)`: records the separate verify step's
+  verdict plus the human decision, and returns a plain
+  JSON-able verification record. The session's (and the
+  result's) verified flag is set only when the verdict is
+  `"PASS"` AND `human_approved` is `True`; any other
+  combination leaves it `False`. It requires a delivered
+  result and a session that is not hibernating (wake it
+  first); otherwise it raises `ValueError`. This function
+  does not itself check the payload — the real verify step
+  (constraint verify + JuMP/HiGHS LP cross-check) is the
+  caller's job; this records that step's verdict plus the
+  human decision. No code path in this module writes the
+  verified flag to the affirmative except through that one
+  expression (`verified = (verdict == "PASS" and
+  human_approved is True)`), pinned by the source test.
+- Never wakes verified: `hibernate` forces `verified` to
+  `False` on the session and on any delivered result before
+  serialising, and `wake` forces it to `False` again on the
+  way back in — even if the persisted JSON was hand-crafted
+  with `verified` set true (and a valid checksum). A result
+  delivered after hibernation still goes through the
+  separate verify step: it is held unverified until verified
+  there. Verification does not survive hibernation either: a
+  session verified before hibernating wakes unverified and
+  must be re-verified (by the caller's verify step) after
+  waking.
+- Synthetic example, `synthetic_session()` (tool
+  `solve_food_lp` over the spine's 1-site 2-crop food system,
+  demand 650 t, session `synthetic-food-lp-session`,
+  tool-call `call-food-lp-001`, subscribed by `"planner"`
+  and `"verifier"`) and `synthetic_result_payload()` (the
+  known LP optimum: delivered 600 t, shortage 50 t,
+  production 600 t, land 70 ha, water 100,000 m³).
+
+**What was checked — exact test cases and results.** 20 new
+Python tests in `tests/test_hibernation.py`, all passing;
+full Python suite after this work **232/232, 0 failed** (was
+212/212; breakdown adds hibernation 20). Rust and Julia
+suites NOT re-run — nothing they touch changed. Spine totals
+now **785 passed, 0 failed** (Python 232/232, Rust 40/40,
+Julia 513/513).
+- Invoke + ack (3): invoke returns an immediate ack
+  (`acknowledged` True, session/tool-call ids, state ACTIVE,
+  verified False, needs_human_decision True) with no result
+  yet and subscriptions `["planner"]`; the synthetic session
+  is the food-LP invocation (demand 650 t, subscribers
+  planner + verifier, ACTIVE, no result); empty ids,
+  non-JSON-able args (a set), a string subscription list,
+  and duplicate subscriptions (dropped, order kept:
+  `("a", "b", "a")` -> `["a", "b"]`) are rejected or handled
+  as stated.
+- Hibernate/wake round trip (4): hibernate -> wake ->
+  hibernate is byte-identical, and a third cycle is
+  identical too; hibernate + wake preserves subscriptions
+  (planner, verifier, auditor) and a delivered PASS result
+  (payload delivered 600 t / shortage 50 t) with the
+  re-hibernated string equal to the first; invalid
+  transitions raise ValueError (hibernate an already
+  hibernating session; wake an ACTIVE payload; wake a
+  non-string, non-JSON, or schema-less input — while the
+  valid string still wakes afterwards); a tampered
+  hibernated state is rejected (tool_args changed with the
+  old checksum; one checksum character flipped; wrong schema
+  version even with a freshly recomputed checksum).
+- Result after hibernation (5): a PASS result delivered
+  after hibernate -> wake is held unverified (verified
+  False, needs_human_decision True, payload delivered 600 t
+  / shortage 50 t); verify PASS + human approval verifies
+  (record verified True, human_approved True, session and
+  result verified True, needs_human_decision still True);
+  verify PASS without human approval does NOT verify; verify
+  FAIL with approval never verifies, and UNKNOWN with
+  approval never verifies; delivery rules — bad status
+  `"MAYBE"`, non-JSON-able payload, a second delivery, verify
+  with no delivered result, verify with a bad verdict, and
+  delivery/verify while hibernating all raise ValueError.
+- Subscriptions persist (2): subscribe auditor + unsubscribe
+  verifier before hibernating survives two hibernations
+  unchanged (`["planner", "auditor"]`, second hibernated
+  string equal to the first); duplicate subscribe and
+  absent unsubscribe are no-ops, empty subscriber id is
+  rejected, subscribe/unsubscribe while hibernating raise
+  ValueError.
+- Never wakes verified (3): a session verified (PASS +
+  human approval) before hibernating wakes unverified
+  (session and result verified False); a hand-crafted
+  persisted state claiming verified True on session and
+  result, with a valid recomputed checksum, still wakes
+  unverified; a verified result re-hibernated wakes
+  unverified and can then be re-verified after waking
+  (PASS + approval -> verified True).
+- Local-only, no callback (2): `register_callback` raises
+  ValueError for a plain HTTPS URL, for a URL with an
+  `auth_token` argument, and for a localhost HTTP URL — a
+  callback with a bad/missing auth token is rejected along
+  with every other callback, because no callback is ever
+  accepted; no hibernated JSON string contains "callback"
+  or "http", and no session dict contains a `callback_url`
+  key.
+- Source pin (1): the module source below its docstring
+  contains no `rap-protocol` / `rap_protocol` /
+  `RapInvocation` / `RapCallback`, no `import socket` /
+  `http` / `requests` / `urllib`, no `verified=True` /
+  `verified = True` / `"verified": True`, and does contain
+  the single verify expression `verified = (verdict ==
+  "PASS" and human_approved is True)` and `register_callback`
+  with "local-only".
+
+**Governance rule.** Hibernation is about persistence, not
+verification: a hibernated state never wakes as verified, a
+result delivered after hibernation is held unverified until
+the separate verify step (constraint verify + JuMP/HiGHS LP
+cross-check) passes AND a human approves
+(`needs_human_decision=true`), and verification does not
+survive hibernation — a verified session that hibernates must
+be re-verified after waking. Delivery never verifies, wake
+never verifies, and no callback can deliver a result from
+outside the process at all: there is no listener, no URL is
+ever accepted, and `register_callback` always raises. This
+module never calls verify, never certifies an output, and
+never touches self-edit or guardrail files; the wire format
+stays JSON (sessions, acks, results and verification records
+are plain JSON-able dicts, schema version "1.0.0").
+
+**Limitations / known gaps.**
+- Local-only is a deliberate narrowing, not an oversight:
+  the RAP pattern's remote half (result delivered later to a
+  callback URL, runtime exits and is woken by an event) is
+  NOT rebuilt. There is no event-driven wake, no timer, no
+  queue, and no way for an external tool to deliver a result
+  — delivery is a local function call in the same process.
+  If remote delivery is ever wanted, it needs its own
+  design (authenticated, verified channel) and Eric's
+  approval.
+- The SHA-256 checksum detects tampering/corruption of the
+  persisted string, but it is not authentication: anyone who
+  can write the persisted string can recompute a valid
+  checksum (the hand-crafted-verified test proves wake still
+  forces unverified, but a tampered payload with a fresh
+  checksum and verified False would wake as if genuine).
+  Persisted state must live in a private location, like the
+  Tonic Unix socket; the checksum is integrity, not trust.
+- `tool_call_id` is opaque and caller-supplied: the module
+  does not check that a delivered result's tool-call id
+  matches anything, because delivery is a local call on the
+  session object itself (the id is carried, not matched
+  across processes). Cross-process matching would be part of
+  any future remote design.
+- `verify_result` records a verdict; it does not check the
+  payload. A caller passing verdict `"PASS"` for a payload
+  that fails the real verify step would be recorded as
+  verified (with human approval) — the guarantee is only
+  that this module never verifies on its own. The real
+  verify step stays the caller's responsibility, as in every
+  other adapter.
+- A session holds at most one result: a second delivery
+  raises rather than updating. A tool that legitimately
+  produces multiple results needs multiple sessions (or a
+  future multi-result design), not a re-delivery.

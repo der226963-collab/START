@@ -1,11 +1,1 @@
-cpmpy==1.1.1
-cvxpy==1.9.3
-deepeval==4.3.3
-grpcio==1.85.1
-grpcio-tools==1.85.1
-highspy==1.15.1
-langgraph==1.2.20
-numpy==2.5.4
-odym @ git+https://github.com/IndEcol/ODYM@9792c23b1faced9515b425033694328aa8301c0f
-pyarrow==26.0.1
-scipy==1.18.1
+numpy>=1.26

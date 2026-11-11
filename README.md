@@ -215,6 +215,107 @@ Limitations / known gaps:
 - Perplexity is a mean of per-item perplexities, not a
   token-weighted aggregate across the whole task.
 
+## mini_ai/repo_map — compact repo map (Module 20, rebuilt from Aider inspiration)
+
+The third INSPIRATION-REBUILD item from the 70-candidate borrowing
+sweep (see `start-assembly/core-spine/source-audit/
+ALL_CANDIDATES_BORROWING_PLAN.md`, item 3): Aider
+(Aider-AI/aider, Apache-2.0, 20,285 lines) is an AI pair-programming
+CLI whose most transferable piece is its repo map
+(`aider/repomap.py`, 867 lines): tree-sitter tag extraction plus
+ranked, token-budgeted whole-repo context so the model sees the
+codebase structure. Aider itself was NOT adopted — it needs a paid
+LLM API and edits files directly, which would violate START's
+trust boundaries (edits go through propose-and-approve plus the
+verify step, never direct). Instead the idea was rebuilt as
+original Python in `mini_ai/repo_map.py`, alongside the existing
+self-edit / propose-and-approve machinery. No Aider code was read
+or copied, there is no Aider dependency, and there is no paid API.
+Where Aider uses tree-sitter, this module uses the stdlib `ast`
+module and never imports the files it maps; where Aider ranks tags
+under a token budget, this module caps file size and symbol counts
+and summarises the largest files instead of dumping them.
+
+What it does: `build_repo_map(root)` walks a repo tree and returns
+a plain JSON-able dict — `schema_version` (1), `root`, `files`
+(sorted by path), `counts` (by kind, plus protected / summarised /
+skipped totals), `skipped_dirs`, `truncated`, `verified: false`,
+`needs_human_decision: true`. Per file: relative path, kind
+(`python` / `test` / `doc` / `data` / `config` / `other`), line
+count, top-level symbols for Python and test files (classes with
+their method names, functions, module-level assigned names and
+import aliases, extracted with `ast.parse`), `editable` plus
+`editable_reason`, and a `summarised` flag. Non-Python files carry
+no symbols. A source file that does not parse is still listed,
+with a `parse_error` note instead of symbols.
+
+Size caps (the compactness budget): a Python file longer than
+`MAX_LINES_FULL` = 500 lines is summarised — only its first
+`MAX_SYMBOLS_SUMMARISED` = 20 symbols are listed; shorter files
+list up to `MAX_SYMBOLS_FULL` = 100 symbols. A tree larger than
+`MAX_FILES` = 2000 files is truncated (flagged, with the omitted
+files counted as skipped). Skipped at every depth: `.git`,
+`__pycache__`, `.venv`, `venv`, `target/`, `node_modules`,
+`checkpoints`, and other build/cache dirs (the full `SKIP_DIRS`
+list is recorded on every map), plus `.pyc` / checkpoint files and
+symlinks, which are never followed.
+
+Governance rule: the mapper is read-only by construction — only
+`os.walk`, open-for-read, and `ast.parse`; it never writes,
+renames, or deletes anything, and it never approves a diff. A repo
+map is a model result, never a verified plan: every map carries
+`verified: false` and `needs_human_decision: true`, following the
+`mini_ai/eval` pattern. It RESPECTS THE PROTECTED-FILE LIST: the
+list is read from `mini_ai.self_edit.PROTECTED` (never re-typed,
+so it cannot drift from the guardrails). Every protected file
+present in the tree is listed so a proposer can see it exists, but
+flagged `editable: false` with reason `"protected"`, and its
+symbols are NOT included — the map offers no protected content for
+editing. The module must respect the protected list, never modify
+it; `SAFETY.md`, `APPROVAL_POLICY.md`, `.gitignore`,
+`mini_ai/self_edit.py`, and the guardrail tests were not edited.
+
+Use it:
+
+```python
+from mini_ai.repo_map import build_repo_map, map_to_json
+
+repo_map = build_repo_map(".")
+print(repo_map["counts"])  # {"total": ..., "python": ..., ...}
+print(map_to_json(repo_map)[:200])
+```
+
+Tests: `tests/test_repo_map.py`, 13 tests, all passing
+(2026-11-11): kinds (9 cases) and symbol extraction (classes with
+methods, functions including async, module-level names, import
+aliases, parse-error note); map listing (expected files present,
+`__pycache__` / `.venv` / `.git` / `target/` skipped, schema and
+governance flags); Python symbols for a module and a test file;
+non-Python files carry no symbols; counts (6 files: 1 python,
+1 test, 2 doc, 1 data, 1 config, 1 protected); protected files
+flagged `editable: false` with reason `"protected"` and symbols
+withheld (including a protected Python file, `mini_ai/self_edit.py`,
+and a check that its class/function names appear nowhere in the
+map); read-only (contents and mtimes unchanged after two runs);
+size cap (a 300-function file over 500 lines is summarised to at
+most 20 symbols); JSON round-trip; empty tree. Full ai-starter
+suite after this change: 105 tests OK (92 before + 13 new),
+18 skipped. Checked against the real ai-starter tree as well:
+423 files mapped, 9 protected files flagged, 16 files over the
+500-line cap summarised.
+
+Limitations / known gaps:
+
+- No ranking: unlike Aider's PageRank-style tag ranking, symbols
+  are listed in source order, truncated at the cap — the most
+  important symbols of a very large file may sit past the cut.
+- No cross-file references: the map lists per-file symbols only,
+  with no call graph, import graph, or "who uses this" index.
+- No incremental caching: Aider caches its map in SQLite; this
+  module re-walks and re-parses the whole tree on every call.
+- Line counts and symbol lists are a snapshot: a file edited after
+  the map was built is stale until the map is rebuilt.
+
 ## How this fits PCAC
 
 This repo is the language-assistance layer only, in PCAC terms:

@@ -636,3 +636,33 @@ Licences checked directly from each repo's LICENSE file:
 - Tests: tests/test_eval_registry.py, 32 tests OK. Full ai-starter
   suite: 92 tests OK (was 60), 18 skipped. Core-spine Python suite
   untouched, still 102/102.
+
+## mini_ai/repo_map (Aider repo-map rebuild), 2026-11-11
+- Third INSPIRATION-REBUILD item from the 70-candidate sweep: rebuilt
+  Aider's repo-map idea (Aider-AI/aider, Apache-2.0, 20,285 lines;
+  aider/repomap.py 867 lines, tree-sitter tag extraction + ranked,
+  token-budgeted context) as original Python in mini_ai/repo_map.py.
+  No Aider code read or copied, no Aider dependency, no paid API.
+  Stdlib only (ast, json, os); symbols via ast.parse, never by
+  importing files. Caps: MAX_LINES_FULL=500, MAX_SYMBOLS_FULL=100,
+  MAX_SYMBOLS_SUMMARISED=20, MAX_FILES=2000. Skip list: .git,
+  __pycache__, .venv/venv, target/, node_modules, checkpoints and
+  other build/cache dirs, .pyc/checkpoint files, symlinks (never
+  followed). Kinds: python / test / doc / data / config / other.
+  Output is a plain JSON-able dict (schema_version 1, root, files,
+  counts, skipped_dirs, truncated) with verified=false and
+  needs_human_decision=true, following the mini_ai/eval pattern.
+- Governance: read-only by construction (os.walk / open-for-read /
+  ast.parse only; never approves a diff). Protected list is read
+  from mini_ai.self_edit.PROTECTED, never re-typed: protected files
+  are listed but flagged editable=false with reason "protected" and
+  their symbols are withheld. SAFETY.md, APPROVAL_POLICY.md,
+  .gitignore, mini_ai/self_edit.py and guardrail files not edited.
+- Tests: tests/test_repo_map.py, 13 tests OK. Full ai-starter
+  suite: 105 tests OK (was 92), 18 skipped. Core-spine suites not
+  re-run (nothing they touch changes). Sanity check on the real
+  ai-starter tree: 423 files mapped, 9 protected flagged,
+  16 files over the 500-line cap summarised.
+- Limitations: no Aider-style tag ranking (source order, truncated
+  at the cap); no call/import graph; no incremental cache — the
+  whole tree is re-walked and re-parsed on every call.

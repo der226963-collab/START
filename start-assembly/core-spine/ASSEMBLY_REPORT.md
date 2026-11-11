@@ -800,3 +800,16 @@ Still unverified / not run:
     sweep's order, when directed: DeepEval deterministic metrics
     (PatternMatch, JsonCorrectness — no API key), then the real
     Tonic server (tonic 0.12 → 0.14.x).
+12. **Done 2026-11-11:** replacements audit for the six blueprint
+    names that do not exist (`source-audit/REPLACEMENTS_AUDIT.md`,
+    7 repos audited, audit only, no code copied, no dependencies
+    added): USE 0, ADJUST 0, DEFER 3 (hydro-project/infinity,
+    dorjeduck/llm.mojo, a2ui-project/a2ui), DROP 4
+    (resitkurttr/mojo-llm, SciAgent/OpenDCAI — paper withdrawn,
+    official repo has zero code files — NuMojo for the Module 15
+    slot, spine-tools/SpineOpt.jl). Yield is inspiration only: the
+    RAP hibernation pattern (Infinity), the MAX `linalg.matmul`
+    variant (llm.mojo, claimed 7.44×), and the temporal/stochastic/
+    Benders patterns (SpineOpt) — all to be rebuilt as original
+    START code, none adopted now. Nearest adoption if ever unblocked:
+    a2ui-core/a2ui-agent-sdk when Module 25 UI work is approved.

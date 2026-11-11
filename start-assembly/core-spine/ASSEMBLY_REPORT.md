@@ -9,7 +9,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 ## Headline
 
 - **Components: 19 total — 18 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 102/102 passed, Rust 20/20 passed, Julia 268/268 checks passed — 390 passed, 0 failed**
+- **Tests: Python 102/102 passed, Rust 20/20 passed, Julia 299/299 checks passed — 421 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
 - Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
@@ -28,6 +28,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | Symbolics.jl | JuliaSymbolics/Symbolics.jl | 7.48.0 | assembled | smoke PASS (expand (x+1)², d/dx) | Pinned 6.58.0 passes on 1.13; current 7.48.0 passes too. Licence-detection mismatch noted |
 | Turing.jl | TuringLang/Turing.jl | 0.49.0 | assembled | smoke PASS (posterior mean 0.6387 in [0.5, 0.8]) | Pinned 0.34.1 passes on 1.13 (mean 0.6265); current 0.49.0 passes too |
 | DifferentialEquations.jl | SciML/DifferentialEquations.jl | 8.1.1 | assembled | smoke PASS (S(10)=36.78795 vs 36.78794) + spine_ode PASS | Pinned 7.17.0 fails to precompile on Julia 1.13 and 1.11 (SteadyStateDiffEq/DiffEqBase); current 8.1.1 passes. Licence NOASSERTION — confirm before adopting |
+| NetworkDynamics.jl | JuliaDynamics/NetworkDynamics.jl | 1.3.0 | assembled | **31/31 Julia tests PASS** (see "NetworkDynamics.jl (Module 10)" below) | First networked domain model built first (synthetic 3-node resource network), then the dependency added — per the sweep's condition. Sweep said 1.4.0; the General registry latest is 1.3.0 (verified, see section). Dependency only, no code copied. Graphs.jl 1.15.0 added as a direct dependency for the network graph (already in the Manifest as transitive, resolved set otherwise unchanged). |
 | AlphaZero.jl | jonathan-laurent/AlphaZero.jl | 0.5.6 | assembled | smoke 9/9 checks PASS | Git clone (not General registry); own env in `alphazero/` (Flux 0.16.12, CUDA 5.11.1, Plots 1.41.7, cuDNN 1.4.7). ConnectFour init + one move, CPU only, no training. Log `alphazero/logs/smoke-alphazero.log` |
 | PlanningSearch (MCTS + game interface, copied from AlphaZero.jl) | jonathan-laurent/AlphaZero.jl (source) | 0.5.6, commit 177a6eb | assembled | **75/75 + 53/53 + 86/86 + 25/25 Julia tests PASS** | Standalone in `julia-current/planning-search/` (no AlphaZero.jl import; Distributions 0.25.134 only). MCTS + game interface copied with full MIT notice, re-expressed in planning terms (states = partial plans, reward = plan quality, not win probability). Original START code: `planning_domain.jl` (1-site 2-crop synthetic), `verify.jl`, `verify_lp.jl` (JuMP+HiGHS LP cross-check, separate file so `verify.jl` stays Distributions-only), and `training_loop.jl` (original planning training loop — verified samples only, linear value model, held-out replacement rule; no network library). Search finds the known optimum — delivered 600 t / shortage 50 t — candidate only, never verified by the search; the LP cross-check catches candidates that beat the optimum. See "Planning-search module" below |
 | Borrowed helpers (Cognee chunk_by_word + chunk_id, Crawl4AI normalize_url) | topoteretes/cognee, unclecode/crawl4ai | Apache-2.0 | assembled | **24/24 Python tests PASS** | `helpers/borrowed_helpers.py`, stdlib-only, Apache-2.0 notices kept, provenance in `helpers/PROVENANCE.md`. Untrusted-input utilities only — not wired into any verify, governance, or decision path. Crawl4AI's own test file does not match the cloned function in 4 of 20 cases (recorded in PROVENANCE.md); tests assert actual behaviour. See "Borrowed helpers" below |
@@ -60,6 +61,12 @@ Julia: 1.13.3 (release channel) at `/home/hatch/.juliaup/bin/julia`
 versions, no per-package compat bounds): Agents 7.1.0,
 DifferentialEquations 8.1.1, HiGHS 1.26.1, JuMP 1.32.1,
 ModelingToolkit 11.46.1, Symbolics 7.48.0, Turing 0.49.0,
+NetworkDynamics 1.3.0, Graphs 1.15.0 (both added 2026-11-11 for
+the first networked domain model — see "NetworkDynamics.jl
+(Module 10)" below; adding NetworkDynamics pulled in 26 new
+Manifest packages, 299 → 325, and changed no existing package
+version; Graphs was already in the Manifest as a transitive
+dependency, so adding it as direct changed nothing),
 Distributions 0.25.134 (added as a direct dependency 2026-11-11
 for the planning-search module — it was previously only a
 transitive dependency and could not be loaded by a standalone
@@ -528,11 +535,31 @@ checking). Sweep clone HEAD c22b419 (2026-10-22), 11,254 lines,
     → TRAINING_LOOP RESULT: PASS (12 generated, 12 kept,
     0 rejected, 24 verified samples; final held-out learned
     mean shortage 117.5 t vs rollout 167.5 t).
+  - NetworkDynamics.jl (Module 10): `julia-current/test_network_dynamics.jl`
+    → **31/31 tests PASS, exit 0** (Julia 1.13.3, canonical env,
+    `JULIA_NUM_THREADS=1`, `--heap-size-hint=3G`;
+    `julia-current/logs/test-networkdynamics.log`). Breakdown:
+    analytic closed form vs hand-computed values 6, mass-balance
+    identity 1, independent plain-ODE solve vs closed form 9,
+    NetworkDynamics solve vs closed form 6, NetworkDynamics vs
+    independent solve 3, steady state 3, solution structure 3.
+    The model is a synthetic 3-node resource network (source →
+    storage → sink, static linear edge flows, DAE node balances;
+    full numbers in "NetworkDynamics.jl (Module 10)" below).
+    NetworkDynamics result at t=10: S = (19.865241, 19.191446,
+    17.506960) vs closed form (19.865241060018292,
+    19.191446360109744, 17.506959610338377) — agreement within the
+    1e-6 test tolerance; steady state (20, 20, 20) at t=100.
+    The independent check (`julia-current/network_model.jl`, plain
+    DifferentialEquations, no NetworkDynamics) was built and run
+    FIRST, before the dependency was added, and matches the closed
+    form to max error 5.8e-11 at t=10.
   - Julia checks total: 16 (combined spine) + 9 (AlphaZero) + 4
     (one PASS each for Agents, DiffEq, Symbolics, Turing smokes)
     + 75 (planning-search) + 53 (LP cross-check)
-    + 86 (training loop) + 25 (training loop, LP-split) =
-    **268 passed, 0 failed, 0 not run**.
+    + 86 (training loop) + 25 (training loop, LP-split)
+    + 31 (NetworkDynamics networked model) =
+    **299 passed, 0 failed, 0 not run**.
     The split-stage runs (15+1) are subsets of the combined 16
     and are not double-counted.
 - Python re-run after the Julia work (2026-11-11): **35/35 OK**
@@ -698,6 +725,19 @@ Still unverified / not run:
     MTK macros (`ModelingToolkit.@variables`, `@parameters`,
     `@mtkbuild`) in `spine.jl`. The split stages never hit this
     (each loads only one of the two packages).
+11. **NetworkDynamics.jl needs its parameters passed explicitly.**
+    `ODEProblem(nw, u0, tspan)` without `p` leaves p as
+    `NullParameters`, which the coreloop rejects for a network
+    with pdim > 0 (`MethodError: no method matching
+    keys(::SciMLBase.NullParameters)` on the first
+    NetworkDynamics run). Fixed by passing the flat parameter
+    vector from `NWParameter(nw)` (filled from the psym defaults)
+    — see `network_dynamics.jl` (`network_parameters()`).
+12. **`sol.retcode` is not the Symbol `:Success`.** The
+    NetworkDynamics test compared `sol.retcode == :Success` and
+    failed: the retcode is a `SciMLBase.ReturnCode` enum.
+    Fixed by comparing against the independent solve's retcode
+    instead of naming the enum or the Symbol.
 
 ## Environment quirks recorded
 
@@ -859,6 +899,35 @@ Still unverified / not run:
     Next in the sweep's order, when directed: NetworkDynamics.jl
     (Module 10) — only when the first networked domain model is
     built.
+16. **Done 2026-11-11:** NetworkDynamics.jl (Module 10, sweep
+    top-10 item 4) — first networked domain model built (synthetic
+    3-node resource network with hand-derived closed form), then
+    NetworkDynamics.jl 1.3.0 added to `julia-current/` (the sweep
+    said 1.4.0; the registry latest is 1.3.0 — verified first).
+    Full suite after this work: Python 102/102 (NOT re-run —
+    nothing Python touches changed), Rust 20/20 (NOT re-run —
+    nothing Rust touches changed), Julia 299/299 (was 268/268:
+    +31 network tests) — **421 passed, 0 failed**. See
+    "NetworkDynamics.jl (Module 10)" below. Next in the sweep's
+    order, when directed: LM-Eval-Harness task/metric registry
+    rebuilt as original Python in `mini_ai/eval` (Module 3,
+    sweep item 5).
+17. **Done 2026-11-11:** LM-Eval-Harness task/metric registry
+    rebuilt as original Python in `mini_ai/eval` (Module 3, sweep
+    item 5) — this item lives in the ai-starter working copy
+    (`~/workspace/ai-starter/mini_ai/eval/`), NOT in this assembly:
+    task registry with YAML-defined tasks (original YAML-subset
+    parser, stdlib only, no PyYAML dependency), metric registry
+    (accuracy, exact-match, perplexity), filter pipeline, and a
+    runner returning JSON-able results with
+    `needs_human_decision: true`, `verified: false`. 32 new tests
+    in `tests/test_eval_registry.py`, all passing; ai-starter
+    suite now 92 tests OK (was 60). No lm-eval code copied, no
+    lm-eval dependency, no paid API. Spine totals unchanged by
+    this item (Python 102/102, Rust 20/20, Julia 299/299 — 421
+    passed, 0 failed); the item was pushed to repo-root paths
+    (`mini_ai/eval/...`, `tests/test_eval_registry.py`,
+    `README.md`) in the START repo, not under `start-assembly/`.
 
 ## DeepEval deterministic metrics (Module 22)
 
@@ -1314,3 +1383,170 @@ precisely to assert it stays `false`.
 - Build note: `/tmp` is a 512M tmpfs (see the Tonic section);
   `TMPDIR` was pointed at `~/workspace/.tmp` for the cargo
   builds here, as in item 2.
+
+## NetworkDynamics.jl (Module 10)
+
+**Version and licence — sweep correction.** The sweep said
+"General registry 1.4.0". That is wrong: the General registry's
+`Versions.toml` for NetworkDynamics ends at **1.3.0** (63 versions
+total, latest 1.3.0), the upstream GitHub releases list v1.3.0
+(2026-09-01) as the latest release, and the upstream `Project.toml`
+at tag v1.3.0 declares `version = "1.3.0"`. No 1.4.0 exists in the
+registry or as a release. **Resolved and installed: 1.3.0**
+(`Pkg.add(name="NetworkDynamics", version="1.3.0")`, pinned as
+`NetworkDynamics = "1.3.0"` in `julia-current/Project.toml`;
+Manifest git-tree-sha1
+`4223c5dc3e1c14d83afdd5e2149ebd4cdd0cd506`, UUID
+`22e9dc34-2a0d-11e9-0de0-8588d035468b`, julia compat `1.10` —
+compatible with the spine's Julia 1.13.3). Licence **MIT**,
+verified from the repo's own LICENSE file (fetched from
+`JuliaDynamics/NetworkDynamics.jl`, main branch: "MIT License,
+Copyright (c) 2019-2026 Frank Hellmann, Michael Lindner, Hans
+Würfel and contributors", full MIT grant, 1,124 bytes) — agrees
+with the sweep's licence finding. Recorded in LICENCES.md.
+Dependency only — no NetworkDynamics code copied anywhere.
+
+**Dependency weight (the sweep's condition).** Adding
+NetworkDynamics.jl pulled in **26 new Manifest packages**
+(299 → 325, 0 removed, 0 existing version changes — diffed
+against the pre-add Manifest pushed in commit 674f6abc): the
+package itself plus Atomix, BFloat16s,
+BitTwiddlingConvenienceFunctions, CEnum, CPUSummary,
+CloseOpenIntervals, CpuId, Hungarian, IfElse, KernelAbstractions,
+LLVM, LLVMExtra_jll, LayoutPointers, ManualMemory, Mixers, NNlib,
+Polyester, PolyesterWeave, SIMDTypes, Static,
+StaticArrayInterface, SteadyStateDiffEq, StrideArraysCore,
+ThreadingUtilities, UnsafeAtomics. Most of the SciML stack it
+needs (DiffEqBase, SciMLBase, ForwardDiff, StaticArrays,
+OrdinaryDiffEq via DifferentialEquations) was already in the
+env, which is why the count is 26 and not ~40. Graphs.jl 1.15.0
+was added as a direct dependency in the same work for building
+the network graph in `network_dynamics.jl`; it was already in
+the Manifest as a transitive dependency, so it added 0 packages.
+Precompile of the 26 new packages: 172 s, serial
+(`JULIA_NUM_PRECOMPILE_TASKS=1`, `--heap-size-hint=3G`).
+
+**The network model — built FIRST, before the dependency.**
+`julia-current/network_model.jl` (plain DifferentialEquations.jl
+only, no NetworkDynamics) defines a synthetic 3-node resource
+network — synthetic numbers only, not a real region:
+- Node 1 "source": produces resource at constant rate P = 10.0
+  units/time. Node 2 "storage": stores, no production or
+  consumption. Node 3 "sink": consumes at rate c*S3, c = 0.5/time.
+- Edge 1→2: static (algebraic) flow f12 = k12*S1, k12 = 0.5/time.
+  Edge 2→3: static flow f23 = k23*S2, k23 = 0.5/time.
+- Node balances (differential equations), S_i = stock at node i:
+  dS1/dt = P - k12*S1; dS2/dt = k12*S1 - k23*S2;
+  dS3/dt = k23*S2 - c*S3. Initial stocks (0, 0, 0).
+- Hand-derived closed form (verified term-by-term by
+  differentiation, and by an independent Python check):
+  S1(t) = 20*(1 - e^{-t/2});
+  S2(t) = 20*(1 - e^{-t/2}*(1 + t/2));
+  S3(t) = 20 - e^{-t/2}*(20 + 10t + 2.5t²).
+  Steady state (20, 20, 20). Mass balance (exact):
+  S1+S2+S3 + c*∫₀¹⁰S3 dt = 10*10 = 100, with ∫₀¹⁰S3 dt =
+  86.87270593906717.
+
+**Independent check (no NetworkDynamics).** The plain-ODE solve
+in `network_model.jl` (Tsit5, reltol/abstol 1e-10) matches the
+closed form at t = 2, 5, 10 with max error 5.8e-11 (t=10), and
+was run and passing BEFORE NetworkDynamics.jl was added — so the
+model stands on its own and the package is not load-bearing for
+the result.
+
+**The NetworkDynamics run.** `julia-current/network_dynamics.jl`
+assembles the same network as NetworkDynamics components:
+vertex model `f!(dv, v, esum, p, t)`: dv[1] =
+prod - cons*v[1] + esum[1] (prod = 10 at the source, 0
+elsewhere; cons = 0.5 at the sink, 0 elsewhere; `g = 1`, i.e.
+the vertex output is its stock); edge model: static (dim 0),
+`AntiSymmetric` single-sided output ydst[1] = k*vsrc[1] with
+ysrc = -ydst, so the flow leaves the upstream node and enters
+the downstream node — the edge flow is the algebraic constraint
+coupling the node ODEs, exactly as in `network_ode!`. Graph:
+`SimpleGraph(3)`, edges 1–2, 2–3. Solved with Tsit5 at the same
+tolerances. Parameters are passed explicitly as the flat vector
+from `NWParameter(nw)` (psym defaults): [10.0, 0.0, 0.0, 0.0,
+0.0, 0.5, 0.5, 0.5] — vertex params in vertex order, then edge
+params in edge order. This is required: `ODEProblem(nw, u0,
+tspan)` without `p` leaves p as `NullParameters`, which the
+coreloop rejects for a network with pdim > 0
+(`MethodError: no method matching keys(::NullParameters)` —
+hit on the first run, fixed by passing the parameter vector;
+see "Bugs found" below).
+
+**Results side by side (t = 10, stocks in resource units).**
+
+| | S1 (source) | S2 (storage) | S3 (sink) |
+|---|---|---|---|
+| Closed form (hand-derived) | 19.865241060018292 | 19.191446360109744 | 17.506959610338377 |
+| Independent plain-ODE solve | 19.865241 | 19.191446 | 17.506960 |
+| NetworkDynamics.jl solve | 19.865241 | 19.191446 | 17.506960 |
+
+All three agree to the 1e-6 test tolerance (independent solve
+max error vs closed form 5.8e-11 at t=10; NetworkDynamics max
+error vs closed form 3.3e-12 at t=2, 6.0e-11 at t=5, 5.8e-11
+at t=10 — exact per-time errors printed by
+`network_dynamics.jl` main(), log
+`julia-current/logs/networkdynamics-main.log`).
+At t=2: (12.642411, 5.284822, 1.606028) all three ways.
+Steady state at t=100: (20, 20, 20) within 1e-3, all three ways.
+
+**Tests.** `julia-current/test_network_dynamics.jl` —
+**31/31 PASS, 0 failed** (Julia 1.13.3, canonical env; log
+`julia-current/logs/test-networkdynamics.log`):
+analytic closed form vs hand-computed values 6 (t=2 and t=10,
+3 stocks each, atol 1e-12 against literals computed in Python
+with `math.exp`, independent of Julia); mass-balance identity 1
+(total stock + cumulative outflow = 100, atol 1e-9);
+independent plain-ODE solve vs closed form 9 (t=2, 5, 10,
+atol 1e-6); NetworkDynamics solve vs closed form 6 (t=5, 10,
+atol 1e-6); NetworkDynamics vs independent solve 3 (t=10,
+atol 1e-6); steady state 3 (t=100, atol 1e-3); solution
+structure 3 (retcode matches the independent solve's retcode,
+state vector length 3, flat parameter vector equals
+[10.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5, 0.5]).
+
+**Governance rule.** Network model outputs are model results,
+never verified plans: needs_human_decision = true; no new paid
+dependencies or services (NetworkDynamics.jl and Graphs.jl are
+MIT, General registry, free); no candidate code copied; the
+network output does not bypass the verify step — it is not
+wired into any verify, governance, or decision path. The sweep's
+condition is met: the dependency was added only because the
+first networked domain model now exists and runs through it.
+
+**Limitations / known gaps.**
+- The model is deliberately tiny (3 nodes, 2 edges, linear
+  flows, one stock per node) — it exercises the assembly
+  (components + topology + solver + parameter plumbing), not
+  any real domain. A real networked domain model (more nodes,
+  nonlinear or capacity-limited flows, DAE mass-matrix
+  constraints) is still to be built when a planning domain
+  needs it.
+- The blueprint's Module 10 claim ("dynamic world modelling
+  engine") remains overstated as written: NetworkDynamics.jl is
+  a general-purpose networked-dynamics assembler, not a
+  domain-specific world model — it supplies no planning,
+  resource, or commons domain content of its own. Confirmed by
+  the sweep and by this work.
+- Two API gotchas recorded for future work: (1) parameters
+  must be passed explicitly via `NWParameter`/`pflat` —
+  `ODEProblem(nw, u0, tspan)` fails on a parameterised network;
+  (2) `sol.retcode` is a `SciMLBase.ReturnCode` enum, not the
+  Symbol `:Success` — compare against another solve's retcode
+  (or the enum), not `:Success`.
+- The add itself was interrupted once by an exec-service restart
+  mid-`Pkg.add`: `Project.toml` was already rewritten (comments
+  stripped by Pkg, NetworkDynamics 1.3.0 present) and the
+  Manifest updated, but the second `Pkg.add(Graphs)` and the
+  precompile had not run and `/tmp` scratch was wiped. Recovery:
+  re-ran `Pkg.add(Graphs)` + `Pkg.precompile()` detached
+  (26 deps, 172 s, exit 0), restored the Project.toml header
+  comments by hand from the pre-add text (verified against the
+  pushed copy in commit 674f6abc), and diffed the Manifest
+  against that pushed copy to get the exact 26-package list
+  above. No evidence-only env (`julia/`, `julia-1.11/`) was
+  touched; no other file changed.
+- `/tmp` is a 512M tmpfs: `TMPDIR` was pointed at
+  `~/workspace/.tmp` for the Julia work here, as in items 2–3.

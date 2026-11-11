@@ -32,6 +32,7 @@ never PASS; UNKNOWN / INCOMPLETE are never converted into PASS.
 | CVXPY | 14 Optimisation | cvxpy/cvxpy | Apache-2.0 | Convex modelling layer; HiGHS backend here | assembled |
 | JuMP.jl | 18 Systems Planning | jump-dev/JuMP.jl | MPL-2.0 | Julia modelling layer for planning LPs | assembled 1.32.1 (Julia 1.13.3) |
 | Agents.jl | 10 World Modelling | JuliaDynamics/Agents.jl | MIT | Agent-based world modelling | assembled 7.1.0 (Julia 1.13.3) |
+| NetworkDynamics.jl | 10 World Modelling | JuliaDynamics/NetworkDynamics.jl | MIT | Networked dynamics assembler (nodes/edges as DAE components, solved via DifferentialEquations.jl) | assembled 1.3.0 (Julia 1.13.3) — first networked domain model built first: synthetic 3-node resource network (source → storage → sink), 31/31 Julia tests PASS; Graphs.jl 1.15.0 added as a direct dependency for the network graph |
 | ModelingToolkit.jl | 10 World Modelling | SciML/ModelingToolkit.jl | MIT | Equation-based structural physics | assembled 11.46.1 (Julia 1.13.3) |
 | Symbolics.jl | 12 Math & Computing | JuliaSymbolics/Symbolics.jl | MIT | Symbolic algebra / e-graph rewriting | assembled 7.48.0 (Julia 1.13.3) |
 | Turing.jl | 12 Math & Computing | TuringLang/Turing.jl | MIT | Bayesian inference | assembled 0.49.0 (Julia 1.13.3) |
@@ -44,10 +45,11 @@ never PASS; UNKNOWN / INCOMPLETE are never converted into PASS.
 `julia-current/` is the canonical Julia environment for this spine:
 Julia 1.13.3, Agents 7.1.0, ModelingToolkit 11.46.1, Symbolics 7.48.0,
 Turing 0.49.0, DifferentialEquations 8.1.1, JuMP 1.32.1, HiGHS 1.26.1,
+NetworkDynamics 1.3.0, Graphs 1.15.0,
 AlphaZero 0.5.6 (separate env in `alphazero/`). Spine 16/16 PASS,
-Julia checks 268/268 passed, 0 failed (29 spine/smokes/AlphaZero +
+Julia checks 299/299 passed, 0 failed (29 spine/smokes/AlphaZero +
 75 planning-search + 53 LP cross-check + 86 training loop +
-25 training loop LP-split). The original pinned envs
+25 training loop LP-split + 31 NetworkDynamics networked model). The original pinned envs
 `julia/` and `julia-1.11/` are evidence only — they fail to precompile
 5 dependencies and are NOT canonical; do not use them for new work.
 | LangGraph | 5 Orchestration | langchain-ai/langgraph | MIT | Stateful plan → verify → report graph | assembled |
@@ -94,7 +96,7 @@ Julia checks 268/268 passed, 0 failed (29 spine/smokes/AlphaZero +
   over a Unix socket and 6 supervision tests. Run the server:
   `cargo run --bin start-tonic-server -- /tmp/tonic.sock` (Unix
   socket only, no TLS/auth — local only).
-- `julia-current/` — canonical Julia env (`Project.toml`, `Manifest.toml`, `spine.jl`, `spine_lp.jl`, `spine_ode.jl`, smokes, logs). Run it, not `julia/`.
+- `julia-current/` — canonical Julia env (`Project.toml`, `Manifest.toml`, `spine.jl`, `spine_lp.jl`, `spine_ode.jl`, smokes, logs). Run it, not `julia/`. Networked domain model: `network_model.jl` (synthetic 3-node resource network + hand-derived closed form, plain DifferentialEquations — the independent check) and `network_dynamics.jl` (the same network run through NetworkDynamics.jl 1.3.0), tests `test_network_dynamics.jl` — 31/31 PASS.
 - `julia-current/planning-search/` — standalone planning-search module
   (`PlanningSearch.jl`, copied `mcts.jl` + `game.jl` with MIT notices,
   original `planning_domain.jl` + `verify.jl`, `PROVENANCE.md`,

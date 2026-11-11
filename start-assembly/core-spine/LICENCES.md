@@ -15,6 +15,8 @@ this file is a triage record, not legal advice.
 | ModelingToolkit.jl | SciML/ModelingToolkit.jl | MIT | Triage noted a licence-metadata mismatch — confirm the LICENSE file before adopting. |
 | Symbolics.jl | JuliaSymbolics/Symbolics.jl | MIT | Triage noted a licence-detection mismatch — confirm before adopting. |
 | Turing.jl | TuringLang/Turing.jl | MIT | |
+| NetworkDynamics.jl | JuliaDynamics/NetworkDynamics.jl | MIT (LICENSE file, "Copyright (c) 2019-2026 Frank Hellmann, Michael Lindner, Hans Würfel and contributors") | **Added 2026-11-11 as a dependency only — no NetworkDynamics code copied.** Version 1.3.0 from the General registry (verified first: registry latest is 1.3.0, not 1.4.0 as the sweep said; upstream v1.3.0 release 2026-09-01). First networked domain model built first (synthetic 3-node resource network, `julia-current/network_model.jl` + `network_dynamics.jl`); outputs are model results, not verified plans — needs_human_decision=true, through the separate verify step. |
+| Graphs.jl | JuliaGraphs/Graphs.jl | MIT | Added 2026-11-11 as a direct dependency for building the network graph in `network_dynamics.jl`; already in the Manifest as a transitive dependency, resolved set otherwise unchanged. |
 | DifferentialEquations.jl | SciML/DifferentialEquations.jl | **NOASSERTION** | GitHub reports no licence assertion. **Do not adopt until the licence is confirmed.** This is the one licence caution inside the spine. |
 | AlphaZero.jl | jonathan-laurent/AlphaZero.jl | MIT | |
 | LangGraph | langchain-ai/langgraph | MIT | |

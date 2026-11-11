@@ -72,6 +72,7 @@ Julia checks 650/650 passed, 0 failed (29 spine/smokes/AlphaZero +
 | SciAgents Discovery (role pattern + 7-key proposal schema only) | 9 Multidisciplinary Intelligence | lamm-mit/SciAgentsDiscovery | Apache-2.0 | Research roles: deterministic, rule-based Ontologist → Scientist → Critic over supplied text; proposal in exactly the 7-key schema (hypothesis, outcome, mechanisms, design_principles, unexpected_properties, comparison, novelty) | assembled 2026-11-11, 18/18 tests PASS; original Python in `adapters/research_roles.py`, stdlib only; no SciAgents code copied, prototype (paid OpenAI key, Semantic Scholar API, GraphReasoning package) NOT adopted, no LLM; a proposal that fails the Critic is marked FAILED, never passed; no stage sets verified=true (Python 191/191) |
 | Trace (feedback propagation only) | 22 Evaluation & Learning | microsoft/Trace | MIT | Evaluation attribution: given an evaluation result (e.g. a DeepEval deterministic metric score), propagate the feedback back to the step that produced it — which task, which metric, which input — by exact match on all three; unknown, partial or ambiguous sources are reported UNATTRIBUTED, never guessed, and a cause is never invented | assembled 2026-11-11, 21/21 tests PASS; original Python in `adapters/feedback_attribution.py`, stdlib only; no Trace code copied, `trace-opt` tool (paid LLM API via LiteLLM, optimiser rewriting prompts/code) NOT adopted, no LLM; the verified flag is carried from the result handed in, verbatim, never set here; needs_human_decision always true (Python 212/212) |
 | RAP hibernation pattern (local-only only) | 1 Core Framework | hydro-project/infinity | Apache-2.0 | Hibernation state machine: fire-and-forget tool invocation with immediate ack, hibernate/wake over one canonical JSON envelope with a SHA-256 checksum, subscriptions persisting across hibernations, results delivered locally and held unverified until the separate verify step + human approval | assembled 2026-11-11, 20/20 tests PASS; original Python in `adapters/hibernation.py`, stdlib only; no Infinity code copied, `rap-protocol` crate NOT adopted and NOT copied; NO callback URL, listener or network delivery — local-only, `register_callback` always raises (a callback with a bad/missing auth token is rejected along with every other callback); a hibernated state never wakes as verified (Python 232/232) |
+| A2UI emitter + approval gate (emitter + gate only) | 25 Applications & UIs | a2ui-project/a2ui | Apache-2.0 | Emitter turning verified PASS *and* human-approved plans into `createSurface` JSON surfaces with the verification status stamped on them, plus a human-approval gate for consequential function calls (explicit approval record required; `rendererOnly` never invocable by the agent) | assembled 2026-11-11, 24/24 tests PASS; original Python in `adapters/a2ui_emitter.py`, stdlib only; no a2ui code copied, a2ui-core / a2ui-agent-sdk NOT adopted; NO renderer, NO host app — the emitter has no consumer yet (the audit's unblock — Eric approves Module 25 UI work and picks a renderer stack — is NOT met, so renderer/host app remain deferred); unverified, PASS-but-unapproved and FAIL plans are all refused (Python 256/256) |
 
 ## Layout
 
@@ -141,7 +142,19 @@ Julia checks 650/650 passed, 0 failed (29 spine/smokes/AlphaZero +
   until the separate verify step + human approval; NO
   callback URL, listener or network delivery — local-only,
   `register_callback` always raises; a hibernated state
-  never wakes as verified; 20/20 tests PASS).
+  never wakes as verified; 20/20 tests PASS),
+  `a2ui_emitter.py` (A2UI emitter + approval gate, Module 25 —
+  original Python, stdlib only, a2ui-project/a2ui protocol
+  as design inspiration only, no code copied, no a2ui
+  package adopted; emits `createSurface` /
+  `updateDataModel` / `deleteSurface` JSON only for plans
+  verified PASS *and* human-approved, verification status
+  stamped on every surface, consequential function calls
+  gated behind an explicit human approval record,
+  `rendererOnly` never invocable by the agent; NO renderer,
+  NO host app — the emitter has no consumer yet, renderer /
+  host app deferred until Module 25 UI work is approved;
+  24/24 tests PASS).
 - `helpers/` — borrowed helpers, the ONLY vendored candidate code in
   this assembly: `borrowed_helpers.py` (Cognee `chunk_by_word` +
   `chunk_id`, Crawl4AI `normalize_url`, Apache-2.0 notices kept,

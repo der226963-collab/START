@@ -9,7 +9,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 ## Headline
 
 - **Components: 21 total — 20 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 232/232 passed, Rust 40/40 passed, Julia 650/650 checks passed — 922 passed, 0 failed**
+- **Tests: Python 256/256 passed, Rust 40/40 passed, Julia 650/650 checks passed — 946 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
 - Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
@@ -49,6 +49,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | Tumult (experiment pattern only) | mwigge/tumult | Apache-2.0 (no version installed — nothing adopted) | assembled | **18/18 new Python tests PASS + 10/10 new Rust tests PASS** (Python suite now 173/173, Rust suite now 40/40) | Original Rust + Python fault-injection test tooling (Module 24): `rust/src/fault_injection.rs` + `adapters/fault_injection.py`, stdlib only (+ serde_json in Rust) — hypothesis → baseline → fault → recovery measurement → evidence journal, three fault kinds (worker_crash, delayed_response, corrupted_value), same taxonomy and report shape in both halves. No Tumult code copied; the Tumult platform (daemon, UI, MCP server) NOT adopted. A fault run can never report PASS (Rust `RunOutcome` has no Pass variant) and never sets verified=true. See "Fault-injection experiments (Tumult rebuild, Module 24)" below |
 | SciAgents Discovery (role pattern + 7-key proposal schema only) | lamm-mit/SciAgentsDiscovery | Apache-2.0 (no version installed — nothing adopted) | assembled | **18/18 new Python tests PASS** (Python suite now 191/191) | Original Python research roles (Module 9): `adapters/research_roles.py`, stdlib only — deterministic, rule-based Ontologist → Scientist → Critic over supplied text, proposal in exactly the 7-key schema (hypothesis, outcome, mechanisms, design_principles, unexpected_properties, comparison, novelty). No SciAgents code copied; the prototype (paid OpenAI key, Semantic Scholar API, GraphReasoning package) NOT adopted, no LLM, no new dependency. A proposal that fails the Critic is marked FAILED, never passed; no stage sets verified=true (verified=false, needs_human_decision=true on every result). See "Research roles (SciAgents rebuild, Module 9)" below |
 | Trace (feedback propagation only) | microsoft/Trace | MIT (no version installed — nothing adopted) | assembled | **21/21 new Python tests PASS** (Python suite now 212/212) | Original Python evaluation attribution (Module 22): `adapters/feedback_attribution.py`, stdlib only — a trace of steps (task, metric, input, component) and exact-match attribution of an evaluation result (e.g. a DeepEval deterministic metric score) back to the step that produced it; unknown, partial or ambiguous sources are reported UNATTRIBUTED, never guessed; cause is never inferred (`cause` always None). No Trace code copied; the tool (`trace-opt`, paid LLM API via LiteLLM) NOT adopted, no LLM, no optimiser, no new dependency. The verified flag is carried from the result handed in, verbatim, never set here; needs_human_decision is always true. See "Feedback attribution (Trace rebuild, Module 22)" below |
+| A2UI emitter + approval gate (emitter + gate only, Module 25) | a2ui-project/a2ui (inspiration only, NOT adopted) | Apache-2.0 (no version installed — nothing adopted) | assembled (emitter + gate only; NO consumer) | **24/24 new Python tests PASS** (Python suite now 256/256) | Original Python in `adapters/a2ui_emitter.py`, stdlib only — turns verified PASS *and* human-approved plans into `createSurface` JSON surfaces with the verification status stamped on them; `updateDataModel` / `deleteSurface` under the same gate; human-approval gate for consequential function calls (approval must be an explicit record: approved=True, approved_by, approval_id, in-scope scope; rendererOnly never invocable by the agent). No a2ui code copied; a2ui-core / a2ui-agent-sdk NOT adopted. NO renderer, NO host app — the emitter has no consumer yet; the replacements audit's unblock (Eric approves Module 25 UI work and picks a renderer stack, plus a published a2ui-core supporting v1.0) is NOT met, so the renderer/host app remain deferred. See "A2UI emitter + approval gate (Module 25)" below |
 | RAP hibernation pattern (local-only only) | hydro-project/infinity | Apache-2.0 (no version installed — nothing adopted) | assembled | **20/20 new Python tests PASS** (Python suite now 232/232) | Original Python hibernation state machine (Module 1): `adapters/hibernation.py`, stdlib only — fire-and-forget tool invocation with immediate ack, hibernate/wake over one canonical JSON envelope with a SHA-256 checksum, subscriptions persisting across hibernations, results delivered locally and held unverified until the separate verify step + human approval. No Infinity code copied; the `rap-protocol` crate NOT adopted and NOT copied; NO callback URL, listener or network delivery — local-only, `register_callback` always raises. A hibernated state never wakes as verified. See "RAP hibernation pattern (Infinity rebuild, Module 1)" below |
 
 ## Exact versions installed (venv `.venv`, Python 3.12.3)
@@ -3415,3 +3416,196 @@ vectors — no Spine DB, no pickle, no SQLite).
   (ha / m3; physically meaningless, and an over-budget candidate
   such as 112,000 m3 still fails by far). No other test outcome
   changed: the full Julia suite re-run above is 650/650.
+
+## A2UI emitter + approval gate (Module 25)
+
+**Inspiration source + licence.** a2ui-project/a2ui
+(Module 25, sweep INSPIRATION-REBUILD item 7 — the LAST
+item of the final sweep batch; items 1–6 done and pushed
+before it: Collective-Intelligence-Library 608916b, Tumult
+57e5af5, SciAgents f4670ed, Trace 27b105b, RAP hibernation
+787b3c5, SpineOpt patterns aa638ad). The A2UI protocol is
+Apache-2.0, verified in the replacements audit
+(`source-audit/REPLACEMENTS_AUDIT.md` §7) from its own root
+`LICENSE` file (full Apache-2.0 text, plus an MIT appendix
+covering only the bundled third-party file
+`eval/bin/transcrypt`): 17,055 stars, 1,897 commits, last
+commit `24d1bf9` 2026-11-11 — a breaking `@`-prefixed v1.0
+component-envelope change, while the published PyPI
+packages (a2ui-core 0.6.0, a2ui-agent-sdk 0.11.0) predate
+it. The audit's verdict for it was DEFER — the barrier is
+neither licence nor coupling (JSON messages over any
+transport; the Python core's only dependencies are small
+permissive libraries) but a **missing consumer**: START
+has no user-facing UI surface and no renderer, and the
+renderers are TypeScript (React/Lit/Angular), Dart/Flutter,
+SwiftUI and Kotlin/Jetpack Compose — none of that is in
+the v0.3.2 allocation, which has no UI language at all.
+The audit worker read the repo (depth-1 clone, full tree)
+to understand the protocol; nothing was copied from it,
+and no a2ui package was adopted. What was rebuilt is
+original Python in `adapters/a2ui_emitter.py`, stdlib only.
+
+**The no-consumer-yet condition (stated plainly).** The
+replacements audit's unblock for A2UI adoption is NOT met:
+Eric has NOT approved Module 25 UI work, has NOT picked a
+renderer stack, and no published a2ui-core supporting v1.0
+has been confirmed. So this build is the emitter and the
+gate ONLY: NO renderer, NO host app, NO a2ui-core
+dependency. An emitted surface is a JSON document nobody
+renders — `consumer_status()` reports `{"renderer": None,
+"host_app": None, "status": "no consumer — emitter only"}`,
+and every emitted surface carries `"consumer": "none"`.
+The renderer/host app remain DEFERRED, to be built as
+original START code only when Module 25 UI work is
+approved. Adopting a2ui-core / a2ui-agent-sdk as a
+dependency is likewise deferred to that same unblock.
+
+**What was rebuilt.** On the synthetic 1-site 2-crop
+domain already in the spine (never a real region):
+- (a) Emitter (`emit_surface`): turns a plan into a
+  `createSurface` JSON message — protocol `a2ui`, version
+  `1.0`, deterministic `surface_id` (`surface-<plan_id>`),
+  components as data only (one `Card` with the plan title,
+  a `Text` summary, one `Text` row per item, e.g.
+  `delivered_t: 600`), and a `dataModel` carrying the plan
+  id, title and verification stamp. No code, no callables,
+  no timestamps, no random ids — emission is deterministic
+  for a given plan; wire format stays JSON.
+- (b) The emission gate (`_require_gate`, shared by all
+  three message builders): a plan is emitted ONLY if its
+  `verification_status` is exactly `"PASS"` AND its
+  `human_approved` is exactly `True`. This module never
+  verifies a plan itself and never sets the status — it
+  reads the status the caller hands in, verbatim, and
+  refuses anything else. A truthy non-`True` approval
+  (`"yes"`) and a lowercase `"pass"` status are both
+  refused, not normalised.
+- (c) Verification stamp: every emitted surface stamps
+  the verification status in two places — top-level
+  `"verification"` (`status: "PASS"`, `human_approved:
+  true`, `needs_human_decision: true`) and inside
+  `"dataModel"`. This is the stamp A2UI itself lacks: in
+  the v1.0 spec "verify" means schema/tree-integrity
+  validation only, with no verified/unverified distinction
+  and no approval workflow — a slick rendered surface
+  could otherwise make an unverified plan *look* verified.
+- (d) `update_data_model` / `delete_surface`: emit
+  `updateDataModel` / `deleteSurface` messages under the
+  SAME gate — the plan must still be verified PASS and
+  human-approved at the time of the update/delete, and the
+  surface must belong to that plan (matching surface_id),
+  or the call is refused.
+- (e) Approval gate (`gate_function_call`): for
+  consequential function calls. The gate NEVER approves
+  its own calls — `approval` must be an explicit record
+  supplied by a human, with `approved` exactly `True`, a
+  non-empty `approved_by`, a non-empty `approval_id`, and
+  a `scope` (string or list) naming the function called.
+  When allowed, the approval record is copied into the
+  result (`result["approval"]`) — recorded, never invented.
+  A non-consequential call is allowed without approval and
+  records `approval: None`. The A2UI execution boundary is
+  enforced too: a `rendererOnly` function can never be
+  invoked by the agent, approval or not (that is what the
+  boundary forbids — e.g. `openUrl`, which in A2UI is
+  gated behind a user gesture and forced `rendererOnly`);
+  an unknown boundary is refused, never defaulted to
+  allowed. A refused call is never executed by this
+  module — it returns no result and performs nothing.
+
+**What was checked — exact test cases and results.** 24 new
+Python tests in `tests/test_a2ui_emitter.py`, all passing;
+full Python suite after this work **256/256, 0 failed**
+(was 232/232; breakdown adds 24 A2UI tests). Rust and Julia
+suites NOT re-run — nothing they touch changed. Spine
+totals now **946 passed, 0 failed** (Python 256/256, Rust
+40/40, Julia 650/650). With this item the sweep's
+USE/ADJUST and INSPIRATION-REBUILD lists are exhausted.
+- Emit verified + approved (6): verified+approved plan
+  emits a `createSurface` message (protocol `a2ui`, v1.0,
+  surface_id `surface-synthetic-food-plan-001`); the
+  verification stamp is `PASS` / `human_approved: true` /
+  `needs_human_decision: true` at top level and inside
+  `dataModel`; components carry the plan content as data
+  only (`Card` titled "Synthetic food plan", rows
+  `delivered_t: 600`, `shortage_t: 50`, `land_ha: 70`, no
+  callables); surface has `"consumer": "none"` and
+  `consumer_status()` reports no renderer / no host app;
+  emission is deterministic (same plan, same surface);
+  `updateDataModel` and `deleteSurface` are allowed for
+  the verified+approved plan.
+- Emit refusals (7): UNVERIFIED (`UNKNOWN`) plan refused;
+  PASS-but-NOT-human-approved plan refused; FAIL plan
+  refused even when human-approved; update refused for an
+  unverified plan; delete refused for a PASS-but-unapproved
+  plan; update refused for a surface belonging to another
+  plan; bad shapes refused (non-dict plan, missing
+  `plan_id`, lowercase `"pass"`, truthy-string approval
+  `"yes"`).
+- Approval gate (10): consequential call without approval
+  refused; consequential call with approval allowed and
+  the approval recorded in the result (`approved_by:
+  human-reviewer`, `approval_id: approval-001`, scope
+  `apply_plan`, `needs_human_decision: true`); approval
+  with a list scope covering the function allowed;
+  `approved: False` refused; approval with the wrong scope
+  refused; approval missing `approved_by` or with an empty
+  `approval_id` refused; `rendererOnly` (`openUrl`) refused
+  even with approval; non-consequential call allowed
+  without approval with `approval: None`; unknown boundary
+  refused; bad call shapes refused (non-dict call, missing
+  `function_name`, non-bool `consequential`).
+- No-a2ui guard (1): the code after the module docstring
+  contains no `import a2ui`, no `from a2ui`, no
+  `a2ui-core`, `a2ui_core` or `a2ui-agent-sdk`, and the
+  module states no a2ui code was copied.
+- Full Python suite re-run after this work (see "Test
+  results"): **256/256, 0 failed**.
+
+**Governance rule.** Every surface is emitted only for a
+plan that is verified PASS *and* human-approved, with the
+verification status stamped on it — the emitter never
+certifies a plan, never sets a verification status, and
+never downgrades a refused plan to a "draft" surface.
+Consequential function calls pass through the approval
+gate only on an explicit human approval record, which the
+gate checks but never creates; `rendererOnly` functions
+stay unreachable by the agent. This module never touches
+self-edit or guardrail files, never calls the verify step
+to certify output (it only reads the status handed in),
+and the wire format stays JSON (plain dicts — no pickle,
+no network, no downloads, no real data).
+
+**Limitations / known gaps.**
+- The emitter has no consumer: emitted surfaces are JSON
+  documents nobody renders, and there is no way to check
+  them against a real renderer until one exists. The
+  surface shape follows the A2UI v1.0 message names
+  (`createSurface` / `updateDataModel` / `deleteSurface`)
+  and the three execution boundaries as design ideas, not
+  a schema-validated implementation — no a2ui JSON schema
+  was copied or validated against (the audit deferred
+  that copy with the adoption), so conformance against a
+  future a2ui-core v1.0 is unverified and may need
+  adjustment when the renderer stack is picked.
+- The approval record is checked, not issued: this module
+  has no approval workflow of its own — who issues an
+  approval, how it is stored, and how it is revoked are
+  outside it, and a forged approval record handed to the
+  gate would pass (the gate trusts the record it is given,
+  exactly as the governance stub trusts its context).
+  Approval issuance and authentication belong to a future
+  Module 25 design, not to this emitter.
+- Components are a minimal Card/Text shape for a plan
+  summary; the A2UI component catalog (and
+  `updateComponents`, the fourth agent→renderer message)
+  is not implemented — there is no renderer to update
+  components for, and adding catalog components now would
+  be untestable surface area.
+- One test-design note, not a bug: the no-a2ui guard
+  checks the code after the module docstring, because the
+  docstring itself names the packages it does NOT adopt
+  (`a2ui-core`, `a2ui-agent-sdk`) — a whole-file string
+  check would fail on its own documentation. The guard
+  still catches any real import or dependency in code.

@@ -36,7 +36,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | egg | egraphs-good/egg | 0.10.0 | assembled | 2/2 Rust | `(+ x 0) -> x`, `(* y 1) -> y` |
 | Tonic / gRPC | grpc/grpc-rust | tonic 0.12.3 (compiled, stub only) | stub_only | 3/3 Rust (stub evaluator) | No Tonic server run. Runnable gRPC here is Python grpcio 1.85.1 over a Unix socket (see below); 2/2 Python gRPC tests pass |
 | Apache Arrow | apache/arrow | pyarrow 26.0.1 | assembled | 1/1 | Arrow round-trip lossless on constraint-result table |
-| DeepEval | confident-ai/deepeval | 4.3.3 | assembled | 1/1 (+ local metric tests) | ExactMatchMetric only, no API key: scores [1,1,1,0], accuracy 0.75. LLM-as-a-judge metrics deferred, not run |
+| DeepEval | confident-ai/deepeval | 4.3.3 | assembled | **11/11 Python tests PASS** (3 ExactMatch + 8 new) | Deterministic metrics only, no API key: ExactMatch scores [1,1,1,0], accuracy 0.75; PatternMatch (fullmatch) scores [1.0, 0.0, 0.0] on pattern `\d+ tonnes`; JsonCorrectness scores [1, 0, 0, 0, 0] against original schema PlanJsonSchema. Sweep correction: JsonCorrectness is key-free ONLY via eval_mode="system_one" — default construction builds an OpenAI model and raises without a key. LLM-as-a-judge metrics deferred, not run. See "DeepEval deterministic metrics (Module 22)" below |
 | ODYM | IndEcol/ODYM | 0.1.0, git pin 9792c23 | assembled | **16/16 Python tests PASS** | Stock-flow resource accounting (Module 17). Dependency only, no code copied; never published to PyPI, installed from git pinned to the sweep's audited commit (see item 9). Thin original adapter `adapters/resource_accounting.py` over a synthetic 1-site 2-crop material flow (3 years, balance PASS, residual 0.0 t). Outputs are model results only — verified=false, needs_human_decision=true. See "ODYM (Module 17)" below |
 | Pymrio | IndEcol/pymrio | 0.7.0 (PyPI) | assembled | **15/15 Python tests PASS** | Footprint / consumption-based accounting (Module 17). Dependency only, never copied, library unmodified and replaceable (LGPL-3.0; README badge wrongly says GPL v3 — LICENSE file authoritative). Thin original adapter `adapters/footprint_accounting.py` over a synthetic 2-region x 2-sector in-memory MRIO (footprint identity PASS, residual 2.2e-16 t). No downloads — no pymrio download/load/parse function is ever called. Outputs are model results only — verified=false, needs_human_decision=true. See "Pymrio (Module 17)" below |
 
@@ -560,8 +560,12 @@ Verified here:
   is reported failed, never passed.
 - Interop: Arrow round-trip lossless; gRPC round-trip PASS/FAIL/
   UNKNOWN with correct reason codes.
-- DeepEval ExactMatchMetric runs with no API key (0.75 on the
-  4-case golden set, matching the local exact-match implementation).
+- DeepEval ExactMatchMetric, PatternMatchMetric and JsonCorrectnessMetric
+  run with no API key (ExactMatch 0.75 on the 4-case golden set,
+  matching the local exact-match implementation; PatternMatch
+  [1.0, 0.0, 0.0] on `\d+ tonnes`; JsonCorrectness [1, 0, 0, 0, 0]
+  against PlanJsonSchema — see "DeepEval deterministic metrics
+  (Module 22)" below).
 - MCTS search (copied AlphaZero.jl, rollout oracle, no neural
   network) proposes a candidate allocation at the known optimum
   (delivered 600 t / shortage 50 t) on the 1-site 2-crop synthetic
@@ -813,3 +817,123 @@ Still unverified / not run:
     Benders patterns (SpineOpt) — all to be rebuilt as original
     START code, none adopted now. Nearest adoption if ever unblocked:
     a2ui-core/a2ui-agent-sdk when Module 25 UI work is approved.
+13. **Done 2026-11-11:** DeepEval deterministic metrics (Module 22,
+    sweep top-10 item 2) — `adapters/evaluation.py` extended from
+    ExactMatch to PatternMatchMetric and JsonCorrectnessMetric, 8
+    new tests, all offline with no API key and no network. Full
+    suite after this work: Python 98/98, Rust 9/9, Julia 268/268
+    — 375 passed, 0 failed. Rust and Julia suites were NOT re-run:
+    nothing they touch changed. Next in the sweep's order, when
+    directed: the real Tonic server (tonic 0.12 → 0.14.x).
+
+## DeepEval deterministic metrics (Module 22)
+
+**Version and licence.** deepeval 4.3.3 (already a dependency,
+`requirements.txt` unchanged — no new dependency added),
+confident-ai/deepeval, Apache-2.0 (verified in the sweep from
+LICENSE.md). Python 3.12.3, `.venv`, run offline with no API key
+in the environment and no network use by the metrics.
+
+**What each metric is used for.**
+- ExactMatchMetric (already in use): stripped-string equality of
+  an actual answer against the expected answer, on the 4-case
+  synthetic golden set. Scores [1, 1, 1, 0], accuracy 0.75,
+  matching the spine's own local exact-match implementation.
+- PatternMatchMetric (new): checks whether a whole output matches
+  a regex — used here for output-shape checks, e.g. that a
+  reported quantity looks like `"<number> tonnes"`. Pattern
+  `\d+ tonnes`, ignore_case off by default.
+- JsonCorrectnessMetric (new): checks whether an output parses
+  as JSON AND validates against an expected pydantic schema —
+  used here for structured plan-result JSON against the original
+  START schema `PlanJsonSchema` (`delivered: int`,
+  `shortage: int`). Score is 1 or 0 only.
+
+**What was checked (including what the sweep got wrong).**
+- Verified first against the installed package, not the sweep:
+  `from deepeval.metrics import PatternMatchMetric,
+  JsonCorrectnessMetric` imports cleanly in 4.3.3; constructor
+  signatures inspected with `inspect.signature` and the measure
+  sources read before any use.
+- PatternMatchMetric: the sweep was right — it exists, takes no
+  model and no API key, and scores by `re.fullmatch` (1.0 full
+  match, else 0.0), NOT `re.search`. A substring match therefore
+  scores 0.0. An invalid regex raises `ValueError("Invalid regex
+  pattern: ...")` at construction.
+- JsonCorrectnessMetric: the sweep was WRONG as stated. It called
+  the metric model-free, but in 4.3.3 its default construction
+  calls `initialize_model(None)`, which builds a default
+  OpenAIModel and raises `DeepEvalError: OpenAI API key is not
+  configured` when no key is set (reproduced here with no key in
+  the environment). The score itself IS deterministic — pure
+  pydantic `model_validate_json` in `_validate` — but the metric
+  is only key-free via `eval_mode="system_one"`, which makes
+  `initialize_model` return `(None, True)` so no LLM is built
+  (verified: `metric.model is None`), and the failure reason
+  falls back to the pydantic validation error instead of an
+  LLM-generated reason. That is the route used here, with
+  `async_mode=False` (synchronous `_validate` path); both the
+  async and sync paths were probed and give the same scores with
+  model None. A test pins this correction:
+  default construction without `system_one` raises an API-key
+  error when no key is set.
+- No LLM-as-judge metric is used anywhere: no G-Eval, no
+  hallucination/faithfulness/answer-relevancy metric, no model
+  argument passed to any metric. No code path in
+  `adapters/evaluation.py` can call an LLM API (JsonCorrectness
+  runs with model None).
+
+**Exact test cases and scores** (8 new tests in
+`tests/test_spine.py::TestEvaluation`, all passing; full suite
+98/98).
+- PatternMatch, pattern `\d+ tonnes`: `"614 tonnes"` → 1.0
+  (match); `"614 tonnes extra"` → 0.0 (contains a match but is
+  not a full match — fullmatch, not search); `"no tonnes here"`
+  → 0.0 (no match). Accuracy 1/3 ≈ 0.333.
+- PatternMatch, pattern `potato`, ignore_case=True:
+  `"Potato"` → 1.0.
+- PatternMatch, invalid regex `"[unclosed"`: construction
+  raises ValueError; the adapter returns status "blocked" with
+  the exact error, never a faked score.
+- JsonCorrectness, schema PlanJsonSchema:
+  `'{"delivered": 614, "shortage": 57}'` → 1 (valid JSON, valid
+  schema); `'{"delivered": 614,'` → 0 (malformed JSON);
+  `'{"delivered": 614}'` → 0 (valid JSON, missing `shortage`
+  field); `'{"delivered": "abc", "shortage": 57}'` → 0 (valid
+  JSON, uncoercible type); `'hello'` → 0 (not JSON). Scores
+  [1, 0, 0, 0, 0], accuracy 0.2. Failure reasons are the
+  pydantic validation errors (e.g. "1 validation error for
+  PlanJsonSchema … Field required").
+
+**Governance rule.** Metric scores are model results, never
+verified plans: a score of 1.0 does not mark anything verified,
+does not bypass the verify step (constraint verify + JuMP/HiGHS
+LP cross-check), and every result still needs
+`needs_human_decision=true` with human approval. No paid API is
+used and no API key is required or stored; the LLM-as-judge
+metrics stay deferred unless Eric approves a paid LLM API key,
+and even then would be used only as measurements on
+already-verified outputs.
+
+**Limitations / known gaps.**
+- PatternMatch is fullmatch only: it cannot assert "contains
+  this pattern somewhere in a longer output" — a `.*`-wrapped
+  pattern would be needed for that, and it is not used here.
+- JsonCorrectness checks JSON validity + pydantic schema
+  validity only. It does not check semantic correctness of the
+  values (614 could be the wrong number and still score 1), and
+  pydantic's default lax mode coerces: `'{"delivered": "614",
+  "shortage": 57}'` scores 1 (string coerced to int), and unknown
+  extra keys are ignored by default (`"extra": 1` still scores
+  1). Both quirks are pinned by a test as documented behaviour;
+  catching them would need a stricter schema (StrictInt,
+  `extra="forbid"`), which is not used yet.
+- JsonCorrectness's key-free route depends on deepeval 4.3.3's
+  `eval_mode="system_one"` behaviour; if a future deepeval
+  version changes it, construction will fail loudly (blocked
+  status with the exact error) rather than silently calling an
+  LLM — but the adapter should be re-verified on any deepeval
+  upgrade.
+- Scores are 0/1 only for both new metrics; there is no partial
+  credit, and the threshold is forced to 1 in strict mode
+  (JsonCorrectness default).

@@ -267,6 +267,79 @@ class TestEvaluation(unittest.TestCase):
         if r["status"] == "assembled":
             self.assertAlmostEqual(r["accuracy"], 0.75, places=2)
 
+    def test_deepeval_pattern_match_scores(self):
+        r = evaluation.deepeval_pattern_match()
+        self.assertEqual(r["status"], "assembled", r)
+        # "614 tonnes" matches, "614 tonnes extra" and "no tonnes here" do not.
+        self.assertEqual(r["scores"], [1.0, 0.0, 0.0])
+        self.assertAlmostEqual(r["accuracy"], 1 / 3, places=2)
+
+    def test_pattern_match_is_fullmatch_not_search(self):
+        # A substring match is NOT enough: fullmatch requires the whole
+        # output to match the pattern. This is the verified 4.3.3 behaviour.
+        r = evaluation.deepeval_pattern_match(
+            cases=[("614 tonnes extra", 0.0)])
+        self.assertEqual(r["status"], "assembled", r)
+        self.assertEqual(r["scores"], [0.0])
+
+    def test_pattern_match_invalid_regex_is_blocked_not_faked(self):
+        r = evaluation.deepeval_pattern_match(pattern="[unclosed")
+        self.assertEqual(r["status"], "blocked")
+        self.assertIn("ValueError", r["reason"])
+        self.assertIn("Invalid regex pattern", r["reason"])
+
+    def test_pattern_match_ignore_case(self):
+        r = evaluation.deepeval_pattern_match(
+            pattern=r"potato", cases=[("Potato", 1.0)], ignore_case=True)
+        self.assertEqual(r["status"], "assembled", r)
+        self.assertEqual(r["scores"], [1.0])
+
+    def test_deepeval_json_correctness_scores(self):
+        r = evaluation.deepeval_json_correctness()
+        self.assertEqual(r["status"], "assembled", r)
+        self.assertIsNone(r["model"])  # system_one: no LLM built, no key
+        self.assertEqual(r["eval_mode"], "system_one")
+        # valid 1; malformed 0; missing field 0; wrong type 0; not JSON 0.
+        self.assertEqual(r["scores"], [1, 0, 0, 0, 0])
+        self.assertAlmostEqual(r["accuracy"], 0.2, places=2)
+        # The failure reason is the pydantic validation error, not LLM text.
+        self.assertIn("validation error", r["reasons"][1].lower())
+
+    def test_json_correctness_wrong_schema_cases(self):
+        r = evaluation.deepeval_json_correctness(cases=[
+            ('{"delivered": 614}', 0),                    # missing field
+            ('{"delivered": "abc", "shortage": 57}', 0),  # uncoercible type
+        ])
+        self.assertEqual(r["status"], "assembled", r)
+        self.assertEqual(r["scores"], [0, 0])
+
+    def test_json_correctness_pydantic_quirks_documented(self):
+        # Pydantic coerces the string "614" to int 614 and ignores
+        # unknown extra keys by default, so both score 1. Recorded
+        # here as a known limitation, not hidden: a stricter schema
+        # (StrictInt, extra="forbid") would be needed to catch these.
+        r = evaluation.deepeval_json_correctness(cases=[
+            ('{"delivered": "614", "shortage": 57}', 1),
+            ('{"delivered": 614, "shortage": 57, "extra": 1}', 1),
+        ])
+        self.assertEqual(r["status"], "assembled", r)
+        self.assertEqual(r["scores"], [1, 1])
+
+    def test_json_correctness_default_construction_needs_key(self):
+        # Sweep correction, verified in deepeval 4.3.3: constructing
+        # JsonCorrectnessMetric WITHOUT eval_mode="system_one" builds
+        # a default OpenAI model and raises without an API key.
+        import os
+        from unittest import mock
+        from deepeval.metrics import JsonCorrectnessMetric
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("OPENAI_API_KEY", None)
+            with self.assertRaises(Exception) as ctx:
+                JsonCorrectnessMetric(
+                    expected_schema=evaluation.PlanJsonSchema,
+                    async_mode=False)
+        self.assertIn("API key", str(ctx.exception))
+
 
 if __name__ == "__main__":
     unittest.main()

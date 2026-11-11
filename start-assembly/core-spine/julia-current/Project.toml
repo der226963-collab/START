@@ -1,0 +1,72 @@
+# START core-spine — Julia environment.
+# Julia 1.13.3 installed 2026-11-10 at ~/.juliaup/bin/julia.
+# Install: `julia --project=. -e "import Pkg; Pkg.instantiate()"`.
+#
+# UUID CORRECTION (2026-11-10): the first draft of this file had
+# wrong/malformed UUIDs for Agents, Symbolics, HiGHS and
+# ModelingToolkit (e.g. ModelingToolkit ended in an 11-char group).
+# They were corrected against each repo's own upstream Project.toml
+# on GitHub (raw.githubusercontent.com) before instantiate:
+# Agents f70cc89e6671, Symbolics 4792-8d23-62f2024744c7,
+# HiGHS bb2238e4078b, ModelingToolkit 94e3-6117800e7a78.
+# Turing, DifferentialEquations and JuMP UUIDs already matched upstream.
+#
+# Packages, all from the General registry except AlphaZero (see note):
+#   Agents.jl             JuliaDynamics/Agents.jl, MIT
+#   ModelingToolkit.jl    SciML/ModelingToolkit.jl, MIT
+#   Symbolics.jl          JuliaSymbolics/Symbolics.jl, MIT
+#   Turing.jl             TuringLang/Turing.jl, MIT
+#   DifferentialEquations.jl  SciML/DifferentialEquations.jl — LICENCE
+#                         CAUTION: GitHub shows NOASSERTION for this repo;
+#                         confirm the licence before adopting it.
+#   JuMP.jl               jump-dev/JuMP.jl, MPL-2.0
+#   HiGHS.jl              jump-dev/HiGHS.jl, MIT (solver backend for JuMP)
+#
+# AlphaZero.jl (jonathan-laurent/AlphaZero.jl, MIT) is NOT in the
+# General registry: it is used by cloning the repo
+# (`git clone https://github.com/jonathan-laurent/AlphaZero.jl`)
+# and running with `--project` inside that clone. It is therefore
+# NOT listed as a registry dependency here; it is cloned and
+# smoke-tested separately (see julia/logs/ and ASSEMBLY_REPORT.md).
+# Do not claim it was installed or tested here unless that run
+# actually happened.
+#
+# The v0.3.2 Julia findings (REVIEW.md ISSUE-05, ISSUE-07) still apply:
+# the review-copy Julia planning module does not implement the
+# constraint contract (no constraint_id/operator/unit, invented
+# statuses :candidate_feasible / :candidate_infeasible). The script
+# julia/spine.jl in this folder is a runnable adapter against the
+# five-state wire vocabulary (verified 2026-11-10, see its header).
+
+name = "STARTCoreSpine"
+uuid = "7f3a1c2e-9b4d-4a5e-8c6f-1a2b3c4d5e6f"
+authors = ["START contributors"]
+version = "0.1.0"
+
+[deps]
+Agents = "46ada45e-f475-11e8-01d0-f70cc89e6671"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+ModelingToolkit = "961ee093-0014-501f-94e3-6117800e7a78"
+Symbolics = "0c5d862f-8b57-4792-8d23-62f2024744c7"
+Turing = "fce5fe82-541a-59a6-adf8-730c64b5f9a0"
+DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
+JuMP = "4076af6c-e467-56ae-b986-b466b2749572"
+HiGHS = "87dc4568-4c63-4d18-b0c0-bb2238e4078b"
+
+[compat]
+julia = "1.9"
+# NOTE (2026-11-11): Distributions added as a direct dependency for
+# planning-search/ (the copied AlphaZero MCTS uses Distributions:
+# Dirichlet for root exploration noise). It was already in the
+# Manifest as a transitive dependency (0.25.134); adding it as direct
+# does not change the resolved set. DataStructures/StaticArrays are
+# NOT needed: neither copied file imports them (checked 2026-11-11).
+# NOTE (2026-11-10): per-package compat bounds REMOVED in this env.
+# The pinned bounds (MTK 9, Turing 0.34, Agents 6, DiffEq 7.17)
+# resolved on Julia 1.13.3 AND 1.11.9 to transitive versions they
+# were never tested with (DiffEqBase/SteadyStateDiffEq,
+# Distributions @check_args, DynamicQuantitiesSciMLBaseExt) and 5
+# direct deps failed to precompile on both Julia versions.
+# This env lets Pkg resolve the newest mutually-compatible set.
+# The pinned envs in julia/ (1.13) and julia-1.11/ (1.11) are kept
+# untouched as evidence.

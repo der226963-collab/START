@@ -1,0 +1,37 @@
+// START core spine — constraint-evaluation service (proto3).
+// Mirrors interop/schemas/constraint-evaluation.schema.json (v1.0.0)
+// and constraint-evaluation-result.schema.json from the v0.3.2 review
+// copy. This is a wire contract only; the Tonic (Rust) server is a
+// stub in this assembly until a Rust toolchain run is verified, and
+// the Python grpcio server in adapters/interop.py is the runnable
+// local implementation. Status vocabulary is exactly
+// PASS, FAIL, UNKNOWN, NOT_CHECKED, INCOMPLETE.
+syntax = "proto3";
+
+package start.spine.v1;
+
+service ConstraintEvaluation {
+  // Evaluate one constraint request; returns one result.
+  rpc Evaluate (ConstraintRequest) returns (ConstraintResult);
+}
+
+message ConstraintRequest {
+  string schema_version = 1;  // must be "1.0.0"
+  string constraint_id = 2;   // min length 1
+  string operator = 3;        // "<=", ">=", "=="
+  double value = 4;
+  string value_unit = 5;
+  double bound = 6;
+  string bound_unit = 7;
+  double tolerance = 8;       // >= 0
+}
+
+message ConstraintResult {
+  string schema_version = 1;  // "1.0.0"
+  string constraint_id = 2;
+  string status = 3;          // PASS | FAIL | UNKNOWN | NOT_CHECKED | INCOMPLETE
+  double normalized_value = 4;
+  string normalized_unit = 5;
+  string reason_code = 6;     // OK | NON_FINITE | UNKNOWN_UNIT | INCOMPATIBLE_UNIT | INVALID_REQUEST
+  string details = 7;
+}

@@ -91,6 +91,8 @@ export PlanningGameInterface, MCTS
 export FoodPlanSpec, FoodPlanEnv, PlanningCandidate
 export run_search, plan_totals, verify_candidate, verified_status
 export evaluate_constraint, overall_status
+export check_schema_version, unit_definition, convert_units
+export SUPPORTED_SCHEMA_MAJOR
 export VerifiedSample, VerifiedMemory, insert_verified!
 export memory_size, memory_samples, vary_spec, spec_id_for_seed
 export plan_features, LinearValueModel, fit_value_model, predict_value
@@ -138,6 +140,11 @@ include("game.jl")   # module PlanningGameInterface
 const GI = PlanningGameInterface
 include("mcts.jl")   # module MCTS; uses ..PlanningSearch: GI, apply_temperature
 include("planning_domain.jl")
+# Canonical unit registry / evaluator / aggregation / version
+# check (julia-current/units.jl) — the ONE implementation all
+# Julia evaluators share. Must come before verify.jl, which
+# calls evaluate_constraint with units.
+include(joinpath(@__DIR__, "..", "units.jl"))
 include("verify.jl")
 include("training_loop.jl")
 include("dynamics_search.jl")

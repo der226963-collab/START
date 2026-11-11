@@ -115,17 +115,165 @@ end
 
 @testset "empty / non-finite inputs are UNKNOWN, never PASS" begin
     @test evaluate_constraint(constraint_id="", operator="<=",
-                              value=1.0, bound=2.0)[1] == "UNKNOWN"
+                              value=1.0, bound=2.0,
+                              value_unit="kg", bound_unit="kg")[1] == "UNKNOWN"
     @test evaluate_constraint(constraint_id="x", operator="<=",
-                              value=NaN, bound=2.0)[1] == "UNKNOWN"
+                              value=NaN, bound=2.0,
+                              value_unit="kg", bound_unit="kg")[1] == "UNKNOWN"
     @test evaluate_constraint(constraint_id="x", operator="<=",
-                              value=1.0, bound=Inf)[1] == "UNKNOWN"
+                              value=1.0, bound=Inf,
+                              value_unit="kg", bound_unit="kg")[1] == "UNKNOWN"
     @test evaluate_constraint(constraint_id="x", operator="<>",
-                              value=1.0, bound=2.0)[1] == "UNKNOWN"
+                              value=1.0, bound=2.0,
+                              value_unit="kg", bound_unit="kg")[1] == "UNKNOWN"
     @test overall_status(String[]) == "NOT_CHECKED"
     @test overall_status(["PASS", "FAIL"]) == "FAIL"
     @test overall_status(["PASS", "UNKNOWN"]) == "UNKNOWN"
     @test overall_status(["PASS", "PASS"]) == "PASS"
+    # Aggregation follows Python's overall_from_checks exactly:
+    # FAIL > INCOMPLETE > UNKNOWN > NOT_CHECKED > all-PASS.
+    @test overall_status(["UNKNOWN"]) == "UNKNOWN"
+    @test overall_status(["UNKNOWN", "INCOMPLETE"]) == "INCOMPLETE"
+    @test overall_status(["PASS", "NOT_CHECKED"]) == "NOT_CHECKED"
+    @test overall_status(["INCOMPLETE"]) == "INCOMPLETE"
+end
+
+@testset "unit registry: shared test-vectors (2026-11-11 decisions)" begin
+    # The 8 wire cases from blocker-work/shared-test-vectors/
+    # test-vectors.json, plus the discriminating cases that catch
+    # the old right-status-for-the-wrong-reason behaviour.
+    # 1. food-energy-adequacy: 2800 >= 2500 kcal/capita/day.
+    @test evaluate_constraint(constraint_id="food_energy_adequacy",
+                              operator=">=", value=2800.0, bound=2500.0,
+                              value_unit="kcal/capita/day",
+                              bound_unit="kcal/capita/day")[1] == "PASS"
+    # 2. mass-tonne: 8 t <= 10 t.
+    @test evaluate_constraint(constraint_id="mass", operator="<=",
+                              value=8.0, bound=10.0,
+                              value_unit="t", bound_unit="t")[1] == "PASS"
+    # 3. volume-m3-vs-litre: 0.008 m3 = 8 L <= 10 L.
+    @test evaluate_constraint(constraint_id="vol", operator="<=",
+                              value=0.008, bound=10.0,
+                              value_unit="m3", bound_unit="L")[1] == "PASS"
+    # 3b. Discriminating pair: 0.02 m3 = 20 L > 10 L FAILs. The old
+    # unit-free evaluator passed this (0.02 <= 10 numerically).
+    @test evaluate_constraint(constraint_id="vol", operator="<=",
+                              value=0.02, bound=10.0,
+                              value_unit="m3", bound_unit="L")[1] == "FAIL"
+    # 3c. Reverse direction: 8 L <= 0.01 m3 (10 L) PASS; 12 L FAIL.
+    @test evaluate_constraint(constraint_id="vol", operator="<=",
+                              value=8.0, bound=0.01,
+                              value_unit="L", bound_unit="m3")[1] == "PASS"
+    @test evaluate_constraint(constraint_id="vol", operator="<=",
+                              value=12.0, bound=0.01,
+                              value_unit="L", bound_unit="m3")[1] == "FAIL"
+    # "m³" (superscript) is an alias for "m3".
+    @test evaluate_constraint(constraint_id="vol", operator="<=",
+                              value=0.008, bound=10.0,
+                              value_unit="m³", bound_unit="L")[1] == "PASS"
+    # 4. kcal/day is in the registry now (was Python-rejected,
+    # Rust-invented; Eric's decision adds it): 2800 >= 2500 PASS.
+    @test evaluate_constraint(constraint_id="kday", operator=">=",
+                              value=2800.0, bound=2500.0,
+                              value_unit="kcal/day",
+                              bound_unit="kcal/day")[1] == "PASS"
+    @test evaluate_constraint(constraint_id="kday", operator=">=",
+                              value=2800.0, bound=2500.0,
+                              value_unit="kcal/person/day",
+                              bound_unit="kcal/person/day")[1] == "PASS"
+    # 5. equality-kg: 10 kg == 10 kg.
+    @test evaluate_constraint(constraint_id="eq", operator="==",
+                              value=10.0, bound=10.0,
+                              value_unit="kg", bound_unit="kg")[1] == "PASS"
+    # 6. fail-litre: 12 L <= 10 L.
+    @test evaluate_constraint(constraint_id="fail", operator="<=",
+                              value=12.0, bound=10.0,
+                              value_unit="L", bound_unit="L")[1] == "FAIL"
+    # 7. incompatible-units: 5 L <= 10 kg is UNKNOWN, NEVER a
+    # PASS. This is the bug the unit registry fixes: the old
+    # unit-free evaluator silently PASSED this comparison.
+    @test evaluate_constraint(constraint_id="incomp", operator="<=",
+                              value=5.0, bound=10.0,
+                              value_unit="L", bound_unit="kg")[1] == "UNKNOWN"
+    @test evaluate_constraint(constraint_id="incomp", operator="<=",
+                              value=5.0, bound=10.0,
+                              value_unit="L", bound_unit="kg")[2] ==
+          "incompatible units: L and kg"
+    # Unknown units are UNKNOWN, never PASS — either side.
+    @test evaluate_constraint(constraint_id="x", operator="<=",
+                              value=5.0, bound=10.0,
+                              value_unit="furlongs",
+                              bound_unit="kg")[1] == "UNKNOWN"
+    @test evaluate_constraint(constraint_id="x", operator="<=",
+                              value=5.0, bound=10.0,
+                              value_unit="kg",
+                              bound_unit="furlongs")[1] == "UNKNOWN"
+    # Cross-dimension conversions never happen: mass <-> volume.
+    @test evaluate_constraint(constraint_id="x", operator="<=",
+                              value=1000.0, bound=1.0,
+                              value_unit="g", bound_unit="L")[1] == "UNKNOWN"
+    # Same-dimension conversions: g -> kg, tonne -> kg.
+    @test evaluate_constraint(constraint_id="mass", operator="<=",
+                              value=8000.0, bound=10.0,
+                              value_unit="g", bound_unit="kg")[1] == "PASS"
+    @test evaluate_constraint(constraint_id="mass", operator="<=",
+                              value=0.008, bound=10.0,
+                              value_unit="t", bound_unit="kg")[1] == "PASS"
+    # 8. range-operator: 5 L in [2, 8] — inclusive, with tolerance.
+    @test evaluate_constraint(constraint_id="rng", operator="range",
+                              value=5.0, bound_low=2.0, bound_high=8.0,
+                              value_unit="L", bound_unit="L")[1] == "PASS"
+    @test evaluate_constraint(constraint_id="rng", operator="range",
+                              value=1.0, bound_low=2.0, bound_high=8.0,
+                              value_unit="L", bound_unit="L")[1] == "FAIL"
+    @test evaluate_constraint(constraint_id="rng", operator="range",
+                              value=9.0, bound_low=2.0, bound_high=8.0,
+                              value_unit="L", bound_unit="L")[1] == "FAIL"
+    @test evaluate_constraint(constraint_id="rng", operator="range",
+                              value=2.0, bound_low=2.0, bound_high=8.0,
+                              value_unit="L", bound_unit="L")[1] == "PASS"
+    @test evaluate_constraint(constraint_id="rng", operator="range",
+                              value=8.0, bound_low=2.0, bound_high=8.0,
+                              value_unit="L", bound_unit="L")[1] == "PASS"
+    # Range with a tolerance: 8.05 L is inside [2, 8] + 0.1.
+    @test evaluate_constraint(constraint_id="rng", operator="range",
+                              value=8.05, bound_low=2.0, bound_high=8.0,
+                              value_unit="L", bound_unit="L",
+                              tolerance=0.1)[1] == "PASS"
+    @test evaluate_constraint(constraint_id="rng", operator="range",
+                              value=8.2, bound_low=2.0, bound_high=8.0,
+                              value_unit="L", bound_unit="L",
+                              tolerance=0.1)[1] == "FAIL"
+    # Missing bounds -> UNKNOWN, never PASS; inverted -> UNKNOWN.
+    @test evaluate_constraint(constraint_id="rng", operator="range",
+                              value=5.0,
+                              value_unit="L", bound_unit="L")[1] == "UNKNOWN"
+    @test evaluate_constraint(constraint_id="rng", operator="range",
+                              value=5.0, bound_low=2.0,
+                              value_unit="L", bound_unit="L")[1] == "UNKNOWN"
+    @test evaluate_constraint(constraint_id="rng", operator="range",
+                              value=5.0, bound_low=8.0, bound_high=2.0,
+                              value_unit="L", bound_unit="L")[1] == "UNKNOWN"
+    # Range converts units too: 0.005 m3 = 5 L in [2, 8] L.
+    @test evaluate_constraint(constraint_id="rng", operator="range",
+                              value=0.005, bound_low=2.0, bound_high=8.0,
+                              value_unit="m3", bound_unit="L")[1] == "PASS"
+end
+
+@testset "schema versions: same-major accepted, major rejected" begin
+    # Pure function check_schema_version, alongside the evaluator.
+    @test check_schema_version("1.0.0") == (true, "OK")
+    @test check_schema_version("1.0.1") == (true, "OK")
+    @test check_schema_version("1.1.0") == (true, "OK")
+    accepted, reason = check_schema_version("2.0.0")
+    @test accepted == false
+    # Exact message Python and Rust both use.
+    @test reason == "unsupported major schema version: 2.0.0 " *
+                    "(supported major version 1)"
+    @test check_schema_version("3.2.1")[1] == false
+    @test check_schema_version("3.2.1")[2] ==
+          "unsupported major schema version: 3.2.1 " *
+          "(supported major version 1)"
 end
 
 @testset "a search result alone is NOT verified" begin

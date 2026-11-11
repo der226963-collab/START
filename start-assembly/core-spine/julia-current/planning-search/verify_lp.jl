@@ -134,24 +134,34 @@ function lp_cross_check(candidate::PlanningCandidate, lp;
                 checks=["UNKNOWN", "UNKNOWN", "UNKNOWN", "UNKNOWN", "UNKNOWN"])
     end
     checks = String[]
-    function check_one(constraint_id, operator, value, bound)
+    function check_one(constraint_id, operator, value, bound;
+                       value_unit, bound_unit)
         status, _ = evaluate_constraint(constraint_id=constraint_id,
                                         operator=operator, value=value,
-                                        bound=bound, tolerance=tolerance)
+                                        bound=bound, tolerance=tolerance,
+                                        value_unit=value_unit,
+                                        bound_unit=bound_unit)
         push!(checks, status)
         return status
     end
     # Optimum bounds: the candidate must not claim better than the LP.
+    # Delivered / shortage / production are tonnages (t); land is ha,
+    # water is m3 — all explicit, via the canonical units.jl evaluator.
     check_one("lp-delivered-not-above-optimum", "<=",
-              candidate.delivered, lp.delivered)
+              candidate.delivered, lp.delivered;
+              value_unit="t", bound_unit="t")
     check_one("lp-shortage-not-below-optimum", ">=",
-              candidate.shortage, lp.shortage)
+              candidate.shortage, lp.shortage;
+              value_unit="t", bound_unit="t")
     check_one("lp-production-not-above-optimum", "<=",
-              candidate.production, lp.production)
+              candidate.production, lp.production;
+              value_unit="t", bound_unit="t")
     # Resource budgets: the LP's own constraints, re-applied to the
     # candidate's claimed land/water.
-    check_one("lp-land-within-budget", "<=", candidate.land_ha, spec.land_max)
-    check_one("lp-water-within-budget", "<=", candidate.water_m3, spec.water_max)
+    check_one("lp-land-within-budget", "<=", candidate.land_ha, spec.land_max;
+              value_unit="ha", bound_unit="ha")
+    check_one("lp-water-within-budget", "<=", candidate.water_m3, spec.water_max;
+              value_unit="m3", bound_unit="m3")
     return (status=overall_status(checks), checks=checks)
 end
 

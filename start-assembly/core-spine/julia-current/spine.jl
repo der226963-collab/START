@@ -40,40 +40,13 @@
 using JuMP, HiGHS
 using ModelingToolkit, DifferentialEquations
 
+# The evaluator, registry, aggregation and version check live in
+# units.jl — the one canonical implementation shared by all Julia
+# evaluators (see that file's header). The old unit-free
+# evaluate_constraint / overall_status defined here are removed.
+include(joinpath(@__DIR__, "units.jl"))
+
 const NEEDS_HUMAN_DECISION = true
-
-"""Evaluate one constraint. Non-finite value/bound -> UNKNOWN, never PASS.
-Empty constraint_id -> UNKNOWN. Unsupported operator -> UNKNOWN."""
-function evaluate_constraint(; constraint_id, operator, value, bound,
-                               tolerance=0.0)
-    if isempty(constraint_id)
-        return ("UNKNOWN", "empty constraint_id")
-    end
-    if !isfinite(value) || !isfinite(bound)
-        return ("UNKNOWN", "non-finite value or bound")
-    end
-    ok = if operator == "<="
-        value <= bound + tolerance
-    elseif operator == ">="
-        value >= bound - tolerance
-    elseif operator == "=="
-        abs(value - bound) <= tolerance
-    else
-        return ("UNKNOWN", "unsupported operator: $operator")
-    end
-    return (ok ? "PASS" : "FAIL", "OK")
-end
-
-"""Aggregate statuses. Empty -> NOT_CHECKED (never PASS). FAIL wins.
-INCOMPLETE / UNKNOWN / NOT_CHECKED -> UNKNOWN (consumer verdict:
-indeterminate). Otherwise PASS."""
-function overall_status(statuses)
-    isempty(statuses) && return "NOT_CHECKED"
-    "FAIL" in statuses && return "FAIL"
-    any(s in statuses for s in ("INCOMPLETE", "UNKNOWN", "NOT_CHECKED")) &&
-        return "UNKNOWN"
-    return "PASS"
-end
 
 function check(name, got, expected)
     ok = got == expected
@@ -144,22 +117,43 @@ function main()
     println("1. evaluate_constraint")
     push!(results, check("food-2800>=2500",
         evaluate_constraint(constraint_id="food-energy", operator=">=",
-                            value=2800.0, bound=2500.0)[1], "PASS"))
+                            value=2800.0, bound=2500.0,
+                            value_unit="kcal/capita/day",
+                            bound_unit="kcal/capita/day")[1], "PASS"))
     push!(results, check("le-fail",
         evaluate_constraint(constraint_id="water", operator="<=",
-                            value=12.0, bound=10.0)[1], "FAIL"))
+                            value=12.0, bound=10.0,
+                            value_unit="L", bound_unit="L")[1], "FAIL"))
     push!(results, check("eq-pass",
         evaluate_constraint(constraint_id="mass", operator="==",
-                            value=10.0, bound=10.0, tolerance=1e-9)[1], "PASS"))
+                            value=10.0, bound=10.0, tolerance=1e-9,
+                            value_unit="kg", bound_unit="kg")[1], "PASS"))
     push!(results, check("empty-id-unknown",
         evaluate_constraint(constraint_id="", operator="<=",
-                            value=1.0, bound=2.0)[1], "UNKNOWN"))
+                            value=1.0, bound=2.0,
+                            value_unit="kg", bound_unit="kg")[1], "UNKNOWN"))
     push!(results, check("nonfinite-unknown",
         evaluate_constraint(constraint_id="x", operator="<=",
-                            value=NaN, bound=2.0)[1], "UNKNOWN"))
+                            value=NaN, bound=2.0,
+                            value_unit="kg", bound_unit="kg")[1], "UNKNOWN"))
     push!(results, check("unsupported-op-unknown",
         evaluate_constraint(constraint_id="x", operator="<>",
-                            value=1.0, bound=2.0)[1], "UNKNOWN"))
+                            value=1.0, bound=2.0,
+                            value_unit="kg", bound_unit="kg")[1], "UNKNOWN"))
+    # The fixed bug: incompatible units are UNKNOWN, never PASS.
+    push!(results, check("incompatible-unknown",
+        evaluate_constraint(constraint_id="incomp", operator="<=",
+                            value=5.0, bound=10.0,
+                            value_unit="L", bound_unit="kg")[1], "UNKNOWN"))
+    # m3/L conversion, both directions (discriminating pair).
+    push!(results, check("vol-m3-to-L-pass",
+        evaluate_constraint(constraint_id="vol", operator="<=",
+                            value=0.008, bound=10.0,
+                            value_unit="m3", bound_unit="L")[1], "PASS"))
+    push!(results, check("vol-m3-to-L-fail",
+        evaluate_constraint(constraint_id="vol", operator="<=",
+                            value=0.02, bound=10.0,
+                            value_unit="m3", bound_unit="L")[1], "FAIL"))
 
     println("2. overall_status")
     push!(results, check("empty-not-checked",
@@ -178,15 +172,16 @@ function main()
             "production_t=$(round(lp.production, digits=2)) " *
             "land_ha=$(round(lp.land, digits=2)) " *
             "water_m3=$(round(lp.water, digits=2))")
-    for (key, got, expected) in
-            [("delivered_t", lp.delivered, 600.0),
-             ("shortage_t", lp.shortage, 50.0),
-             ("production_t", lp.production, 600.0),
-             ("land_ha", lp.land, 70.0),
-             ("water_m3", lp.water, 100_000.0)]
+    for (key, got, expected, unit) in
+            [("delivered_t", lp.delivered, 600.0, "t"),
+             ("shortage_t", lp.shortage, 50.0, "t"),
+             ("production_t", lp.production, 600.0, "t"),
+             ("land_ha", lp.land, 70.0, "ha"),
+             ("water_m3", lp.water, 100_000.0, "m3")]
         status, _ = evaluate_constraint(constraint_id="opt-$key",
                                         operator="==", value=got,
-                                        bound=expected, tolerance=0.02)
+                                        bound=expected, tolerance=0.02,
+                                        value_unit=unit, bound_unit=unit)
         push!(results, check("lp-$key", status, "PASS"))
     end
 
@@ -195,7 +190,8 @@ function main()
     println("  stock at t=100: $(round(s_final, digits=4)) t (equilibrium 100 t)")
     status, _ = evaluate_constraint(constraint_id="stock-equilibrium",
                                     operator="==", value=s_final,
-                                    bound=100.0, tolerance=1.0)
+                                    bound=100.0, tolerance=1.0,
+                                    value_unit="t", bound_unit="t")
     push!(results, check("ode-steady-state", status, "PASS"))
 
     n_pass = count(results)

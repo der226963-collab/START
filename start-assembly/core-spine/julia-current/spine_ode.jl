@@ -16,27 +16,13 @@
 
 using ModelingToolkit, DifferentialEquations
 
-const NEEDS_HUMAN_DECISION = true
+# The evaluator lives in units.jl — the one canonical
+# implementation shared by all Julia evaluators (see that file's
+# header). The old unit-free evaluate_constraint defined here
+# is removed.
+include(joinpath(@__DIR__, "units.jl"))
 
-function evaluate_constraint(; constraint_id, operator, value, bound,
-                               tolerance=0.0)
-    if isempty(constraint_id)
-        return ("UNKNOWN", "empty constraint_id")
-    end
-    if !isfinite(value) || !isfinite(bound)
-        return ("UNKNOWN", "non-finite value or bound")
-    end
-    ok = if operator == "<="
-        value <= bound + tolerance
-    elseif operator == ">="
-        value >= bound - tolerance
-    elseif operator == "=="
-        abs(value - bound) <= tolerance
-    else
-        return ("UNKNOWN", "unsupported operator: $operator")
-    end
-    return (ok ? "PASS" : "FAIL", "OK")
-end
+const NEEDS_HUMAN_DECISION = true
 
 function food_stock_steady_state()
     @variables t S(t)
@@ -57,7 +43,8 @@ function main()
     println("  stock at t=100: $(round(s_final, digits=4)) t (equilibrium 100 t)")
     status, _ = evaluate_constraint(constraint_id="stock-equilibrium",
                                     operator="==", value=s_final,
-                                    bound=100.0, tolerance=1.0)
+                                    bound=100.0, tolerance=1.0,
+                                    value_unit="t", bound_unit="t")
     ok = status == "PASS"
     println("  [ode-steady-state] got=$status expected=PASS ",
             ok ? "PASS" : "FAIL",

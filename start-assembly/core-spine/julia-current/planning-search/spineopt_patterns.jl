@@ -511,9 +511,12 @@ function check_nodal_balance(; node_id::String, inflows, outflows,
                 reason="non-finite value")
     end
     residual = sum(in_f) - sum(out_f) - net_demand
+    # Nodal flows on the synthetic domain are tonnages (t):
+    # the residual is a difference of t-flows against a 0 t bound.
     status, _ = evaluate_constraint(constraint_id="nodal-balance:$node_id",
                                     operator="==", value=residual, bound=0.0,
-                                    tolerance=tolerance)
+                                    tolerance=tolerance,
+                                    value_unit="t", bound_unit="t")
     return (status=status, residual=residual, node_id=node_id, reason="OK")
 end
 
@@ -557,9 +560,11 @@ function nodal_balance_for_candidate(candidate::PlanningCandidate;
         (("production", candidate.production, sum(prod_i)),
          ("delivered", candidate.delivered, sum(delivered_i)),
          ("shortage", candidate.shortage, sum(shortage_i)))
+        # Claimed vs derived totals are both tonnages (t).
         status, _ = evaluate_constraint(constraint_id="nodal-claimed-$label",
                                         operator="==", value=claimed, bound=derived,
-                                        tolerance=1e-6)
+                                        tolerance=1e-6,
+                                        value_unit="t", bound_unit="t")
         push!(checks, status)
         push!(residuals, claimed - derived)
     end

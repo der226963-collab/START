@@ -38,7 +38,7 @@ never PASS; UNKNOWN / INCOMPLETE are never converted into PASS.
 | Turing.jl | 12 Math & Computing | TuringLang/Turing.jl | MIT | Bayesian inference | assembled 0.49.0 (Julia 1.13.3) |
 | DifferentialEquations.jl | 12 Math & Computing | SciML/DifferentialEquations.jl | NOASSERTION — confirm before adopting | Continuous physical systems | assembled 8.1.1 (Julia 1.13.3) |
 | AlphaZero.jl | 4 Reasoning & Planning | jonathan-laurent/AlphaZero.jl | MIT | MCTS + self-play search (board-game core) | assembled 0.5.6 (git clone, CPU only, no training) |
-| PlanningSearch (MCTS + game interface copied from AlphaZero.jl) | 4 Reasoning & Planning | jonathan-laurent/AlphaZero.jl (source, MIT) | MIT (copied files) | Standalone planning search: MCTS over partial plans, rollout oracle + learned linear oracle, candidate only — never verified by the search; original training loop (verified samples only, held-out replacement rule) | assembled 2026-11-11, 75/75 + 53/53 + 86/86 + 25/25 Julia tests PASS, finds the 600/50 t optimum |
+| PlanningSearch (MCTS + game interface copied from AlphaZero.jl) | 4 Reasoning & Planning | jonathan-laurent/AlphaZero.jl (source, MIT) | MIT (copied files) | Standalone planning search: MCTS over partial plans, rollout oracle + learned linear oracle + learned-dynamics oracle (original MuZero.jl-design rebuild, no MuZero.jl code copied, no Flux/CUDA), candidate only — never verified by the search; original training loop (verified samples only, held-out replacement rule) | assembled 2026-11-11, 81/81 + 53/53 + 86/86 + 25/25 + 208/208 Julia tests PASS, finds the 600/50 t optimum |
 
 ## Canonical Julia environment (adopted 2026-11-11 by Eric)
 
@@ -47,9 +47,10 @@ Julia 1.13.3, Agents 7.1.0, ModelingToolkit 11.46.1, Symbolics 7.48.0,
 Turing 0.49.0, DifferentialEquations 8.1.1, JuMP 1.32.1, HiGHS 1.26.1,
 NetworkDynamics 1.3.0, Graphs 1.15.0,
 AlphaZero 0.5.6 (separate env in `alphazero/`). Spine 16/16 PASS,
-Julia checks 299/299 passed, 0 failed (29 spine/smokes/AlphaZero +
-75 planning-search + 53 LP cross-check + 86 training loop +
-25 training loop LP-split + 31 NetworkDynamics networked model). The original pinned envs
+Julia checks 513/513 passed, 0 failed (29 spine/smokes/AlphaZero +
+81 planning-search + 53 LP cross-check + 86 training loop +
+25 training loop LP-split + 208 learned-dynamics search +
+31 NetworkDynamics networked model). The original pinned envs
 `julia/` and `julia-1.11/` are evidence only — they fail to precompile
 5 dependencies and are NOT canonical; do not use them for new work.
 | LangGraph | 5 Orchestration | langchain-ai/langgraph | MIT | Stateful plan → verify → report graph | assembled |
@@ -100,7 +101,7 @@ Julia checks 299/299 passed, 0 failed (29 spine/smokes/AlphaZero +
 - `julia-current/planning-search/` — standalone planning-search module
   (`PlanningSearch.jl`, copied `mcts.jl` + `game.jl` with MIT notices,
   original `planning_domain.jl` + `verify.jl`, `PROVENANCE.md`,
-  `test/runtests.jl` — 75/75 PASS). MCTS finds the 600/50 t optimum
+  `test/runtests.jl` — 81/81 PASS). MCTS finds the 600/50 t optimum
   on the synthetic domain; every result is a CANDIDATE only
   (`verified=false`, `needs_human_decision=true`) until the separate
   verify step passes AND a human approves. `verify_lp.jl` (original,
@@ -121,6 +122,15 @@ Julia checks 299/299 passed, 0 failed (29 spine/smokes/AlphaZero +
   mean shortage 117.5 t vs rollout 167.5 t at tied PASS rates of
   1.0). Tests `test/training_loop.jl` — 86/86 PASS — and
   `test/training_loop_lp.jl` — 25/25 PASS.
+  `dynamics_search.jl` (original, INSPIRATION-REBUILD of MuZero.jl's
+  learned-dynamics design — ridge dynamics model, MinMaxStats value
+  normalisation, reanalyse step, `DynamicsOracle`; no MuZero.jl code
+  copied, no Flux/CUDA; reward is verified-PASS plan quality, never a
+  win probability). Tests `test/dynamics_search.jl` — 208/208 PASS
+  (held-out mean prediction error 0.0719, max 0.4122; dynamics-oracle
+  MCTS finds the 600/50 t optimum on all five seeds 1234, 7, 42, 99,
+  2024; held-out dynamics PASS rate 1.0, mean shortage 117.5 t vs
+  rollout 147.5 t).
 - `julia/` and `julia-1.11/` — original pinned envs, kept untouched as evidence only (fail to precompile).
 - `proto/constraint_evaluation.proto` — the gRPC wire contract (schema 1.0.0).
 - `policies.cedar` — the authoritative Cedar policies.

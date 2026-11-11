@@ -37,6 +37,16 @@
 #                       verified-PASS-rate replacement rule. Tests:
 #                       test/training_loop.jl (standalone) and
 #                       test/training_loop_lp.jl (LP-split script).
+#   dynamics_search.jl  ORIGINAL START code: learned-dynamics search,
+#                       an INSPIRATION-REBUILD of MuZero.jl's design
+#                       (dynamics model, MinMaxStats-style value
+#                       normalisation, reanalyse step) — no MuZero.jl
+#                       code copied, no Flux/CUDA, stdlib ridge
+#                       regression only. Reward is verified-PASS plan
+#                       quality under the JuMP+HiGHS gate, never a win
+#                       probability; the search is a candidate
+#                       generator only. Tests: test/dynamics_search.jl
+#                       (standalone).
 #
 # GUARDRAILS (non-negotiable):
 #  * A search result is a CANDIDATE only. It must go through the
@@ -69,6 +79,15 @@ export plan_features, LinearValueModel, fit_value_model, predict_value
 export LearnedOracle, run_search_with_oracle
 export HeldoutResult, evaluate_heldout, replacement_decision
 export IterationReport, PlanningLoopResult, train_planning_loop!
+export DynamicsModel, DynamicsTransition, DynamicsOracle
+export MinMaxStats, ReanalysedTarget
+export generate_transitions, dynamics_features
+export fit_dynamics_model, predict_transition
+export predict_dynamics_value, state_from_features
+export dynamics_prediction_error
+export update_minmax!, normalize_value
+export run_search_with_dynamics, reanalyse
+export evaluate_dynamics_heldout
 export NEEDS_HUMAN_DECISION
 
 const NEEDS_HUMAN_DECISION = true
@@ -103,5 +122,6 @@ include("mcts.jl")   # module MCTS; uses ..PlanningSearch: GI, apply_temperature
 include("planning_domain.jl")
 include("verify.jl")
 include("training_loop.jl")
+include("dynamics_search.jl")
 
 end

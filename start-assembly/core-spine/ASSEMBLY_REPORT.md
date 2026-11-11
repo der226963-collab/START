@@ -9,7 +9,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 ## Headline
 
 - **Components: 19 total — 18 assembled, 1 stub-only, 0 blocked, 0 not run**
-- **Tests: Python 102/102 passed, Rust 20/20 passed, Julia 299/299 checks passed — 421 passed, 0 failed**
+- **Tests: Python 102/102 passed, Rust 20/20 passed, Julia 513/513 checks passed — 635 passed, 0 failed**
 - **Tests not run: 0**
 - Runner `examples/run_spine.py`: ALL ASSEMBLED ADAPTERS PASS
 - Julia spine: `julia-current/spine.jl` **16/16 checks PASS** (food 2800>=2500 PASS,
@@ -30,7 +30,7 @@ the v0.3.2 review copy, and START guardrails/safety files untouched).
 | DifferentialEquations.jl | SciML/DifferentialEquations.jl | 8.1.1 | assembled | smoke PASS (S(10)=36.78795 vs 36.78794) + spine_ode PASS | Pinned 7.17.0 fails to precompile on Julia 1.13 and 1.11 (SteadyStateDiffEq/DiffEqBase); current 8.1.1 passes. Licence NOASSERTION — confirm before adopting |
 | NetworkDynamics.jl | JuliaDynamics/NetworkDynamics.jl | 1.3.0 | assembled | **31/31 Julia tests PASS** (see "NetworkDynamics.jl (Module 10)" below) | First networked domain model built first (synthetic 3-node resource network), then the dependency added — per the sweep's condition. Sweep said 1.4.0; the General registry latest is 1.3.0 (verified, see section). Dependency only, no code copied. Graphs.jl 1.15.0 added as a direct dependency for the network graph (already in the Manifest as transitive, resolved set otherwise unchanged). |
 | AlphaZero.jl | jonathan-laurent/AlphaZero.jl | 0.5.6 | assembled | smoke 9/9 checks PASS | Git clone (not General registry); own env in `alphazero/` (Flux 0.16.12, CUDA 5.11.1, Plots 1.41.7, cuDNN 1.4.7). ConnectFour init + one move, CPU only, no training. Log `alphazero/logs/smoke-alphazero.log` |
-| PlanningSearch (MCTS + game interface, copied from AlphaZero.jl) | jonathan-laurent/AlphaZero.jl (source) | 0.5.6, commit 177a6eb | assembled | **75/75 + 53/53 + 86/86 + 25/25 Julia tests PASS** | Standalone in `julia-current/planning-search/` (no AlphaZero.jl import; Distributions 0.25.134 only). MCTS + game interface copied with full MIT notice, re-expressed in planning terms (states = partial plans, reward = plan quality, not win probability). Original START code: `planning_domain.jl` (1-site 2-crop synthetic), `verify.jl`, `verify_lp.jl` (JuMP+HiGHS LP cross-check, separate file so `verify.jl` stays Distributions-only), and `training_loop.jl` (original planning training loop — verified samples only, linear value model, held-out replacement rule; no network library). Search finds the known optimum — delivered 600 t / shortage 50 t — candidate only, never verified by the search; the LP cross-check catches candidates that beat the optimum. See "Planning-search module" below |
+| PlanningSearch (MCTS + game interface, copied from AlphaZero.jl) | jonathan-laurent/AlphaZero.jl (source) | 0.5.6, commit 177a6eb | assembled | **81/81 + 53/53 + 86/86 + 25/25 + 208/208 Julia tests PASS** | Standalone in `julia-current/planning-search/` (no AlphaZero.jl import; Distributions 0.25.134 only). MCTS + game interface copied with full MIT notice, re-expressed in planning terms (states = partial plans, reward = plan quality, not win probability). Original START code: `planning_domain.jl` (1-site 2-crop synthetic), `verify.jl`, `verify_lp.jl` (JuMP+HiGHS LP cross-check, separate file so `verify.jl` stays Distributions-only), `training_loop.jl` (original planning training loop — verified samples only, linear value model, held-out replacement rule; no network library), and `dynamics_search.jl` (original learned-dynamics search, INSPIRATION-REBUILD of MuZero.jl's design — no MuZero.jl code copied, no Flux/CUDA; see "Learned-dynamics search" below). Search finds the known optimum — delivered 600 t / shortage 50 t — candidate only, never verified by the search; the LP cross-check catches candidates that beat the optimum. See "Planning-search module" below |
 | Borrowed helpers (Cognee chunk_by_word + chunk_id, Crawl4AI normalize_url) | topoteretes/cognee, unclecode/crawl4ai | Apache-2.0 | assembled | **24/24 Python tests PASS** | `helpers/borrowed_helpers.py`, stdlib-only, Apache-2.0 notices kept, provenance in `helpers/PROVENANCE.md`. Untrusted-input utilities only — not wired into any verify, governance, or decision path. Crawl4AI's own test file does not match the cloned function in 4 of 20 cases (recorded in PROVENANCE.md); tests assert actual behaviour. See "Borrowed helpers" below |
 | LangGraph | langchain-ai/langgraph | 1.2.20 | assembled | 1/1 (+ pipeline tests) | Real StateGraph plan → verify → report; report refuses without verification |
 | Cedar | cedar-policy/cedar | 4.14.1 (Rust) | assembled | 4/4 Rust | Real Cedar engine evaluates policies.cedar; Python adapter is a documented stub evaluator for the same two policies |
@@ -291,6 +291,106 @@ the fitted model is ridge least squares from LinearAlgebra
   and the runner pass the combined verify
   (`verify_candidate_with_lp`).
 
+## Learned-dynamics search (MuZero.jl rebuild, added 2026-11-11)
+
+`dynamics_search.jl` (original START code, included by
+`PlanningSearch.jl`) is the sweep's INSPIRATION-REBUILD item 2
+(Module 4): MuZero.jl's learned-dynamics search, rebuilt as
+original Julia in `planning-search/`.
+
+- **Inspiration source.** MuZero.jl, deveshjawla/MuZero.jl, MIT
+  (verified from LICENSE, copyright (c) 2021 Devesh Jawla),
+  2,163 lines as counted in the sweep (`wc -l` over all `*.jl`
+  files in the depth-1 clone: `src/` 1,034, `games/` 825,
+  `test/` 114, examples ~190; last commit 2026-01-24).
+  See `source-audit/ALL_CANDIDATES_BORROWING_PLAN.md` (Module 4)
+  and `source-audit/sweep/group-b.json`. **NO code was copied:**
+  MuZero.jl was not read line-by-line to transcribe it, and the
+  file contains no Flux/Zygote/BSON/JLD2 code — a dedicated
+  testset asserts no MuZero.jl / Flux identifier appears in any
+  code line (comments and docstrings excluded). Why a rebuild,
+  not a copy or a dependency: MuZero.jl is game-shaped
+  (TicTacToe / Connect4 board-state tensors, win/loss rewards),
+  Flux/Zygote-bound, thinly tested (a single 114-line test
+  file), single-author, with a commented-out entry point, and
+  its BSON/JLD2 binary checkpointing would violate START's JSON
+  wire format.
+- **What was rebuilt.** (1) A dynamics model:
+  `DynamicsModel`, a multi-output ridge regression (stdlib
+  LinearAlgebra only, no Flux/CUDA, no new dependencies) from
+  11 state-action features (the 8 spec-normalised plan features
+  + crop one-hot + area share) to 8 next-state features plus
+  reward, trained on transitions generated by the existing
+  synthetic 1-site 2-crop domain (`generate_transitions` —
+  every reachable transition under varied specs; 258
+  transitions from seeds 1..8, 135 held out from seeds
+  101..104). (2) MinMaxStats-style value normalisation
+  (`MinMaxStats`, `update_minmax!`, `normalize_value`) —
+  original implementation of the idea: running min/max, values
+  normalised into [0, 1], a constant stream normalises to the
+  neutral 0.5 with no NaN or division by zero. (3) A reanalyse
+  step (`reanalyse`): stored verified samples are revisited and
+  their search targets recomputed with the current dynamics
+  model; the memory is never mutated and the `verified` flag on
+  every target is copied unchanged from the stored sample.
+  (4) A `DynamicsOracle` usable as the MCTS oracle in place of
+  the rollout oracle (like the existing `LearnedOracle`), plus
+  `run_search_with_dynamics` and `evaluate_dynamics_heldout`.
+- **Reward semantics.** Reward is verified-PASS plan quality
+  under the JuMP+HiGHS gate: 0 for an intermediate allocation
+  step, delivered / total demand at the terminal step — NEVER a
+  win probability. The learned search is a candidate generator
+  only: every candidate still goes through the separate verify
+  step, and a plan still needs a PASS verdict plus human
+  approval (`needs_human_decision` is always true). A search
+  result is a candidate, never a verified plan.
+- **Replacement rule (unchanged).** The dynamics oracle
+  replaces the current oracle only if `replacement_decision`
+  holds on held-out specs: held-out verified-PASS rate at
+  least as high as the rollout oracle's AND mean shortage no
+  worse.
+- **Measured results (2026-11-11, Julia 1.13.3, canonical
+  env).** Held-out prediction error (seeds 101..104, 135
+  transitions): mean absolute error **0.0719**, max **0.4122**
+  (train error 0.0717 / 0.4503); test thresholds (mean < 0.10,
+  max < 0.50) were set from these measurements, not guessed.
+  The predicted reward for the optimum step is 0.604 vs the
+  true 0.923 (error 0.319 — the reward is the hardest output to
+  fit: 0 for intermediate steps, the full delivered share at
+  the terminal step). MCTS with the dynamics oracle finds the
+  known optimum (delivered 600 t / shortage 50 t) on **all
+  five seeds (1234, 7, 42, 99, 2024)** at nsims=500 and
+  nsims=1000, visit-count and mean-Q selection. Held-out
+  (seeds 101..104, nsims=200, constraint verify): rollout PASS
+  rate 1.0, dynamics PASS rate 1.0, rollout mean shortage
+  147.5 t, dynamics mean shortage 117.5 t — replaced under the
+  rule. Reanalyse: a neutral (unfitted) model targets every
+  sample at 0.5; the fitted model changes at least one target,
+  all targets stay in [0, 1], and every target's `verified`
+  flag matches its stored sample.
+- **Limitations / known gaps (measured, not hidden).** The
+  dynamics model is linear in its features, so — like the
+  linear value model — it cannot express interactions the
+  features do not carry (e.g. water committed to wheat while
+  potato still needs water). Its root prior puts its largest
+  mass on wheat 60 ha (0.38 vs 0.22 for 50 ha); MCTS corrects
+  this through simulation values, and the search test shows it
+  still finds the optimum on all five seeds — but the prior
+  ranking is deliberately NOT asserted in the tests. The model
+  covers a single synthetic domain only (1-site 2-crop); there
+  is no neural network, no Flux/CUDA, and no learned
+  representation network — the "representation" is the
+  hand-defined plan-features vector. The dynamics value of a
+  state is a predicted final delivered share from a two-step
+  lookahead, not a learned value network.
+- **Governance.** No new dependencies, no downloads of real
+  data, synthetic test data only. Wire format stays JSON.
+  `runtests.jl`'s no-AlphaZero-import check now also covers
+  `training_loop.jl` and `dynamics_search.jl` (21 checks, was
+  15), so `runtests.jl` is 81/81 (was 75/75). Python and Rust
+  suites were NOT re-run for this item — nothing they touch
+  changed.
+
 ## Borrowed helpers (added 2026-11-11)
 
 The three small stdlib-only helpers from borrowing-audit batch 2,
@@ -489,12 +589,14 @@ checking). Sweep clone HEAD c22b419 (2026-10-22), 11,254 lines,
     white to play, not terminated), plays one move (turn flips to
     black, disc placed at column 4 row 1). CPU only, no training.
   - Planning-search module: `julia-current/planning-search/test/runtests.jl`
-    → **75/75 tests PASS, exit 0** (Julia 1.13.3, canonical env,
+    → **81/81 tests PASS, exit 0** (Julia 1.13.3, canonical env,
     `JULIA_NUM_THREADS=1`, `JULIA_NUM_PRECOMPILE_TASKS=1`,
     `--heap-size-hint=3G`; loads Distributions only, no JuMP/MTK/
-    AlphaZero). Breakdown: MIT notice 6, no-AlphaZero-import 15,
-    interface contract 14, reward semantics 6, MCTS optimum 15,
-    policy-before-explore 1, UNKNOWN/never-PASS 8, candidate-only 10.
+    AlphaZero). Breakdown: MIT notice 6, no-AlphaZero-import 21
+    (was 15: the check now also covers `training_loop.jl` and
+    `dynamics_search.jl`), interface contract 14, reward semantics 6,
+    MCTS optimum 15, policy-before-explore 1, UNKNOWN/never-PASS 8,
+    candidate-only 10.
     Default search (nsims=1000, visit-count policy, seed 1234)
     finds wheat 50 ha / potato 20 ha — delivered 600.0 t, shortage
     50.0 t, production 600.0 t, land 70.0 ha, water 100,000.0 m³ —
@@ -535,6 +637,16 @@ checking). Sweep clone HEAD c22b419 (2026-10-22), 11,254 lines,
     → TRAINING_LOOP RESULT: PASS (12 generated, 12 kept,
     0 rejected, 24 verified samples; final held-out learned
     mean shortage 117.5 t vs rollout 167.5 t).
+  - Learned-dynamics search tests (standalone, Distributions +
+    LinearAlgebra stdlib only):
+    `julia-current/planning-search/test/dynamics_search.jl`
+    → **208/208 tests PASS, exit 0**. Breakdown: transition
+    generation 79, dynamics features 8, model fit + held-out
+    error 10, predict_transition 8, state_from_features 5,
+    MinMaxStats 11, dynamics value ranking 5, dynamics oracle
+    12, MCTS with dynamics oracle 20, reanalyse 30, dynamics
+    held-out 3, candidate-only 6, no-MuZero/Flux code 11.
+    See "Learned-dynamics search (MuZero.jl rebuild)" below.
   - NetworkDynamics.jl (Module 10): `julia-current/test_network_dynamics.jl`
     → **31/31 tests PASS, exit 0** (Julia 1.13.3, canonical env,
     `JULIA_NUM_THREADS=1`, `--heap-size-hint=3G`;
@@ -556,10 +668,11 @@ checking). Sweep clone HEAD c22b419 (2026-10-22), 11,254 lines,
     form to max error 5.8e-11 at t=10.
   - Julia checks total: 16 (combined spine) + 9 (AlphaZero) + 4
     (one PASS each for Agents, DiffEq, Symbolics, Turing smokes)
-    + 75 (planning-search) + 53 (LP cross-check)
+    + 81 (planning-search) + 53 (LP cross-check)
     + 86 (training loop) + 25 (training loop, LP-split)
+    + 208 (learned-dynamics search)
     + 31 (NetworkDynamics networked model) =
-    **299 passed, 0 failed, 0 not run**.
+    **513 passed, 0 failed, 0 not run**.
     The split-stage runs (15+1) are subsets of the combined 16
     and are not double-counted.
 - Python re-run after the Julia work (2026-11-11): **35/35 OK**
@@ -928,6 +1041,26 @@ Still unverified / not run:
     passed, 0 failed); the item was pushed to repo-root paths
     (`mini_ai/eval/...`, `tests/test_eval_registry.py`,
     `README.md`) in the START repo, not under `start-assembly/`.
+18. **Done 2026-11-11:** MuZero.jl learned-dynamics search
+    rebuilt as original Julia in `planning-search/` (Module 4,
+    sweep INSPIRATION-REBUILD item 2) — `dynamics_search.jl`:
+    ridge dynamics model over state-action features, MinMaxStats
+    value normalisation, reanalyse step, `DynamicsOracle` for
+    MCTS; reward is verified-PASS plan quality under the
+    JuMP+HiGHS gate, never a win probability. No MuZero.jl code
+    copied, no Flux/CUDA, no new dependencies. 208 new tests in
+    `julia-current/planning-search/test/dynamics_search.jl`,
+    all passing; held-out mean prediction error 0.0719, max
+    0.4122; MCTS with the dynamics oracle finds the 600/50 t
+    optimum on all five seeds. Full suite after this work:
+    Python 102/102 (NOT re-run — nothing Python touches
+    changed), Rust 20/20 (NOT re-run — nothing Rust touches
+    changed), Julia 513/513 (was 299/299: +6 runtests from the
+    widened no-import check, +208 dynamics tests) — **635
+    passed, 0 failed**. See "Learned-dynamics search
+    (MuZero.jl rebuild)" above. Next in the sweep's order, when
+    directed: Graphiti temporal-edge/episode schema as original
+    Python (Module 6, sweep item 3).
 
 ## DeepEval deterministic metrics (Module 22)
 

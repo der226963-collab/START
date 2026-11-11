@@ -648,3 +648,12 @@ Still unverified / not run:
    directed: rewrite Graphiti's temporal-edge/episode schema as
    original code, or copy nothing further until the full
    70-candidate borrowing sweep reports.
+8. **Done 2026-11-11:** full 70-candidate borrowing sweep
+   (`source-audit/ALL_CANDIDATES_BORROWING_PLAN.md`): USE 19,
+   ADJUST 3, INSPIRATION-REBUILD 8, DEFER 28, DROP 12. Top 5
+   priority items from the sweep, one line each:
+   - Add ODYM as a pip dependency for stock-flow resource accounting (M17, MIT, 3,672 lines, nothing to copy).
+   - Extend DeepEval use to the deterministic PatternMatch and JsonCorrectness metrics only (M22, no API key).
+   - Run a real Tonic server against the Python grpcio client over a Unix socket, upgrading tonic 0.12 → 0.14.x (M21).
+   - Add Pymrio as a pip dependency only, never copy, keeping the LGPL-3.0 notice and the library unmodified (M17).
+   - Add ash-flare as a dependency, default features only and local supervision only, after auditing its supervisor core (M24).

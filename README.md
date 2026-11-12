@@ -1,8 +1,5 @@
 # AI Starter — a small, local, auditable beginning
 
-This is a separate side project from the PCAC blueprint. It is not a
-frontier chatbot, and it does not call an external AI API.
-
 It is a minimal AI you can actually read, train, and change:
 
 1. A tiny neural network written from scratch in NumPy (`mini_ai/neural_net.py`)

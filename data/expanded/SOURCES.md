@@ -205,3 +205,42 @@ copyrighted textbooks with no open licence are still excluded.
   (20 steps, val 4.2860, pre-Rust corpus); a medium
   Rust-inclusive training run was started in the
   background after the push, generation check pending.
+
+- ENGLISH DICTIONARY, 2026-11-13: Webster's Revised Unabridged
+  Dictionary (1913), Project Gutenberg eBooks #660-670, 11
+  per-letter files, public domain (US). No dictionary was in the
+  corpus before this. Fetched through the fetcher after Eric
+  directed raising MAX_CHARS from 2,000,000 to 4,000,000
+  (2026-11-13, documented in mini_ai/data_fetch.py) so the
+  sections, the largest ~3.28M chars, could pass the cap; the
+  propose-and-approve gate itself is unchanged. Approved by Eric
+  2026-11-13 ("Yes, approve all 11 into the corpus"), moved from
+  staging into data/expanded/ with provenance records.
+  Assembled per-file chars and sha (authoritative, post-approval):
+  pg660 3,064,012 sha 9eba99ba302a0f1f; pg661 2,583,747
+  c92895787907496d; pg662 2,658,710 ee90729f6d06bf11;
+  pg663 2,932,042 5547fd7be0a778b9; pg664 2,420,227
+  a70a3cad85e3acce; pg665 2,318,808 186a42e494b7cd3c;
+  pg666 2,386,117 8080d6fc32ea3629; pg667 1,330,853
+  c859e6e67428e499; pg668 3,183,633 d1c83790a9b95a1f;
+  pg669 3,100,826 d298664747cc9d38; pg670 1,199,249
+  3966ad9184a62f72. Dictionary total in the corpus:
+  27,178,224 chars.
+  Note: the staged provenance records ~27.9M chars and a
+  different sha per file. The approved files are the same text
+  with CRLF line endings normalized to LF by approve_fetch's
+  read/write (e.g. pg660: staged 3,123,581 chars sha
+  5042a61d..., approved 3,064,012 chars sha 9eba99ba...; the
+  file has 59,570 lines and 0 carriage returns). No content
+  was lost; the assembled sha above is the authoritative one.
+  Caveats: raw 0.50 digitization, field marks, known typos
+  (stated in the text itself); 1913 vocabulary, no modern
+  words; no personal data (a dictionary).
+  Assembled corpus with the dictionary, 2026-11-13:
+  46,945,473 chars from 27 files, sha256
+  731db46bc5e1efd6.... Split into 34 parts by
+  tools/split_expanded.py; reassembly from parts verified
+  byte-identical (same sha). Local only, not pushed. Does
+  not affect the running leg 4 (it trains on its cached
+  mixture); a future run will re-encode the corpus because
+  the corpus hash changed.

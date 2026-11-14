@@ -8,11 +8,19 @@ model_modern.py. The load test needs the downloaded weights
 import math
 import unittest
 
-import torch
+try:
+    import torch
 
-from mini_ai.gpt.smollm2 import SmolLM2Config, SmolLM2Model, _apply_rope_llama, _rope_freqs
+    from mini_ai.gpt.smollm2 import SmolLM2Config, SmolLM2Model, _apply_rope_llama, _rope_freqs
+
+    HAS_TORCH = True
+except ImportError:
+    # System python has no torch; these tests run in the torch venv.
+    torch = None
+    HAS_TORCH = False
 
 
+@unittest.skipUnless(HAS_TORCH, "torch not installed (see requirements-gpt.txt)")
 class TestRope(unittest.TestCase):
     def test_rotate_half_one_hot(self):
         # head_dim 4, theta 10000, position 1. Pair j=0 rotates by 1 rad,
@@ -35,6 +43,7 @@ class TestRope(unittest.TestCase):
         self.assertEqual(model.count_parameters(), 361821120)
 
 
+@unittest.skipUnless(HAS_TORCH, "torch not installed (see requirements-gpt.txt)")
 class TestLoad(unittest.TestCase):
     def test_load_pretrained(self):
         from pathlib import Path

@@ -4,6 +4,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from mini_ai.planning import backtest_climate, check_plan_limits, climate_trend, electricity_allocation, food_balance, load_snapshot, pilot_summary, run_plan, soil_summary, systems_summary, weather_summary
+from mini_ai.planning.models import CheckStatus, ConstraintResult, PlanningResult
 
 
 def test_snapshot_loads_and_has_key_rows():
@@ -67,12 +68,59 @@ def test_backtest_and_plan_limits():
     assert back["temperature_anomaly"]["test_years"] == "2000-2025"
     assert back["temperature_anomaly"]["bias_mean_predicted_minus_actual"] < 0, "Linear trend should under-predict recent warming"
     ok = check_plan_limits({"phosphorus_application_tg_per_year": 5.0, "paid_work_hours_per_week": 40})
-    assert ok["passes_checked_limits"] is True
+    assert ok.overall_status == CheckStatus.PASS
+    assert ok.failed_count == 0
     bad = check_plan_limits({"phosphorus_application_tg_per_year": 18.2, "paid_work_hours_per_week": 55})
-    assert bad["passes_checked_limits"] is False
-    assert bad["failed_count"] == 2
+    assert bad.overall_status == CheckStatus.FAIL
+    assert bad.failed_count == 2
     unknown = check_plan_limits({"nitrogen_fixation_tg_per_year": 165})
-    assert unknown["checks"][0]["status"] == "unknown"
+    assert unknown.checks[0].status == CheckStatus.INDETERMINATE
+    # Breaking change from the old dict result, made deliberately:
+    # nitrogen-only used to report passes_checked_limits True. An
+    # undecidable check is not a pass, so the overall status is now
+    # INDETERMINATE, not PASS.
+    assert unknown.overall_status == CheckStatus.INDETERMINATE
+
+
+def test_plan_limits_typed_models():
+    # The typed result carries the same facts the old dict did.
+    result = check_plan_limits(
+        {"phosphorus_application_tg_per_year": 18.2, "paid_work_hours_per_week": 40},
+        scenario_id="example",
+    )
+    assert isinstance(result, PlanningResult)
+    assert result.scenario_id == "example"
+    assert result.overall_status == CheckStatus.FAIL
+    assert result.failed_count == 1
+    p = result.checks[0]
+    assert isinstance(p, ConstraintResult)
+    assert p.constraint_id == "phosphorus_application_tg_per_year"
+    assert p.status == CheckStatus.FAIL
+    assert p.actual_value == 18.2
+    assert p.required_value == 6.2
+    assert p.unit == "Tg/year"
+    assert p.evidence  # boundary source is recorded on the check
+    assert "good, fair, or decided" in result.note
+    # to_dict() is JSON-friendly and round-trips through json.
+    import json
+
+    d = result.to_dict()
+    assert json.loads(json.dumps(d)) == d
+    assert d["overall_status"] == "fail"
+    assert d["failed_count"] == 1
+    assert d["checks"][0]["status"] == "fail"
+    # Fail wins over indeterminate.
+    mixed = PlanningResult("m", [
+        ConstraintResult("a", CheckStatus.INDETERMINATE, "undecidable"),
+        ConstraintResult("b", CheckStatus.FAIL, "breached"),
+    ])
+    assert mixed.overall_status == CheckStatus.FAIL
+    # Indeterminate wins over pass, and an empty check list is
+    # indeterminate, never a pass: a plan that was never checked
+    # must not read as a plan that passed.
+    assert PlanningResult("e", []).overall_status == CheckStatus.INDETERMINATE
+    assert check_plan_limits({}).overall_status == CheckStatus.INDETERMINATE
+    assert check_plan_limits({}).failed_count == 0
 
 
 def test_weather_summary_uses_real_anomaly_and_moisture_rule():

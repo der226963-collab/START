@@ -4,98 +4,80 @@
   "licence": "Original to this project; not copied from any book",
   "source": "Written for START by a coordinator with three workers (compiler/interpreter, reverse engineering tool, custom transformers), assembled by the coordinator",
   "status": "proposed",
-  "chars": 634882,
-  "sha256": "4314fac0b7ec4edf4e7ce4a7e78ff9ddf36bb8351c810424b4b8bcfda84ae968",
+  "chars": 634905,
+  "sha256": "de56c4f43ce1e0abc0d957c6ac1e3b777db7f945dffcb8394d032f911cdec94e",
   "files": [
     {
-      "file": "compiler_lexer.py",
-      "chars": 11343,
-      "sha256": "bf40bf509af2a534bf5ca2f17ee91303f02a007633e73e45b91f3420acc6b95c"
+      "file": "python_samples/compiler_bytecode.py",
+      "chars": 44567
     },
     {
-      "file": "compiler_parser.py",
-      "chars": 27804,
-      "sha256": "9d00f6932f5c4afdee37937790895ad4f818b50df6f58db3e5495c9f241db29f"
+      "file": "python_samples/compiler_lexer.py",
+      "chars": 11343
     },
     {
-      "file": "compiler_bytecode.py",
-      "chars": 44567,
-      "sha256": "de91ed8bc535625e2d330cbe05b256ba989052c11df849044fd44032d3d7c6b3"
+      "file": "python_samples/compiler_parser.py",
+      "chars": 27804
     },
     {
-      "file": "compiler_vm.py",
-      "chars": 71167,
-      "sha256": "96ce9a2d04b66175b40ccabd2b41bc80e5125a3ec21cfd32abe0b75d1ade78af"
+      "file": "python_samples/compiler_repl.py",
+      "chars": 101346
     },
     {
-      "file": "compiler_treewalk.py",
-      "chars": 56071,
-      "sha256": "ef427e8c4de0b539f822ada73d32c990f9660caa80153ee2715baa6b8e1e0bb6"
+      "file": "python_samples/compiler_treewalk.py",
+      "chars": 56071
     },
     {
-      "file": "compiler_repl.py",
-      "chars": 101346,
-      "sha256": "4c9f4360f9ff79c2cd246633134542024cd42e1bfe6afe46d4491528caff5720"
+      "file": "python_samples/compiler_vm.py",
+      "chars": 71167
     },
     {
-      "file": "reversing_pyc.py",
-      "chars": 23986,
-      "sha256": "06cc179c934cd0fcefbb1945ba03a1709909b721b7bc18d7dc651091b79e13d2"
+      "file": "python_samples/reversing_disasm.py",
+      "chars": 29033
     },
     {
-      "file": "reversing_disasm.py",
-      "chars": 29012,
-      "sha256": "7ebaebe20ae195fc40768182642726fe5ee3ff156f2e317fbaa3649bf82c0398"
+      "file": "python_samples/reversing_elf.py",
+      "chars": 37357
     },
     {
-      "file": "reversing_flow.py",
-      "chars": 32826,
-      "sha256": "323a961750446be54c6403b435508617e64c5c76a61096e5451ca1b4fe5d9c24"
+      "file": "python_samples/reversing_flow.py",
+      "chars": 32828
     },
     {
-      "file": "reversing_scanner.py",
-      "chars": 27351,
-      "sha256": "0c18acdeed14a2844c3217fdfb830bcb02ee08d638937020088470dac67fe8f2"
+      "file": "python_samples/reversing_pyc.py",
+      "chars": 23986
     },
     {
-      "file": "reversing_elf.py",
-      "chars": 37357,
-      "sha256": "5e2a9143bdd0ac15b6d7974853c83d4f5693401b7c8d6566569ec248b74c223c"
+      "file": "python_samples/reversing_scanner.py",
+      "chars": 27351
     },
     {
-      "file": "transform_folding.py",
-      "chars": 18471,
-      "sha256": "ba4bdef6f66e31c1f2d73f6ed47a9795c19cffac0e2004dd6fa67dca6ef91d2b"
+      "file": "python_samples/transform_annotations.py",
+      "chars": 24270
     },
     {
-      "file": "transform_deadcode.py",
-      "chars": 16621,
-      "sha256": "4930efd375e73a5b61f8a490c749e77b4521cbc6aa40c2cf459ded6c7e1e9134"
+      "file": "python_samples/transform_deadcode.py",
+      "chars": 16621
     },
     {
-      "file": "transform_logging.py",
-      "chars": 19357,
-      "sha256": "4ab57d6cc25fc467c46b983789bcac51aef1ebe0945081869ea365da762e2a5f"
+      "file": "python_samples/transform_folding.py",
+      "chars": 18471
     },
     {
-      "file": "transform_loops.py",
-      "chars": 27853,
-      "sha256": "f25a96135c48658f0a8ee18b75a9575cdbcdf28d59368626a5ed4ad22258bffa"
+      "file": "python_samples/transform_logging.py",
+      "chars": 19357
     },
     {
-      "file": "transform_obfuscate.py",
-      "chars": 33292,
-      "sha256": "190154f5db4b10f8268c3a49545064f31593ff4ae1cb79ea239a7061619115ce"
+      "file": "python_samples/transform_loops.py",
+      "chars": 27853
     },
     {
-      "file": "transform_annotations.py",
-      "chars": 24270,
-      "sha256": "138d469c0c0b7d1269db3f81131d00fdea103e12b101caf871f33cc4d079a8f5"
+      "file": "python_samples/transform_obfuscate.py",
+      "chars": 33292
     },
     {
-      "file": "transform_pipeline.py",
-      "chars": 31255,
-      "sha256": "aaa19dfb8674c582b3f954e6c533e83cb6b494eb1f5c22d9be8c3de498ddf535"
+      "file": "python_samples/transform_pipeline.py",
+      "chars": 31255
     }
   ],
   "method": "Three components, each a set of self-contained stdlib-only Python programs: (1) a complete original language 'Minnow' \u2014 lexer, recursive-descent parser, bytecode compiler (31-opcode ISA), stack VM, plus a tree-walking interpreter on the same AST, REPL, 31 test programs run on both engines; (2) a reverse-engineering tool \u2014 .pyc reader/walker, disassembly reporter, control-flow analyser with call graph, static pattern scanner, pure-stdlib ELF parser, demonstrated on real repo files and real binaries; (3) AST transformers \u2014 constant folding, dead-code elimination, logging injection, loop optimisation, obfuscator/minifier, type-annotation adder, chained pipeline \u2014 each verified by behaviour preservation (transformed program produces identical observable output). All code original to this project; topics and standard techniques only, no book text or distinctive example copied. The compiler files duplicate the lexer/parser across files by design (self-containment), so unique code is less than the total.",

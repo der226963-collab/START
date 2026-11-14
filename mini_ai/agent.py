@@ -147,8 +147,8 @@ class Agent:
             plan = {"phosphorus_application_tg_per_year": value if value is not None else 18.2}
             result = check_plan_limits(plan, self.rows)
             step("Phosphorus has a stored boundary, so check the plan against it.",
-                 "check_plan_limits", result)
-            answer_parts.append(f"Plan-limits check: passes={result['passes_checked_limits']}, failed={result['failed_count']}.")
+                 "check_plan_limits", result.to_dict())
+            answer_parts.append(f"Plan-limits check: overall={result.overall_status.value}, failed={result.failed_count}.")
         elif "food" in q or "kcal" in q:
             result = food_balance(self.rows)
             step("Food needs arithmetic, not language, so use the calculation layer.",

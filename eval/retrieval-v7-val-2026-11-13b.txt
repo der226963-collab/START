@@ -1,0 +1,50 @@
+knowledge base: 34 facts from data/instructions.txt
+adapter loaded from checkpoints/smollm2-lora-mix-v7/checkpoint.pt
+--- [1/8] source=intent:explain_ai exact=YES retrieved=no intent=explain_ai (1.00)
+Q: who decides
+expected: This is narrow AI, for assistance only. It can draft, summarise, and help check a plan, but it does not allocate food, energy, housing, or care, and it does not decide. A human assembly sets the goals and limits, a separate planning layer checks allocations, and people make the final decision.
+got:      This is narrow AI, for assistance only. It can draft, summarise, and help check a plan, but it does not allocate food, energy, housing, or care, and it does not decide. A human assembly sets the goals and limits, a separate planning layer checks allocations, and people make the final decision.
+
+--- [2/8] source=intent:goodbye exact=YES retrieved=no intent=goodbye (1.00)
+Q: goodbye
+expected: Goodbye for now. Come back and teach me a new intent when you're ready.
+got:      Goodbye for now. Come back and teach me a new intent when you're ready.
+
+--- [3/8] source=intent:planning exact=YES retrieved=no intent=planning (1.00)
+Q: plan this with me
+expected: Good — let's plan in small steps, the way a community assembly would. What need are we meeting, within what hard limits — land, water, energy, carbon — and with what labour and care shared fairly? Then: what is the first step, who does it, and what would 'done' look like? I can help draft and check 
+got:      Good — let's plan in small steps, the way a community assembly would. What need are we meeting, within what hard limits — land, water, energy, carbon — and with what labour and care shared fairly? Then: what is the first step, who does it, and what would 'done' look like? I can help draft and check 
+
+--- [4/8] source=instructions exact=YES retrieved=YES
+Q: How should labour and care be shared?
+  rank1 score=0.78 q=1.00 r=0.33 fact=Count unpaid care work, share it fairly, and let necessary work time fall as machines do m
+  rank2 score=0.33 q=0.33 r=0.33 fact=Cooking, cleaning, childcare, eldercare, and nursing sick family members without pay. It i
+  rank3 score=0.33 q=0.33 r=0.33 fact=About 708 million women aged 15 and over in 2023, compared with 40 million men, according 
+expected: Count unpaid care work, share it fairly, and let necessary work time fall as machines do more. Do not assume care is free.
+got:      Count unpaid care work, share it fairly, and let necessary work time fall as machines do more. Do not assume care is free.
+
+--- [5/8] source=intent:thanks exact=no retrieved=no intent=help (1.00)
+Q: that helps
+expected: You're welcome. Every example you add makes the next version a bit better.
+got:      I can classify what you mean into a few intents, and I'm built to be extended. Add examples in mini_ai/data.py, retrain, and I get smarter in a small, visible way.
+
+--- [6/8] source=instructions exact=YES retrieved=YES
+Q: What is unpaid care work?
+  rank1 score=1.00 q=1.00 r=1.00 fact=Unpaid care work is cooking, cleaning, childcare, eldercare, and nursing family members wi
+  rank2 score=0.78 q=0.67 r=1.00 fact=Count unpaid care work, share it fairly, and let necessary work time fall as machines do m
+  rank3 score=0.78 q=0.67 r=1.00 fact=Cooking, cleaning, childcare, eldercare, and nursing sick family members without pay. It i
+expected: Unpaid care work is cooking, cleaning, childcare, eldercare, and nursing family members without pay. About 16.4 billion hours per day are spent on it, and women do about 76.2 percent of it. A plan must count it, share it fairly, and not assume it is free.
+got:      Unpaid care work is cooking, cleaning, childcare, eldercare, and nursing family members without pay. About 16.4 billion hours per day are spent on it, and women do about 76.2 percent of it. A plan must count it, share it fairly, and not assume it is free.
+
+--- [7/8] source=intent:help exact=YES retrieved=no intent=help (1.00)
+Q: how do you work
+expected: I can classify what you mean into a few intents, and I'm built to be extended. Add examples in mini_ai/data.py, retrain, and I get smarter in a small, visible way.
+got:      I can classify what you mean into a few intents, and I'm built to be extended. Add examples in mini_ai/data.py, retrain, and I get smarter in a small, visible way.
+
+--- [8/8] source=intent:greeting exact=YES retrieved=no intent=greeting (1.00)
+Q: hi
+expected: Hi — I'm a tiny local AI, still learning. Try asking me for help, or to plan something.
+got:      Hi — I'm a tiny local AI, still learning. Try asking me for help, or to plan something.
+
+exact-match: 7/8
+retrieval found the right fact: 2/8

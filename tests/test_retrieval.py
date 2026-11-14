@@ -59,11 +59,44 @@ def test_match_intent_does_not_gate_fact_questions():
     assert intent is None
 
 
-def test_probe_retrieval_accuracy():
-    """Retrieval must find the right fact for 5 of 6 probe facts.
+def test_overlap_matches_compound_words():
+    """'care' matches 'childcare'/'eldercare' in a response.
 
-    The care-kinds probe is the known miss: it is ambiguous with the
-    care-hours fact (both share 'care' vocabulary).
+    The care-kinds fact lists kinds of care without ever using the
+    bare word 'care', so without this rule its response-recall is
+    1/3 and the care-hours fact (which has the bare word) wins.
+    The reverse direction is NOT matched: 'cause' must not match
+    'use', and 'unpaid' must not match 'paid'.
+    """
+    from mini_ai.retrieval import _overlap
+    assert _overlap({"care"}, {"childcare", "eldercare"}) == 1
+    assert _overlap({"care"}, {"care"}) == 1
+    assert _overlap({"cause"}, {"use"}) == 0
+    assert _overlap({"unpaid"}, {"paid"}) == 0
+    assert _overlap({"pay"}, {"unpaid"}) == 0
+
+
+def test_retrieve_care_kinds_beats_care_hours_on_tie():
+    """The care-kinds probe now retrieves the kinds fact.
+
+    Both care facts score 0.444 on 'What is care that nobody pays
+    for?'; the tie is broken by the shorter (more focused) response,
+    which is the kinds definition, not the hours fact.
+    """
+    kb = load_kb(str(ROOT / "data" / "instructions.txt"))
+    ranked = kb.retrieve("What is care that nobody pays for?", top_k=1)
+    assert ranked
+    assert ranked[0][3]["response"].startswith(
+        "Cooking, cleaning, childcare, eldercare, and nursing sick")
+
+
+def test_probe_retrieval_accuracy():
+    """Retrieval must find the right fact for all 6 probe facts.
+
+    The care-kinds probe used to be the known miss: it was
+    ambiguous with the care-hours fact (both share 'care'
+    vocabulary). The compound-word rule plus the shorter-response
+    tie-break fixed it (2026-11-13).
     """
     kb = load_kb(str(ROOT / "data" / "instructions.txt"))
     probe = [json.loads(l) for l in
@@ -77,4 +110,4 @@ def test_probe_retrieval_accuracy():
         ranked = kb.retrieve(row["instruction"], top_k=1)
         if ranked and ranked[0][3]["response"] == row["response"].strip():
             right += 1
-    assert right == 5
+    assert right == 6

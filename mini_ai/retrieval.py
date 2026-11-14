@@ -10,9 +10,15 @@ Matching is plain token overlap, no embeddings and no new
 dependencies: lowercase, keep alphanumerics (so "16.4" stays one
 token), drop stopwords, light stemming, then score a fact by how
 many of the query's content tokens appear in its best question
-wording (double weight) and in its response. This is deliberately
-simple and explainable: if it ranks the wrong fact, the printed
-scores show why.
+wording (double weight) and in its response. A query token also
+matches a text token that ends with it, so "care" matches
+"childcare" and "eldercare": a response listing kinds of care is
+about care even though it never uses the bare word. Only that
+direction is used; the reverse would let "cause" match "use" and
+"unpaid" match "paid", which are not the same word. Ties are
+broken by the shorter (more focused) response. This is
+deliberately simple and explainable: if it ranks the wrong fact,
+the printed scores show why.
 
 The probe file (eval/finetune-probe-v5.jsonl) is NEVER loaded as a
 knowledge base. It is only a test set. Retrieval must earn its
@@ -94,6 +100,25 @@ def parse_instructions(path):
     return pairs
 
 
+def _overlap(qtok, tokens):
+    """How many query tokens match a token set.
+
+    A query token matches when a text token equals it or ends with
+    it, so "care" matches "childcare" and "eldercare". Only the
+    text-ends-with-query direction is used: the reverse would let
+    "cause" match "use" and "unpaid" match "paid", which are not
+    the same word. Query tokens shorter than 3 characters are
+    matched exactly only, so a short token cannot match by suffix.
+    """
+    matched = 0
+    for q in qtok:
+        if q in tokens:
+            matched += 1
+        elif len(q) >= 3 and any(t.endswith(q) for t in tokens):
+            matched += 1
+    return matched
+
+
 class KnowledgeBase:
     """Facts grouped by response; each fact keeps all its question wordings."""
 
@@ -119,7 +144,13 @@ class KnowledgeBase:
 
         score = (2 * question-recall + response-recall) / 3, where each
         recall is the fraction of the query's content tokens found in
-        the fact's best question wording / response.
+        the fact's best question wording / response (see _overlap for
+        the compound-word rule). Ties are broken by the shorter
+        response: when two facts match the query equally, the more
+        focused one wins. That is what separates the care-kinds fact
+        (a short definition listing kinds of care) from the
+        care-hours fact (the same definition plus quantities), which
+        otherwise tie on "care that nobody pays for".
         """
         qtok = set(tokenize(query))
         if not qtok:
@@ -128,9 +159,9 @@ class KnowledgeBase:
         for fact in self.facts:
             best_q = 0.0
             for wt in fact["qtokens"]:
-                overlap = len(qtok & wt)
+                overlap = _overlap(qtok, wt)
                 best_q = max(best_q, overlap / len(qtok))
-            r_overlap = len(qtok & fact["rtokens"]) / len(qtok)
+            r_overlap = _overlap(qtok, fact["rtokens"]) / len(qtok)
             score = (2 * best_q + r_overlap) / 3.0
             if best_q == 0:
                 # A fact must match the question wording, not just its
@@ -139,7 +170,7 @@ class KnowledgeBase:
                 # and retrieves a fact about something else.
                 score = 0.0
             scored.append((score, best_q, r_overlap, fact))
-        scored.sort(key=lambda t: t[0], reverse=True)
+        scored.sort(key=lambda t: (-t[0], len(t[3]["rtokens"])))
         return scored[:top_k]
 
 

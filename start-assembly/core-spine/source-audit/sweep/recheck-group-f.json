@@ -1,0 +1,74 @@
+[
+  {
+    "candidate": "AI-Scientist",
+    "module": 11,
+    "class": "DEFER",
+    "owner_repo": "SakanaAI/AI-Scientist",
+    "blocker": "Custom restrictive licence; needs frontier LLM + GPU",
+    "trigger": "The LICENSE file in SakanaAI/AI-Scientist changes to an OSI-approved licence AND a local model can fill the agent roles (idea, experiment, writeup, review) with no frontier-LLM API key and no GPU — effectively never for v1 as named; a licence change alone does not fire it",
+    "check_method": "GitHub repo contents: LICENSE file text; README for LLM/GPU requirements; list_commits for latest activity",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Live 2026-11-14: LICENSE file read — still 'The AI Scientist Source Code License Version 1.0, December 2025' (custom restrictive, RAIL-based); latest commit 2025-12-19 (merge PR #233 'Update LICENSE', SHA 1de1dbc), dormant since, same date the 2026-11-11 sweep recorded. Note: the Apache-2.0 v3 lives in the separate repo SakanaAI/AI-Scientist-v3, not in this named repo, so it does not change this entry's licence."
+  },
+  {
+    "candidate": "Robin",
+    "module": 11,
+    "class": "DEFER",
+    "owner_repo": "Future-House/robin",
+    "blocker": "Paid Edison credits + frontier LLM; biomedical-only",
+    "trigger": "Eric approves the paid Edison/frontier-LLM dependencies AND Robin is generalised beyond biomedical-only scope (or a local-model route exists) — both conjuncts required and verifiable in the repo README/config plus a START decision record",
+    "check_method": "GitHub repo contents: README (Edison/LLM key requirements, scope) and LICENSE file; START decision record for paid-dependency approval",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Live 2026-11-14: LICENSE file read — Apache License 2.0 (unchanged); latest commit 2026-04-21 (SHA 4a5cce3, 'Update README with running instructions for Robin (#13)'), same date the 2026-11-11 sweep recorded; no paid-dependency approval and no generalisation beyond biomedicine."
+  },
+  {
+    "candidate": "InternAgent",
+    "module": 11,
+    "class": "DEFER",
+    "owner_repo": "InternScience/InternAgent",
+    "blocker": "Paid frontier-LLM keys; built for autonomous experiment execution",
+    "trigger": "A local-LLM route exists for InternAgent's agent roles AND autonomous experiment execution is gated through START's verify step plus human approval — both conjuncts required; repo activity alone does not fire it",
+    "check_method": "GitHub repo contents: README/config for LLM provider options; START-side verify/human-approval gating design; LICENSE file",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Live 2026-11-14: repo exists (git ls-remote HEAD fa8c3ee). LICENSE file text and latest commit date NOT re-read live today — GitHub MCP returned HTTP 429 (rate limit) after the AI-Scientist/Robin checks, and no further GitHub requests were made; last verified state 2026-11-11: LICENSE Apache-2.0, blocker paid frontier-LLM keys plus autonomous execution. No local-LLM route and no verify/human-approval gating exist on the START side, so the trigger's conjuncts are unmet. Re-run the LICENSE/commit check on the next re-check."
+  },
+  {
+    "candidate": "OpenIntelligentUI",
+    "module": 25,
+    "class": "DEFER",
+    "owner_repo": "CopilotKit/OpenIntelligentUI",
+    "blocker": "Needs paid frontier-LLM keys, PostHog, external router key",
+    "trigger": "A local-model AG-UI route exists in CopilotKit/OpenIntelligentUI (no paid frontier-LLM key, no PostHog telemetry, no external router key required) AND START actually needs a user-facing UI — both conjuncts required",
+    "check_method": "GitHub repo contents: README and app config for LLM keys, PostHog, router key; LICENSE file; START decision record for UI need",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Live 2026-11-14: repo exists (git ls-remote HEAD 8391a94). LICENSE file text and latest commit date NOT re-read live today — GitHub MCP returned HTTP 429 (rate limit) after the AI-Scientist/Robin checks, and no further GitHub requests were made; last verified state 2026-11-11: LICENSE MIT, blocker paid frontier-LLM keys plus PostHog plus external Jev router key, no local-model route. START has no approved UI need. Re-run the LICENSE/commit check on the next re-check."
+  },
+  {
+    "candidate": "A2UI Engine",
+    "module": 25,
+    "class": "DROP",
+    "owner_repo": null,
+    "blocker": "Does not exist as named.",
+    "trigger": "A repository with this exact name appears on GitHub (checkable form is the slug A2UI-Engine, since GitHub slugs cannot contain spaces)",
+    "check_method": "GitHub search for the exact name A2UI-Engine; git ls-remote on plausible owner/repo slugs",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Live 2026-11-14: no repo under that exact name — git ls-remote probes of A2UI/A2UI-Engine and a2ui-project/A2UI-Engine returned no HEAD; a GitHub repo search could not be completed (MCP HTTP 429 rate limit); the 2026-11-11 sweep and triage both record it as not existing as named. Re-run the GitHub repo search on the next re-check to confirm absence."
+  },
+  {
+    "candidate": "a2ui-project/a2ui",
+    "module": 25,
+    "class": "FOLLOW-UP",
+    "owner_repo": "a2ui-project/a2ui",
+    "blocker": "the A2UI protocol (not an \"Engine\"); genuinely relevant to Module 25 if START ever builds a UI, and it pairs with the OpenIntelligentUI visualisation-router idea.",
+    "trigger": "START ever builds a UI (Module 25 UI work approved by Eric AND a renderer stack picked) AND the a2ui-project/a2ui protocol repo is maintained (latest commit within the last 12 months) AND a published a2ui-core supports v1.0 — the trigger cannot fire on repo activity alone; the START-side UI decision is required",
+    "check_method": "START decision record (Module 25 UI approval + renderer-stack pick); GitHub repo: LICENSE file, latest commit date, PyPI a2ui-core version vs v1.0 spec",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Live 2026-11-14: repo exists (git ls-remote HEAD 3ed9601), changed from the 2026-11-11 HEAD 24d1bf9, so new commits landed after 2026-11-11; stars, licence and latest commit date NOT re-verified live today — GitHub MCP returned HTTP 429 (rate limit), and no further GitHub requests were made; last verified state 2026-11-11: LICENSE Apache-2.0, 17,055 stars, latest commit 2026-11-11, v1.0 churning (breaking envelope change). Trigger cannot fire regardless: Module 25 UI work is NOT approved and no renderer stack is picked. Re-run the stars/licence/commit check on the next re-check."
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "candidate": "RaRegistry",
+    "module": 8,
+    "class": "DEFER",
+    "owner_repo": "eliasdarruda/ra-registry",
+    "blocker": "Inactive/unproven; no BEAM allocation",
+    "trigger": "START adopts a distributed BEAM/Elixir component AND the project shows a commit within the last 6 months (latest commit dated after 2026-05-14)",
+    "check_method": "GitHub repo commit history (list_commits perPage 1) for latest commit date; LICENSE file text for licence; START-side BEAM adoption is a project decision, not a repo fact",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Latest commit 2025-04-13 ('Update README.md'); LICENSE file text verified Apache-2.0; no commit within the last 6 months; no BEAM component adopted in START"
+  },
+  {
+    "candidate": "SciAgents Discovery",
+    "module": 9,
+    "class": "DEFER",
+    "owner_repo": "lamm-mit/SciAgentsDiscovery",
+    "blocker": "Paid OpenAI key + external GraphReasoning package; inactive since 2025-05",
+    "trigger": "The project shows a commit within the last 6 months (latest commit dated after 2026-05-14) AND its README/requirements no longer require a paid OpenAI API key",
+    "check_method": "GitHub repo commit history (list_commits perPage 1) for latest commit date; README/requirements for OpenAI key requirement; LICENSE.txt file text for licence",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Latest commit 2025-05-10 ('Update README.md'); README still requires OpenAI and Semantic Scholar APIs plus the GraphReasoning package; LICENSE.txt exists at repo root per listing but its text was not verified (GitHub MCP rate-limited, HTTP 429); GitHub metadata reports Apache-2.0"
+  },
+  {
+    "candidate": "Elixir Circuits",
+    "module": 8,
+    "class": "DROP",
+    "owner_repo": "elixir-circuits/circuits_gpio",
+    "blocker": "No relevance \u2014 GPIO hardware control is not observation of plans, data, or models.",
+    "trigger": "START defines a Module 8 need for physical-sensor/GPIO hardware observation (GPIO control becomes observation of plans, data, or models)",
+    "check_method": "GitHub repo commit history (list_commits perPage 1) for latest commit date; mix.exs and LICENSES/ directory for licence declaration; START-side Module 8 scope decision for relevance",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Latest commit 2026-10-13 (v2.3.1 release) \u2014 repo active; mix.exs declares licenses ['Apache-2.0'] (REUSE layout, LICENSES/* packaged); full licence file text not verified (GitHub MCP rate-limited, HTTP 429); no START hardware-sensor need exists, so the DROP reason is unchanged"
+  },
+  {
+    "candidate": "SciAgent / OpenDCAI",
+    "module": 9,
+    "class": "DROP",
+    "owner_repo": null,
+    "blocker": "Does not exist as named; withdrawn paper, no code.",
+    "trigger": "A repository with this exact name appears on GitHub, or code is released under it",
+    "check_method": "GitHub search for exact name 'SciAgent' / 'OpenDCAI' (search_repositories); arXiv record for withdrawal status",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "No repository under that exact name found (web search 2026-11-14); arXiv:2511.08151 v2 withdrawn by the author 2025-11-17; GitHub search_repositories was not run \u2014 GitHub MCP rate-limited (HTTP 429) before the call"
+  }
+]

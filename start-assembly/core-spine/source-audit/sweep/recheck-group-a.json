@@ -1,0 +1,173 @@
+[
+  {
+    "candidate": "wasmCloud",
+    "module": 1,
+    "class": "DEFER",
+    "owner_repo": "wasmCloud/wasmCloud",
+    "blocker": "Heavyweight cloud platform (operator/NATS/K8s); no Wasm workload",
+    "trigger": "START decides to run untrusted Wasm components",
+    "check_method": "START decision record (Eric's direction); GitHub repo contents: LICENSE file; repo commit history / latest commit date",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "LICENSE file present, Apache-2.0 text, read 2026-11-14; latest commit 2026-11-11T14:53:40Z; repo active but no START decision to run untrusted Wasm components"
+  },
+  {
+    "candidate": "Wasmtime",
+    "module": 1,
+    "class": "DEFER",
+    "owner_repo": "bytecodealliance/wasmtime",
+    "blocker": "No Wasm workload yet",
+    "trigger": "START decides to execute untrusted or generated code in Wasm AND the wasmtime crate is adopted with WASI denied by default",
+    "check_method": "START decision record (Eric's direction); GitHub repo contents: LICENSE file; repo commit history / latest commit date",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "LICENSE file present, Apache-2.0 text, read 2026-11-14; latest commit 2026-11-14T01:28:22Z (today); no START decision to execute untrusted or generated code in Wasm"
+  },
+  {
+    "candidate": "MetaCall Core",
+    "module": 1,
+    "class": "DEFER",
+    "owner_repo": "metacall/core",
+    "blocker": "C core outside the allocation; in-process FFI collapses trust boundaries",
+    "trigger": "Eric explicitly approves in-process polyglot FFI",
+    "check_method": "Eric's direction / START decision record; GitHub repo contents: LICENSE file; repo commit history / latest commit date",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "LICENSE file present, Apache-2.0 text, read 2026-11-14; latest commit 2026-11-13T23:27:21Z; no approval of in-process polyglot FFI"
+  },
+  {
+    "candidate": "Agent Governance Toolkit",
+    "module": 2,
+    "class": "DEFER",
+    "owner_repo": "microsoft/agent-governance-toolkit",
+    "blocker": "Heavyweight (~225k lines, ~20 sub-packages); wrong language for M2",
+    "trigger": "START decides to adopt a Python governance platform instead of the small Cedar-based layer",
+    "check_method": "START decision record (Eric's direction); GitHub repo contents: LICENSE file; repo commit history / latest commit date",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "LICENSE file present, MIT text, read 2026-11-14; latest commit 2026-11-13T17:46:34Z; Cedar-based governance layer still in place, no decision to adopt a Python platform"
+  },
+  {
+    "candidate": "LLaMA-Factory",
+    "module": 3,
+    "class": "DEFER",
+    "owner_repo": "hiyouga/LlamaFactory",
+    "blocker": "GPU-scale training stack; contradicts CPU-portable from-scratch direction",
+    "trigger": "Eric approves GPU-scale framework training",
+    "check_method": "Eric's direction / START decision record; GitHub repo contents: LICENSE file; repo commit history / latest commit date",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "LICENSE file present, Apache-2.0 text, read 2026-11-14; latest commit 2026-11-13T13:16:47Z; no approval of GPU-scale framework training"
+  },
+  {
+    "candidate": "Llama3.mojo",
+    "module": 3,
+    "class": "DEFER",
+    "owner_repo": "Terapines/llama3.mojo",
+    "blocker": "Inactive 2+ years; 2024-era Mojo API drift; gated Meta weights licence",
+    "trigger": "A maintained fork targets current Mojo with freely licensed weights",
+    "check_method": "GitHub search for forks of Terapines/llama3.mojo with recent commits; repo commit history / latest commit date; weights licence in fork README/LICENSE",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "LICENSE file present, MIT text, read 2026-11-14; latest commit still 2024-06-26T09:40:36Z (inactive 2+ years, unchanged since the Nov 11 sweep); no maintained fork identified"
+  },
+  {
+    "candidate": "MAX Engine / Modular",
+    "module": [
+      3,
+      15
+    ],
+    "class": "DEFER",
+    "owner_repo": "modular/modular",
+    "blocker": "MAX portions under MAX License (not OSI); inference-serving, not a START component",
+    "trigger": "none \u2014 no realistic unblock: never for MAX per the sweep, because MAX portions are under the MAX License (not OSI open source) and MAX is inference-serving, not a START component; Mojo stays a toolchain dependency",
+    "check_method": "GitHub repo contents: LICENSE file and Licenses/MAX_LICENSE; repo commit history / latest commit date",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "LICENSE file present, read 2026-11-14: Apache-2.0 with LLVM Exceptions for Mojo, MAX portions under the MAX License (Licenses/MAX_LICENSE) \u2014 matches the sweep; latest commit 2026-11-13T21:28:41Z"
+  },
+  {
+    "candidate": "AWS Infinity Primitives",
+    "module": 1,
+    "class": "DROP",
+    "owner_repo": null,
+    "blocker": "Does not exist as named.",
+    "trigger": "a repository with this exact name appears on GitHub",
+    "check_method": "GitHub search for exact name ('AWS Infinity Primitives in:name' and general search)",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "GitHub search 'AWS Infinity Primitives in:name' returns 0 repos and general search returns 0 repos, checked 2026-11-14; still does not exist as named"
+  },
+  {
+    "candidate": "Mojo-LLM",
+    "module": 3,
+    "class": "DROP",
+    "owner_repo": null,
+    "blocker": "Does not exist as named.",
+    "trigger": "a repository with this exact name appears on GitHub",
+    "check_method": "GitHub search for exact name ('Mojo-LLM in:name')",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "GitHub search 'Mojo-LLM in:name' returns 16 repos, none named exactly Mojo-LLM (closest: resitkurttr/mojo-llm, xcloudplatform/MojoLLM), checked 2026-11-14; still does not exist as named"
+  },
+  {
+    "candidate": "DeepSeek-R1",
+    "module": 4,
+    "class": "DROP",
+    "owner_repo": "deepseek-ai/DeepSeek-R1",
+    "blocker": "A model, not an engine.",
+    "trigger": "none \u2014 no realistic unblock: the repo distributes model weights, configs and its paper, not engine code; the DROP is definitional (a model, not an engine)",
+    "check_method": "GitHub repo contents: LICENSE file and file listing; repo commit history / latest commit date",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "LICENSE file present, MIT text, read 2026-11-14; latest commit 2025-04-09T05:36:23Z; repo still a model release (92,020 stars), no engine code added"
+  },
+  {
+    "candidate": "QwQ Series",
+    "module": 4,
+    "class": "DROP",
+    "owner_repo": "QwenLM/QwQ",
+    "blocker": "A model, not an engine.",
+    "trigger": "none \u2014 no realistic unblock: the repo distributes model weights and configs, not engine code; the DROP is definitional (a model, not an engine)",
+    "check_method": "GitHub repo contents: LICENSE file and file listing; repo commit history / latest commit date",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "LICENSE file present, Apache-2.0 text, read 2026-11-14; latest commit 2025-03-27T15:48:51Z; repo still a model release (526 stars), no engine code added"
+  },
+  {
+    "candidate": "hydro-project/infinity",
+    "module": 1,
+    "class": "FOLLOW-UP",
+    "owner_repo": "hydro-project/infinity",
+    "blocker": "Closest real project to AWS Infinity Primitives; matches the scale-to-zero claim, not Wasm sandboxing.",
+    "trigger": "Eric approves an audit of hydro-project/infinity as the Module 1 replacement candidate",
+    "check_method": "Eric's direction; GitHub repo contents: LICENSE file; repo commit history / latest commit date; stargazers count",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "LICENSE.txt present, Apache-2.0 text, read 2026-11-14; 821 stars (808 at the Nov 11 sweep); latest commit 2026-11-05T20:10:40Z; active and maintained, audit still pending Eric's approval"
+  },
+  {
+    "candidate": "resitkurttr/mojo-llm",
+    "module": 3,
+    "class": "FOLLOW-UP",
+    "owner_repo": "resitkurttr/mojo-llm",
+    "blocker": "Closest real project to Mojo-LLM (single file, no autograd); only if Mojo LLM training becomes a demonstrated need.",
+    "trigger": "Eric approves an audit of resitkurttr/mojo-llm AND Mojo LLM training becomes a demonstrated need",
+    "check_method": "Eric's direction; GitHub repo contents: LICENSE file; repo commit history / latest commit date; stargazers count",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "LICENSE file present, MIT text (Copyright (c) 2026 Re\u015fit Kurt), read 2026-11-14; 0 stars; latest commit 2026-07-23T21:42:47Z; no demonstrated Mojo LLM training need, audit still pending Eric's approval"
+  },
+  {
+    "candidate": "dorjeduck/llm.mojo",
+    "module": 3,
+    "class": "FOLLOW-UP",
+    "owner_repo": "dorjeduck/llm.mojo",
+    "blocker": "Closest real project to Mojo-LLM; only if Mojo LLM training becomes a demonstrated need.",
+    "trigger": "Eric approves an audit of dorjeduck/llm.mojo AND Mojo LLM training becomes a demonstrated need",
+    "check_method": "Eric's direction; GitHub repo contents: LICENSE file; repo commit history / latest commit date; stargazers count",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "LICENSE file present, MIT text (Copyright (c) 2024 Martin Dudek), read 2026-11-14; 383 stars; latest commit 2026-10-04T12:42:00Z; no demonstrated Mojo LLM training need, audit still pending Eric's approval"
+  }
+]

@@ -263,3 +263,24 @@ Honourable mentions (also worth rebuilding, ranked just below): Robin's multi-tr
 - Line counts are approximate and the counting basis varies by worker (repo-wide, `src/`-only, or package-only). They support the size/coupling judgement; they are not a precise census. Two figures the coordinator checked explicitly: DifferentialEquations.jl is genuinely a 34-line re-export umbrella (the solvers live in other repos), and DeepSeek-R1's 0 lines means the repo holds no engine code (weights, configs, and its paper).
 - Batch 1 and batch 2 verdicts are folded in from their own audit reports, not re-derived here. The helpers copied from batch 2 (Cognee chunking helpers, Crawl4AI normalize_url) were already completed and tested (24/24) before this sweep, and Eric directed "wait for the full sweep first" before any further copying — so the next copy is picked from the ranked lists above, when he directs it.
 - The v0.3.2 review work in `~/workspace/v032-review/` stays local and is untouched by this sweep. This report itself is assembly work, not review work.
+
+## Addendum 2026-11-14 — DEFER/DROP re-check triggers formalized and re-checked
+
+The DEFER/DROP re-check triggers are now formalized in
+`recheck-triggers.json` (46 entries: 28 DEFER, 12 DROP, 6 follow-up
+replacements, one per item from this report; each entry carries the
+candidate, module, class, exact owner/repo, the blocker/reason copied
+from this report, a concrete checkable trigger, a check method, and
+the 2026-11-14 re-check outcome). The live re-check of all 46
+triggers is recorded in `RECHECK_2026-11-14.md` (dated 2026-11-14):
+**zero of 46 triggers fired.** Per-group working files are kept in
+`sweep/recheck-group-a.json` … `sweep/recheck-group-f.json`. One
+sweep-report error was found and is recorded in the re-check report,
+not fixed here: Agent-O1 is not a "single-commit repo" — the live
+repo has 4 commits (the no-licence and inactive findings stand).
+Two new facts are also recorded there: SpineOpt.jl is GPL-3.0 +
+LGPL-3.0 (dependency-only, never copy), and OSeMOSYS_Pyomo's last
+commit is 2020-11-13 despite metadata saying updated 2025-12-15.
+No verdict in this report was changed by the re-check; no
+recommendation follows, since no trigger fired. Nothing in this
+addendum alters the 2026-11-11 text above.

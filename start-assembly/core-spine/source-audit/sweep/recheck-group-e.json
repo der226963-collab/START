@@ -1,0 +1,74 @@
+[
+  {
+    "candidate": "OpenHands",
+    "module": 20,
+    "class": "DEFER",
+    "owner_repo": "OpenHands/OpenHands",
+    "blocker": "Heavyweight TypeScript platform; paid LLM APIs behind every agent",
+    "trigger": "START decides it wants a self-hosted agent platform AND OpenHands offers a local-model route requiring no paid LLM API",
+    "check_method": "START decision record, plus repo README/docs for local-model support; GitHub repo commit history / latest commit date; LICENSE file",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Latest commit 2026-11-14 (active, feat(hooks) #18366); LICENSE file present, MIT (verified from file text 2026-11-14). No START decision to adopt a self-hosted agent platform and no local-model route verified, so the trigger is not met."
+  },
+  {
+    "candidate": "Agent-O1",
+    "module": 22,
+    "class": "DEFER",
+    "owner_repo": "Vaishnavgopal36/Agent-O1",
+    "blocker": "No licence stated; inactive single-commit repo",
+    "trigger": "none — no realistic unblock (no licence means no right to copy or use, and the repo is inactive)",
+    "check_method": "GitHub repo contents: LICENSE file (absence); repo commit history / latest commit date",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "No top-level LICENSE file (only vendored inference/llama.cpp LICENSE files). Latest commit 2026-03-09, inactive about 8 months. SWEEP-REPORT ERROR: the report calls it a 'single-commit repo' but it has 4 commits (initial 2026-02-21, update 0.6, diagram update, README enhance, all 2026-02-21 to 2026-03-09). The no-licence and inactive findings stand."
+  },
+  {
+    "candidate": "Trace / Microsoft",
+    "module": 22,
+    "class": "DEFER",
+    "owner_repo": "microsoft/Trace",
+    "blocker": "Needs a paid LLM API via LiteLLM for every step; inactive since 2025-08",
+    "trigger": "a local-model route exists AND the project shows a commit within the last 6 months",
+    "check_method": "Repo README/docs for a local-model (non-LiteLLM-paid-API) route; repo commit history / latest commit date",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Latest commit 2025-08-14 (README update), about 15 months before 2026-11-14 — no commit within the last 6 months, so the trigger fails on activity alone. Local-model route not verified. Licence not re-verified today: GitHub API returned HTTP 429 (rate limit) during the licence checks, so no further GitHub calls were made."
+  },
+  {
+    "candidate": "Cronoq",
+    "module": 23,
+    "class": "DEFER",
+    "owner_repo": "synaptiai/cronoq",
+    "blocker": "Very new/unproven (0 stars); no scheduling need beyond START's own executor",
+    "trigger": "adoption/stability evidence (stars, releases, or commits within the last 6 months) AND a real START scheduling requirement",
+    "check_method": "GitHub repo stars/releases/commit history (latest commit date); START requirements (scheduling need beyond its own executor)",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Latest commit 2026-11-13 (active development, PR #87, priority/urgency config) — commits within the last 6 months satisfied. But no real START scheduling requirement exists (START has its own executor), so the trigger is not met. Star count not re-checked today: GitHub API returned HTTP 429 (rate limit) during the licence checks, so no further GitHub calls were made."
+  },
+  {
+    "candidate": "Spur / AMD ROCm",
+    "module": 23,
+    "class": "DEFER",
+    "owner_repo": "ROCm/spur",
+    "blocker": "Needs a multi-node GPU cluster / Slurm environment",
+    "trigger": "START runs multi-node GPU training jobs (a multi-node Slurm/GPU cluster requirement exists)",
+    "check_method": "START requirements (multi-node GPU training jobs); GitHub repo commit history / latest commit date",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Latest commit 2026-11-14 (active, spurd container fix #1172). START runs no multi-node GPU training jobs — local single-machine CPU-portable project — so the trigger is not met. Licence not re-verified today: GitHub API returned HTTP 429 (rate limit); the sweep recorded Apache-2.0 on 2026-11-11."
+  },
+  {
+    "candidate": "Cuda-Captain",
+    "module": 23,
+    "class": "DROP",
+    "owner_repo": "Lucineer/cuda-captain",
+    "blocker": "No relevance to START resource management; licence unverified (no LICENSE file).",
+    "trigger": "a LICENSE file appears in the repo AND a demonstrated relevance to START resource management emerges",
+    "check_method": "GitHub repo contents: LICENSE file; START requirements (resource-management relevance)",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Latest commit 2026-04-11 (README update). No demonstrated relevance to START resource management. LICENSE file presence not re-verified today: GitHub API returned HTTP 429 (rate limit); the sweep recorded no LICENSE file on 2026-11-11."
+  }
+]

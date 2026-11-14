@@ -1,0 +1,38 @@
+[
+  {
+    "candidate": "Jutul.jl",
+    "module": 13,
+    "class": "DEFER",
+    "owner_repo": "sintefmath/Jutul.jl",
+    "blocker": "No domain needs implicit finite-volume multiphysics",
+    "trigger": "A concrete START domain model requires implicit finite-volume multiphysics simulation AND Eric approves the dependency",
+    "check_method": "START domain-model requirements plus Eric's approval decision for the need half; repo commit history / latest commit date for activity context",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Latest commit 2026-11-12 (v0.5.9 bump, #432, sha 75147a8); MIT LICENSE file present (Copyright (c) 2021 Olav Moyner / SINTEF Digital). START-side half not met: no concrete START domain model requires implicit finite-volume multiphysics simulation and no Eric approval recorded."
+  },
+  {
+    "candidate": "Trixi.jl",
+    "module": 13,
+    "class": "DEFER",
+    "owner_repo": "trixi-framework/Trixi.jl",
+    "blocker": "No domain needs conservation-law simulation",
+    "trigger": "A concrete START domain model requires conservation-law simulation AND Eric approves the dependency",
+    "check_method": "START domain-model requirements plus Eric's approval decision for the need half; repo commit history / latest commit date for activity context",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Latest commit 2026-11-12 (CI test runtimes / t8code AMR fix, #3421, sha 3ffaf4b); MIT LICENSE.md present (Copyright (c) 2020-present The Trixi.jl Authors). START-side half not met: no concrete START domain model requires conservation-law simulation and no Eric approval recorded."
+  },
+  {
+    "candidate": "AgentBasedModeling.jl",
+    "module": 13,
+    "class": "DEFER",
+    "owner_repo": "pihop/AgentBasedModeling.jl",
+    "blocker": "Inactive; redundant with Agents.jl; heavy dependency stack",
+    "trigger": "The project shows a commit within the last 6 months AND a structured-population model is needed",
+    "check_method": "Repo commit history / latest commit date for the revival half; START domain-model requirements for the structured-population-model half",
+    "last_checked": "2026-11-14",
+    "trigger_fired": false,
+    "evidence": "Latest commit 2026-05-07 (merge PR #12, 'Ms notebook', sha 8973ff3), 6 months 7 days before 2026-11-14 — no commit within the last 6 months; MIT LICENSE file present (Copyright (c) 2024 Paul Piho). START-side half not met: no structured-population model is needed and no project decision recorded."
+  }
+]

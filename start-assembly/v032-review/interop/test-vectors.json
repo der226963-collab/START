@@ -1,5 +1,5 @@
 {
-  "$comment": "Shared cross-language test vectors for START v0.3.2 — ISSUE-04 fix, prepared 2026-11-09, DECIDED 2026-11-11. Status: decided — all four open decisions (m3/L conversion, kcal/day, range operator, same-major versions) were picked by Eric on 2026-11-11 and implemented in Python, Rust and Julia; every case below is now must_agree or already_agrees, with per-language verified values dated 2026-11-11. The *_2026-11-09 fields are HISTORICAL: they record the pre-decision behaviour verified on 2026-11-09 and must not be overwritten. Intended home: interop/test-vectors.json in the review copy, consumed by one test per language (Python, Rust, Julia). Nothing in the v0.3.2 review baseline, the START repo, or GitHub was changed by this file itself.",
+  "$comment": "Shared cross-language test vectors for START v0.3.2 — ISSUE-04 fix, prepared 2026-11-09, DECIDED 2026-11-11. Status: decided — all four open decisions (m3/L conversion, kcal/day, range operator, same-major versions) were picked by Eric on 2026-11-11 and implemented in Python, Rust and Julia; every case below is now must_agree or already_agrees, with per-language verified values dated 2026-11-11. The *_2026-11-09 fields are HISTORICAL: they record the pre-decision behaviour verified on 2026-11-09 and must not be overwritten. Intended home: interop/test-vectors.json in the review copy, consumed by one test per language (Python, Rust, Julia). Nothing in the v0.3.2 review baseline, the START repo, or GitHub was changed by this file itself. ISSUE-34 cases added 2026-11-13 (12 new registry units: Tg/Mt/million tonnes, mass-per-year rates on dimension mass_rate_year, percent/%, hours/week, hours/day, hours), with per-language verified values dated 2026-11-13.",
   "aggregation_cases": [
     {
       "conformance": "must_agree",
@@ -350,6 +350,192 @@
         "value": 5,
         "value_unit": "L"
       }
+    },
+    {
+      "conformance": "must_agree",
+      "id": "mass-rate-year-tg-pass",
+      "issue": "ISSUE-34",
+      "note": "ISSUE-34 (2026-11-13): 5.0 Tg/yr <= 6.2 Tg/yr PASS in Python, Rust and Julia. Tg/yr is dimension mass_rate_year (base Tg/yr), added with the 12 new registry units.",
+      "python_expected": {
+        "status": "PASS"
+      },
+      "request": {
+        "bound": 6.2,
+        "bound_unit": "Tg/yr",
+        "constraint_id": "mass-rate-year-tg",
+        "operator": "<=",
+        "schema_version": "1.0.0",
+        "tolerance": 0,
+        "value": 5,
+        "value_unit": "Tg/yr"
+      },
+      "julia_expected": {
+        "status": "PASS"
+      },
+      "python_verified_2026-11-13": {
+        "status": "PASS"
+      },
+      "rust_verified_2026-11-13": {
+        "status": "PASS"
+      },
+      "julia_verified_2026-11-13": {
+        "status": "PASS"
+      }
+    },
+    {
+      "conformance": "must_agree",
+      "id": "mass-rate-year-tg-fail",
+      "issue": "ISSUE-34",
+      "note": "ISSUE-34 (2026-11-13): 18.2 Tg/yr <= 6.2 Tg/yr FAIL in Python, Rust and Julia — the discriminating pair for the Tg/yr case above (a no-conversion evaluator comparing raw numbers would also FAIL this one, so the PASS case is the discriminating one).",
+      "python_expected": {
+        "status": "FAIL"
+      },
+      "request": {
+        "bound": 6.2,
+        "bound_unit": "Tg/yr",
+        "constraint_id": "mass-rate-year-tg",
+        "operator": "<=",
+        "schema_version": "1.0.0",
+        "tolerance": 0,
+        "value": 18.2,
+        "value_unit": "Tg/yr"
+      },
+      "julia_expected": {
+        "status": "FAIL"
+      },
+      "python_verified_2026-11-13": {
+        "status": "FAIL"
+      },
+      "rust_verified_2026-11-13": {
+        "status": "FAIL"
+      },
+      "julia_verified_2026-11-13": {
+        "status": "FAIL"
+      }
+    },
+    {
+      "conformance": "must_agree",
+      "id": "percent-conversion",
+      "issue": "ISSUE-34",
+      "note": "ISSUE-34 (2026-11-13): 33 percent == 0.33 dimensionless PASS in Python, Rust and Julia. percent/% are dimensionless, factor 0.01, so 33 percent = 0.33 in unit '1'.",
+      "python_expected": {
+        "status": "PASS"
+      },
+      "request": {
+        "bound": 0.33,
+        "bound_unit": "1",
+        "constraint_id": "percent-conversion",
+        "operator": "==",
+        "schema_version": "1.0.0",
+        "tolerance": 0,
+        "value": 33,
+        "value_unit": "percent"
+      },
+      "julia_expected": {
+        "status": "PASS"
+      },
+      "python_verified_2026-11-13": {
+        "status": "PASS"
+      },
+      "rust_verified_2026-11-13": {
+        "status": "PASS"
+      },
+      "julia_verified_2026-11-13": {
+        "status": "PASS"
+      }
+    },
+    {
+      "conformance": "must_agree",
+      "id": "hours-day-to-week-pass",
+      "issue": "ISSUE-34",
+      "note": "ISSUE-34 (2026-11-13): 1 hours/day <= 7 hours/week PASS in Python, Rust and Julia. Dimension work_time_rate, base hours/week; 1 hour/day = 7 hours/week (7-day week).",
+      "python_expected": {
+        "status": "PASS"
+      },
+      "request": {
+        "bound": 7,
+        "bound_unit": "hours/week",
+        "constraint_id": "hours-day-to-week",
+        "operator": "<=",
+        "schema_version": "1.0.0",
+        "tolerance": 0,
+        "value": 1,
+        "value_unit": "hours/day"
+      },
+      "julia_expected": {
+        "status": "PASS"
+      },
+      "python_verified_2026-11-13": {
+        "status": "PASS"
+      },
+      "rust_verified_2026-11-13": {
+        "status": "PASS"
+      },
+      "julia_verified_2026-11-13": {
+        "status": "PASS"
+      }
+    },
+    {
+      "conformance": "must_agree",
+      "id": "hours-day-to-week-fail",
+      "issue": "ISSUE-34",
+      "note": "ISSUE-34 (2026-11-13): 2 hours/day <= 7 hours/week FAIL in Python, Rust and Julia — 2 hours/day = 14 hours/week > 7. The discriminating pair for the hours/day conversion above.",
+      "python_expected": {
+        "status": "FAIL"
+      },
+      "request": {
+        "bound": 7,
+        "bound_unit": "hours/week",
+        "constraint_id": "hours-day-to-week",
+        "operator": "<=",
+        "schema_version": "1.0.0",
+        "tolerance": 0,
+        "value": 2,
+        "value_unit": "hours/day"
+      },
+      "julia_expected": {
+        "status": "FAIL"
+      },
+      "python_verified_2026-11-13": {
+        "status": "FAIL"
+      },
+      "rust_verified_2026-11-13": {
+        "status": "FAIL"
+      },
+      "julia_verified_2026-11-13": {
+        "status": "FAIL"
+      }
+    },
+    {
+      "conformance": "must_agree",
+      "id": "mass-rate-year-vs-day-incompatible",
+      "issue": "ISSUE-34",
+      "note": "ISSUE-34 (2026-11-13): 5 Tg/yr vs 10 tonne/day is UNKNOWN in Python, Rust and Julia — different dimensions (mass_rate_year vs mass_rate). Tg/yr and tonne/day are NOT interconvertible; a conversion would need a stated days-per-year. Statuses agree; reason wording differs (Rust INCOMPATIBLE_UNIT, Julia 'incompatible units: Tg/yr and tonne/day') — do not assert reason equality for this case.",
+      "python_expected": {
+        "status": "UNKNOWN"
+      },
+      "request": {
+        "bound": 10,
+        "bound_unit": "tonne/day",
+        "constraint_id": "mass-rate-year-vs-day",
+        "operator": "<=",
+        "schema_version": "1.0.0",
+        "tolerance": 0,
+        "value": 5,
+        "value_unit": "Tg/yr"
+      },
+      "julia_expected": {
+        "status": "UNKNOWN"
+      },
+      "python_verified_2026-11-13": {
+        "status": "UNKNOWN"
+      },
+      "rust_verified_2026-11-13": {
+        "status": "UNKNOWN"
+      },
+      "julia_verified_2026-11-13": {
+        "status": "UNKNOWN"
+      }
     }
   ],
   "conformance_kinds": {
@@ -366,7 +552,8 @@
     "ISSUE-08",
     "ISSUE-10",
     "ISSUE-02",
-    "ISSUE-16"
+    "ISSUE-16",
+    "ISSUE-34"
   ],
   "version_cases": [
     {

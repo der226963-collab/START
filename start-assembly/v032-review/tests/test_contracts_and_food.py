@@ -417,6 +417,16 @@ class Issue47ConvertOverflowTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             convert(1e308, "tonne", "g")
 
+    def test_overflow_new_units_raise_value_error(self):
+        # ISSUE-34 (2026-11-13): the new Tg unit has the largest
+        # mass factor (1e9); 1e308 Tg -> g overflows to inf and must
+        # raise, like the tonne case above. Same for the per-year
+        # rate: 1e308 Tg/yr -> kg/yr overflows.
+        with self.assertRaises(ValueError):
+            convert(1e308, "Tg", "g")
+        with self.assertRaises(ValueError):
+            convert(1e308, "Tg/yr", "kg/yr")
+
     def test_overflow_in_the_other_direction_too(self):
         # 1e308 g -> tonne divides (finite); the overflowing direction
         # is the small-to-large-factor one, and the largest factor

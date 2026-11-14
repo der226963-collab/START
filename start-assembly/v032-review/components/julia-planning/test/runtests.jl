@@ -1,5 +1,5 @@
 # Tests for the ISSUE-05 faithful Constraint implementation.
-# Drives the shared interop/test-vectors.json cases (all 8 wire + 2
+# Drives the shared interop/test-vectors.json cases (all 14 wire + 2
 # aggregation + 3 version cases) through the Julia evaluator and asserts
 # agreement with the Python/Rust verified values pinned in the file.
 using Test
@@ -8,19 +8,32 @@ using STARTPlanning
 
 const VECTORS_PATH = joinpath(@__DIR__, "..", "..", "..", "interop", "test-vectors.json")
 
-# The exact 24 keys of Python contracts/units.py `_UNITS` (ISSUE-06
-# conformance). Any key present in one registry and not the other is a
-# test failure — same rule as the Rust conformance test.
+# Verified-status fields are dated (e.g. "python_verified_2026-11-11");
+# newer cases carry a later date (ISSUE-34 cases: 2026-11-13). Pick
+# the latest dated field so old and new cases are both read correctly.
+function verified_status(case, lang)
+    prefix = lang * "_verified_"
+    dated = [k for k in keys(case) if startswith(k, prefix)]
+    isempty(dated) && error("no $lang verified field in case $(case["id"])")
+    return case[sort(dated)[end]]["status"]
+end
+
+# The exact 36 keys of Python contracts/units.py `_UNITS` (ISSUE-06
+# conformance; ISSUE-34 added 12 keys 2026-11-13). Any key present in
+# one registry and not the other is a test failure — same rule as the
+# Rust conformance test.
 const PYTHON_UNIT_KEYS = Set([
     "1", "person", "people", "kg", "g", "tonne", "t", "L", "m3", "m²",
     "ha", "kcal", "Mcal", "kWh", "MWh", "kcal/capita/day",
     "kcal/person/day", "kcal/day", "m3/day", "L/day", "kg/day",
     "tonne/day", "kWh/day", "MWh/day",
+    "Tg", "Mt", "million tonnes", "Tg/yr", "Mt/yr", "tonne/yr",
+    "kg/yr", "percent", "%", "hours/week", "hours/day", "hours",
 ])
 
 @testset "unit registry mirrors Python exactly" begin
     @test Set(keys(UNIT_REGISTRY)) == PYTHON_UNIT_KEYS
-    @test length(UNIT_REGISTRY) == 24
+    @test length(UNIT_REGISTRY) == 36
     # Spot-check dimensions and factors against Python.
     @test unit_definition("t") == UnitDefinition("mass", 1000.0)
     @test unit_definition("L") == UnitDefinition("volume", 0.001)
@@ -32,6 +45,45 @@ const PYTHON_UNIT_KEYS = Set([
     @test convert_units(0.008, "m3", "L") == (8.0, "OK")
     @test convert_units(5.0, "L", "kg")[2] == "incompatible units: L and kg"
     @test convert_units(5.0, "bucket", "kg")[2] == "unknown unit: bucket"
+    # ISSUE-34 (2026-11-13): the 12 new units.
+    @test unit_definition("Tg") == UnitDefinition("mass", 1e9)
+    @test unit_definition("Mt") == UnitDefinition("mass", 1e9)
+    @test unit_definition("million tonnes") == UnitDefinition("mass", 1e9)
+    @test unit_definition("Tg/yr") == UnitDefinition("mass_rate_year", 1.0)
+    @test unit_definition("tonne/yr") == UnitDefinition("mass_rate_year", 1e-6)
+    @test unit_definition("kg/yr") == UnitDefinition("mass_rate_year", 1e-9)
+    @test unit_definition("percent") == UnitDefinition("dimensionless", 0.01)
+    @test unit_definition("%") == UnitDefinition("dimensionless", 0.01)
+    @test unit_definition("hours/week") == UnitDefinition("work_time_rate", 1.0)
+    @test unit_definition("hours/day") == UnitDefinition("work_time_rate", 7.0)
+    @test unit_definition("hours") == UnitDefinition("time", 1.0)
+    # Tg <-> Mt 1:1; 1 Tg = 1e9 kg; tonne/yr <-> kg/yr.
+    @test convert_units(1.0, "Tg", "Mt") == (1.0, "OK")
+    @test convert_units(1.0, "Mt", "Tg") == (1.0, "OK")
+    @test convert_units(1.0, "Tg", "kg") == (1e9, "OK")
+    # tonne/yr -> kg/yr divides by inexact 1e-9, so 1.0 * 1e-6 / 1e-9
+    # comes out 999.9999999999999, not 1000.0 — approximate.
+    @test convert_units(1.0, "tonne/yr", "kg/yr")[1] ≈ 1000.0
+    @test convert_units(1.0, "kg/yr", "tonne/yr") == (0.001, "OK")
+    # 33 percent = 0.33 dimensionless.
+    @test convert_units(33.0, "percent", "1") == (0.33, "OK")
+    @test convert_units(33.0, "%", "1") == (0.33, "OK")
+    # 1 hour/day = 7 hours/week (7-day week).
+    @test convert_units(1.0, "hours/day", "hours/week") == (7.0, "OK")
+    @test convert_units(7.0, "hours/week", "hours/day") == (1.0, "OK")
+    # Cross-dimension: Tg/yr vs tonne/day must NOT convert — different
+    # dimensions (mass_rate_year vs mass_rate); a conversion would
+    # need a stated days-per-year.
+    @test convert_units(5.0, "Tg/yr", "tonne/day")[2] ==
+        "incompatible units: Tg/yr and tonne/day"
+    # Overflow on conversion never passes: 1e308 Tg converted to g
+    # overflows to Inf, which is UNKNOWN / NON_FINITE, never PASS
+    # (ISSUE-47 behaviour, checked here for the new Tg unit too).
+    big_tg = Constraint(constraint_id="big-tg", operator="<=",
+                        bound=10.0, unit="g")
+    big_tg_out = evaluate_constraint(big_tg, 1e308, "Tg")
+    @test big_tg_out.status == "UNKNOWN"
+    @test big_tg_out.reason_code == "NON_FINITE"
 end
 
 @testset "food domain >= constraint evaluates with its real meaning" begin
@@ -490,19 +542,19 @@ end
             @test entry["conformance"] != "open_decision"
         end
     end
-    # All 8 wire cases, through evaluate_constraint_request.
+    # All 14 wire cases, through evaluate_constraint_request.
     cases = data["cases"]
-    @test length(cases) == 8
+    @test length(cases) == 14
     for case in cases
         id = case["id"]
         req = case["request"]
         # The file pins all three languages to the same status.
-        @test case["python_verified_2026-11-11"]["status"] ==
-            case["rust_verified_2026-11-11"]["status"]
-        @test case["julia_verified_2026-11-11"]["status"] ==
-            case["rust_verified_2026-11-11"]["status"]
+        @test verified_status(case, "python") ==
+            verified_status(case, "rust")
+        @test verified_status(case, "julia") ==
+            verified_status(case, "rust")
         out = evaluate_constraint_request(req)
-        @test out.status == case["julia_verified_2026-11-11"]["status"]
+        @test out.status == verified_status(case, "julia")
         @test out.status in CHECK_STATUSES
         @test out.constraint_id == req["constraint_id"]
     end

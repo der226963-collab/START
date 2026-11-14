@@ -25,7 +25,7 @@ class Scenario:
     name: str
     description: str = ""
     assumptions: list[str] = field(default_factory=list)
-    proposed_changes: dict[str, float] = field(default_factory=dict)
+    proposed_changes: dict[str, Any] = field(default_factory=dict)
     geography: str = "unspecified"
     period: str = "unspecified"
     source_ids: list[str] = field(default_factory=list)
@@ -40,9 +40,36 @@ class Scenario:
             raise ValueError("scenario_id must be a non-empty string")
         if not isinstance(self.name, str) or not self.name.strip():
             raise ValueError("scenario name must be a non-empty string")
+        # ISSUE-34 (2026-11-13): proposed_changes accept finite numbers,
+        # non-empty strings, and lists of non-empty strings — the
+        # non-numeric forms a scenario needs to change source_ids,
+        # geography, or period. A domain's allow-lists decide which
+        # field may take which form (see DomainModule in domains/base.py);
+        # this check only validates the VALUE SHAPE. Still rejected:
+        # bool (a subclass of int, never a real change value), None,
+        # dict/tuple/set, non-finite numbers, lists containing any
+        # non-string item, and empty/whitespace-only strings — inside
+        # a list or on their own — following the food-domain convention
+        # that source_ids must be a list of non-empty strings. The
+        # domain's own validate_inputs remains the second line of
+        # defence (e.g. it checks a str change lands on a str field).
         for key, value in self.proposed_changes.items():
-            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
-                raise ValueError(f"scenario change {key!r} must be finite numeric")
+            if isinstance(value, bool):
+                raise ValueError(f"scenario change {key!r} must not be a boolean")
+            if isinstance(value, (int, float)):
+                if not math.isfinite(value):
+                    raise ValueError(f"scenario change {key!r} must be finite numeric")
+            elif isinstance(value, str):
+                if not value.strip():
+                    raise ValueError(f"scenario change {key!r} must be a non-empty string")
+            elif isinstance(value, list):
+                if any(not isinstance(item, str) or not item.strip() for item in value):
+                    raise ValueError(
+                        f"scenario change {key!r} must be a list of non-empty strings")
+            else:
+                raise ValueError(
+                    f"scenario change {key!r} must be a finite number, a "
+                    f"non-empty string, or a list of non-empty strings")
 
     def to_dict(self) -> dict[str, Any]: return asdict(self)
 

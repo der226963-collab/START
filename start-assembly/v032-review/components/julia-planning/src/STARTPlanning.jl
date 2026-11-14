@@ -57,10 +57,10 @@ Design notes (what was mirrored vs written fresh)
   `ConstraintResult` structs mirroring Python's dataclasses), not
   pasted from the core-spine file.
 * Deliberate differences from the core-spine file: (1) this registry
-  has EXACTLY the 24 keys of Python `contracts/units.py` — the
+  has EXACTLY the 36 keys of Python `contracts/units.py` — the
   core-spine file adds a `"m³"` alias for `"m3"` which Python does not
   have, so it is NOT included here; a conformance test asserts the
-  exact 24-key set. (2) Version checking follows Python
+  exact 36-key set. (2) Version checking follows Python
   (`adapters/python/contracts.py`) and Rust exactly: a malformed
   version string is rejected with the distinct message
   `"invalid schema version: <v>"`, while a well-formed different
@@ -115,11 +115,13 @@ struct UnitDefinition
 end
 
 """Unit registry. Mirrors Python `contracts/units.py` `_UNITS` exactly:
-the same 24 keys, the same dimension names, the same factors. Volume
+the same 36 keys, the same dimension names, the same factors. Volume
 base is m³ (factor 1.0), L factor 0.001. `kcal/day`,
 `kcal/capita/day` and `kcal/person/day` are all dimension
 `food_energy_rate_per_capita`, factor 1.0. Mass tonne `t` / `tonne`
-factor 1000 (base kg)."""
+factor 1000 (base kg); `Tg` / `Mt` / `million tonnes` factor 1e9.
+Mass-per-year rates are dimension `mass_rate_year` (base Tg/yr), NOT
+`mass_rate` — see the registry comments on ISSUE-34."""
 const UNIT_REGISTRY = Dict{String, UnitDefinition}(
     "1" => UnitDefinition("dimensionless", 1.0),
     "person" => UnitDefinition("people", 1.0),
@@ -145,6 +147,30 @@ const UNIT_REGISTRY = Dict{String, UnitDefinition}(
     "tonne/day" => UnitDefinition("mass_rate", 1000.0),
     "kWh/day" => UnitDefinition("energy_rate", 1.0),
     "MWh/day" => UnitDefinition("energy_rate", 1000.0),
+    # ISSUE-34 (2026-11-13): teragramme-scale mass. 1 Tg = 1 Mt = 1e9 kg
+    # exactly, so Tg and Mt convert 1:1.
+    "Tg" => UnitDefinition("mass", 1e9),
+    "Mt" => UnitDefinition("mass", 1e9),
+    "million tonnes" => UnitDefinition("mass", 1e9),
+    # ISSUE-34 (2026-11-13): mass-per-year rates live on their OWN
+    # dimension "mass_rate_year" (base Tg/yr), NOT folded into
+    # "mass_rate" (base per-day). Folding them in would smuggle in a
+    # days-per-year assumption; Tg/yr and tonne/day are therefore NOT
+    # interconvertible — a conversion would need a stated days-per-year.
+    "Tg/yr" => UnitDefinition("mass_rate_year", 1.0),
+    "Mt/yr" => UnitDefinition("mass_rate_year", 1.0),
+    "tonne/yr" => UnitDefinition("mass_rate_year", 1e-6),
+    "kg/yr" => UnitDefinition("mass_rate_year", 1e-9),
+    # ISSUE-34 (2026-11-13): percent is dimensionless, factor 0.01 —
+    # 33 percent = 0.33, compatible with "1".
+    "percent" => UnitDefinition("dimensionless", 0.01),
+    "%" => UnitDefinition("dimensionless", 0.01),
+    # ISSUE-34 (2026-11-13): labour time rates. Base is hours/week;
+    # 1 hour/day = 7 hours/week (7-day week). "hours" is total time in
+    # the labour domain (dimension "time", base hour).
+    "hours/week" => UnitDefinition("work_time_rate", 1.0),
+    "hours/day" => UnitDefinition("work_time_rate", 7.0),
+    "hours" => UnitDefinition("time", 1.0),
 )
 
 """Registry lookup: the `UnitDefinition` for `unit`, or `nothing` when

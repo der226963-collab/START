@@ -155,6 +155,30 @@ const UNIT_TABLE: &[(&str, &str, f64)] = &[
     ("tonne/day", "mass_rate", 1000.0),
     ("kWh/day", "energy_rate", 1.0),
     ("MWh/day", "energy_rate", 1000.0),
+    // ISSUE-34 (2026-11-13): teragramme-scale mass. 1 Tg = 1 Mt = 1e9 kg
+    // exactly, so Tg and Mt convert 1:1.
+    ("Tg", "mass", 1e9),
+    ("Mt", "mass", 1e9),
+    ("million tonnes", "mass", 1e9),
+    // ISSUE-34 (2026-11-13): mass-per-year rates live on their OWN
+    // dimension "mass_rate_year" (base Tg/yr), NOT folded into
+    // "mass_rate" (base per-day). Folding them in would smuggle in a
+    // days-per-year assumption; Tg/yr and tonne/day are therefore NOT
+    // interconvertible — a conversion would need a stated days-per-year.
+    ("Tg/yr", "mass_rate_year", 1.0),
+    ("Mt/yr", "mass_rate_year", 1.0),
+    ("tonne/yr", "mass_rate_year", 1e-6),
+    ("kg/yr", "mass_rate_year", 1e-9),
+    // ISSUE-34 (2026-11-13): percent is dimensionless, factor 0.01 —
+    // 33 percent = 0.33, compatible with "1".
+    ("percent", "dimensionless", 0.01),
+    ("%", "dimensionless", 0.01),
+    // ISSUE-34 (2026-11-13): labour time rates. Base is hours/week;
+    // 1 hour/day = 7 hours/week (7-day week). "hours" is total time in
+    // the labour domain (dimension "time", base hour).
+    ("hours/week", "work_time_rate", 1.0),
+    ("hours/day", "work_time_rate", 7.0),
+    ("hours", "time", 1.0),
 ];
 
 /// A unit's dimension and its factor to that dimension's base unit.
@@ -592,7 +616,7 @@ mod tests {
                 .expect("factor parses as f64");
             python.push((key, dim, factor));
         }
-        assert_eq!(python.len(), 24, "expected 24 Python _UNITS keys, parser found {}", python.len());
+        assert_eq!(python.len(), 36, "expected 36 Python _UNITS keys, parser found {}", python.len());
         assert_eq!(UNIT_TABLE.len(), python.len(), "Rust table size must equal Python _UNITS size");
         for (key, dim, factor) in &python {
             match unit_definition(key) {
@@ -756,6 +780,87 @@ mod tests {
         let v = convert(1e300, "tonne", "g").expect("1e300 tonne -> g is finite");
         assert!(v.is_finite() && (v - 1e306).abs() < 1e300);
     }
+    // ---- ISSUE-34 (2026-11-13): the 12 new registry units. ----
+    #[test] fn issue34_new_units_in_registry() {
+        // Teragramme-scale mass: 1 Tg = 1 Mt = 1e9 kg exactly, Tg<->Mt 1:1.
+        assert_eq!(convert(1.0, "Tg", "Mt"), Some(1.0));
+        assert_eq!(convert(1.0, "Mt", "Tg"), Some(1.0));
+        assert_eq!(convert(1.0, "Tg", "kg"), Some(1e9));
+        assert_eq!(convert(1.0, "Mt", "kg"), Some(1e9));
+        assert_eq!(convert(1.0, "million tonnes", "Tg"), Some(1.0));
+        assert_eq!(convert(2.5, "million tonnes", "kg"), Some(2.5e9));
+        assert_eq!(convert(1.0, "Tg", "tonne"), Some(1e6));
+        // Mass-per-year rates, dimension "mass_rate_year" (base Tg/yr).
+        assert_eq!(convert(1.0, "Tg/yr", "Mt/yr"), Some(1.0));
+        // tonne/yr -> kg/yr divides by inexact 1e-9, so 1.0 * 1e-6 /
+        // 1e-9 comes out 999.9999999999999, not 1000.0 — approximate.
+        let v = convert(1.0, "tonne/yr", "kg/yr").expect("tonne/yr -> kg/yr");
+        assert!((v - 1000.0).abs() < 1e-9, "tonne/yr -> kg/yr ≈ 1000, got {v}");
+        assert_eq!(convert(1.0, "kg/yr", "tonne/yr"), Some(0.001));
+        assert_eq!(convert(6.2, "Tg/yr", "tonne/yr"), Some(6.2e6));
+        // Percent: dimensionless, factor 0.01 — 33 percent = 0.33.
+        assert_eq!(convert(33.0, "percent", "1"), Some(0.33));
+        assert_eq!(convert(33.0, "%", "1"), Some(0.33));
+        assert_eq!(convert(0.33, "1", "percent"), Some(33.0));
+        // Labour time rates: base hours/week; 1 hour/day = 7 hours/week.
+        assert_eq!(convert(1.0, "hours/day", "hours/week"), Some(7.0));
+        assert_eq!(convert(7.0, "hours/week", "hours/day"), Some(1.0));
+        assert_eq!(convert(40.0, "hours/week", "hours/week"), Some(40.0));
+        // One evaluate_constraint case per new unit family.
+        // Tg/yr: 5.0 <= 6.2 PASS; 18.2 <= 6.2 FAIL.
+        let mut r = request(5.0, "Tg/yr");
+        r.bound = Some(6.2); r.bound_unit = "Tg/yr".into();
+        assert_eq!(evaluate_constraint(&r).status, CheckStatus::Pass);
+        let mut r = request(18.2, "Tg/yr");
+        r.bound = Some(6.2); r.bound_unit = "Tg/yr".into();
+        assert_eq!(evaluate_constraint(&r).status, CheckStatus::Fail);
+        // Mt/yr: 5.0 Mt/yr = 5.0 Tg/yr <= 6.2 Tg/yr PASS.
+        let mut r = request(5.0, "Mt/yr");
+        r.bound = Some(6.2); r.bound_unit = "Tg/yr".into();
+        assert_eq!(evaluate_constraint(&r).status, CheckStatus::Pass);
+        // tonne/yr / kg/yr: 1e6 tonne/yr = 1e9 kg/yr <= 2e9 kg/yr PASS.
+        let mut r = request(1e6, "tonne/yr");
+        r.bound = Some(2e9); r.bound_unit = "kg/yr".into();
+        assert_eq!(evaluate_constraint(&r).status, CheckStatus::Pass);
+        // Percent: 33 percent == 0.33 dimensionless PASS.
+        let mut r = request(33.0, "percent");
+        r.operator = "==".into(); r.bound = Some(0.33); r.bound_unit = "1".into();
+        assert_eq!(evaluate_constraint(&r).status, CheckStatus::Pass);
+        // hours/week: 40 <= 48 PASS; hours/day: 1 h/day = 7 h/week <= 7 PASS,
+        // 2 h/day = 14 h/week > 7 FAIL.
+        let mut r = request(40.0, "hours/week");
+        r.bound = Some(48.0); r.bound_unit = "hours/week".into();
+        assert_eq!(evaluate_constraint(&r).status, CheckStatus::Pass);
+        let mut r = request(1.0, "hours/day");
+        r.bound = Some(7.0); r.bound_unit = "hours/week".into();
+        assert_eq!(evaluate_constraint(&r).status, CheckStatus::Pass);
+        let mut r = request(2.0, "hours/day");
+        r.bound = Some(7.0); r.bound_unit = "hours/week".into();
+        assert_eq!(evaluate_constraint(&r).status, CheckStatus::Fail);
+        // hours (total time): 8 <= 10 PASS.
+        let mut r = request(8.0, "hours");
+        r.bound = Some(10.0); r.bound_unit = "hours".into();
+        assert_eq!(evaluate_constraint(&r).status, CheckStatus::Pass);
+        // Cross-dimension rejection: Tg/yr vs tonne/day must NOT convert —
+        // different dimensions ("mass_rate_year" vs "mass_rate"); a
+        // conversion would need a stated days-per-year.
+        let mut r = request(5.0, "Tg/yr");
+        r.bound = Some(10.0); r.bound_unit = "tonne/day".into();
+        let out = evaluate_constraint(&r);
+        assert_eq!(out.status, CheckStatus::Unknown);
+        assert_eq!(out.reason_code, "INCOMPATIBLE_UNIT");
+        assert_eq!(convert(5.0, "Tg/yr", "tonne/day"), None);
+        // ISSUE-47 overflow for the NEW units: 1e308 Tg -> g overflows
+        // to inf and must be UNKNOWN / NON_FINITE, never a silent inf.
+        for operator in ["<=", ">=", "=="] {
+            let mut r = request(1e308, "Tg");
+            r.operator = operator.into(); r.bound = Some(1.0); r.bound_unit = "g".into();
+            let out = evaluate_constraint(&r);
+            assert_eq!(out.status, CheckStatus::Unknown, "operator {operator}: Tg overflow must be UNKNOWN");
+            assert_eq!(out.reason_code, "NON_FINITE", "operator {operator}");
+            assert!(out.normalized_value.is_none(), "operator {operator}: no normalised value");
+        }
+    }
     // ---- Cross-checks: agreed verdict on EVERY case in test-vectors.json ----
     #[test] fn crosscheck_all_wire_cases() {
         // (id, request, agreed status) — expected values are the Python-
@@ -775,6 +880,19 @@ mod tests {
         let mut incomp = request(5.0, "L");
         incomp.constraint_id = "incomp".into(); incomp.bound_unit = "kg".into();
         let range = range_request(5.0, "L", Some(2.0), Some(8.0));
+        // ISSUE-34 (2026-11-13) wire cases, mirroring interop/test-vectors.json.
+        let mut tg_pass = request(5.0, "Tg/yr");
+        tg_pass.constraint_id = "mass-rate-year-tg".into(); tg_pass.bound = Some(6.2); tg_pass.bound_unit = "Tg/yr".into();
+        let mut tg_fail = request(18.2, "Tg/yr");
+        tg_fail.constraint_id = "mass-rate-year-tg".into(); tg_fail.bound = Some(6.2); tg_fail.bound_unit = "Tg/yr".into();
+        let mut pct = request(33.0, "percent");
+        pct.constraint_id = "percent-conversion".into(); pct.operator = "==".into(); pct.bound = Some(0.33); pct.bound_unit = "1".into();
+        let mut hrs_pass = request(1.0, "hours/day");
+        hrs_pass.constraint_id = "hours-day-to-week".into(); hrs_pass.bound = Some(7.0); hrs_pass.bound_unit = "hours/week".into();
+        let mut hrs_fail = request(2.0, "hours/day");
+        hrs_fail.constraint_id = "hours-day-to-week".into(); hrs_fail.bound = Some(7.0); hrs_fail.bound_unit = "hours/week".into();
+        let mut tg_incomp = request(5.0, "Tg/yr");
+        tg_incomp.constraint_id = "mass-rate-year-vs-day".into(); tg_incomp.bound = Some(10.0); tg_incomp.bound_unit = "tonne/day".into();
         let cases: Vec<(&str, ConstraintRequest, CheckStatus)> = vec![
             ("food-energy-adequacy", food, CheckStatus::Pass),
             ("mass-tonne", tonne, CheckStatus::Pass),
@@ -784,6 +902,12 @@ mod tests {
             ("fail-litre", fail, CheckStatus::Fail),
             ("incompatible-units", incomp, CheckStatus::Unknown),
             ("range-operator", range, CheckStatus::Pass),
+            ("mass-rate-year-tg-pass", tg_pass, CheckStatus::Pass),
+            ("mass-rate-year-tg-fail", tg_fail, CheckStatus::Fail),
+            ("percent-conversion", pct, CheckStatus::Pass),
+            ("hours-day-to-week-pass", hrs_pass, CheckStatus::Pass),
+            ("hours-day-to-week-fail", hrs_fail, CheckStatus::Fail),
+            ("mass-rate-year-vs-day-incompatible", tg_incomp, CheckStatus::Unknown),
         ];
         for (id, req, expected) in cases {
             assert_eq!(evaluate_constraint(&req).status, expected, "wire case {id}");
@@ -1091,6 +1215,18 @@ mod tests {
             other => panic!("unknown status in test-vectors.json: {other}"),
         }
     }
+    // Verified-status fields are dated (e.g. "rust_verified_2026-11-11");
+    // newer cases carry a later date (ISSUE-34 cases: 2026-11-13).
+    // Pick the latest dated field so old and new cases are both read
+    // correctly.
+    fn verified_status<'a>(case: &'a serde_json::Value, lang: &str) -> &'a str {
+        let prefix = format!("{lang}_verified_");
+        let obj = case.as_object().expect("case must be an object");
+        let mut dated: Vec<&String> = obj.keys().filter(|k| k.starts_with(&prefix)).collect();
+        dated.sort();
+        let key = dated.last().unwrap_or_else(|| panic!("no {lang} verified field in case {}", case["id"]));
+        obj[*key]["status"].as_str().expect("verified status must be a string")
+    }
     #[test] fn consumes_shared_test_vectors_file() {
         let text = include_str!("../../../interop/test-vectors.json");
         let data: serde_json::Value = serde_json::from_str(text)
@@ -1102,18 +1238,18 @@ mod tests {
                     "open_decision remains: {}", entry["id"]);
             }
         }
-        // All 8 wire cases, through evaluate_constraint.
+        // All 14 wire cases, through evaluate_constraint.
         let cases = data["cases"].as_array().expect("cases array");
-        assert_eq!(cases.len(), 8, "expected 8 wire cases");
+        assert_eq!(cases.len(), 14, "expected 14 wire cases");
         for case in cases {
             let id = case["id"].as_str().unwrap();
             let req: ConstraintRequest = serde_json::from_value(case["request"].clone())
                 .unwrap_or_else(|e| panic!("wire case {id} request must deserialize: {e}"));
-            let expected = status_from_str(case["rust_verified_2026-11-11"]["status"].as_str().unwrap());
+            let expected = status_from_str(verified_status(case, "rust"));
             // The file also pins the other languages to the same status.
-            for lang in ["python_verified_2026-11-11", "julia_verified_2026-11-11"] {
-                assert_eq!(case[lang]["status"].as_str().unwrap(),
-                    case["rust_verified_2026-11-11"]["status"].as_str().unwrap(),
+            for lang in ["python", "julia"] {
+                assert_eq!(verified_status(case, lang),
+                    verified_status(case, "rust"),
                     "languages disagree in file for {id}");
             }
             assert_eq!(evaluate_constraint(&req).status, expected, "wire case {id}");

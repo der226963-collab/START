@@ -49,6 +49,27 @@ CONVERSION_CASES = [
     (8, "MWh", 10000, "kWh"),    # 8 MWh = 8000 kWh
     (8, "people", 10, "person"),  # person/people 1:1 (dimension "people")
     (12, "people", 10, "person"),
+    # ISSUE-34 (2026-11-13) new-dimension cases.
+    (8, "Tg", 8, "Mt"),      # 1 Tg = 1 Mt exactly, 1:1
+    (20, "Tg", 8, "Mt"),     # 20 Tg > 8 Mt
+    (1, "Tg", 1e9, "kg"),    # 1 Tg = 1e9 kg
+    (8000, "tonne/yr", 8, "Tg/yr"),   # 8000 tonne/yr = 0.008 Tg/yr
+    (20000000, "tonne/yr", 8, "Tg/yr"),  # 20,000,000 tonne/yr = 20 Tg/yr > 8
+    (1000000, "tonne/yr", 1000000000, "kg/yr"),  # 1e6 tonne/yr = 1e9 kg/yr
+    (33, "percent", 0.33, "1"),  # 33 percent = 0.33 dimensionless
+    (34, "percent", 0.33, "1"),  # 34 percent = 0.34 > 0.33
+    (1, "hours/day", 7, "hours/week"),  # 1 hour/day = 7 hours/week
+    (2, "hours/day", 7, "hours/week"),  # 2 hours/day = 14 hours/week > 7
+]
+
+# Cross-dimension cases that must NOT convert in either language:
+# (value, value_unit, bound, bound_unit) -> UNKNOWN, never PASS.
+# Tg/yr (dimension "mass_rate_year") vs tonne/day ("mass_rate") is the
+# ISSUE-34 case: a conversion would need a stated days-per-year.
+REJECTED_CASES = [
+    (5, "Tg/yr", 10, "tonne/day"),
+    (5, "Tg/yr", 10, "kg/day"),
+    (5, "tonne/day", 10, "Tg/yr"),
 ]
 
 
@@ -108,10 +129,26 @@ class Issue06ConformanceTests(unittest.TestCase):
                              f"Rust {value} {vu} <= {bound} {bu}: got "
                              f"{out['status']}/{out['reason_code']}, Python {expected}")
 
+    def test_cross_dimension_cases_rejected(self):
+        """Cross-dimension conversions are UNKNOWN in both languages,
+        never PASS. ISSUE-34: Tg/yr vs tonne/day must not convert —
+        different dimensions, and a conversion would need a stated
+        days-per-year."""
+        requests = [rust_request(i, v, vu, b, bu)
+                    for i, (v, vu, b, bu) in enumerate(REJECTED_CASES)]
+        results = run_rust(requests)
+        for (value, vu, bound, bu), out in zip(REJECTED_CASES, results):
+            self.assertEqual(python_status(value, vu, bound, bu), "UNKNOWN",
+                             f"Python {value} {vu} <= {bound} {bu} should be UNKNOWN")
+            self.assertEqual(out["status"], "UNKNOWN",
+                             f"Rust {value} {vu} <= {bound} {bu}: got "
+                             f"{out['status']}/{out['reason_code']}, want UNKNOWN")
+            self.assertEqual(out["reason_code"], "INCOMPATIBLE_UNIT")
+
     def test_registry_decision_is_accept_for_every_python_key(self):
         """Explicit per-unit decision table: ACCEPT (convert in-dimension)
         for every Python _UNITS key. No Python key is rejected by Rust."""
-        self.assertEqual(len(_UNITS), 24, "Python registry grew/shrank; update the decision table")
+        self.assertEqual(len(_UNITS), 36, "Python registry grew/shrank; update the decision table")
         for unit in sorted(_UNITS):
             out = run_rust([rust_request(0, 8, unit, 10, unit)])[0]
             self.assertNotEqual(out["reason_code"], "UNKNOWN_UNIT",

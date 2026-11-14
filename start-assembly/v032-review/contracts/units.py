@@ -39,6 +39,30 @@ _UNITS = {
     "tonne/day": UnitDefinition("mass_rate", 1000.0),
     "kWh/day": UnitDefinition("energy_rate", 1.0),
     "MWh/day": UnitDefinition("energy_rate", 1000.0),
+    # ISSUE-34 (2026-11-13): teragramme-scale mass. 1 Tg = 1 Mt = 1e9 kg
+    # exactly, so Tg and Mt convert 1:1.
+    "Tg": UnitDefinition("mass", 1e9),
+    "Mt": UnitDefinition("mass", 1e9),
+    "million tonnes": UnitDefinition("mass", 1e9),
+    # ISSUE-34 (2026-11-13): mass-per-year rates live on their OWN
+    # dimension "mass_rate_year" (base Tg/yr), NOT folded into
+    # "mass_rate" (base per-day). Folding them in would smuggle in a
+    # days-per-year assumption; Tg/yr and tonne/day are therefore NOT
+    # interconvertible — a conversion would need a stated days-per-year.
+    "Tg/yr": UnitDefinition("mass_rate_year", 1.0),
+    "Mt/yr": UnitDefinition("mass_rate_year", 1.0),
+    "tonne/yr": UnitDefinition("mass_rate_year", 1e-6),
+    "kg/yr": UnitDefinition("mass_rate_year", 1e-9),
+    # ISSUE-34 (2026-11-13): percent is dimensionless, factor 0.01 —
+    # 33 percent = 0.33, compatible with "1".
+    "percent": UnitDefinition("dimensionless", 0.01),
+    "%": UnitDefinition("dimensionless", 0.01),
+    # ISSUE-34 (2026-11-13): labour time rates. Base is hours/week;
+    # 1 hour/day = 7 hours/week (7-day week). "hours" is total time in
+    # the labour domain (dimension "time", base hour).
+    "hours/week": UnitDefinition("work_time_rate", 1.0),
+    "hours/day": UnitDefinition("work_time_rate", 7.0),
+    "hours": UnitDefinition("time", 1.0),
 }
 
 

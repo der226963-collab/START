@@ -27,6 +27,17 @@ def load_vectors() -> dict:
         return json.load(f)
 
 
+def verified(case: dict, lang: str) -> dict:
+    """Per-language verified status for a case. Verified fields are
+    dated (e.g. "python_verified_2026-11-11"); newer cases carry a
+    later date (ISSUE-34 cases: 2026-11-13). Pick the latest dated
+    field so old and new cases are both read correctly."""
+    prefix = f"{lang}_verified_"
+    dated = [k for k in case if k.startswith(prefix)]
+    assert dated, f"{case['id']}: no {lang} verified field"
+    return case[sorted(dated)[-1]]
+
+
 class TestVectorsFileTest(unittest.TestCase):
     """The shared file itself: all four decisions recorded, all three
     languages verified to the same status on every case."""
@@ -47,9 +58,9 @@ class TestVectorsFileTest(unittest.TestCase):
         data = load_vectors()
         for case in data["cases"]:
             statuses = {
-                case["python_verified_2026-11-11"]["status"],
-                case["rust_verified_2026-11-11"]["status"],
-                case["julia_verified_2026-11-11"]["status"],
+                verified(case, "python")["status"],
+                verified(case, "rust")["status"],
+                verified(case, "julia")["status"],
                 case["julia_expected"]["status"],
             }
             self.assertEqual(len(statuses), 1, f"{case['id']}: languages disagree in file: {statuses}")
@@ -70,11 +81,11 @@ class TestVectorsFileTest(unittest.TestCase):
 
 
 class TestVectorsWireCasesTest(unittest.TestCase):
-    """All 8 wire cases, driven from the file through the Python adapter."""
+    """All 14 wire cases, driven from the file through the Python adapter."""
 
     def test_wire_cases(self):
         data = load_vectors()
-        self.assertEqual(len(data["cases"]), 8)
+        self.assertEqual(len(data["cases"]), 14)
         for case in data["cases"]:
             with self.subTest(case=case["id"]):
                 expected = case["python_expected"]["status"]

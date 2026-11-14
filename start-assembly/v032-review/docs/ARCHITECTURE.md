@@ -21,13 +21,21 @@ A future material-balance layer must explicitly reconcile opening stock + inflow
 
 `contracts.units` contains a deliberately limited registry and conversion function. It rejects unknown or dimensionally incompatible units. Extend it only with reviewed units and dimensions. Do not assume that similar-looking rates are interchangeable: `kg`, `kg/day` and `kg/capita/day` represent different dimensions.
 
-## Phosphorus / nitrogen / labour coverage (ISSUE-34, 2026-11-11)
+ISSUE-34 (2026-11-13): the registry now has 36 keys, identical in Python (`contracts/units.py`), Rust (`components/rust-kernels/src/lib.rs` `UNIT_TABLE`) and Julia (`components/julia-planning/src/STARTPlanning.jl` `UNIT_REGISTRY`) — 12 added for the nutrients and labour domains: `Tg`, `Mt`, `million tonnes` (mass, factor 1e9 kg); `Tg/yr`, `Mt/yr`, `tonne/yr`, `kg/yr` on their own dimension `mass_rate_year` (base Tg/yr, factors 1.0, 1.0, 1e-6, 1e-9); `percent` and `%` (dimensionless, factor 0.01); `hours/week`, `hours/day` (dimension `work_time_rate`, base hours/week, 1 hour/day = 7 hours/week on a 7-day week) and `hours` (dimension `time`, factor 1.0). Mass-per-year rates are deliberately NOT folded into `mass_rate` (per-day): folding them in would smuggle in a days-per-year assumption, so `Tg/yr` and `tonne/day` are NOT interconvertible — a conversion would need a stated days-per-year. Six new `must_agree` cases in `interop/test-vectors.json` pin the cross-language behaviour. ISSUE-47 overflow behaviour is preserved: a conversion overflowing to infinity raises (Python) / returns unknown (Rust/Julia), never a silent pass.
+
+## Phosphorus / nitrogen / labour coverage (ISSUE-34, 2026-11-11; built 2026-11-13)
 
 What exists: the P/N/labour constraint surface from v0.3.1 is present, via ISSUE-01, in `contracts/plan_limits.py` and the engine loads it by default (`engine/planning_engine.py:43` — `load_plan_limits()` in `PlanningEngine.__init__`; `check_plan()` refuses to run if it could not load). Verified live 2026-11-11: phosphorus 5.0 vs the 6.2 Tg/yr boundary → PASS; paid work 40 h/week vs the 48 h ILO threshold → PASS; nitrogen 165 Tg/yr → UNKNOWN with boundary None, never PASS; a plan containing all three has overall status UNKNOWN. Nitrogen is explicitly bound-less: the snapshot records fixation as more than twice its boundary but stores no exact boundary value, so no pass/fail is claimed.
 
-What does not exist (regression vs the old planning layer, documented explicitly here rather than fixed): the unit registry cannot express the units those domains need — `Tg/yr`, `million tonnes`, `percent`, and `hours/week` (also `%` and `Tg`) are absent from all three registries (Python `contracts/units.py`, Rust `components/rust-kernels/src/lib.rs` `UNIT_TABLE`, Julia `components/julia-planning/src/STARTPlanning.jl` `UNIT_REGISTRY`), which share exactly the same 24 keys; the closest existing units are `tonne` (mass) and `kcal/capita/day`. There is no full phosphorus, nitrogen, or labour domain modelling beyond the constraint surface above — no P/N/labour domain module, no stock-and-flow or process model for those nutrients or for labour. And `Scenario.proposed_changes` accepts finite numbers only (`contracts/scenarios.py:23-25`, enforced in `__post_init__`), so a scenario can never change `source_ids`, geography, or any non-numeric field (verified live: a non-numeric change raises `ValueError`).
+Built 2026-11-13 — registry units: the 12 units those domains need are now in all three registries, which share exactly the same 36 keys (was 24): `Tg` / `Mt` / `million tonnes` (mass, 1e9 kg), `Tg/yr` / `Mt/yr` / `tonne/yr` / `kg/yr` on their own dimension `mass_rate_year` (base Tg/yr — NOT folded into `mass_rate`, so `Tg/yr` and `tonne/day` are not interconvertible), `percent` / `%` (dimensionless, 0.01), `hours/week` / `hours/day` (dimension `work_time_rate`, 1 hour/day = 7 hours/week) and `hours` (dimension `time`). See "Units" above; six new `must_agree` cases in `interop/test-vectors.json` pin the behaviour in all three languages.
 
-The remainder — registry units for those domains, any full domain modelling beyond the constraint surface, and non-numeric scenario changes — is recorded as DEFERRED: it is new modelling capability, not a bug fix, and needs a decision on whether v0.3.2 is meant to supersede the old planning layer's full domain surface before anything is built.
+Built 2026-11-13 — nutrients domain: `domains/nutrients/` holds one `NutrientsDomain` (`domain_id "nutrients"`) covering phosphorus and nitrogen, which share one balance shape. Phosphorus: applied 18.2 Tg/yr against the stored 6.2 Tg/yr boundary → FAIL, excess 12.0 Tg/yr, ratio 2.94. The stock-and-flow balance is `soil_change = inputs − uptake − losses` in Tg/yr, and uptake/losses are required explicit inputs — missing or `None` returns `INSUFFICIENT_INPUT`, never a silently-zeroed balance (the ISSUE-15 rule, as for food imports/losses). A caller-supplied phosphorus boundary must equal the stored snapshot bound exactly; a differing value is refused, never applied. Nitrogen: fixation 165 Tg/yr is reported, the boundary stays `None`, and the evaluation is always UNKNOWN with evidence quoting "more than twice its boundary" — no value of fixation can make it PASS. The v0.3.1 teaching example (100 applied / 50 uptake / 30 losses / 20 soil change) is used only as a labelled test input, never as real data. There is no independent verifier for this domain, so a completed run is `PARTIALLY_VERIFIED` by design (see "Adding a domain", rule 5). The example `examples/global_nutrient_balance.py` honestly shows `INSUFFICIENT_INPUT` for the balance — the snapshot carries no uptake/losses and inventing them is forbidden — and reproduces the boundary numbers through the domain's own constraint constructors, which need no uptake/losses.
+
+Built 2026-11-13 — labour domain: `domains/labour/` holds `LabourDomain` (`domain_id "labour"`). Paid work hours/week are checked against the 48 h ILO long-hours threshold read from the stored plan limits: 40 and 43 h/week PASS, 55 FAIL. The snapshot context values — employed average 43 h/week, all-adults average 25 h/week (2026, Gethin and Saez IMF dataset) — are reported as context only and are not checked against the threshold; only the caller's stated paid-work figure is checked. Unpaid care: 16.4 billion hours/day (ILO 2018) split by the stated women's share 76.2% → women 12.4968 / men 3.9032 billion hours/day. Care per person is computed only with an explicitly supplied population (8.2e9 → 2.0 h/person/day), and combining the 2018 care figures with a 2024 population is a year mismatch stated as a limitation whenever both are combined. There is no independent verifier for this domain either, so a completed run is likewise `PARTIALLY_VERIFIED` by design.
+
+Built 2026-11-13 — non-numeric scenario changes: `Scenario.proposed_changes` now accepts finite numbers, non-empty strings, and lists of non-empty strings (`contracts/scenarios.py`, enforced in `__post_init__`). Rejected: bool, `None`, dict/tuple/set, non-finite numbers, and empty/whitespace-only strings (inside a list or on their own). The companion allow-list `DomainModule.scenario_non_numeric_change_fields` (default `None` = none permitted) decides which fields may take a non-numeric change, enforced by the shared `_check_scenario_changes` by value shape — a numeric change needs its key in `scenario_change_fields`, a str/list change needs its key in `scenario_non_numeric_change_fields`. Nutrients and labour both declare `{"source_ids", "geography", "period"}`; food declares nothing non-numeric, so its scenario changes stay numeric-only. An explicit proposed change to `geography`/`period` wins over the base request (`request.update` runs before the `setdefault` defaults); the ISSUE-25 base-wins rule covers scenario defaults only. An empty list `[]` as a change value constructs — vacuously a list of non-empty strings — pinned by test.
+
+What remains undone: (a) there is no independent mathematical verifier for the nutrients or labour domains, so both stay `PARTIALLY_VERIFIED` by design — that is the "Adding a domain" rule 5 outcome, not an oversight, and closing it means writing a verifier, not re-checking the arithmetic; (b) the nutrients example cannot show a completed soil-change balance from snapshot values alone, because the snapshot carries no uptake/losses and inventing them is forbidden — `examples/global_nutrient_balance.py` reports `INSUFFICIENT_INPUT` and shows the boundary reproduction instead. Nothing else is known to remain: the 2026-11-11 DEFERRED record for this issue — registry units, full domain modelling, non-numeric scenario changes — is closed by the work above.
 
 ## Time and geography
 
@@ -261,9 +269,13 @@ both the generic and the food paths — a base request's real
 geography/period are never overwritten with the scenario's defaults
 ("unspecified"). Food used to overwrite them unconditionally, which
 contradicted the documented generic convention; that override is
-removed. A base without them still gets the scenario's values.
+removed. A base without them still gets the scenario's values. The
+base-wins rule covers scenario *defaults* only: an *explicit*
+proposed change to `geography`/`period` (ISSUE-34, 2026-11-13 — see
+below) wins over the base request, because `request.update` runs
+before the `setdefault` defaults.
 
-**Change allow-list (ISSUE-33/38, 2026-11-11):** one rule, not two.
+**Change allow-list (ISSUE-33/38/34, 2026-11-11; non-numeric changes 2026-11-13):** one rule, not two.
 The generic path used to apply any `proposed_changes` key, including
 injected keys such as `"__injected__"`, while food raised
 `ValueError` on unknown fields. Both now reject unknown fields the
@@ -278,6 +290,23 @@ mechanism, this attribute, driven by the schema set Food already
 had. The base request itself is not allow-listed here: it is a full
 domain request, checked later by the domain's own `validate_inputs`
 (food rejects unknown request fields).
+
+Non-numeric changes (ISSUE-34, 2026-11-13): `Scenario.proposed_changes`
+also accepts non-empty strings and lists of non-empty strings — the
+forms a scenario needs to change `source_ids`, `geography`, or
+`period`. The value shape is checked in `Scenario.__post_init__`
+(`contracts/scenarios.py`); which field may take which form is
+decided by a companion allow-list,
+`DomainModule.scenario_non_numeric_change_fields` (default `None` =
+none permitted), enforced by the same shared
+`DomainModule._check_scenario_changes` by value shape — a numeric
+change needs its key in `scenario_change_fields`, a str/list change
+needs its key in `scenario_non_numeric_change_fields`. Nutrients and
+labour both declare `{"source_ids", "geography", "period"}`; food
+declares nothing non-numeric, so its scenario changes stay
+numeric-only. Bool, `None`, dict/tuple/set, non-finite numbers and
+empty strings are rejected at construction; an empty list `[]`
+constructs (vacuously a list of non-empty strings, pinned by test).
 
 ## Adding a domain
 

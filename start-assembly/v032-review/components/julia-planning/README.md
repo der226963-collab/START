@@ -14,8 +14,9 @@ Faithful Julia implementation of the START planning/constraint contract
   so neither does this module; an objective is a declared aim, not a
   computed score. Constraint evaluation returns the normalized value
   in `ConstraintResult`.
-- Unit registry — exactly the 24 keys of Python
-  `contracts/units.py`, same dimensions/factors, with conversion.
+- Unit registry — exactly the 36 keys of Python
+  `contracts/units.py` (24 original + 12 ISSUE-34 additions, 2026-11-13),
+  same dimensions/factors, with conversion.
   Unknown or incompatible units give UNKNOWN, never PASS.
 - Statuses — exactly the five contract strings `PASS`, `FAIL`,
   `UNKNOWN`, `NOT_CHECKED`, `INCOMPLETE`.
@@ -43,11 +44,12 @@ alongside the new implementation.
 
 ## Tests
 
-`julia --project=. test/runtests.jl` — 256 tests, including a
-conformance test asserting the exact 24-key registry, an ISSUE-07
+`julia --project=. test/runtests.jl` — 315 tests (2026-11-13, ISSUE-34),
+including a
+conformance test asserting the exact 36-key registry, an ISSUE-07
 testset driving every invalid/empty-input path (native + wire +
 aggregation) and asserting every emitted status is in the exact
-five-status vocabulary, and a test that drives all 8 wire + 2
+five-status vocabulary, and a test that drives all 14 wire + 2
 aggregation + 3 version cases from
 `interop/test-vectors.json` and asserts agreement with the
 Python/Rust verified values pinned in the file.

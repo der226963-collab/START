@@ -47,3 +47,463 @@ A general agent can retrieve information, use tools, reason in steps, and critiq
 Why keep planning and language separate?
 ### Response:
 Language can sound confident while being wrong. Arithmetic can be checked. Keeping them separate means a plan is checked by calculation under hard limits, explained by language, and decided by people, not by a model alone.
+
+### Instruction:
+What is the world's population, and where is it heading?
+### Response:
+About 8.2 billion people in 2024, in the UN World Population Prospects 2024. The same projection peaks at about 10.3 billion in the mid-2080s. A projection is not a fact.
+
+### Instruction:
+How much food energy does the world supply per person?
+### Response:
+About 3000 kilocalories per capita per day in 2023, from FAO Food Balance Sheets. Supply is not intake, and an average hides distribution. Some people get too little while the average looks fine.
+
+### Instruction:
+How much cereal does the world produce?
+### Response:
+About 3100 million tonnes in 2023, from FAO FAOSTAT. Cereals are the leading primary crop group.
+
+### Instruction:
+What share of electricity is renewable?
+### Response:
+Just over 30 percent in 2023, from Ember via Our World in Data. The renewable share of primary energy is lower, 14.6 percent in 2023, because electricity is only part of energy use.
+
+### Instruction:
+How much carbon dioxide does each person produce?
+### Response:
+About 4.7 tonnes of fossil carbon dioxide per person in 2023, from Our World in Data and the Global Carbon Project. It has stayed just below 5 tonnes per person for over a decade.
+
+### Instruction:
+What is steel's share of emissions?
+### Response:
+Steel production was about 1892 million tonnes in 2023, and steel carbon dioxide about 2800 million tonnes, about 8 percent of global greenhouse gases.
+
+### Instruction:
+What is cement's footprint?
+### Response:
+Cement carbon dioxide was about 2300 million tonnes in 2023, and the world average is about 530 kilograms of cement per person per year. Use these as orders of magnitude, not exact plant data.
+
+### Instruction:
+How should a community start a plan?
+### Response:
+Start small and pilot: one street, one food hub, one energy cooperative, then scale what works. Do not plan the whole world before testing anything.
+
+### Instruction:
+What does hard limits first mean?
+### Response:
+Land, water, energy, and carbon are checked before anything else. A plan that breaks a hard limit does not proceed, whatever it promises.
+
+### Instruction:
+What is the difference between supply and intake?
+### Response:
+Supply is what is available. Intake is what people actually eat. An average supply figure can look fine while some people go hungry.
+
+### Instruction:
+When should the model say it does not know?
+### Response:
+When a claim has no stored boundary and no tool result behind it. That is unknown, not passed. Guessing is worse than saying unknown.
+
+### Instruction:
+How should labour and care be shared?
+### Response:
+Count unpaid care work, share it fairly, and let necessary work time fall as machines do more. Do not assume care is free.
+
+### Instruction:
+What counts as care work?
+### Response:
+Cooking, cleaning, childcare, eldercare, and nursing sick family members without pay. It is work, even though it is unpaid.
+
+### Instruction:
+How many hours of unpaid care work happen each day?
+### Response:
+About 16.4 billion hours per day, according to ILO in 2018. That is comparable to 2 billion people working 8 hour shifts without compensation.
+
+### Instruction:
+Who does most unpaid care work?
+### Response:
+Women do about 76.2 percent of it, according to ILO in 2018, spending on average 3.2 times more time on these tasks than men.
+
+### Instruction:
+What is unpaid care work worth?
+### Response:
+About 9 percent of global GDP, roughly 11 trillion US dollars, according to ILO in 2018. It is real value that is not counted in wages.
+
+### Instruction:
+How many women are outside paid work because of care?
+### Response:
+About 708 million women aged 15 and over in 2023, compared with 40 million men, according to ILO. Care responsibilities keep far more women than men out of paid work.
+
+### Instruction:
+What happens to necessary work time as machines do more?
+### Response:
+It should fall, and the freed time should be shared. Do not hide labour by moving it to unpaid care, to women, or to another country.
+
+### Instruction:
+How much of the world's food is grown in soil?
+### Response:
+About 95 percent of world food is grown in soil, according to FAO. About a third of soils are moderately to highly degraded, and FAO warns that could rise to 90 percent by 2050 if trends continue.
+
+### Instruction:
+How warm was 2024?
+### Response:
+The warmest year on record in NASA analysis, about 1.28 degrees Celsius above the 1951-1980 average and about 1.47 degrees above the 1850-1900 average.
+
+### Instruction:
+How much of the world's energy do buildings use?
+### Response:
+About 32 percent of global energy and 34 percent of global carbon dioxide, from UNEP. Buildings and construction are a large share of both.
+
+### Instruction:
+How many people lack adequate housing?
+### Response:
+Up to 3.4 billion people, about 42 percent of humanity, from UN-Habitat. About 1.16 billion urban residents live in slums or informal settlements.
+
+### Instruction:
+What share of transport emissions come from roads?
+### Response:
+About three quarters of transport carbon dioxide in 2023. Transport is about 23 percent of world energy-related carbon dioxide.
+
+### Instruction:
+How much renewable capacity was added in 2023?
+### Response:
+About 510 gigawatts, from IEA Renewables 2023. Solar was about three quarters of the additions.
+
+### Instruction:
+How much phosphorus can cropland take each year?
+### Response:
+The regional boundary is 6.2 teragrams of phosphorus per year. Current application is about 18.2 teragrams per year, an excess of 12.0 teragrams per year. Check a plan against the boundary, do not guess it.
+
+### Instruction:
+What is the limit on phosphorus for farmland?
+### Response:
+The regional boundary is 6.2 teragrams of phosphorus per year. Current application is about 18.2 teragrams per year, an excess of 12.0 teragrams per year. Check a plan against the boundary, do not guess it.
+
+### Instruction:
+How do you check whether a plan works?
+### Response:
+Use a calculation layer, not language alone. Check food supply against need, phosphorus against its boundary, and work hours against the 48 hour threshold. Report anything without a stored boundary as unknown, not passed. People decide the plan.
+
+### Instruction:
+What should a plan be checked against?
+### Response:
+Use a calculation layer, not language alone. Check food supply against need, phosphorus against its boundary, and work hours against the 48 hour threshold. Report anything without a stored boundary as unknown, not passed. People decide the plan.
+
+### Instruction:
+How is weather different from climate?
+### Response:
+Weather is the state of the atmosphere at a place and time. Climate is the pattern of weather over a long time, usually 30 years. A single hot day is weather, not climate.
+
+### Instruction:
+What is the difference between a hot day and climate change?
+### Response:
+Weather is the state of the atmosphere at a place and time. Climate is the pattern of weather over a long time, usually 30 years. A single hot day is weather, not climate.
+
+### Instruction:
+What is the language model for in this project?
+### Response:
+It drafts and summarises text. It does not allocate food, energy, housing, or care, and it does not decide anything. A separate planning layer checks allocations, and a human assembly decides.
+
+### Instruction:
+What can the language model do, and what can it not do?
+### Response:
+It drafts and summarises text. It does not allocate food, energy, housing, or care, and it does not decide anything. A separate planning layer checks allocations, and a human assembly decides.
+
+### Instruction:
+How should a predictive model be tested?
+### Response:
+Backtest it. Train on earlier years, test on later years you did not train on, and report error and bias. A linear trend trained to 1999 under-predicts temperature and carbon dioxide in 2000 to 2025, so it is a baseline to beat, not a forecast.
+
+### Instruction:
+What is backtesting?
+### Response:
+Backtest it. Train on earlier years, test on later years you did not train on, and report error and bias. A linear trend trained to 1999 under-predicts temperature and carbon dioxide in 2000 to 2025, so it is a baseline to beat, not a forecast.
+
+### Instruction:
+What does unpaid care work include?
+### Response:
+Unpaid care work is cooking, cleaning, childcare, eldercare, and nursing family members without pay. About 16.4 billion hours per day are spent on it, and women do about 76.2 percent of it. A plan must count it, share it fairly, and not assume it is free.
+
+### Instruction:
+Which tasks count as unpaid care work?
+### Response:
+Unpaid care work is cooking, cleaning, childcare, eldercare, and nursing family members without pay. About 16.4 billion hours per day are spent on it, and women do about 76.2 percent of it. A plan must count it, share it fairly, and not assume it is free.
+
+### Instruction:
+How is soil nutrient balance worked out?
+### Response:
+Nutrient balance equals inputs minus outputs minus losses. If inputs exceed outputs and losses, nutrients build up in soil and water. If inputs are less, soil fertility falls. Test soil before adding fertiliser.
+
+### Instruction:
+What happens when nutrient inputs exceed outputs?
+### Response:
+Nutrient balance equals inputs minus outputs minus losses. If inputs exceed outputs and losses, nutrients build up in soil and water. If inputs are less, soil fertility falls. Test soil before adding fertiliser.
+
+### Instruction:
+What should an agent do when it cannot check an answer?
+### Response:
+Say it does not have a tool result, and do not guess. Retrieve local data first, call a calculation tool if one fits, critique the answer, and flag that a human decision is required for any plan or allocation.
+
+### Instruction:
+How should an agent respond to a question it has no tool result for?
+### Response:
+Say it does not have a tool result, and do not guess. Retrieve local data first, call a calculation tool if one fits, critique the answer, and flag that a human decision is required for any plan or allocation.
+
+### Instruction:
+What can a general agent do?
+### Response:
+A general agent can retrieve information, use tools, reason in steps, and critique its own answer across many tasks. That is not AGI. AGI has not been achieved. This agent is narrow, auditable, and stops at a human decision.
+
+### Instruction:
+Is a general agent the same as AGI?
+### Response:
+A general agent can retrieve information, use tools, reason in steps, and critique its own answer across many tasks. That is not AGI. AGI has not been achieved. This agent is narrow, auditable, and stops at a human decision.
+
+### Instruction:
+Why separate planning from language?
+### Response:
+Language can sound confident while being wrong. Arithmetic can be checked. Keeping them separate means a plan is checked by calculation under hard limits, explained by language, and decided by people, not by a model alone.
+
+### Instruction:
+Why should a plan be checked by calculation and not just by language?
+### Response:
+Language can sound confident while being wrong. Arithmetic can be checked. Keeping them separate means a plan is checked by calculation under hard limits, explained by language, and decided by people, not by a model alone.
+
+### Instruction:
+How many people are there in the world?
+### Response:
+About 8.2 billion people in 2024, in the UN World Population Prospects 2024. The same projection peaks at about 10.3 billion in the mid-2080s. A projection is not a fact.
+
+### Instruction:
+Where is world population heading?
+### Response:
+About 8.2 billion people in 2024, in the UN World Population Prospects 2024. The same projection peaks at about 10.3 billion in the mid-2080s. A projection is not a fact.
+
+### Instruction:
+How much food energy is supplied per person each day?
+### Response:
+About 3000 kilocalories per capita per day in 2023, from FAO Food Balance Sheets. Supply is not intake, and an average hides distribution. Some people get too little while the average looks fine.
+
+### Instruction:
+How many calories of food does the world supply per person?
+### Response:
+About 3000 kilocalories per capita per day in 2023, from FAO Food Balance Sheets. Supply is not intake, and an average hides distribution. Some people get too little while the average looks fine.
+
+### Instruction:
+How much cereal is produced in the world?
+### Response:
+About 3100 million tonnes in 2023, from FAO FAOSTAT. Cereals are the leading primary crop group.
+
+### Instruction:
+What is the world's cereal output?
+### Response:
+About 3100 million tonnes in 2023, from FAO FAOSTAT. Cereals are the leading primary crop group.
+
+### Instruction:
+What fraction of electricity comes from renewables?
+### Response:
+Just over 30 percent in 2023, from Ember via Our World in Data. The renewable share of primary energy is lower, 14.6 percent in 2023, because electricity is only part of energy use.
+
+### Instruction:
+How much of the world's electricity is renewable?
+### Response:
+Just over 30 percent in 2023, from Ember via Our World in Data. The renewable share of primary energy is lower, 14.6 percent in 2023, because electricity is only part of energy use.
+
+### Instruction:
+How much carbon dioxide does one person produce in a year?
+### Response:
+About 4.7 tonnes of fossil carbon dioxide per person in 2023, from Our World in Data and the Global Carbon Project. It has stayed just below 5 tonnes per person for over a decade.
+
+### Instruction:
+What is the average person's fossil CO2?
+### Response:
+About 4.7 tonnes of fossil carbon dioxide per person in 2023, from Our World in Data and the Global Carbon Project. It has stayed just below 5 tonnes per person for over a decade.
+
+### Instruction:
+How much does steel production emit?
+### Response:
+Steel production was about 1892 million tonnes in 2023, and steel carbon dioxide about 2800 million tonnes, about 8 percent of global greenhouse gases.
+
+### Instruction:
+What share of greenhouse gases comes from steel?
+### Response:
+Steel production was about 1892 million tonnes in 2023, and steel carbon dioxide about 2800 million tonnes, about 8 percent of global greenhouse gases.
+
+### Instruction:
+What is cement's carbon footprint?
+### Response:
+Cement carbon dioxide was about 2300 million tonnes in 2023, and the world average is about 530 kilograms of cement per person per year. Use these as orders of magnitude, not exact plant data.
+
+### Instruction:
+How much CO2 does cement produce?
+### Response:
+Cement carbon dioxide was about 2300 million tonnes in 2023, and the world average is about 530 kilograms of cement per person per year. Use these as orders of magnitude, not exact plant data.
+
+### Instruction:
+How does a community begin planning?
+### Response:
+Start small and pilot: one street, one food hub, one energy cooperative, then scale what works. Do not plan the whole world before testing anything.
+
+### Instruction:
+Where should a community start when making a plan?
+### Response:
+Start small and pilot: one street, one food hub, one energy cooperative, then scale what works. Do not plan the whole world before testing anything.
+
+### Instruction:
+What are hard limits in planning?
+### Response:
+Land, water, energy, and carbon are checked before anything else. A plan that breaks a hard limit does not proceed, whatever it promises.
+
+### Instruction:
+Why check land, water, energy and carbon first?
+### Response:
+Land, water, energy, and carbon are checked before anything else. A plan that breaks a hard limit does not proceed, whatever it promises.
+
+### Instruction:
+How is food supply different from what people eat?
+### Response:
+Supply is what is available. Intake is what people actually eat. An average supply figure can look fine while some people go hungry.
+
+### Instruction:
+Why can average supply look fine while people go hungry?
+### Response:
+Supply is what is available. Intake is what people actually eat. An average supply figure can look fine while some people go hungry.
+
+### Instruction:
+When should the model admit it does not know?
+### Response:
+When a claim has no stored boundary and no tool result behind it. That is unknown, not passed. Guessing is worse than saying unknown.
+
+### Instruction:
+What should the model do when a claim has no stored boundary?
+### Response:
+When a claim has no stored boundary and no tool result behind it. That is unknown, not passed. Guessing is worse than saying unknown.
+
+### Instruction:
+How should work and care be divided fairly?
+### Response:
+Count unpaid care work, share it fairly, and let necessary work time fall as machines do more. Do not assume care is free.
+
+### Instruction:
+What is the fair way to share labour and care?
+### Response:
+Count unpaid care work, share it fairly, and let necessary work time fall as machines do more. Do not assume care is free.
+
+### Instruction:
+Which jobs count as care work?
+### Response:
+Cooking, cleaning, childcare, eldercare, and nursing sick family members without pay. It is work, even though it is unpaid.
+
+### Instruction:
+What tasks are considered care work?
+### Response:
+Cooking, cleaning, childcare, eldercare, and nursing sick family members without pay. It is work, even though it is unpaid.
+
+### Instruction:
+How much time is spent on unpaid care each day?
+### Response:
+About 16.4 billion hours per day, according to ILO in 2018. That is comparable to 2 billion people working 8 hour shifts without compensation.
+
+### Instruction:
+What is the daily total of unpaid care hours?
+### Response:
+About 16.4 billion hours per day, according to ILO in 2018. That is comparable to 2 billion people working 8 hour shifts without compensation.
+
+### Instruction:
+Who performs most unpaid care work?
+### Response:
+Women do about 76.2 percent of it, according to ILO in 2018, spending on average 3.2 times more time on these tasks than men.
+
+### Instruction:
+Do men or women do more unpaid care work?
+### Response:
+Women do about 76.2 percent of it, according to ILO in 2018, spending on average 3.2 times more time on these tasks than men.
+
+### Instruction:
+How much is unpaid care work valued at?
+### Response:
+About 9 percent of global GDP, roughly 11 trillion US dollars, according to ILO in 2018. It is real value that is not counted in wages.
+
+### Instruction:
+What share of global GDP is unpaid care work?
+### Response:
+About 9 percent of global GDP, roughly 11 trillion US dollars, according to ILO in 2018. It is real value that is not counted in wages.
+
+### Instruction:
+How many women stay out of paid work due to care duties?
+### Response:
+About 708 million women aged 15 and over in 2023, compared with 40 million men, according to ILO. Care responsibilities keep far more women than men out of paid work.
+
+### Instruction:
+How does care keep women out of the workforce?
+### Response:
+About 708 million women aged 15 and over in 2023, compared with 40 million men, according to ILO. Care responsibilities keep far more women than men out of paid work.
+
+### Instruction:
+Should necessary work time fall as machines do more?
+### Response:
+It should fall, and the freed time should be shared. Do not hide labour by moving it to unpaid care, to women, or to another country.
+
+### Instruction:
+What should happen to working time when machines take over tasks?
+### Response:
+It should fall, and the freed time should be shared. Do not hide labour by moving it to unpaid care, to women, or to another country.
+
+### Instruction:
+What share of world food comes from soil?
+### Response:
+About 95 percent of world food is grown in soil, according to FAO. About a third of soils are moderately to highly degraded, and FAO warns that could rise to 90 percent by 2050 if trends continue.
+
+### Instruction:
+How much food is grown in soil rather than elsewhere?
+### Response:
+About 95 percent of world food is grown in soil, according to FAO. About a third of soils are moderately to highly degraded, and FAO warns that could rise to 90 percent by 2050 if trends continue.
+
+### Instruction:
+Was 2024 the warmest year on record?
+### Response:
+The warmest year on record in NASA analysis, about 1.28 degrees Celsius above the 1951-1980 average and about 1.47 degrees above the 1850-1900 average.
+
+### Instruction:
+How much warmer was 2024 than the 1951-1980 average?
+### Response:
+The warmest year on record in NASA analysis, about 1.28 degrees Celsius above the 1951-1980 average and about 1.47 degrees above the 1850-1900 average.
+
+### Instruction:
+What share of global energy goes to buildings?
+### Response:
+About 32 percent of global energy and 34 percent of global carbon dioxide, from UNEP. Buildings and construction are a large share of both.
+
+### Instruction:
+How much energy and CO2 come from buildings?
+### Response:
+About 32 percent of global energy and 34 percent of global carbon dioxide, from UNEP. Buildings and construction are a large share of both.
+
+### Instruction:
+How many people live without adequate housing?
+### Response:
+Up to 3.4 billion people, about 42 percent of humanity, from UN-Habitat. About 1.16 billion urban residents live in slums or informal settlements.
+
+### Instruction:
+What share of humanity lacks a decent home?
+### Response:
+Up to 3.4 billion people, about 42 percent of humanity, from UN-Habitat. About 1.16 billion urban residents live in slums or informal settlements.
+
+### Instruction:
+How much of transport CO2 comes from road vehicles?
+### Response:
+About three quarters of transport carbon dioxide in 2023. Transport is about 23 percent of world energy-related carbon dioxide.
+
+### Instruction:
+What is the road share of transport emissions?
+### Response:
+About three quarters of transport carbon dioxide in 2023. Transport is about 23 percent of world energy-related carbon dioxide.
+
+### Instruction:
+How much new renewable capacity was built in 2023?
+### Response:
+About 510 gigawatts, from IEA Renewables 2023. Solar was about three quarters of the additions.
+
+### Instruction:
+What was the renewable capacity addition in 2023?
+### Response:
+About 510 gigawatts, from IEA Renewables 2023. Solar was about three quarters of the additions.

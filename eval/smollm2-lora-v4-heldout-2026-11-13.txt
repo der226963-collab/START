@@ -1,0 +1,3 @@
+adapter loaded from checkpoints/smollm2-lora-mix-v4/checkpoint.pt
+file: eval/heldout_text.txt  chars: 3364  tokens: 804  loss: 4.1344  perplexity: 62.5
+Lower loss is better. Perplexity is exp(loss); it is not a quality judgement, only a fit measure.

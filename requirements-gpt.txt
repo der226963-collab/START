@@ -3,3 +3,9 @@
 # Install the CPU build unless you have a GPU with CUDA:
 #   pip install -r requirements-gpt.txt
 torch
+# Needed by the SmolLM2 loader (mini_ai/gpt/smollm2.py) and the
+# LoRA fine-tuning scripts: safetensors reads model.safetensors,
+# tokenizers reads tokenizer.json. Pinned to the versions verified
+# locally on 2026-11-13.
+safetensors==0.8.0
+tokenizers==0.23.3

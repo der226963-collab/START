@@ -1,0 +1,15 @@
+{
+  "kind": "plan_request",
+  "payload": {
+    "geography": "teaching-example",
+    "nitrogen_fixation_tg_per_year": 100,
+    "nitrogen_losses_tg_per_year": 30,
+    "nitrogen_uptake_tg_per_year": 50,
+    "period": "teaching",
+    "source_ids": [
+      "v031-teaching-example"
+    ]
+  },
+  "saved_at": "2026-11-14T05:09:58.513734Z",
+  "schema_version": "1.0.0"
+}

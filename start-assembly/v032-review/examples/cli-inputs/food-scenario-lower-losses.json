@@ -1,0 +1,35 @@
+{
+  "kind": "scenario",
+  "payload": {
+    "assumptions": [
+      "Example only \u2014 not a real community or a real plan."
+    ],
+    "description": "Same community, food losses cut from 8% to 2%.",
+    "geography": "community-example",
+    "metadata": {
+      "base_request": {
+        "geography": "community-example",
+        "imports_kcal_per_capita_per_day": 100,
+        "losses_fraction": 0.08,
+        "period": "2026",
+        "population": 100000,
+        "requirement_kcal_per_capita_per_day": 2500,
+        "source_ids": [
+          "example-source-not-real"
+        ],
+        "supply_kcal_per_capita_per_day": 2800
+      }
+    },
+    "name": "Same community, food losses cut from 8% to 2%.",
+    "period": "2026",
+    "proposed_changes": {
+      "losses_fraction": 0.02
+    },
+    "scenario_id": "food-scenario-lower-losses",
+    "source_ids": [
+      "example-source-not-real"
+    ]
+  },
+  "saved_at": "2026-11-14T05:09:58.444393Z",
+  "schema_version": "1.0.0"
+}

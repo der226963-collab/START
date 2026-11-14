@@ -24,8 +24,12 @@ in a domain with no independent verifier returns ``ok: False`` with
 every engine result path.
 """
 from __future__ import annotations
+
+import logging
 from typing import Any
+
 from domains.base import DomainModule
+from engine.event_log import log_event
 from engine.verification import verify_domain_result
 from contracts.plan_limits import PlanLimits, check_plan_limits, load_plan_limits
 from contracts.statuses import CalculationStatus, CheckStatus
@@ -51,9 +55,19 @@ class PlanningEngine:
         bound raise ValueError (see contracts.plan_limits); they are
         never silently applied.
         """
+        log_event("engine", "engine.check_plan.started",
+                  message="Plan check started")
         if self.plan_limits is None:
+            log_event("engine", "engine.check_plan.failed", level=logging.ERROR,
+                      message="Plan limits could not be loaded; refusing to check a plan",
+                      reason="plan_limits_unavailable")
             raise RuntimeError("Default plan limits could not be loaded from the snapshot; refusing to check a plan against no limits.")
-        return check_plan_limits(plan, limits=self.plan_limits, overrides=overrides)
+        result = check_plan_limits(plan, limits=self.plan_limits, overrides=overrides)
+        log_event("engine", "engine.check_plan.completed",
+                  message="Plan check completed",
+                  overall_status=result["overall_status"],
+                  failed_count=result["failed_count"])
+        return result
 
     def register(self, domain: DomainModule) -> None:
         domain_id = getattr(domain, "domain_id", None)
@@ -104,6 +118,10 @@ class PlanningEngine:
         return [value if isinstance(value, str) else str(value)]
 
     def run(self, domain_id: str, request: dict[str, Any]) -> dict[str, Any]:
+        # ISSUE-27: metadata-only events (domain_id, statuses, counts).
+        # Never a request or result payload at INFO or above.
+        log_event("engine", "engine.run.started",
+                  message="Engine run started", domain_id=domain_id)
         if domain_id not in self._domains:
             # ISSUE-23 (2026-11-11): the unknown-domain path used to
             # return a short shape (ok/error/available_domains/
@@ -113,17 +131,28 @@ class PlanningEngine:
             # KeyError only on this path. It now returns the same
             # _error_result shape as every other failure, with
             # available_domains kept as an extra key.
+            log_event("engine", "engine.run.unknown_domain", level=logging.WARNING,
+                      message="Unknown domain", domain_id=domain_id)
             result = self._error_result(domain_id, f"Unknown domain: {domain_id}")
             result["available_domains"] = self.available_domains()
             return result
         if not isinstance(request, dict):
+            log_event("engine", "engine.run.validation_failed", level=logging.WARNING,
+                      message="Request failed validation", domain_id=domain_id,
+                      reason="request_not_dict")
             return self._error_result(domain_id, "request must be a dictionary")
         domain = self._domains[domain_id]
         try:
             validation = domain.validate_inputs(request)
             if not isinstance(validation, dict) or not isinstance(validation.get("ok"), bool):
+                log_event("engine", "engine.run.validation_failed", level=logging.WARNING,
+                          message="Domain returned an invalid validation report",
+                          domain_id=domain_id, reason="invalid_validation_report")
                 return self._error_result(domain_id, "Domain returned an invalid validation report")
         except Exception as exc:
+            log_event("engine", "engine.run.domain_error", level=logging.ERROR,
+                      message="Input validation raised", domain_id=domain_id,
+                      exception_type=type(exc).__name__)
             return self._error_result(domain_id, f"Input validation raised {type(exc).__name__}: {exc}")
 
         if not validation["ok"]:
@@ -133,6 +162,9 @@ class PlanningEngine:
             # report degrades to a structured validation failure.
             problems = self._as_str_list(validation.get("problems", []), "problems")
             assumptions = self._as_str_list(validation.get("assumptions", []), "assumptions")
+            log_event("engine", "engine.run.validation_failed", level=logging.WARNING,
+                      message="Input validation failed", domain_id=domain_id,
+                      reason="validation_failed", problem_count=len(problems))
             calculation = {"calculation_status": CalculationStatus.INSUFFICIENT_INPUT.value,
                            "missing_fields": problems, "metrics": {},
                            "display_metrics": {}, "assumptions": assumptions,
@@ -162,6 +194,9 @@ class PlanningEngine:
             if not isinstance(uncertainty, list) or not isinstance(constraints, list):
                 raise TypeError("uncertainty and constraints must be lists")
         except Exception as exc:
+            log_event("engine", "engine.run.domain_error", level=logging.ERROR,
+                      message="Domain execution raised", domain_id=domain_id,
+                      exception_type=type(exc).__name__)
             return self._error_result(domain_id, f"Domain execution raised {type(exc).__name__}: {exc}", validation)
 
         verification = verify_domain_result(domain_id, calculation, evaluation, request)
@@ -170,6 +205,11 @@ class PlanningEngine:
         limitations = list(calculation.get("limitations", [])) + list(uncertainty)
         if not verified:
             limitations.append("Result is not fully verified; inspect verification status and issues before relying on it.")
+        log_event("engine", "engine.run.completed",
+                  message="Engine run completed", domain_id=domain_id,
+                  calculation_status=calculation.get("calculation_status"),
+                  overall_status=evaluation.get("overall_status"),
+                  needs_human_decision=True)
         return {**self._result_flags(completed, verified),
                 "domain": domain_id, "validation": validation,
                 "calculation": calculation, "evaluation": evaluation,
@@ -186,6 +226,9 @@ class PlanningEngine:
         verifier therefore returns ``calculation_ok: True`` with
         ``verified: False`` / ``ok: False`` — distinguishable from a
         failed calculation, where ``calculation_ok`` is False."""
+        log_event("engine", "engine.run_scenario.started",
+                  message="Scenario run started", domain_id=domain_id,
+                  scenario_id=getattr(scenario, "scenario_id", "unknown"))
         if domain_id not in self._domains:
             # ISSUE-23: run_scenario's unknown-domain path used to return
             # a short flags+error dict while run()'s returned the full
@@ -193,6 +236,9 @@ class PlanningEngine:
             # other as well as with every other path. It now returns the
             # same ScenarioResult-shaped failure as the exception path
             # below (plus the W4 result flags and available_domains).
+            log_event("engine", "engine.run_scenario.unknown_domain", level=logging.WARNING,
+                      message="Unknown domain", domain_id=domain_id,
+                      scenario_id=getattr(scenario, "scenario_id", "unknown"))
             failed = ScenarioResult(
                 scenario_id=getattr(scenario, "scenario_id", "unknown"), domain=domain_id,
                 warnings=[f"Unknown domain: {domain_id}"],
@@ -215,10 +261,19 @@ class PlanningEngine:
                 verification=run_result.get("verification", {}),
                 needs_human_decision=True,
             )
+            log_event("engine", "engine.run_scenario.completed",
+                      message="Scenario run completed", domain_id=domain_id,
+                      scenario_id=scenario.scenario_id,
+                      calculation_status=scenario_result.calculation_status,
+                      needs_human_decision=True)
             return {**self._result_flags(run_result.get("calculation_ok", False),
                                          run_result.get("verified", False)),
                     **scenario_result.to_dict()}
         except Exception as exc:
+            log_event("engine", "engine.run_scenario.failed", level=logging.ERROR,
+                      message="Scenario execution failed", domain_id=domain_id,
+                      scenario_id=getattr(scenario, "scenario_id", "unknown"),
+                      exception_type=type(exc).__name__)
             failed = ScenarioResult(
                 scenario_id=getattr(scenario, "scenario_id", "unknown"), domain=domain_id,
                 warnings=[f"Scenario execution failed: {type(exc).__name__}: {exc}"],
@@ -228,15 +283,25 @@ class PlanningEngine:
 
     def compare_scenarios(self, domain_id: str, scenarios: list[Any]) -> dict[str, Any]:
         """Calculate each supplied scenario; deliberately does not rank or select."""
+        log_event("engine", "engine.compare_scenarios.started",
+                  message="Scenario comparison started", domain_id=domain_id,
+                  scenario_count=len(scenarios))
         if not scenarios:
+            log_event("engine", "engine.compare_scenarios.completed",
+                      message="Scenario comparison completed", domain_id=domain_id,
+                      scenario_count=0, all_calculation_ok=False)
             return {**self._result_flags(False, False),
                     "domain": domain_id, "results": [],
                     "note": "No scenarios supplied; no selection was made.", "needs_human_decision": True}
         results = [self.run_scenario(domain_id, scenario) for scenario in scenarios]
         registered = domain_id in self._domains
-        return {**self._result_flags(
-                    registered and all(r.get("calculation_ok", False) for r in results),
-                    registered and all(r.get("verified", False) for r in results)),
+        all_ok = registered and all(r.get("calculation_ok", False) for r in results)
+        all_verified = registered and all(r.get("verified", False) for r in results)
+        log_event("engine", "engine.compare_scenarios.completed",
+                  message="Scenario comparison completed", domain_id=domain_id,
+                  scenario_count=len(results), all_calculation_ok=all_ok,
+                  all_verified=all_verified)
+        return {**self._result_flags(all_ok, all_verified),
                 "domain": domain_id, "results": results,
                 "selection": None,
                 "note": "Scenario consequences are reported without ranking, preference inference or automatic selection.",

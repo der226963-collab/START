@@ -1,0 +1,16 @@
+{
+  "kind": "plan_request",
+  "payload": {
+    "geography": "global",
+    "nitrogen_fixation_tg_per_year": 165.0,
+    "period": "2025",
+    "phosphorus_applied_tg_per_year": 18.2,
+    "source_ids": [
+      "data/real_planning_data.csv",
+      "data/real_planning_sources.md",
+      "data/SNAPSHOT_PROVENANCE.md"
+    ]
+  },
+  "saved_at": "2026-11-14T05:09:58.500172Z",
+  "schema_version": "1.0.0"
+}

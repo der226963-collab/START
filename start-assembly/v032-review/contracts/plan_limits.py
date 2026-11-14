@@ -333,6 +333,17 @@ def check_plan_limits(
     statuses = [CheckStatus(c["status"]) for c in checks]
     overall = overall_from_checks(statuses)
     failed = [c for c in checks if c["status"] == CheckStatus.FAIL.value]
+    # ISSUE-27: one metadata-only INFO event per check — overall status
+    # and failed count only, never plan values or check rows. The import
+    # is lazy: engine/__init__ imports planning_engine, which imports
+    # this module, so a top-level `from engine.event_log import ...`
+    # would cycle (contracts.models already lazy-imports this module
+    # for the same reason).
+    from engine.event_log import log_event
+    log_event("contracts", "contracts.check_plan_limits.completed",
+              message="Plan limits check completed",
+              overall_status=overall.value, failed_count=len(failed),
+              check_count=len(checks), unknown_key_count=len(unknown_keys))
     return {
         "checks": checks,
         "overall_status": overall.value,

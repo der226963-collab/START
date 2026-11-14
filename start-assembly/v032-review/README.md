@@ -87,10 +87,16 @@ The current unit registry is intentionally small. Unknown units are rejected; th
 - Retrieval, memory or LLM orchestration
 - Optimization or automatic scenario selection
 - Governance workflows, voting, permissions or community decision interfaces
-- Production-grade security, persistence, API or user interface
-- Logging (see below)
+- Production-grade security, API or user interface
+- (Logging, file persistence and a file-in/file-out CLI now exist — see below and `docs/ARCHITECTURE.md`.)
 
-There is no logging anywhere in this package (ISSUE-27, verified 2026-11-11: zero hits for `logging`/`logger`/`argparse`/`sqlite` in non-test Python; the only `open(` calls in non-test Python are file reads — schema files in `adapters/python/contracts.py`, the snapshot CSV in `contracts/plan_limits.py`, and the compat data files in `domains/compat_v031.py`). Engine failures become structured dicts returned to the caller, but nothing is ever logged, so a failure in any embedding is invisible unless the caller inspects and records it. Persistence and a file-in/file-out CLI are likewise absent and are recorded as DEFERRED, not as oversights to be filled in silently: they are a larger decision about whether this package should grow into a runnable tool, and need Eric's call. No logging framework, persistence layer, or CLI was added in the 2026-11-11 cleanup.
+## Logging, persistence and CLI (ISSUE-27, built 2026-11-13)
+
+The 2026-11-11 cleanup recorded logging, persistence and a CLI as DEFERRED pending Eric's call; he made that call on 2026-11-13 and all three are now built (stdlib only — `logging`, `argparse`, JSON files; no SQLite, no database, no third-party framework).
+
+- **Logging** (`engine/event_log.py`): structured JSON-lines records — timestamp, level, `start.*` logger name, event, message, plus metadata fields (domain/scenario ids, statuses, counts, paths). INFO and above log metadata only, never request/result payloads. Importing the package configures nothing; logging is switched on only by the CLI.
+- **Persistence** (`persistence/`): every saved file is a JSON envelope — `schema_version` (from `interop/SCHEMA_VERSION`, currently `1.0.0`), `kind` (`plan_request`, `scenario`, `result`, `plan_overrides`), `saved_at` (UTC ISO-8601), `payload`. Writes are atomic (temp file + rename) and refuse to overwrite unless forced. Loads reject unknown kinds and major version mismatches; a saved result is the engine's result dict verbatim.
+- **CLI** (`python -m cli`): `check-plan`, `run`, `run-scenario`, `compare-scenarios`, `list-domains`. File in, file out; exit 0 on success even when a plan outcome is FAIL or UNKNOWN (that is data, not a CLI failure), 2 for usage/validation errors, 1 for runtime failures, and no output file is written on any failure. Example: `python -m cli check-plan --plan plan.json --out result.json`. Ready-made example inputs live in `examples/cli-inputs/` (with a README giving the command and expected outcome for each file); `tests/test_issue27_cli_examples.py` runs every one through the real CLI so they cannot go stale silently. See `docs/ARCHITECTURE.md` for the full subcommand, exit-code and envelope rules. There is no interactive mode, no UI and no network.
 
 See `docs/ARCHITECTURE.md` and `docs/VERIFICATION.md` before extending the system.
 

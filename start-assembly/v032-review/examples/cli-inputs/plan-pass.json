@@ -1,0 +1,11 @@
+{
+  "kind": "plan_request",
+  "payload": {
+    "food_kcal_per_capita_per_day": 2600,
+    "paid_work_hours_per_week": 40,
+    "phosphorus_application_tg_per_year": 5.0,
+    "planning_need_kcal_per_capita_per_day": 2500
+  },
+  "saved_at": "2026-11-14T05:09:58.378568Z",
+  "schema_version": "1.0.0"
+}

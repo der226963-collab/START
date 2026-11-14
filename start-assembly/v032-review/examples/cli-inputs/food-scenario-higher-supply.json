@@ -1,0 +1,35 @@
+{
+  "kind": "scenario",
+  "payload": {
+    "assumptions": [
+      "Example only \u2014 not a real community or a real plan."
+    ],
+    "description": "Same community, supply raised from 2800 to 3000 kcal/capita/day.",
+    "geography": "community-example",
+    "metadata": {
+      "base_request": {
+        "geography": "community-example",
+        "imports_kcal_per_capita_per_day": 100,
+        "losses_fraction": 0.08,
+        "period": "2026",
+        "population": 100000,
+        "requirement_kcal_per_capita_per_day": 2500,
+        "source_ids": [
+          "example-source-not-real"
+        ],
+        "supply_kcal_per_capita_per_day": 2800
+      }
+    },
+    "name": "Same community, supply raised from 2800 to 3000 kcal/capita/day.",
+    "period": "2026",
+    "proposed_changes": {
+      "supply_kcal_per_capita_per_day": 3000
+    },
+    "scenario_id": "food-scenario-higher-supply",
+    "source_ids": [
+      "example-source-not-real"
+    ]
+  },
+  "saved_at": "2026-11-14T05:09:58.472724Z",
+  "schema_version": "1.0.0"
+}

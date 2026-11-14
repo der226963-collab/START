@@ -1,0 +1,8 @@
+{
+  "kind": "plan_overrides",
+  "payload": {
+    "phosphorus_application_tg_per_year": 6.2
+  },
+  "saved_at": "2026-11-14T05:09:58.411186Z",
+  "schema_version": "1.0.0"
+}

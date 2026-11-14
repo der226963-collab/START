@@ -1,0 +1,17 @@
+{
+  "kind": "plan_request",
+  "payload": {
+    "geography": "community-example",
+    "imports_kcal_per_capita_per_day": 100,
+    "losses_fraction": 0.08,
+    "period": "2026",
+    "population": 100000,
+    "requirement_kcal_per_capita_per_day": 2500,
+    "source_ids": [
+      "example-source-not-real"
+    ],
+    "supply_kcal_per_capita_per_day": 2800
+  },
+  "saved_at": "2026-11-14T05:09:58.427447Z",
+  "schema_version": "1.0.0"
+}

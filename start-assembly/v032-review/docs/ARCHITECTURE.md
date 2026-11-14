@@ -319,6 +319,49 @@ constructs (vacuously a list of non-empty strings, pinned by test).
 
 A domain that has no independent mathematical verifier will remain `PARTIALLY_VERIFIED`; this is intentional.
 
+## Logging, persistence and CLI (ISSUE-27, built 2026-11-13)
+
+The review found no logging, persistence or CLI anywhere (ISSUE-27, verified 2026-11-11). All three are now built, stdlib only. This section is the authoritative record of the shapes and rules; the README gives the short version.
+
+### Log records
+
+`engine/event_log.py` is the single logging interface. Records are JSON-lines objects with keys `timestamp` (UTC ISO-8601, `Z` suffix), `level`, `logger` (namespaced `start.*`: `start.engine`, `start.contracts`, `start.persistence`, `start.cli`), `event` (stable machine-readable name, e.g. `engine.run.completed`), `message` (human-readable), plus event-specific metadata fields (domain/scenario ids, statuses, counts, paths).
+
+Privacy rule (hard): INFO and above log **metadata only** — ids, statuses, counts, paths. NEVER a full request or result payload at INFO or above. DEBUG may include payloads. The logging tests assert distinctive request values and exception messages do not appear in INFO records.
+
+Library rule (hard): importing the package configures nothing — no handlers, no `basicConfig`, no file writes. `configure_logging(level, log_file)` is called only by the CLI entry point. Default level WARNING to stderr; `--verbose` maps to INFO, `--quiet` to ERROR, `--log-file` appends JSON-lines to that path instead of stderr.
+
+Events emitted: engine run started/completed (domain, calculation/overall status), check_plan started/completed (overall status, failed count), unknown-domain and validation-failure paths (WARNING), domain exceptions (ERROR, exception type only, never the message), persistence save/load success and failure (kind, path, schema version), CLI invocation/success/failure.
+
+### Persistence envelope
+
+`persistence/` (`save_envelope`, `load_envelope`, `KINDS`). Every persisted file is a JSON object with exactly four top-level keys:
+
+- `schema_version` — from `adapters.python.contracts.SCHEMA_VERSION`, read at import from the single source of truth `interop/SCHEMA_VERSION` (currently `1.0.0`). No second hard-coded copy.
+- `kind` — one of `plan_request`, `scenario`, `result`, `plan_overrides`, enumerated in `persistence.KINDS`.
+- `saved_at` — UTC ISO-8601 with `Z` suffix.
+- `payload` — the data; a `result` payload is the engine's result dict verbatim (a result that says UNKNOWN stays UNKNOWN on disk).
+
+Versioning follows `interop/CONTRACT_VERSIONING.md` exactly: same-major patch/minor versions are accepted, a different major is rejected with both versions named. Extra top-level keys are tolerated on load (a same-major minor version may add optional fields); save always writes exactly the four keys. Kind-specific payload checks on load: `scenario` needs a non-empty string `scenario_id` and `name`; `result` needs `domain` (str) and `calculation` (dict); `plan_request`/`plan_overrides` need only be dicts (plan keys are validated by the engine at check time).
+
+Writes are atomic: temp file in the same directory, flush + fsync, then `os.replace`, so a crash never leaves a half-written file; the temp file is removed on any failure. An existing file is never overwritten unless the caller passes `overwrite=True` (CLI: `--force`); without it the old file is left byte-identical. Paths are always caller-chosen; there is no hidden default store directory and parent directories are never auto-created. Any load failure raises `ValueError` naming the path and reason — never a half-loaded object. No SQLite, no database, JSON only.
+
+### CLI
+
+`cli/` (`python -m cli`; `pyproject.toml` defines no console scripts, so `python -m cli` is the entry point, following the `python -m examples.food_balance` pattern). All three built-in domains are registered: `food`, `nutrients`, `labour`. Subcommands:
+
+- `check-plan --plan <file> [--overrides <file>] --out <file>` — plan envelope (`plan_request`) and optional overrides envelope (`plan_overrides`) in, result envelope out.
+- `run --domain <id> --request <file> --out <file>` — request envelope (`plan_request`) in, result envelope out.
+- `run-scenario --domain <id> --scenario <file> --out <file>` — scenario envelope in, result envelope out.
+- `compare-scenarios --domain <id> --scenarios <file>... --out <file>` — one scenario envelope per file, result envelope out; consequences reported without ranking or selection.
+- `list-domains` — registered domain ids, one per line, to stdout.
+
+Global flags (before the subcommand): `--verbose`, `--quiet`, `--log-file <path>`, `--force`. Input files must be persistence envelopes — a bare payload JSON without the envelope is rejected with a message naming the expected envelope shape; both shapes are never silently accepted. Wrong kind, unknown domain (error lists the available domains), bad Scenario fields, missing input, corrupt JSON, and major version mismatch are usage errors. Everything is validated and the engine is run before the output path is touched, so on any failure no output file is written (never a partial result).
+
+Exit codes: 0 on success, **including a result whose status is FAIL or UNKNOWN** — the plan outcome is data, not a CLI failure. 2 for usage/validation errors. 1 for runtime failures (output cannot be written, existing output without `--force`, log file unopenable, unexpected engine exception). On failure a one-line error goes to stderr and the failure is logged.
+
+What remains undone: no interactive mode, no UI, no renderer, no network (Module 25 UI work is NOT approved — file-in/file-out only); no API server; persistence is plain JSON files, not a database — concurrent writers to the same path rely on `os.replace` atomicity only, with no locking.
+
 ## Multi-language groundwork (v0.3.2 scaffold)
 
 The proposed division of responsibility is:

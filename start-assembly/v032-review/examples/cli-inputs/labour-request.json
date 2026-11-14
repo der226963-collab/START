@@ -1,0 +1,20 @@
+{
+  "kind": "plan_request",
+  "payload": {
+    "geography": "global",
+    "paid_work_hours_per_week": 43.0,
+    "period": "2018",
+    "population": 8200000000,
+    "snapshot_paid_work_hours_per_week_all_adults": 25.0,
+    "snapshot_paid_work_hours_per_week_employed": 43.0,
+    "source_ids": [
+      "data/real_planning_data.csv",
+      "data/real_planning_sources.md",
+      "data/SNAPSHOT_PROVENANCE.md"
+    ],
+    "unpaid_care_hours_per_day_billion": 16.4,
+    "women_share_unpaid_care_percent": 76.2
+  },
+  "saved_at": "2026-11-14T05:09:58.487248Z",
+  "schema_version": "1.0.0"
+}

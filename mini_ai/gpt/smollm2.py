@@ -175,12 +175,77 @@ class SmolLM2Model(nn.Module):
         return logits, loss
 
     @torch.no_grad()
-    def generate(self, idx, max_new_tokens, temperature=0.7, eos_id=None, max_context=1024):
+    def generate(self, idx, max_new_tokens, temperature=0.7, eos_id=None, max_context=1024,
+                 repetition_penalty=1.0, no_repeat_ngram_size=0, min_new_tokens=0):
         self.eval()
+        if repetition_penalty < 1.0:
+            raise ValueError("repetition_penalty must be >= 1.0 (1.0 = off)")
+        if no_repeat_ngram_size < 0 or no_repeat_ngram_size == 1:
+            raise ValueError(
+                "no_repeat_ngram_size must be 0 (off) or >= 2 "
+                "(an n-gram of size 1 would ban every token)")
+        if min_new_tokens < 0:
+            raise ValueError("min_new_tokens must be >= 0 (0 = off)")
+        # Tokens the model has already generated in this call; the
+        # penalty applies to these only, NOT to the prompt tokens,
+        # which the model may legitimately repeat (e.g. echoing a
+        # name from the prompt).
+        prompt_len = idx.shape[1]
         for _ in range(max_new_tokens):
             context = idx[:, -max_context:]
             logits, _ = self(context)
-            next_logits = logits[:, -1, :] / max(temperature, 1e-6)
+            next_logits = logits[:, -1, :]
+            if (repetition_penalty != 1.0 or no_repeat_ngram_size >= 2
+                    or (min_new_tokens > 0 and eos_id is not None)):
+                next_logits = next_logits.clone()
+            if repetition_penalty != 1.0:
+                # CTRL/HF repetition penalty: for each distinct token
+                # already generated, divide a positive logit by the
+                # penalty and multiply a negative logit by it, so the
+                # token is always made less likely. Applied before
+                # temperature scaling, so it works for both the
+                # argmax (temperature 0) and sampling paths.
+                for b in range(idx.shape[0]):
+                    generated = idx[b, prompt_len:].unique()
+                    penalized = next_logits[b, generated]
+                    next_logits[b, generated] = torch.where(
+                        penalized > 0, penalized / repetition_penalty,
+                        penalized * repetition_penalty)
+            if no_repeat_ngram_size >= 2:
+                # No-repeat n-gram blocking: ban any token that would
+                # complete an n-gram of size no_repeat_ngram_size
+                # already present in the CONTINUATION (tokens
+                # generated after the prompt — NOT prompt tokens,
+                # which the model may legitimately repeat, e.g. a
+                # phrase from the prompt). Applied before
+                # temperature scaling, so it works for both the
+                # argmax (temperature 0) and sampling paths.
+                n = no_repeat_ngram_size
+                for b in range(idx.shape[0]):
+                    generated = idx[b, prompt_len:].tolist()
+                    if len(generated) < n - 1:
+                        continue
+                    prefix = tuple(generated[-(n - 1):])
+                    banned = set()
+                    for i in range(len(generated) - n + 1):
+                        if tuple(generated[i:i + n - 1]) == prefix:
+                            banned.add(generated[i + n - 1])
+                    if banned:
+                        next_logits[b, list(banned)] = float("-inf")
+            if min_new_tokens > 0 and eos_id is not None:
+                # Minimum new tokens: suppress EOS for the first
+                # min_new_tokens CONTINUATION tokens, so the model
+                # cannot stop immediately. The count is of tokens
+                # generated after the prompt, not prompt tokens.
+                # Applied before temperature scaling, so it works
+                # for both the argmax (temperature 0) and sampling
+                # paths. After the window, EOS is generated
+                # normally — this only defers a stop, it does not
+                # forbid one.
+                generated_so_far = idx.shape[1] - prompt_len
+                if generated_so_far < min_new_tokens:
+                    next_logits[:, eos_id] = float("-inf")
+            next_logits = next_logits / max(temperature, 1e-6)
             if temperature == 0:
                 nxt = next_logits.argmax(dim=-1, keepdim=True)
             else:

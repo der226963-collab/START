@@ -22,6 +22,8 @@ only the steps since the last checkpoint.
 Usage:
   python train_smollm2_lora.py --epochs 4 --out checkpoints/smollm2-lora-mix
   python train_smollm2_lora.py --out checkpoints/smollm2-lora-mix --resume
+  python train_smollm2_lora.py --optimizer muon --lr-schedule trapezoid \
+      --out checkpoints/smollm2-lora-mix-v8   # v8: Muon + trapezoid
 """
 import argparse
 import json
@@ -40,6 +42,7 @@ from mini_ai.gpt.lora import (
     lora_parameters,
     lora_state_dict,
 )
+from mini_ai.gpt.muon import Muon
 from mini_ai.gpt.smollm2 import load_pretrained, load_tokenizer
 
 ROOT = Path(__file__).resolve().parent
@@ -104,6 +107,37 @@ def pad_batch(batch, pad_id):
             torch.tensor(attn, dtype=torch.long))
 
 
+def total_optimizer_steps(n_train, batch_size, grad_accum, epochs):
+    """Planned optimizer steps for a run, counted the way the
+    training loop counts them: ceil(n_train / batch_size)
+    micro-batches per epoch, one optimizer step per grad_accum
+    micro-batches (the last partial group in an epoch still
+    steps, on the last batch)."""
+    batches_per_epoch = (n_train + batch_size - 1) // batch_size
+    steps_per_epoch = (batches_per_epoch + grad_accum - 1) // grad_accum
+    return steps_per_epoch * epochs
+
+
+def lr_at(step, total_steps, base_lr, schedule="constant"):
+    """Learning rate at optimizer step `step` of `total_steps`.
+
+    constant (the v7 default): a short 10-step linear warmup,
+    then flat at base_lr — exactly the old inline closure.
+    trapezoid (ported from train_gpt.py): linear warmup over
+    the first 5% of steps, a plateau at base_lr until 80%,
+    then linear decay to 10% of base_lr at the last step.
+    """
+    if schedule == "trapezoid":
+        progress = step / max(1, total_steps - 1)
+        if progress < 0.05:
+            return base_lr * (progress / 0.05)
+        if progress < 0.80:
+            return base_lr
+        return base_lr * (1.0 - 0.9 * (progress - 0.80) / 0.20)
+    warmup = 10
+    return base_lr * min(1.0, (step + 1) / warmup)
+
+
 def save_checkpoint(out_dir, model, optimizer, step, epoch, args, train_loss):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -125,7 +159,7 @@ def save_checkpoint(out_dir, model, optimizer, step, epoch, args, train_loss):
     (out_dir / "checkpoint.json").write_text(json.dumps(meta, indent=2))
 
 
-def main():
+def build_parser():
     ap = argparse.ArgumentParser()
     ap.add_argument("--model-dir", default=str(DEFAULT_MODEL_DIR))
     ap.add_argument("--train-file", default="data/finetune/smollm2-mix-train.jsonl")
@@ -136,6 +170,19 @@ def main():
     ap.add_argument("--target", default="q,k,v,o",
                     help="comma list of attention projections to adapt")
     ap.add_argument("--lr", type=float, default=1e-4)
+    ap.add_argument("--optimizer", choices=["adamw", "muon"], default="adamw",
+                    help="muon: Muon for the LoRA adapters (every adapter "
+                         "param is 2D, so no AdamW split is needed); "
+                         "adamw: the v7 default")
+    ap.add_argument("--muon-lr", type=float, default=0.02,
+                    help="Peak learning rate for --optimizer muon "
+                         "(canonical Muon default 0.02; published range "
+                         "0.02-0.05). Ignored with --optimizer adamw.")
+    ap.add_argument("--lr-schedule", choices=["constant", "trapezoid"],
+                    default="constant",
+                    help="constant: 10-step warmup then flat (the v7 "
+                         "default); trapezoid: 5%% warmup, plateau to 80%%, "
+                         "decay to 10%% of peak (ported from train_gpt.py)")
     ap.add_argument("--epochs", type=int, default=4)
     ap.add_argument("--batch-size", type=int, default=2)
     ap.add_argument("--grad-accum", type=int, default=2)
@@ -145,7 +192,11 @@ def main():
     ap.add_argument("--max-steps", type=int, default=0,
                     help="0 = no limit (smoke tests pass a small number)")
     ap.add_argument("--resume", action="store_true")
-    args = ap.parse_args()
+    return ap
+
+
+def main():
+    args = build_parser().parse_args()
 
     torch.manual_seed(args.seed)
     random.seed(args.seed)
@@ -173,13 +224,25 @@ def main():
     val_ex = [encode_example(tokenizer, r["instruction"], r["response"],
                              args.max_len, r.get("context", ""))
               for r in val_rows]
+    total_steps = total_optimizer_steps(len(train_rows), args.batch_size,
+                                        args.grad_accum, args.epochs)
+    print(f"planned optimizer steps: {total_steps}", flush=True)
 
-    optimizer = torch.optim.AdamW(lora_parameters(model), lr=args.lr,
-                                  betas=(0.9, 0.95), weight_decay=0.0)
-    # Constant LR with a short warmup is enough for a narrow run.
-    def lr_at(step):
-        warmup = 10
-        return args.lr * min(1.0, (step + 1) / warmup)
+    # Muon takes all the adapter params: every LoRA matrix is 2D,
+    # so there is no AdamW split (unlike train_gpt.py, where
+    # embeddings/head/biases stay on AdamW). The schedule's peak
+    # is the selected optimizer's lr, so --muon-lr actually takes
+    # effect: train_gpt.py's loop overwrites every group's lr
+    # from --lr each step, which would silently discard --muon-lr.
+    if args.optimizer == "muon":
+        optimizer = Muon(lora_parameters(model), lr=args.muon_lr)
+        peak_lr = args.muon_lr
+    else:
+        optimizer = torch.optim.AdamW(lora_parameters(model), lr=args.lr,
+                                      betas=(0.9, 0.95), weight_decay=0.0)
+        peak_lr = args.lr
+    print(f"optimizer: {args.optimizer} (peak lr {peak_lr}), "
+          f"lr schedule: {args.lr_schedule}", flush=True)
 
     out_dir = Path(args.out)
     start_step, start_epoch = 0, 0
@@ -204,7 +267,7 @@ def main():
                 done = True
                 break
             for group in optimizer.param_groups:
-                group["lr"] = lr_at(step)
+                group["lr"] = lr_at(step, total_steps, peak_lr, args.lr_schedule)
             input_ids, labels, _ = pad_batch(batch, pad_id)
             logits, _ = model(input_ids)
             # Causal LM: logits at position i predict token i+1, so

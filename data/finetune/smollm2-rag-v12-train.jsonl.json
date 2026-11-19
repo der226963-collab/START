@@ -1,0 +1,68 @@
+{
+  "dataset": "smollm2-rag-v12-train.jsonl",
+  "version": "v12",
+  "built": "2026-11-18",
+  "builder": "tools/build_v12_data.py",
+  "base": {
+    "file": "data/finetune/smollm2-rag-v9-train.jsonl",
+    "rows": 169,
+    "note": "v9 train set verbatim (100 instruction rows with context + 69 intent rows, including the 6 thanks paraphrases)"
+  },
+  "replay": {
+    "source_file": "data/expanded/pg1228.txt",
+    "source": "Darwin, On the Origin of Species, First Edition 1859, public domain, recorded in data/expanded/SOURCES.md (entry: 'Origin, First Edition 1859, 949,182 chars, sha256 dd09b437…'). On-disk file is 934,492 bytes; the SOURCES.md char count differs (staging count), recorded here for transparency.",
+    "source_sha256": "b8aa5011c387e9bbb73fc43c6e141ced0282fbe2cbe57f3da3bcb060fd1c6c69",
+    "source_lines_total": 16192,
+    "body_lines": "285-14589 (from 'INTRODUCTION.' to just before 'INDEX.')",
+    "seed": 42,
+    "rows": 19,
+    "note": "continuous narrative prose sampled from the body of the Origin only — NOT dictionary entries, NOT math prose. v10's replay was mostly fragmented Webster's dictionary definitions at 24%; v12 tests a genuinely different replay hypothesis: plain narrative at ~10%.",
+    "framing": "instruction = 'Continue the following passage.\\n\\n' + first half of a corpus chunk; response = second half; source = 'replay-corpus'",
+    "chunk_chars": {
+      "min": 300,
+      "target": 420,
+      "max": 500
+    },
+    "split": "near midpoint at a sentence boundary ('. ') in the middle third of the chunk; nearest space fallback",
+    "fraction_of_train": 0.1011
+  },
+  "val": {
+    "file": "data/finetune/smollm2-rag-v9-val.jsonl",
+    "rows": 8,
+    "note": "pinned 8 val rows, UNCHANGED (sha256 verified identical before/after this build)",
+    "sha256": "2743e47db57becb966d487b00d1324a013d0eabb2cf8cea9c878dc0003dab5e0"
+  },
+  "totals": {
+    "train_rows": 188,
+    "v9_rows": 169,
+    "replay_rows": 19
+  },
+  "screening": {
+    "checked_against": [
+      "eval/finetune-probe-v5.jsonl (8 probe questions)",
+      "data/finetune/smollm2-rag-v9-val.jsonl (8 val instructions)",
+      "eval/heldout_text.txt (lines and sentences >= 30 chars)"
+    ],
+    "rule": "two standards (same as build_v10_data.py). All rows: no train instruction may equal (normalized) any probe or val instruction; no probe question may appear as a phrase in any row; no heldout_text.txt line/sentence (>= 30 chars) may appear in any row. Replay rows additionally: the full v8 screening (val questions as phrases, >=70% of a probe/val question's content words).",
+    "candidates_examined": 19,
+    "quality_rejections": 0,
+    "heading_lines_skipped": 0,
+    "split_failures": 0,
+    "screening_rejections": 0,
+    "screening_rejection_reasons": {},
+    "duplicate_rejections": 0,
+    "result": "all 188 rows pass — no probe wording, no val instruction as a train instruction, no heldout_text.txt overlap"
+  },
+  "token_check": {
+    "tokenizer": "SmolLM2 tokenizer.json (tokenizers 0.23.3)",
+    "max_len": 256,
+    "replay_rows_checked": 19,
+    "max_tokenized_length": 127,
+    "rows_over_max_len": 0
+  },
+  "training": {
+    "recipe": "v9 exact settings: rank 16, alpha 32, targets q,k,v,o, LR 2e-4, AdamW, constant LR, 12 epochs, batch 2, grad-accum 2, seed 42, --save-every 25, from the BASE model. Single-factor change vs v9: the data mixture only (plain-narrative replay at ~10%). LR stays 2e-4 — NOT combined with v11's LR 1e-4.",
+    "out": "checkpoints/smollm2-lora-mix-v12/"
+  },
+  "seed": 42
+}

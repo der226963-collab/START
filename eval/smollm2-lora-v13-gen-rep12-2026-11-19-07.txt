@@ -1,0 +1,1 @@
+A good plan is not a promise, it is a list of numbers that can be checked, and the checking is what makes it honest. You can always add or remove numbers, but you have to check that the total stays right.
